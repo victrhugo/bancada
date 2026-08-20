@@ -11,21 +11,21 @@ import { QuestionBrowser } from '@/components/interview-questions/question-brows
 import type { ExperienceTier } from '@/lib/interview-utils';
 
 export const metadata: Metadata = {
-  title: 'DevOps Interview Questions | The DevOps Daily',
+  title: 'Perguntas de Entrevista DevOps | Bancada',
   description:
-    'Practice 110+ real DevOps interview questions with hidden answers, code examples, and explanations. Search by topic, drill by experience level, and share any question. Kubernetes, Terraform, CI/CD, GitOps, SRE and more.',
+    'Pratique mais de 110 perguntas reais de entrevista de DevOps com respostas ocultas, exemplos de código e explicações. Busque por tópico, treine por nível de experiência e compartilhe qualquer pergunta. Kubernetes, Terraform, CI/CD, GitOps, SRE e muito mais.',
   keywords: [
-    'devops interview questions',
-    'kubernetes interview',
-    'docker interview',
-    'terraform interview',
-    'cicd interview',
-    'aws interview',
+    'perguntas de entrevista devops',
+    'entrevista kubernetes',
+    'entrevista docker',
+    'entrevista terraform',
+    'entrevista cicd',
+    'entrevista aws',
   ],
-  authors: [{ name: 'The DevOps Daily' }],
-  creator: 'The DevOps Daily',
-  publisher: 'The DevOps Daily',
-  applicationName: 'The DevOps Daily',
+  authors: [{ name: 'Bancada' }],
+  creator: 'Bancada',
+  publisher: 'Bancada',
+  applicationName: 'Bancada',
   robots: {
     index: true,
     follow: true,
@@ -41,19 +41,19 @@ export const metadata: Metadata = {
     canonical: '/interview-questions',
   },
   openGraph: {
-    title: 'DevOps Interview Questions - The DevOps Daily',
+    title: 'Perguntas de Entrevista DevOps - Bancada',
     description:
-      'Practice real DevOps interview questions with hidden answers, code examples, and explanations. Search by topic, drill by level, share any question.',
+      'Pratique perguntas reais de entrevista de DevOps com respostas ocultas, exemplos de código e explicações. Busque por tópico, treine por nível e compartilhe qualquer pergunta.',
     type: 'website',
     url: '/interview-questions',
-    siteName: 'The DevOps Daily',
-    locale: 'en_US',
+    siteName: 'Bancada',
+    locale: 'pt_BR',
     images: [
       {
         url: '/images/interview-questions/interview-questions-og.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Interview Questions',
+        alt: 'Perguntas de Entrevista DevOps',
       },
     ],
   },
@@ -61,34 +61,34 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@TheDevOpsDaily',
     creator: '@TheDevOpsDaily',
-    title: 'DevOps Interview Questions - The DevOps Daily',
+    title: 'Perguntas de Entrevista DevOps - Bancada',
     description:
-      'Practice real DevOps interview questions with hidden answers, code examples, and explanations.',
+      'Pratique perguntas reais de entrevista de DevOps com respostas ocultas, exemplos de código e explicações.',
     images: ['/images/interview-questions/interview-questions-og.png'],
   },
 };
 
 const tierConfig = {
   junior: {
-    title: 'Junior',
-    range: '0-2 years',
-    description: 'Linux, Git, Docker basics, and CI/CD fundamentals.',
+    title: 'Júnior',
+    range: '0-2 anos',
+    description: 'Linux, Git, fundamentos de Docker e CI/CD.',
     icon: Users,
     dot: 'bg-emerald-500',
     iconColor: 'text-emerald-600 dark:text-emerald-400',
   },
   mid: {
-    title: 'Mid-Level',
-    range: '2-5 years',
-    description: 'Kubernetes, Terraform, monitoring, and architecture.',
+    title: 'Pleno',
+    range: '2-5 anos',
+    description: 'Kubernetes, Terraform, monitoramento e arquitetura.',
     icon: TrendingUp,
     dot: 'bg-primary',
     iconColor: 'text-primary',
   },
   senior: {
-    title: 'Senior',
-    range: '5+ years',
-    description: 'System design, incident response, and technical leadership.',
+    title: 'Sênior',
+    range: '5+ anos',
+    description: 'Design de sistemas, resposta a incidentes e liderança técnica.',
     icon: Award,
     dot: 'bg-violet-500',
     iconColor: 'text-violet-600 dark:text-violet-400',
@@ -104,22 +104,22 @@ export default function InterviewQuestionsPage() {
     <div className="min-h-screen">
       <PageHero
         icon={Briefcase}
-        title="DevOps Interview Questions"
-        accentWord="Interview"
-        description={`Practice ${interviewQuestions.length} real interview questions with hidden answers. Think through each one, reveal the model answer, and share the tricky ones.`}
-        breadcrumbs={[{ label: 'Interview Questions' }]}
-        badge="Mock Interview Practice"
+        title="Perguntas de Entrevista DevOps"
+        accentWord="Entrevista"
+        description={`Pratique ${interviewQuestions.length} perguntas reais de entrevista com respostas ocultas. Pense em cada uma, revele a resposta modelo e compartilhe as mais difíceis.`}
+        breadcrumbs={[{ label: 'Perguntas de Entrevista' }]}
+        badge="Simulado de Entrevista"
         stats={[
-          { label: 'questions', value: interviewQuestions.length },
-          { label: 'topics', value: topics.length },
-          { label: 'levels', value: 3 },
+          { label: 'perguntas', value: interviewQuestions.length },
+          { label: 'tópicos', value: topics.length },
+          { label: 'níveis', value: 3 },
         ]}
       />
 
       <div className="container mx-auto px-4 max-w-4xl py-10">
         {/* Browse by level — the first decision most people make */}
         <section className="mb-12">
-          <p className="text-xs font-mono text-muted-foreground mb-3">// pick your level</p>
+          <p className="text-xs font-mono text-muted-foreground mb-3">// escolha seu nível</p>
           <div className="grid gap-px grid-cols-1 sm:grid-cols-3 bg-border border rounded-md overflow-hidden">
             {tiers.map((tier) => {
               const config = tierConfig[tier];
@@ -146,7 +146,7 @@ export default function InterviewQuestionsPage() {
                   </p>
                   <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/60">
                     <span className="text-xs font-mono text-muted-foreground">
-                      {count} questions
+                      {count} perguntas
                     </span>
                     <ArrowRight className="w-4 h-4 text-muted-foreground transition-all group-hover:text-primary group-hover:translate-x-1" />
                   </div>
@@ -159,21 +159,23 @@ export default function InterviewQuestionsPage() {
         {/* Browse / search all questions */}
         <section className="mb-12">
           <div className="flex items-center justify-between gap-3 mb-3">
-            <p className="text-xs font-mono text-muted-foreground">// browse all questions</p>
+            <p className="text-xs font-mono text-muted-foreground">
+              // ver todas as perguntas
+            </p>
             <div className="flex items-center gap-3 text-xs font-mono">
               <Link
                 href="/interview-questions/practice?random=1"
                 className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary"
               >
                 <Shuffle className="w-3.5 h-3.5" strokeWidth={1.5} />
-                random
+                aleatório
               </Link>
               <Link
                 href="/interview-questions/practice?mode=review"
                 className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary"
               >
                 <RotateCcw className="w-3.5 h-3.5" strokeWidth={1.5} />
-                review pile
+                pilha de revisão
               </Link>
             </div>
           </div>
@@ -182,7 +184,7 @@ export default function InterviewQuestionsPage() {
 
         {/* Browse by topic */}
         <section className="mb-12">
-          <p className="text-xs font-mono text-muted-foreground mb-3">// browse by topic</p>
+          <p className="text-xs font-mono text-muted-foreground mb-3">// ver por tópico</p>
           <div className="flex flex-wrap gap-2">
             {topics.map((topic) => (
               <Link
@@ -200,11 +202,11 @@ export default function InterviewQuestionsPage() {
         {/* Cross-links */}
         <section className="rounded-md border bg-muted/20 p-5 text-center">
           <p className="text-sm text-muted-foreground">
-            Prefer scored assessments? Try the{' '}
+            Prefere avaliações com pontuação? Experimente os{' '}
             <Link href="/quizzes" className="text-primary hover:underline font-medium">
-              DevOps quizzes
+              quizzes de DevOps
             </Link>{' '}
-            or drill concepts with{' '}
+            ou treine conceitos com{' '}
             <Link href="/flashcards" className="text-primary hover:underline font-medium">
               flashcards
             </Link>

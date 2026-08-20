@@ -94,27 +94,14 @@ function BounceTriageEducational() {
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
         <h4 className="mb-2 text-sm font-semibold">Go deeper</h4>
         <p className="text-sm text-muted-foreground">
-          <a
-            href="/posts/send-an-email-by-hand-raw-smtp"
-            className="font-medium text-primary underline underline-offset-2"
-          >
-            Send an email by hand with raw SMTP
-          </a>{' '}
-          walks the conversation these codes come from, one command at a time. The{' '}
+          The{' '}
           <a
             href="/games/smtp-flow-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
             SMTP flow simulator
           </a>{' '}
-          covers the same handshake interactively, and{' '}
-          <a
-            href="/posts/what-sending-a-developer-newsletter-actually-takes"
-            className="font-medium text-primary underline underline-offset-2"
-          >
-            what sending a developer newsletter actually takes
-          </a>{' '}
-          covers the suppression list these bounces feed into.
+          covers the handshake these bounce codes come from, interactively.
         </p>
       </div>
 

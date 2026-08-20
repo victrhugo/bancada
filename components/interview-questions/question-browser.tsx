@@ -25,11 +25,16 @@ interface QuestionBrowserProps {
 
 const TIERS: ExperienceTier[] = ['junior', 'mid', 'senior'];
 const TIER_LABELS: Record<ExperienceTier, string> = {
-  junior: 'Junior',
-  mid: 'Mid',
-  senior: 'Senior',
+  junior: 'Júnior',
+  mid: 'Pleno',
+  senior: 'Sênior',
 };
 const DIFFICULTIES: Difficulty[] = ['beginner', 'intermediate', 'advanced'];
+const DIFFICULTY_LABELS: Record<Difficulty, string> = {
+  beginner: 'iniciante',
+  intermediate: 'intermediário',
+  advanced: 'avançado',
+};
 
 function readParam(key: string): string {
   if (typeof window === 'undefined') return '';
@@ -128,9 +133,9 @@ export function QuestionBrowser({
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search questions, topics, tags…"
+            placeholder="Buscar perguntas, tópicos, tags…"
             className="w-full pl-9 pr-3 py-2 bg-background border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-            aria-label="Search interview questions"
+            aria-label="Buscar perguntas de entrevista"
           />
         </div>
         <Link
@@ -138,16 +143,16 @@ export function QuestionBrowser({
           className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
           <Play className="w-4 h-4" strokeWidth={2} />
-          Practice {filtered.length}
+          Praticar {filtered.length}
         </Link>
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5">
         {!lockedTier && (
-          <ChipGroup label="level">
+          <ChipGroup label="nível">
             <Chip active={tier === ''} onClick={() => setTier('')}>
-              all
+              todos
             </Chip>
             {TIERS.map((t) => (
               <Chip key={t} active={tier === t} onClick={() => setTier(t)}>
@@ -157,27 +162,27 @@ export function QuestionBrowser({
           </ChipGroup>
         )}
 
-        <ChipGroup label="difficulty">
+        <ChipGroup label="dificuldade">
           <Chip active={difficulty === ''} onClick={() => setDifficulty('')}>
-            all
+            todas
           </Chip>
           {DIFFICULTIES.map((d) => (
             <Chip key={d} active={difficulty === d} onClick={() => setDifficulty(d)}>
-              {d}
+              {DIFFICULTY_LABELS[d]}
             </Chip>
           ))}
         </ChipGroup>
 
         {!lockedTopicSlug && topics.length > 1 && (
           <label className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
-            topic
+            tópico
             <select
               value={topicSlug}
               onChange={(e) => setTopicSlug(e.target.value)}
               className="px-2 py-1 bg-background border border-input rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
-              aria-label="Filter by topic"
+              aria-label="Filtrar por tópico"
             >
-              <option value="">all</option>
+              <option value="">todos</option>
               {topics.map((t) => (
                 <option key={t.slug} value={t.slug}>
                   {t.name} ({t.count})
@@ -191,7 +196,7 @@ export function QuestionBrowser({
       {/* Results */}
       <div className="mb-3 flex items-center justify-between">
         <p className="text-xs font-mono text-muted-foreground">
-          {filtered.length} {filtered.length === 1 ? 'question' : 'questions'}
+          {filtered.length} {filtered.length === 1 ? 'pergunta' : 'perguntas'}
         </p>
         {hasFilters && (
           <button
@@ -203,14 +208,14 @@ export function QuestionBrowser({
             }}
             className="text-xs font-mono text-muted-foreground hover:text-primary"
           >
-            clear filters
+            limpar filtros
           </button>
         )}
       </div>
 
       {filtered.length === 0 ? (
         <p className="text-sm text-muted-foreground font-mono py-8 text-center">
-          No questions match. Try a broader search or clearing filters.
+          Nenhuma pergunta encontrada. Tente uma busca mais ampla ou limpe os filtros.
         </p>
       ) : (
         <ul className="grid gap-px bg-border border rounded-md overflow-hidden">
@@ -248,7 +253,7 @@ export function QuestionBrowser({
                       <span
                         className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${getDifficultyColor(q.difficulty)}`}
                       >
-                        {q.difficulty}
+                        {DIFFICULTY_LABELS[q.difficulty]}
                       </span>
                       {!lockedTopicSlug && (
                         <span className="text-[10px] font-mono text-muted-foreground/70">

@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const topic = getTopicBySlug(topicSlug);
 
   if (!topic) {
-    return { title: 'Not Found' };
+    return { title: 'Não encontrado' };
   }
 
-  const title = `${topic.name} Interview Questions`;
-  const description = `${topic.count} ${topic.name} DevOps interview questions with hidden answers, code examples, and explanations across junior, mid, and senior levels.`;
+  const title = `Perguntas de Entrevista de ${topic.name}`;
+  const description = `${topic.count} perguntas de entrevista DevOps sobre ${topic.name} com respostas ocultas, exemplos de código e explicações, dos níveis júnior, pleno e sênior.`;
 
   return {
-    title: { absolute: `${title} | The DevOps Daily` },
+    title: { absolute: `${title} | Bancada` },
     description,
     alternates: {
       canonical: `/interview-questions/topic/${topic.slug}`,
@@ -67,20 +67,20 @@ export default async function TopicPage({ params }: PageProps) {
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'Home', url: '/' },
-          { name: 'Interview Questions', url: '/interview-questions' },
+          { name: 'Início', url: '/' },
+          { name: 'Perguntas de Entrevista', url: '/interview-questions' },
           { name: topic.name, url: `/interview-questions/topic/${topic.slug}` },
         ]}
       />
       <PageHero
-        title={`${topic.name} Interview Questions`}
-        description={`Practice ${topic.count} ${topic.name} interview questions across every experience level. Think through each one, then reveal the model answer.`}
+        title={`Perguntas de Entrevista de ${topic.name}`}
+        description={`Pratique ${topic.count} perguntas de entrevista de ${topic.name} em todos os níveis de experiência. Pense em cada uma, depois revele a resposta modelo.`}
         icon={Briefcase}
         breadcrumbs={[
-          { label: 'Interview Questions', href: '/interview-questions' },
+          { label: 'Perguntas de Entrevista', href: '/interview-questions' },
           { label: topic.name },
         ]}
-        stats={[{ label: 'questions', value: topic.count }]}
+        stats={[{ label: 'perguntas', value: topic.count }]}
       />
 
       <div className="container mx-auto px-4 max-w-4xl py-10">

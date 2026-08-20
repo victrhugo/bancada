@@ -18,7 +18,7 @@ function EmbedContent({ slug, title, GameComponent }: EmbedClientProps) {
   const pathname = usePathname();
   const { setTheme } = useTheme();
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devops-daily.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
   const gameUrl = `${siteUrl}/games/${slug}`;
 
   // Apply the embed's theme via next-themes so the host site's iframe

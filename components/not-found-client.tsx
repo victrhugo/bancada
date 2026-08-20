@@ -25,7 +25,7 @@ export function NotFoundClient() {
               <div className="w-3 h-3 rounded-full bg-yellow-400/70" />
               <div className="w-3 h-3 rounded-full bg-green-400/70" />
             </div>
-            <span className="text-xs text-muted-foreground ml-2">devops-daily - 404</span>
+            <span className="text-xs text-muted-foreground ml-2">bancada - 404</span>
           </div>
           <div className="p-6 space-y-3">
             <div>
@@ -33,14 +33,14 @@ export function NotFoundClient() {
               <span className="text-muted-foreground">cd {path}</span>
             </div>
             <p className="pl-4 text-red-400">
-              bash: cd: {path}: No such file or directory
+              bash: cd: {path}: Arquivo ou diretório não encontrado
             </p>
             {isMdRequest && (
               <>
                 <div>
                   <span className="text-green-500">$</span>{' '}
                   <span className="text-muted-foreground">
-                    # try the HTML version
+                    # tentar a versão HTML
                   </span>
                 </div>
                 <p className="pl-4 text-primary">
@@ -52,38 +52,38 @@ export function NotFoundClient() {
             )}
             <div>
               <span className="text-green-500">$</span>{' '}
-              <span className="text-muted-foreground"># available paths</span>
+              <span className="text-muted-foreground"># caminhos disponíveis</span>
             </div>
             <ul className="pl-4 space-y-0.5 text-foreground">
               <li>
                 <Link href="/" className="text-primary hover:underline">
                   /
                 </Link>{' '}
-                <span className="text-muted-foreground"># home</span>
+                <span className="text-muted-foreground"># início</span>
               </li>
               <li>
                 <Link href="/games" className="text-primary hover:underline">
                   /games
                 </Link>{' '}
-                <span className="text-muted-foreground"># interactive simulators</span>
-              </li>
-              <li>
-                <Link href="/posts" className="text-primary hover:underline">
-                  /posts
-                </Link>{' '}
-                <span className="text-muted-foreground"># latest articles</span>
-              </li>
-              <li>
-                <Link href="/guides" className="text-primary hover:underline">
-                  /guides
-                </Link>{' '}
-                <span className="text-muted-foreground"># step-by-step tutorials</span>
+                <span className="text-muted-foreground"># simuladores interativos</span>
               </li>
               <li>
                 <Link href="/exercises" className="text-primary hover:underline">
                   /exercises
                 </Link>{' '}
-                <span className="text-muted-foreground"># hands-on labs</span>
+                <span className="text-muted-foreground"># exercícios práticos</span>
+              </li>
+              <li>
+                <Link href="/quizzes" className="text-primary hover:underline">
+                  /quizzes
+                </Link>{' '}
+                <span className="text-muted-foreground"># teste seus conhecimentos</span>
+              </li>
+              <li>
+                <Link href="/checklists" className="text-primary hover:underline">
+                  /checklists
+                </Link>{' '}
+                <span className="text-muted-foreground"># checklists passo a passo</span>
               </li>
             </ul>
             <div className="text-xs text-muted-foreground/60 pt-1">

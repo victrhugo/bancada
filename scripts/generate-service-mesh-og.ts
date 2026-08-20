@@ -94,9 +94,9 @@ async function generateServiceMeshOG() {
     ⚡ Interactive
   </text>
   
-  <!-- DevOps Daily Branding -->
+  <!-- Bancada Branding -->
   <text x="1100" y="600" font-family="Arial, sans-serif" font-size="18" fill="#71717a" text-anchor="end">
-    DevOps Daily
+    Bancada
   </text>
 </svg>`;
 

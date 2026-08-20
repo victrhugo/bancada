@@ -109,7 +109,7 @@ export function buildSiteOgSvg({
   eyebrow,
   title,
   description,
-  footer = 'DevOps Daily',
+  footer = 'Bancada',
   sectionLabel,
   features = [],
 }: SiteOgOptions): string {

@@ -61,18 +61,6 @@ function LatencyPercentilesEducational() {
         <div className="flex flex-wrap gap-2 text-sm">
           <Link
             className="rounded-md border bg-background px-3 py-2 hover:border-primary/50"
-            href="/posts/what-is-p99-latency"
-          >
-            What is P99 latency?
-          </Link>
-          <Link
-            className="rounded-md border bg-background px-3 py-2 hover:border-primary/50"
-            href="/posts/slos-slis-error-budgets-practical-guide"
-          >
-            SLOs, SLIs, and error budgets
-          </Link>
-          <Link
-            className="rounded-md border bg-background px-3 py-2 hover:border-primary/50"
             href="/games/promql-playground"
           >
             PromQL playground
@@ -88,7 +76,7 @@ export default function LatencyPercentilesPage() {
     <SimulatorShell
       slug="latency-percentiles-simulator"
       educational={<LatencyPercentilesEducational />}
-      shareText="Try the P90, P95, and P99 Latency Percentiles Simulator on DevOps Daily."
+      shareText="Try the P90, P95, and P99 Latency Percentiles Simulator on Bancada."
       seoLearningPoints={[
         'Understand that P90, P95, and P99 are percentile rank cutoffs',
         'Visualize how latency distributions create long-tail behavior',

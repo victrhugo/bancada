@@ -416,9 +416,9 @@ export default function JuniorDevOpsRoadmap() {
                     </Link>
                   </Button>
                   <Button variant="outline" asChild>
-                    <Link href="/guides">
+                    <Link href="/exercises">
                       <BookOpen className="w-4 h-4 mr-2" />
-                      Browse All Guides
+                      Browse All Exercises
                     </Link>
                   </Button>
                 </div>

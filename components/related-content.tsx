@@ -14,7 +14,7 @@ export interface RelatedContentItem {
 
 interface RelatedContentProps {
   items: RelatedContentItem[];
-  /** Section heading. Default "Related content". */
+  /** Section heading. Default "Conteúdo relacionado". */
   title?: string;
   /** Wraps the section, gives the slug page room to set spacing. */
   className?: string;
@@ -22,7 +22,7 @@ interface RelatedContentProps {
 
 export function RelatedContent({
   items,
-  title = 'Related content',
+  title = 'Conteúdo relacionado',
   className,
 }: RelatedContentProps) {
   if (!items.length) return null;

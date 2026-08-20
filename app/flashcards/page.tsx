@@ -19,16 +19,16 @@ import Link from 'next/link'
 import * as Icons from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'DevOps Flashcards',
+  title: 'Flashcards de DevOps',
   description:
-    'Interactive DevOps flashcards covering Kubernetes, Docker, Terraform, Git, Linux, and CI/CD. Useful for interview prep, certification study, and daily practice.',
+    'Flashcards interativos de DevOps cobrindo Kubernetes, Docker, Terraform, Git, Linux e CI/CD. Úteis para preparação de entrevistas, estudo para certificações e prática diária.',
   alternates: {
     canonical: '/flashcards',
   },
   openGraph: {
-    title: 'DevOps Flashcards - DevOps Daily',
+    title: 'Flashcards de DevOps - Bancada',
     description:
-      'Master DevOps concepts with interactive flashcards covering Kubernetes, Docker, Terraform, Git, and more.',
+      'Domine conceitos de DevOps com flashcards interativos cobrindo Kubernetes, Docker, Terraform, Git e muito mais.',
     type: 'website',
     url: '/flashcards',
     images: [
@@ -36,15 +36,15 @@ export const metadata: Metadata = {
         url: '/images/flashcards/flashcards-og.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Flashcards',
+        alt: 'Flashcards de DevOps',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DevOps Flashcards - DevOps Daily',
+    title: 'Flashcards de DevOps - Bancada',
     description:
-      'Master DevOps concepts with interactive flashcards covering Kubernetes, Docker, Terraform, Git, and more.',
+      'Domine conceitos de DevOps com flashcards interativos cobrindo Kubernetes, Docker, Terraform, Git e muito mais.',
     images: ['/images/flashcards/flashcards-og.png'],
   },
 }
@@ -55,21 +55,21 @@ export default async function FlashcardsPage() {
   return (
     <div className="min-h-screen">
       <PageHero
-        title="Learn DevOps Concepts"
-        accentWord="Concepts"
-        description="Learn and memorize key DevOps concepts with interactive flashcards. Perfect for exam prep, interviews, or daily practice."
+        title="Aprenda Conceitos de DevOps"
+        accentWord="Conceitos"
+        description="Aprenda e memorize os principais conceitos de DevOps com flashcards interativos. Perfeito para provas, entrevistas ou prática diária."
         icon={Layers}
         breadcrumbs={[{ label: 'Flashcards' }]}
-        stats={[{ label: 'flashcard sets', value: flashcardSets.length }]}
+        stats={[{ label: 'conjuntos de flashcards', value: flashcardSets.length }]}
       />
 
       {/* Flashcard Sets Grid */}
       {flashcardSets.length > 0 ? (
         <section className="py-12 container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Available Flashcard Sets</h2>
+            <h2 className="text-3xl font-bold mb-4">Conjuntos de Flashcards Disponíveis</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose a topic to start learning. Track your progress and review cards you don't know.
+              Escolha um tópico para começar a aprender. Acompanhe seu progresso e revise os cartões que ainda não domina.
             </p>
           </div>
 
@@ -113,7 +113,7 @@ export default async function FlashcardsPage() {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <BookOpen className="w-4 h-4" />
-                        <span>{set.cardCount} cards</span>
+                        <span>{set.cardCount} cartões</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
@@ -137,9 +137,9 @@ export default async function FlashcardsPage() {
         <section className="py-16 container mx-auto px-4">
           <div className="text-center">
             <BookOpen className="h-16 w-16 mx-auto mb-6 text-muted-foreground" />
-            <h2 className="text-2xl font-bold mb-4">No Flashcard Sets Available</h2>
+            <h2 className="text-2xl font-bold mb-4">Nenhum Conjunto de Flashcards Disponível</h2>
             <p className="text-muted-foreground mb-8">
-              We're working on adding more flashcard sets. Check back soon!
+              Estamos trabalhando para adicionar mais conjuntos de flashcards. Volte em breve!
             </p>
           </div>
         </section>
@@ -149,9 +149,9 @@ export default async function FlashcardsPage() {
       <section className="py-16 container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Use Flashcards?</h2>
+            <h2 className="text-3xl font-bold mb-4">Por Que Usar Flashcards?</h2>
             <p className="text-muted-foreground">
-              Flashcards use spaced repetition to help you retain information longer
+              Flashcards usam repetição espaçada para ajudar você a reter informações por mais tempo
             </p>
           </div>
 
@@ -160,9 +160,9 @@ export default async function FlashcardsPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-md bg-primary/10 flex items-center justify-center">
                 <Target className="w-6 h-6 text-primary" strokeWidth={1.5} />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Active Recall</h3>
+              <h3 className="text-xl font-semibold mb-2">Recordação Ativa</h3>
               <p className="text-muted-foreground">
-                Test yourself by actively recalling information, which strengthens memory better than passive reading.
+                Teste a si mesmo recordando ativamente as informações, o que fortalece a memória melhor do que a leitura passiva.
               </p>
             </div>
 
@@ -170,9 +170,9 @@ export default async function FlashcardsPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-md bg-primary/10 flex items-center justify-center">
                 <Activity className="w-6 h-6 text-primary" strokeWidth={1.5} />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Track Progress</h3>
+              <h3 className="text-xl font-semibold mb-2">Acompanhe o Progresso</h3>
               <p className="text-muted-foreground">
-                Mark cards as known or unknown and focus your study time on concepts you need to review.
+                Marque os cartões como dominados ou não e concentre seu tempo de estudo nos conceitos que precisa revisar.
               </p>
             </div>
 
@@ -180,9 +180,9 @@ export default async function FlashcardsPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-md bg-primary/10 flex items-center justify-center">
                 <Trophy className="w-6 h-6 text-primary" strokeWidth={1.5} />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Quick Sessions</h3>
+              <h3 className="text-xl font-semibold mb-2">Sessões Rápidas</h3>
               <p className="text-muted-foreground">
-                Study in bite-sized sessions perfect for breaks, commutes, or whenever you have a few minutes.
+                Estude em sessões curtas, perfeitas para intervalos, deslocamentos ou sempre que tiver alguns minutos livres.
               </p>
             </div>
           </div>
@@ -194,22 +194,22 @@ export default async function FlashcardsPage() {
         <div className="bg-primary/5 backdrop-blur-sm border border-border/50 rounded-md p-8 md:p-12">
           <div className="max-w-3xl mx-auto text-center">
             <Sparkles className="h-12 w-12 mx-auto mb-6 text-primary" />
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Want to contribute flashcards?</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Quer contribuir com flashcards?</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Help us expand our flashcard collection by contributing cards for technologies you know well.
-              Share your knowledge with the DevOps community!
+              Ajude a expandir nossa coleção de flashcards contribuindo com cartões para tecnologias que você domina.
+              Compartilhe seu conhecimento com a comunidade DevOps!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg">
                 <GitFork className="mr-2 h-4 w-4" />
                 <Link href="https://github.com/The-DevOps-Daily/devops-daily/issues/new/choose">
-                  Contribute Flashcards
+                  Contribuir com Flashcards
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="/quizzes">
                   <Zap className="mr-2 h-4 w-4" />
-                  Try DevOps Quizzes
+                  Experimente os Quizzes de DevOps
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

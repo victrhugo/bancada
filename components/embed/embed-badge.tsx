@@ -9,10 +9,10 @@ interface EmbedBadgeProps {
 
 /**
  * Attribution badge displayed when a game is embedded on external sites.
- * This badge cannot be removed and provides a backlink to DevOps Daily.
+ * This badge cannot be removed and provides a backlink to Bancada.
  */
 export function EmbedBadge({ gameSlug, gameTitle }: EmbedBadgeProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devops-daily.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
   const gameUrl = `${siteUrl}/games/${gameSlug}`;
 
   return (
@@ -24,7 +24,7 @@ export function EmbedBadge({ gameSlug, gameTitle }: EmbedBadgeProps) {
         href={gameUrl}
         target="_blank"
         rel="noopener"
-        title={`${gameTitle} - DevOps Daily`}
+        title={`${gameTitle} - Bancada`}
         className="group flex items-center gap-2 px-3 py-2 bg-slate-900/95 hover:bg-slate-800 border border-slate-700 hover:border-blue-500/50 rounded-lg shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-105"
       >
         {/* Logo */}
@@ -36,7 +36,7 @@ export function EmbedBadge({ gameSlug, gameTitle }: EmbedBadgeProps) {
         <div className="flex flex-col">
           <span className="text-[10px] text-slate-400 leading-tight">Powered by</span>
           <span className="text-xs font-semibold text-white leading-tight group-hover:text-blue-400 transition-colors">
-            DevOps Daily
+            Bancada
           </span>
         </div>
 

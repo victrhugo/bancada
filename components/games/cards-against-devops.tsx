@@ -454,7 +454,7 @@ export function CardsAgainstDevOps() {
     if (gameState.selectedCards.length === 0) return;
 
     const combination = gameState.currentBlackCard.replace('_____', gameState.selectedCards[0]);
-    const shareText = `Check out this hilarious Cards Against DevOps combination:\n\n"${combination}"\n\n🃏 Play at DevOps Daily!`;
+    const shareText = `Check out this hilarious Cards Against DevOps combination:\n\n"${combination}"\n\n🃏 Play at Bancada!`;
 
     if (navigator.share) {
       try {

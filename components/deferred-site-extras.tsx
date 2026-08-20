@@ -3,10 +3,6 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const BookPromotionPopup = dynamic(
-  () => import('@/components/book-promotion-popup').then((module) => module.BookPromotionPopup),
-  { ssr: false }
-);
 const KonamiCodeListener = dynamic(
   () => import('@/components/konami-code-listener').then((module) => module.KonamiCodeListener),
   { ssr: false }
@@ -42,7 +38,6 @@ export function DeferredSiteExtras() {
 
   return (
     <>
-      <BookPromotionPopup />
       <KonamiCodeListener />
       <KeyboardShortcuts />
       <BackToTop />

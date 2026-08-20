@@ -233,7 +233,7 @@ export default function DevOpsScorecard() {
     const { level } = getScoreLevel(overallScore);
 
     const text = encodeURIComponent(
-      `I just completed my DevOps Scorecard! 🚀\n\nOverall Level: ${level} (${overallScore.toFixed(1)}%)\n\nCheck your DevOps skills at DevOps Daily!`
+      `I just completed my DevOps Scorecard! 🚀\n\nOverall Level: ${level} (${overallScore.toFixed(1)}%)\n\nCheck your DevOps skills at Bancada!`
     );
     const url = encodeURIComponent(window.location.href);
 

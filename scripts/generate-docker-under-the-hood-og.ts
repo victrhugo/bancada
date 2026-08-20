@@ -7,7 +7,7 @@ import { buildSiteOgSvg, convertSvgToPng } from './og-utils';
 /**
  * OG image for the "How Docker Works Under the Hood" simulator. Uses the shared
  * site OG template so it matches the other simulators (dark surface, amber
- * accent, feature cards, DevOps Daily footer) instead of an off-brand one-off.
+ * accent, feature cards, Bancada footer) instead of an off-brand one-off.
  */
 async function main() {
   const dir = path.join(process.cwd(), 'public/images/games');

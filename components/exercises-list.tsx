@@ -117,7 +117,7 @@ export function ExercisesList({
             <div className="relative">
               <Search className="absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search exercises, technologies, or topics..."
+                placeholder="Buscar exercícios, tecnologias ou tópicos..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4"
@@ -130,7 +130,7 @@ export function ExercisesList({
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Filter by:</span>
+                <span className="text-sm font-medium">Filtrar por:</span>
               </div>
 
               {/* Difficulty Filter */}
@@ -143,7 +143,7 @@ export function ExercisesList({
                     onClick={() => setSelectedDifficulty(difficulty)}
                     className="text-xs h-7"
                   >
-                    {difficulty === 'all' ? 'All Levels' : difficulty}
+                    {difficulty === 'all' ? 'Todos os Níveis' : difficulty}
                   </Button>
                 ))}
               </div>
@@ -154,7 +154,7 @@ export function ExercisesList({
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="px-2 text-xs border rounded h-7 border-border bg-background"
               >
-                <option value="all">All Categories</option>
+                <option value="all">Todas as Categorias</option>
                 {categories.map((category) => (
                   <option key={category} value={category}>
                     {category}
@@ -170,7 +170,7 @@ export function ExercisesList({
                 }
                 className="px-2 text-xs border rounded h-7 border-border bg-background"
               >
-                <option value="all">All Environments</option>
+                <option value="all">Todos os Ambientes</option>
                 {environments.map((env) => (
                   <option key={env} value={env}>
                     {env}
@@ -184,16 +184,16 @@ export function ExercisesList({
                 onChange={(e) => setSortBy(e.target.value as 'newest' | 'difficulty' | 'time')}
                 className="px-2 text-xs border rounded h-7 border-border bg-background"
               >
-                <option value="newest">Newest First</option>
-                <option value="difficulty">By Difficulty</option>
-                <option value="time">By Duration</option>
+                <option value="newest">Mais Recentes</option>
+                <option value="difficulty">Por Dificuldade</option>
+                <option value="time">Por Duração</option>
               </select>
 
               {/* Clear Filters */}
               {activeFiltersCount > 0 && (
                 <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs h-7">
                   <RotateCcw className="w-3 h-3 mr-1" />
-                  Clear ({activeFiltersCount})
+                  Limpar ({activeFiltersCount})
                 </Button>
               )}
             </div>
@@ -204,14 +204,14 @@ export function ExercisesList({
       {/* Results Summary */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          Showing {filteredExercises.length} of {exercises.length} exercises
-          {searchQuery && <span> for "{searchQuery}"</span>}
+          Mostrando {filteredExercises.length} de {exercises.length} exercícios
+          {searchQuery && <span> para "{searchQuery}"</span>}
         </div>
 
         {filteredExercises.length > 0 && (
           <Badge variant="outline" className="text-xs">
             <TrendingUp className="w-3 h-3 mr-1" />
-            Avg.{' '}
+            Média de{' '}
             {Math.round(
               filteredExercises.reduce(
                 (sum, ex) => sum + parseInt(ex.estimatedTime.split(' ')[0]),
@@ -234,14 +234,14 @@ export function ExercisesList({
         <div className="py-12 text-center">
           <div className="mb-4 text-muted-foreground">
             {searchQuery ? (
-              <>No exercises found matching "{searchQuery}"</>
+              <>Nenhum exercício encontrado para "{searchQuery}"</>
             ) : (
-              <>No exercises match your current filters</>
+              <>Nenhum exercício corresponde aos filtros atuais</>
             )}
           </div>
           <Button variant="outline" onClick={clearFilters}>
             <RotateCcw className="w-4 h-4 mr-2" />
-            Clear Filters
+            Limpar Filtros
           </Button>
         </div>
       )}

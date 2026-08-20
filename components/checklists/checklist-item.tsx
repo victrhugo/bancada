@@ -46,7 +46,7 @@ export function ChecklistItemComponent({ item, checked, onToggle }: ChecklistIte
               onToggle(item.id);
             }}
             className="mt-0.5 flex-shrink-0 transition-transform hover:scale-110"
-            aria-label={checked ? `Mark "${item.title}" as incomplete` : `Mark "${item.title}" as complete`}
+            aria-label={checked ? `Marcar "${item.title}" como incompleto` : `Marcar "${item.title}" como concluído`}
           >
             {checked ? (
               <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -69,7 +69,7 @@ export function ChecklistItemComponent({ item, checked, onToggle }: ChecklistIte
                 </h3>
                 {item.critical && (
                   <span className="text-xs px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full font-semibold flex-shrink-0">
-                    Critical
+                    Crítico
                   </span>
                 )}
               </div>
@@ -80,7 +80,7 @@ export function ChecklistItemComponent({ item, checked, onToggle }: ChecklistIte
                     setExpanded(!expanded);
                   }}
                   className="flex-shrink-0 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-                  aria-label={expanded ? 'Collapse details' : 'Expand details'}
+                  aria-label={expanded ? 'Recolher detalhes' : 'Expandir detalhes'}
                 >
                   <ChevronDown className={`w-5 h-5 transition-transform ${
                     expanded ? 'rotate-180' : ''
@@ -112,7 +112,7 @@ export function ChecklistItemComponent({ item, checked, onToggle }: ChecklistIte
                           <button
                             onClick={() => copyToClipboard(block.code, index)}
                             className="absolute top-2 right-2 p-2 bg-background/80 backdrop-blur-sm border border-border/50 hover:bg-background rounded opacity-0 group-hover:opacity-100 transition-opacity"
-                            title="Copy to clipboard"
+                            title="Copiar para a área de transferência"
                           >
                             {copiedIndex === index ? (
                               <Check className="w-4 h-4 text-green-400" />
@@ -128,7 +128,7 @@ export function ChecklistItemComponent({ item, checked, onToggle }: ChecklistIte
                 {item.links && item.links.length > 0 && (
                   <div className="space-y-1">
                     <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                      Resources
+                      Recursos
                     </p>
                     {item.links.map((link, index) => (
                       <a

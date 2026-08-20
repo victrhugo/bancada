@@ -198,8 +198,8 @@ const handleMarkUnknown = useCallback(() => {
         <Card className="p-8 text-center">
           <div className="space-y-6">
             <div>
-              <h2 className="text-3xl font-bold mb-2">🎉 Session Complete!</h2>
-              <p className="text-muted-foreground">Great work reviewing your flashcards!</p>
+              <h2 className="text-3xl font-bold mb-2">🎉 Sessão Concluída!</h2>
+              <p className="text-muted-foreground">Ótimo trabalho revisando seus flashcards!</p>
             </div>
 
             <div className="flex justify-center">
@@ -236,39 +236,39 @@ const handleMarkUnknown = useCallback(() => {
               <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
                 <div className="flex items-center gap-2 mb-1">
                   <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  <span className="font-semibold">I Know This</span>
+                  <span className="font-semibold">Já Sei</span>
                 </div>
                 <p className="text-2xl font-bold">{knownCount}</p>
-                <p className="text-sm text-muted-foreground">cards</p>
+                <p className="text-sm text-muted-foreground">cartões</p>
               </div>
 
               <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
                 <div className="flex items-center gap-2 mb-1">
                   <X className="w-5 h-5 text-red-600 dark:text-red-400" />
-                  <span className="font-semibold">Need Review</span>
+                  <span className="font-semibold">Preciso Revisar</span>
                 </div>
                 <p className="text-2xl font-bold">{unknownCount}</p>
-                <p className="text-sm text-muted-foreground">cards</p>
+                <p className="text-sm text-muted-foreground">cartões</p>
               </div>
 
               <div className="p-4 rounded-lg bg-muted/50 border border-border">
                 <div className="flex items-center gap-2 mb-1">
                   <Circle className="w-5 h-5" />
-                  <span className="font-semibold">Not Reviewed</span>
+                  <span className="font-semibold">Não Revisados</span>
                 </div>
                 <p className="text-2xl font-bold">{notReviewedCount}</p>
-                <p className="text-sm text-muted-foreground">cards</p>
+                <p className="text-sm text-muted-foreground">cartões</p>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button onClick={handleReset} size="lg">
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Start Over
+                Recomeçar
               </Button>
               <Button variant="outline" size="lg" onClick={() => { setShowResults(false); setViewMode('list'); }}>
                 <List className="w-4 h-4 mr-2" />
-                Review List
+                Ver Lista
               </Button>
             </div>
           </div>
@@ -280,13 +280,13 @@ const handleMarkUnknown = useCallback(() => {
   if (!currentCard) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold mb-4">All cards reviewed!</h2>
+        <h2 className="text-2xl font-bold mb-4">Todos os cartões revisados!</h2>
         <p className="text-muted-foreground mb-6">
-          You've marked {knownCards.size} cards as known and {unknownCards.size} as unknown.
+          Você marcou {knownCards.size} cartões como dominados e {unknownCards.size} como não dominados.
         </p>
         <Button onClick={handleReset}>
           <RefreshCw className="w-4 h-4 mr-2" />
-          Start Over
+          Recomeçar
         </Button>
       </div>
     )
@@ -298,15 +298,15 @@ const handleMarkUnknown = useCallback(() => {
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <h3 className="text-lg font-semibold">Card Progress Review</h3>
+          <h3 className="text-lg font-semibold">Revisão de Progresso dos Cartões</h3>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => setViewMode('deck')}>
               <Grid3x3 className="w-4 h-4 mr-2" />
-              Card View
+              Ver Cartões
             </Button>
             <Button variant="outline" size="sm" onClick={handleReset}>
               <RefreshCw className="w-4 h-4 mr-2" />
-              Reset
+              Redefinir
             </Button>
           </div>
         </div>
@@ -316,21 +316,21 @@ const handleMarkUnknown = useCallback(() => {
           <Card className="p-4 bg-green-500/10 border-green-500/20">
             <div className="flex items-center gap-2 mb-2">
               <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-              <span className="font-semibold text-green-600 dark:text-green-400">Known</span>
+              <span className="font-semibold text-green-600 dark:text-green-400">Dominados</span>
             </div>
             <p className="text-3xl font-bold">{cardsByStatus.known.length}</p>
           </Card>
           <Card className="p-4 bg-red-500/10 border-red-500/20">
             <div className="flex items-center gap-2 mb-2">
               <X className="w-5 h-5 text-red-600 dark:text-red-400" />
-              <span className="font-semibold text-red-600 dark:text-red-400">Need Review</span>
+              <span className="font-semibold text-red-600 dark:text-red-400">Precisam de Revisão</span>
             </div>
             <p className="text-3xl font-bold">{cardsByStatus.needReview.length}</p>
           </Card>
           <Card className="p-4 bg-muted">
             <div className="flex items-center gap-2 mb-2">
               <Circle className="w-5 h-5 text-muted-foreground" />
-              <span className="font-semibold text-muted-foreground">Not Reviewed</span>
+              <span className="font-semibold text-muted-foreground">Não Revisados</span>
             </div>
             <p className="text-3xl font-bold">{cardsByStatus.notReviewed.length}</p>
           </Card>
@@ -341,7 +341,7 @@ const handleMarkUnknown = useCallback(() => {
           <div>
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
-              Known Cards ({cardsByStatus.known.length})
+              Cartões Dominados ({cardsByStatus.known.length})
             </h4>
             <div className="space-y-2">
               {cardsByStatus.known.map(card => (
@@ -373,7 +373,7 @@ const handleMarkUnknown = useCallback(() => {
           <div>
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <X className="w-4 h-4 text-red-600 dark:text-red-400" />
-              Need Review ({cardsByStatus.needReview.length})
+              Precisam de Revisão ({cardsByStatus.needReview.length})
             </h4>
             <div className="space-y-2">
               {cardsByStatus.needReview.map(card => (
@@ -405,7 +405,7 @@ const handleMarkUnknown = useCallback(() => {
           <div>
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <Circle className="w-4 h-4 text-muted-foreground" />
-              Not Yet Reviewed ({cardsByStatus.notReviewed.length})
+              Ainda Não Revisados ({cardsByStatus.notReviewed.length})
             </h4>
             <div className="space-y-2">
               {cardsByStatus.notReviewed.map(card => (
@@ -439,16 +439,16 @@ const handleMarkUnknown = useCallback(() => {
     <div className="space-y-6">
       {/* Keyboard shortcuts info */}
       <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground hidden sm:block">
-        <p className="font-medium mb-2">Keyboard Shortcuts:</p>
+        <p className="font-medium mb-2">Atalhos de Teclado:</p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1">
-          <span><kbd className="px-2 py-1 bg-background rounded text-xs">Space/Enter</kbd> Flip</span>
-          <span><kbd className="px-2 py-1 bg-background rounded text-xs">←/→</kbd> Navigate</span>
-          <span><kbd className="px-2 py-1 bg-background rounded text-xs">K or 1</kbd> Know</span>
-          <span><kbd className="px-2 py-1 bg-background rounded text-xs">U or 2</kbd> Review</span>
-          <span><kbd className="px-2 py-1 bg-background rounded text-xs">S</kbd> Shuffle</span>
-          <span><kbd className="px-2 py-1 bg-background rounded text-xs">Shift+R</kbd> Reset</span>
-          <span><kbd className="px-2 py-1 bg-background rounded text-xs">L</kbd> List View</span>
-          <span className="block sm:hidden col-span-2"><kbd className="px-2 py-1 bg-background rounded text-xs">Swipe</kbd> Navigate (Mobile)</span>
+          <span><kbd className="px-2 py-1 bg-background rounded text-xs">Espaço/Enter</kbd> Virar</span>
+          <span><kbd className="px-2 py-1 bg-background rounded text-xs">←/→</kbd> Navegar</span>
+          <span><kbd className="px-2 py-1 bg-background rounded text-xs">K ou 1</kbd> Sei</span>
+          <span><kbd className="px-2 py-1 bg-background rounded text-xs">U ou 2</kbd> Revisar</span>
+          <span><kbd className="px-2 py-1 bg-background rounded text-xs">S</kbd> Embaralhar</span>
+          <span><kbd className="px-2 py-1 bg-background rounded text-xs">Shift+R</kbd> Redefinir</span>
+          <span><kbd className="px-2 py-1 bg-background rounded text-xs">L</kbd> Ver Lista</span>
+          <span className="block sm:hidden col-span-2"><kbd className="px-2 py-1 bg-background rounded text-xs">Deslizar</kbd> Navegar (Celular)</span>
         </div>
       </div>
 
@@ -459,7 +459,7 @@ const handleMarkUnknown = useCallback(() => {
             {currentIndex + 1} / {displayCards.length}
           </Badge>
           <Badge variant="secondary">
-            {progress}% Known
+            {progress}% Dominado
           </Badge>
           <Badge variant="default" className="bg-green-500 hover:bg-green-600">
             ✓ {knownCards.size}
@@ -475,19 +475,19 @@ const handleMarkUnknown = useCallback(() => {
             className="flex-1 sm:flex-none min-h-[40px]"
             onClick={() => setShowOnlyUnknown(!showOnlyUnknown)}
           >
-            {showOnlyUnknown ? 'Show All' : 'Unknown Only'}
+            {showOnlyUnknown ? 'Mostrar Todos' : 'Apenas Não Dominados'}
           </Button>
           <Button variant="outline" size="sm" className="flex-1 sm:flex-none min-h-[40px]" onClick={handleShuffle}>
             <Shuffle className="w-4 h-4 mr-2" />
-            Shuffle
+            Embaralhar
           </Button>
           <Button variant="outline" size="sm" className="flex-1 sm:flex-none min-h-[40px]" onClick={handleReset}>
             <RefreshCw className="w-4 h-4 mr-2" />
-            Reset
+            Redefinir
           </Button>
           <Button variant="outline" size="sm" className="flex-1 sm:flex-none min-h-[40px]" onClick={() => setViewMode('list')}>
             <List className="w-4 h-4 mr-2" />
-            List View
+            Ver Lista
           </Button>
         </div>
       </div>
@@ -517,7 +517,7 @@ const handleMarkUnknown = useCallback(() => {
             disabled={currentIndex === 0}
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
-            Previous
+            Anterior
           </Button>
           <Button
             variant="outline"
@@ -525,7 +525,7 @@ const handleMarkUnknown = useCallback(() => {
             onClick={handleNext}
             disabled={currentIndex === displayCards.length - 1}
           >
-            Next
+            Próximo
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
@@ -535,14 +535,14 @@ const handleMarkUnknown = useCallback(() => {
             className="bg-green-500 hover:bg-green-600 flex-1 sm:flex-none min-h-[48px]"
             onClick={handleMarkKnown}
           >
-            ✓ I Know This
+            ✓ Já Sei
           </Button>
           <Button
             variant="destructive"
             className="flex-1 sm:flex-none min-h-[48px]"
             onClick={handleMarkUnknown}
           >
-            ? Need Review
+            ? Preciso Revisar
           </Button>
         </div>
       </div>

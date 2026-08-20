@@ -102,7 +102,7 @@ const scenarios: Scenario[] = [
         id: 'ehlo',
         title: 'Discover server extensions',
         actor: 'smtp',
-        command: 'EHLO app.devops-daily.com',
+        command: 'EHLO app.bancada.app',
         response: '250-STARTTLS 250-AUTH PLAIN LOGIN 250 SIZE 52428800',
         detail:
           'EHLO asks the server what it supports: TLS upgrade, auth mechanisms, message size, and other extensions.',
@@ -138,7 +138,7 @@ const scenarios: Scenario[] = [
         id: 'envelope',
         title: 'Send SMTP envelope',
         actor: 'app',
-        command: 'MAIL FROM:<bounce@devops-daily.com> RCPT TO:<reader@example.org>',
+        command: 'MAIL FROM:<bounce@bancada.app> RCPT TO:<reader@example.org>',
         response: '250 sender ok / 250 recipient ok',
         detail:
           'The envelope controls bounce handling and recipient routing. It can differ from the visible From header.',
@@ -308,7 +308,7 @@ const scenarios: Scenario[] = [
         id: 'blocked',
         title: 'Message is not accepted',
         actor: 'smtp',
-        command: 'MAIL FROM:<alerts@devops-daily.com>',
+        command: 'MAIL FROM:<alerts@bancada.app>',
         response: '530 5.7.0 Authentication required',
         detail:
           'A secure SMTP relay will not become an open relay. The app must rotate or fix credentials before retrying.',

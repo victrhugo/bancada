@@ -15,10 +15,10 @@ export function ChecklistProgressBar({
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm">
         <span className="font-medium text-gray-700 dark:text-gray-300">
-          Progress
+          Progresso
         </span>
         <span className="text-gray-600 dark:text-gray-400">
-          {completedItems} / {totalItems} completed
+          {completedItems} / {totalItems} concluídos
         </span>
       </div>
       <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">

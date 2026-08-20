@@ -13,7 +13,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className={cn('mb-6', className)}>
+    <nav aria-label="Navegação estrutural" className={cn('mb-6', className)}>
       <ol className="flex flex-wrap items-center text-sm">
         <li className="flex items-center">
           <Link
@@ -21,7 +21,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
             className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
           >
             <Home className="h-4 w-4" />
-            <span className="sr-only">Home</span>
+            <span className="sr-only">Início</span>
           </Link>
         </li>
 

@@ -2,11 +2,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
-import { getAllPosts } from '../lib/posts.js';
-import { getAllGuides } from '../lib/guides.js';
 import { getAllExercises } from '../lib/exercises.js';
-import { getAllNews } from '../lib/news.js';
-import { getAllAdventDays } from '../lib/advent.js';
 import { escapeXml } from './og-utils';
 
 // Configuration
@@ -16,12 +12,12 @@ const CONCURRENCY_LIMIT = 10; // Process 10 files at a time
 const FORCE_REGENERATE = process.argv.includes('--force');
 
 // Brand colors
-// Brand amber palette (matches app/globals.css --primary)
+// Bancada teal palette (matches app/globals.css --primary)
 const COLORS = {
   background: '#0f172a',
-  primary: '#d97706', // amber-600 (light-mode primary)
+  primary: '#0f766e', // teal-700 (light-mode primary)
   text: '#f8fafc',
-  accent: '#fbbf24', // amber-400 (for highlights on dark bg)
+  accent: '#2dd4bf', // teal-400 (for highlights on dark bg)
 };
 
 function generateSVG(title: string, category: string): string {
@@ -96,124 +92,17 @@ function generateSVG(title: string, category: string): string {
   <!-- Title -->
   ${titleElements}
 
-  <!-- DevOps Daily branding -->
+  <!-- Bancada branding -->
   <text x="80" y="${
     IMAGE_HEIGHT - 80
   }" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="${
     COLORS.accent
-  }">DevOps Daily</text>
-</svg>`;
-}
-
-function generateAdventSVG(title: string, day: number, category: string): string {
-  const safeCategory = escapeXml(category.toUpperCase());
-  const categoryWidth = 100 + safeCategory.length * 10;
-  const cleanTitle = title.replace(/^Day \d+ - /, '');
-  const words = cleanTitle.split(' ');
-  const lines: string[] = [];
-  let currentLine = '';
-  const maxLineLength = 28;
-
-  for (const word of words) {
-    const testLine = currentLine ? `${currentLine} ${word}` : word;
-    if (testLine.length > maxLineLength) {
-      if (currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } else {
-        lines.push(word);
-      }
-    } else {
-      currentLine = testLine;
-    }
-  }
-  if (currentLine) {
-    lines.push(currentLine);
-  }
-
-  const titleElements = lines
-    .map(
-      (line, index) =>
-        `<text x="120" y="${
-          250 + index * 60
-        }" font-family="'Courier New', monospace" font-size="52" font-weight="bold" fill="#ffffff">${escapeXml(line)}</text>`
-    )
-    .join('\n');
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="adventBg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#0a0a1a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#050510;stop-opacity:1" />
-    </linearGradient>
-    <pattern id="stars" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-      <circle cx="20" cy="20" r="1" fill="#ffffff" opacity="0.3"/>
-      <circle cx="60" cy="40" r="1.5" fill="#ffffff" opacity="0.4"/>
-      <circle cx="80" cy="70" r="1" fill="#ffffff" opacity="0.2"/>
-      <circle cx="30" cy="80" r="1" fill="#ffffff" opacity="0.35"/>
-    </pattern>
-    <linearGradient id="festiveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
-    </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
-  <rect width="1200" height="630" fill="url(#adventBg)"/>
-  <rect width="1200" height="630" fill="url(#stars)"/>
-  <g opacity="0.15">
-    <polygon points="150,100 100,200 200,200" fill="#10b981"/>
-    <polygon points="150,140 90,250 210,250" fill="#10b981"/>
-    <polygon points="150,180 80,300 220,300" fill="#10b981"/>
-    <rect x="135" y="300" width="30" height="40" fill="#92400e"/>
-    <polygon points="1050,100 1000,200 1100,200" fill="#10b981"/>
-    <polygon points="1050,140 990,250 1110,250" fill="#10b981"/>
-    <polygon points="1050,180 980,300 1120,300" fill="#10b981"/>
-    <rect x="1035" y="300" width="30" height="40" fill="#92400e"/>
-  </g>
-  <rect x="80" y="60" width="1040" height="3" fill="url(#festiveGrad)" opacity="0.6"/>
-  <g>
-    <rect x="80" y="90" width="180" height="50" rx="25" fill="url(#festiveGrad)" filter="url(#glow)"/>
-    <text x="170" y="123" font-family="'Courier New', monospace" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">DAY ${day}</text>
-  </g>
-  <g>
-    <rect x="280" y="95" width="${categoryWidth}" height="40" rx="20" fill="#78350f" opacity="0.8"/>
-    <text x="300" y="122" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#fbbf24">${safeCategory}</text>
-  </g>
-  <g>
-    <text x="80" y="230" font-family="'Courier New', monospace" font-size="36" fill="#10b981" opacity="0.6">&gt;</text>
-    ${titleElements}
-  </g>
-  <g opacity="0.4">
-    <text x="200" y="550" font-size="24" fill="#ffffff" opacity="0.6">❄</text>
-    <text x="450" y="580" font-size="20" fill="#ffffff" opacity="0.5">❄</text>
-    <text x="750" y="560" font-size="22" fill="#ffffff" opacity="0.7">❄</text>
-    <text x="950" y="590" font-size="18" fill="#ffffff" opacity="0.4">❄</text>
-  </g>
-  <g>
-    <text x="80" y="580" font-family="'Courier New', monospace" font-size="20" font-weight="bold" fill="#10b981" opacity="0.8">ADVENT OF DEVOPS</text>
-    <text x="1120" y="580" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#fbbf24" text-anchor="end" opacity="0.7">DevOps Daily</text>
-  </g>
-  <g filter="url(#glow)">
-    <text x="1150" y="60" font-size="32" fill="#fbbf24">⭐</text>
-    <text x="50" y="60" font-size="32" fill="#ef4444">🎄</text>
-  </g>
+  }">Bancada</text>
 </svg>`;
 }
 
 async function generateImage(task: GenerationTask) {
-  const svg =
-    task.variant === 'advent' && task.day
-      ? generateAdventSVG(task.title, task.day, task.category)
-      : generateSVG(task.title, task.category);
+  const svg = generateSVG(task.title, task.category);
 
   // Save as SVG file
   const svgPath = task.outputPath.replace('.png', '.svg');
@@ -223,7 +112,7 @@ async function generateImage(task: GenerationTask) {
 
 // Generate content hash for caching
 function generateContentHash(task: GenerationTask): string {
-  const content = `${task.variant || 'default'}|${task.day || ''}|${task.title}|${task.category}`;
+  const content = `${task.title}|${task.category}`;
   return crypto.createHash('md5').update(content).digest('hex').substring(0, 16);
 }
 
@@ -293,8 +182,6 @@ interface GenerationTask {
   outputPath: string;
   type: string;
   skip: boolean;
-  variant?: 'default' | 'advent';
-  day?: number;
 }
 
 async function main() {
@@ -309,36 +196,6 @@ async function main() {
   const allTasks: GenerationTask[] = [];
 
   console.log('📋 Collecting content to process...');
-
-  // Collect posts
-  const posts = await getAllPosts();
-  for (const post of posts) {
-    if (!post.image || post.image.includes('placeholder')) {
-      const imagePath = path.join(process.cwd(), 'public', 'images', 'posts', `${post.slug}.svg`);
-      allTasks.push({
-        title: post.title,
-        category: post.category?.name || 'DevOps',
-        outputPath: imagePath,
-        type: 'post',
-        skip: false,
-      });
-    }
-  }
-
-  // Collect guides
-  const guides = await getAllGuides();
-  for (const guide of guides) {
-    if (!guide.image || guide.image.includes('placeholder')) {
-      const imagePath = path.join(process.cwd(), 'public', 'images', 'guides', `${guide.slug}.svg`);
-      allTasks.push({
-        title: guide.title,
-        category: guide.category?.name || 'Guide',
-        outputPath: imagePath,
-        type: 'guide',
-        skip: false,
-      });
-    }
-  }
 
   // Collect exercises
   const exercises = await getAllExercises();
@@ -359,36 +216,6 @@ async function main() {
         skip: false,
       });
     }
-  }
-
-  // Collect news digests
-  const news = await getAllNews();
-  for (const digest of news) {
-    if (!digest.image || digest.image.includes('placeholder')) {
-      const imagePath = path.join(process.cwd(), 'public', 'images', 'news', `${digest.slug}.svg`);
-      allTasks.push({
-        title: digest.title,
-        category: `Week ${digest.week}, ${digest.year}`,
-        outputPath: imagePath,
-        type: 'news',
-        skip: false,
-      });
-    }
-  }
-
-  // Collect Advent of DevOps days
-  const adventDays = await getAllAdventDays();
-  for (const day of adventDays) {
-    const imagePath = path.join(process.cwd(), 'public', 'images', 'advent', `${day.slug}.svg`);
-    allTasks.push({
-      title: day.title,
-      category: day.category || 'DevOps',
-      outputPath: imagePath,
-      type: 'advent',
-      skip: false,
-      variant: 'advent',
-      day: day.day,
-    });
   }
 
   // Parallel cache checking in batches

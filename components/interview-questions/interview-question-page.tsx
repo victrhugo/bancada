@@ -22,9 +22,9 @@ interface InterviewQuestionPageProps {
 }
 
 const tierLabels: Record<ExperienceTier, string> = {
-  junior: 'Junior',
-  mid: 'Mid-Level',
-  senior: 'Senior',
+  junior: 'Júnior',
+  mid: 'Pleno',
+  senior: 'Sênior',
 };
 
 export function InterviewQuestionPage({ question, tier, prev, next }: InterviewQuestionPageProps) {
@@ -37,7 +37,7 @@ export function InterviewQuestionPage({ question, tier, prev, next }: InterviewQ
         <Button variant="ghost" asChild className="-ml-3 text-muted-foreground">
           <Link href={`/interview-questions/${tier}`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
-            {tierLabels[tier]} questions
+            Perguntas de {tierLabels[tier]}
           </Link>
         </Button>
         <ShareButton title={question.title} />
@@ -51,12 +51,12 @@ export function InterviewQuestionPage({ question, tier, prev, next }: InterviewQ
         <Button asChild size="sm">
           <Link href={`/interview-questions/practice?tier=${tier}`}>
             <Play className="w-4 h-4 mr-2" />
-            Practice all {tierLabels[tier]} questions
+            Praticar todas as perguntas de {tierLabels[tier]}
           </Link>
         </Button>
         <Button asChild size="sm" variant="outline">
           <Link href={`/interview-questions/topic/${topicSlug}`}>
-            More {question.category} questions
+            Mais perguntas de {question.category}
           </Link>
         </Button>
       </div>
@@ -86,7 +86,7 @@ export function InterviewQuestionPage({ question, tier, prev, next }: InterviewQ
               <ChevronLeft className="w-4 h-4 text-muted-foreground flex-shrink-0 group-hover:text-primary" />
               <span className="min-w-0">
                 <span className="block text-[10px] font-mono uppercase tracking-wider text-muted-foreground/70">
-                  Previous
+                  Anterior
                 </span>
                 <span className="block text-sm truncate group-hover:text-primary transition-colors">
                   {prev.title}
@@ -103,7 +103,7 @@ export function InterviewQuestionPage({ question, tier, prev, next }: InterviewQ
             >
               <span className="min-w-0">
                 <span className="block text-[10px] font-mono uppercase tracking-wider text-muted-foreground/70">
-                  Next
+                  Próxima
                 </span>
                 <span className="block text-sm truncate group-hover:text-primary transition-colors">
                   {next.title}

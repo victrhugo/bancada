@@ -17,7 +17,7 @@ export function SectionHeader({
   title,
   description,
   viewAllHref,
-  viewAllLabel = 'Browse all',
+  viewAllLabel = 'Ver todos',
   className,
 }: SectionHeaderProps) {
   return (

@@ -5,7 +5,6 @@ import {
   type CrossContentItem,
 } from '@/lib/related-cross-type';
 import {
-  FileText,
   ListChecks,
   Layers,
   Wrench,
@@ -22,7 +21,6 @@ interface RelatedAcrossTypesProps {
 }
 
 const TYPE_ICONS: Record<CrossContentItem['type'], LucideIcon> = {
-  post: FileText,
   checklist: ListChecks,
   flashcard: Layers,
   exercise: Wrench,

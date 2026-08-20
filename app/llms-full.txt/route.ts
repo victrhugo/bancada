@@ -1,5 +1,3 @@
-import { getAllPosts } from '@/lib/posts';
-import { getAllGuides } from '@/lib/guides';
 import { getAllExercises } from '@/lib/exercises';
 
 export const dynamic = 'force-static';
@@ -8,93 +6,30 @@ export const dynamic = 'force-static';
  * llms-full.txt provides the full text of key content so LLMs can ingest
  * actual answers rather than just a table of contents.
  *
- * We include:
- * - Full text of all blog posts (primary content)
- * - Full text of all guide parts
- * - Full text of all exercises
- *
- * Games, simulators, and other interactive content are intentionally
- * excluded since they are not text-based.
+ * We include the full text of all exercises. Quizzes, flashcards,
+ * checklists, interview questions, games, and simulators are intentionally
+ * excluded since they are not prose-based.
  */
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devops-daily.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
 
-  const [posts, guides, exercises] = await Promise.all([
-    getAllPosts(),
-    getAllGuides(),
-    getAllExercises(),
-  ]);
+  const exercises = await getAllExercises();
 
   const sections: string[] = [];
 
   // Header
-  sections.push('# DevOps Daily - Full Content Export');
+  sections.push('# Bancada - Full Content Export');
   sections.push('');
   sections.push(
-    '> Complete text content from DevOps Daily. This file is structured for LLM ingestion. Each piece of content is separated by a horizontal rule and prefixed with its canonical URL.'
+    '> Complete text content from Bancada. This file is structured for LLM ingestion. Each piece of content is separated by a horizontal rule and prefixed with its canonical URL.'
   );
   sections.push('');
   sections.push(`Site: ${baseUrl}`);
   sections.push(`Generated: ${new Date().toISOString()}`);
-  sections.push(
-    `Content: ${posts.length} posts, ${guides.length} guides, ${exercises.length} exercises`
-  );
+  sections.push(`Content: ${exercises.length} exercises`);
   sections.push('');
   sections.push('---');
   sections.push('');
-
-  // Blog posts
-  sections.push('## Blog Posts');
-  sections.push('');
-  for (const post of posts) {
-    const url = `${baseUrl}/posts/${post.slug}`;
-    sections.push(`### ${post.title}`);
-    sections.push('');
-    sections.push(`URL: ${url}`);
-    if (post.publishedAt || post.date) {
-      sections.push(`Published: ${post.publishedAt || post.date}`);
-    }
-    if (post.category?.name) {
-      sections.push(`Category: ${post.category.name}`);
-    }
-    if (post.tags && post.tags.length > 0) {
-      sections.push(`Tags: ${post.tags.join(', ')}`);
-    }
-    sections.push('');
-    sections.push(post.content || post.excerpt || '');
-    sections.push('');
-    sections.push('---');
-    sections.push('');
-  }
-
-  // Guides
-  sections.push('## Guides');
-  sections.push('');
-  for (const guide of guides) {
-    const url = `${baseUrl}/guides/${guide.slug}`;
-    sections.push(`### ${guide.title}`);
-    sections.push('');
-    sections.push(`URL: ${url}`);
-    if (guide.description) {
-      sections.push(`Description: ${guide.description}`);
-    }
-    sections.push('');
-
-    // Include all parts if available
-    if (guide.parts && guide.parts.length > 0) {
-      for (const part of guide.parts) {
-        sections.push(`#### ${part.title}`);
-        sections.push('');
-        sections.push(part.content || '');
-        sections.push('');
-      }
-    } else if (guide.content) {
-      sections.push(guide.content);
-      sections.push('');
-    }
-    sections.push('---');
-    sections.push('');
-  }
 
   // Exercises
   sections.push('## Exercises');

@@ -21,10 +21,10 @@ export function ExerciseSeriesNav({ currentExercise, seriesExercises }: Exercise
       {/* Series Header */}
       <div className="bg-muted/50 px-5 py-3 border-b border-border">
         <h3 className="font-semibold text-sm flex items-center gap-2">
-          <span className="text-primary">Series:</span>
+          <span className="text-primary">Série:</span>
           {currentExercise.series.name}
           <span className="text-muted-foreground text-xs ml-auto">
-            Part {currentOrder} of {currentExercise.series.total}
+            Parte {currentOrder} de {currentExercise.series.total}
           </span>
         </h3>
       </div>
@@ -83,7 +83,7 @@ export function ExerciseSeriesNav({ currentExercise, seriesExercises }: Exercise
             href={`/exercises/${nextExercise.id}`}
             className="flex items-center justify-between w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
           >
-            <span>Next: {nextExercise.title}</span>
+            <span>Próximo: {nextExercise.title}</span>
             <ArrowRight className="h-4 w-4 ml-2" />
           </Link>
         </div>

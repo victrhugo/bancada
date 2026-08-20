@@ -23,26 +23,26 @@ interface Roadmap {
 const roadmaps: Roadmap[] = [
   {
     slug: 'junior',
-    title: 'Junior DevOps Roadmap',
+    title: 'Roadmap DevOps Júnior',
     description:
-      'A beginner-friendly roadmap specifically designed for aspiring DevOps engineers. Clear, focused learning path without the overwhelm.',
+      'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
     icon: GraduationCap,
     color: 'green',
-    estimatedTime: '3-6 months',
+    estimatedTime: '3-6 meses',
     difficulty: 'Beginner',
-    topics: ['Linux Basics', 'Git', 'Docker', 'CI/CD', 'Cloud Fundamentals'],
+    topics: ['Fundamentos de Linux', 'Git', 'Docker', 'CI/CD', 'Fundamentos de Nuvem'],
     featured: true,
   },
   {
     slug: 'devsecops',
-    title: 'DevSecOps Roadmap',
+    title: 'Roadmap DevSecOps',
     description:
-      'Master the integration of security practices into the DevOps pipeline. Learn to build secure, compliant, and resilient systems.',
+      'Domine a integração de práticas de segurança no pipeline de DevOps. Aprenda a construir sistemas seguros, em conformidade e resilientes.',
     icon: Shield,
     color: 'purple',
-    estimatedTime: '4-8 months',
+    estimatedTime: '4-8 meses',
     difficulty: 'Intermediate',
-    topics: ['Security Fundamentals', 'SAST/DAST', 'Container Security', 'Compliance', 'Threat Modeling'],
+    topics: ['Fundamentos de Segurança', 'SAST/DAST', 'Segurança de Containers', 'Conformidade', 'Modelagem de Ameaças'],
   },
 ];
 
@@ -95,10 +95,10 @@ export default function RoadmapsPage() {
     <div className="min-h-screen">
       <PageHero
         icon={Map}
-        title="DevOps Roadmaps"
-        description="Structured learning paths to guide your DevOps journey. From beginner fundamentals to advanced security practices, find the roadmap that fits your goals."
+        title="Roadmaps de DevOps"
+        description="Trilhas de aprendizado estruturadas para guiar sua jornada em DevOps. Dos fundamentos para iniciantes às práticas avançadas de segurança, encontre o roadmap que combina com seus objetivos."
         breadcrumbs={[{ label: 'Roadmaps' }]}
-        badge="Learning Paths"
+        badge="Trilhas de Aprendizado"
       />
 
       {/* Roadmaps Grid */}
@@ -132,7 +132,7 @@ export default function RoadmapsPage() {
                         <div className="flex gap-2">
                           {roadmap.featured && (
                             <Badge className="bg-primary/20 text-primary border-primary/30">
-                              Featured
+                              Destaque
                             </Badge>
                           )}
                           <Badge className={getDifficultyColor(roadmap.difficulty)}>
@@ -165,13 +165,13 @@ export default function RoadmapsPage() {
                         ))}
                         {roadmap.topics.length > 4 && (
                           <Badge variant="secondary" className="text-xs">
-                            +{roadmap.topics.length - 4} more
+                            +{roadmap.topics.length - 4} mais
                           </Badge>
                         )}
                       </div>
 
                       <div className="flex items-center text-primary font-medium group-hover:gap-3 gap-2 transition-all">
-                        <span>Start Learning</span>
+                        <span>Começar a Aprender</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </CardContent>
@@ -186,14 +186,14 @@ export default function RoadmapsPage() {
             <Card className="border-2 border-dashed border-primary/30 bg-primary/5">
               <CardContent className="py-8">
                 <Map className="w-12 h-12 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">Complete DevOps Roadmap</h3>
+                <h3 className="text-xl font-bold mb-2">Roadmap DevOps Completo</h3>
                 <p className="text-muted-foreground mb-6">
-                  Looking for the comprehensive DevOps roadmap covering all topics from beginner to
-                  expert? Check out our main roadmap.
+                  Procurando o roadmap DevOps completo cobrindo todos os tópicos, do iniciante ao
+                  avançado? Confira nosso roadmap principal.
                 </p>
                 <Button asChild>
                   <Link href="/roadmap">
-                    View Full Roadmap
+                    Ver Roadmap Completo
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>

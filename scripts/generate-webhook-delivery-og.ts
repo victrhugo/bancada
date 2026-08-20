@@ -82,7 +82,7 @@ async function generate() {
   <text x="110" y="${trackY - 38}" font-family="Helvetica, Arial, sans-serif" font-size="23" fill="#71717a">8 attempts over ~27 hours, spaced on a log scale</text>
 
   <text x="110" y="565" font-family="ui-monospace, 'DejaVu Sans Mono', monospace" font-size="20" fill="#71717a">svix-id  .  svix-timestamp  .  raw body  =  HMAC-SHA256</text>
-  <text x="1090" y="565" font-family="Helvetica, Arial, sans-serif" font-size="21" fill="#71717a" text-anchor="end">DevOps Daily</text>
+  <text x="1090" y="565" font-family="Helvetica, Arial, sans-serif" font-size="21" fill="#71717a" text-anchor="end">Bancada</text>
 </svg>`;
 
   await fs.mkdir(outputDir, { recursive: true });

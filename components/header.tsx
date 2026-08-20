@@ -43,7 +43,7 @@ export function Header() {
           <Link
             href="/search"
             className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Search"
+            aria-label="Buscar"
           >
             <Search className="w-5 h-5" />
           </Link>
@@ -53,7 +53,7 @@ export function Header() {
             onClick={() => setMobileMenuOpen(true)}
             className="p-2"
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">Abrir menu principal</span>
             <Menu className="w-5 h-5" aria-hidden="true" />
           </Button>
         </div>

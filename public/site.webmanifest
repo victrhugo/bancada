@@ -1,11 +1,11 @@
 {
-    "name": "DevOps Daily",
-    "short_name": "DevOps Daily",
-    "description": "The latest DevOps news, tutorials, and guides for modern teams",
+    "name": "Bancada",
+    "short_name": "Bancada",
+    "description": "Pratique DevOps com exercícios, quizzes, flashcards e simuladores interativos",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#d97706",
+    "theme_color": "#0f766e",
     "orientation": "portrait-primary",
     "icons": [
       {
@@ -38,22 +38,22 @@
     ],
     "shortcuts": [
       {
-        "name": "Latest Posts",
-        "short_name": "Posts",
-        "description": "View the latest DevOps articles",
-        "url": "/posts",
+        "name": "Exercícios",
+        "short_name": "Exercícios",
+        "description": "Pratique com exercícios de DevOps",
+        "url": "/exercises",
         "icons": [{ "src": "/shortcuts/logo.png", "sizes": "96x96" }]
       },
       {
-        "name": "Guides",
-        "short_name": "Guides",
-        "description": "Browse in-depth DevOps guides",
-        "url": "/guides",
+        "name": "Quizzes",
+        "short_name": "Quizzes",
+        "description": "Teste seus conhecimentos de DevOps",
+        "url": "/quizzes",
         "icons": [{ "src": "/shortcuts/logo.png", "sizes": "96x96" }]
       }
     ],
     "categories": ["technology", "education", "devops", "cloud"],
-    "lang": "en-US",
+    "lang": "pt-BR",
     "dir": "ltr",
     "prefer_related_applications": false,
     "related_applications": []

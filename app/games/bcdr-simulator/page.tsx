@@ -112,7 +112,7 @@ function BcdrEducational() {
         </div>
         <p className="mt-4 text-xs text-center text-muted-foreground/70">
           <em>
-            This page contains an affiliate link. Using it helps support DevOps Daily at no extra
+            This page contains an affiliate link. Using it helps support Bancada at no extra
             cost to you.
           </em>
         </p>

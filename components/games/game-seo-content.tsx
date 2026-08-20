@@ -29,10 +29,10 @@ export function GameSeoContent({
       <div className="sr-only">
         <h2>{title}</h2>
         <p>{description}</p>
-        {category && <p>Category: {category}</p>}
+        {category && <p>Categoria: {category}</p>}
         {learningPoints && learningPoints.length > 0 && (
           <div>
-            <h2>What You Will Learn</h2>
+            <h2>O que você vai aprender</h2>
             <ul>
               {learningPoints.map((point, i) => (
                 <li key={i}>{point}</li>
@@ -41,7 +41,7 @@ export function GameSeoContent({
           </div>
         )}
         {tags && tags.length > 0 && (
-          <p>Topics covered: {tags.join(', ')}</p>
+          <p>Tópicos abordados: {tags.join(', ')}</p>
         )}
       </div>
 
@@ -52,7 +52,7 @@ export function GameSeoContent({
           <p className="text-lg mb-4">{description}</p>
           {learningPoints && learningPoints.length > 0 && (
             <>
-              <h2 className="text-xl font-semibold mb-2">What You Will Learn</h2>
+              <h2 className="text-xl font-semibold mb-2">O que você vai aprender</h2>
               <ul className="list-disc pl-6 mb-4">
                 {learningPoints.map((point, i) => (
                   <li key={i}>{point}</li>
@@ -61,8 +61,8 @@ export function GameSeoContent({
             </>
           )}
           <p className="text-muted-foreground">
-            This interactive simulator requires JavaScript to run. Please enable JavaScript in your
-            browser to use this tool.
+            Este simulador interativo requer JavaScript para funcionar. Por favor, habilite o
+            JavaScript no seu navegador para usar esta ferramenta.
           </p>
         </div>
       </noscript>

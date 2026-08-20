@@ -9,21 +9,27 @@ import type { ExperienceTier } from '@/lib/interview-utils';
 
 const validTiers: ExperienceTier[] = ['junior', 'mid', 'senior'];
 
+const tierDisplayLabels: Record<ExperienceTier, string> = {
+  junior: 'Júnior',
+  mid: 'Pleno',
+  senior: 'Sênior',
+};
+
 const tierMeta = {
   junior: {
-    title: 'Junior DevOps Interview Questions',
+    title: 'Perguntas de Entrevista DevOps - Júnior',
     description:
-      'Entry-level DevOps interview questions covering Linux, Git, Docker basics, and CI/CD fundamentals for 0-2 years experience.',
+      'Perguntas de entrevista DevOps para iniciantes, cobrindo Linux, Git, fundamentos de Docker e CI/CD para profissionais com 0-2 anos de experiência.',
   },
   mid: {
-    title: 'Mid-Level DevOps Interview Questions',
+    title: 'Perguntas de Entrevista DevOps - Pleno',
     description:
-      'Intermediate DevOps interview questions on Kubernetes, Terraform, monitoring, and architecture for 2-5 years experience.',
+      'Perguntas de entrevista DevOps de nível intermediário sobre Kubernetes, Terraform, monitoramento e arquitetura para profissionais com 2-5 anos de experiência.',
   },
   senior: {
-    title: 'Senior DevOps Interview Questions',
+    title: 'Perguntas de Entrevista DevOps - Sênior',
     description:
-      'Advanced DevOps interview questions on system design, incident management, and leadership for 5+ years experience.',
+      'Perguntas de entrevista DevOps avançadas sobre design de sistemas, gestão de incidentes e liderança para profissionais com mais de 5 anos de experiência.',
   },
 };
 
@@ -35,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { tier } = await params;
 
   if (!validTiers.includes(tier as ExperienceTier)) {
-    return { title: 'Not Found' };
+    return { title: 'Não encontrado' };
   }
 
   const meta = tierMeta[tier as ExperienceTier];
@@ -82,26 +88,26 @@ export default async function TierPage({ params }: PageProps) {
 
   const questions = getQuestionsByTier(tier as ExperienceTier);
   const meta = tierMeta[tier as ExperienceTier];
-  const tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
+  const tierLabel = tierDisplayLabels[tier as ExperienceTier];
 
   return (
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'Home', url: '/' },
-          { name: 'Interview Questions', url: '/interview-questions' },
+          { name: 'Início', url: '/' },
+          { name: 'Perguntas de Entrevista', url: '/interview-questions' },
           { name: tierLabel, url: `/interview-questions/${tier}` },
         ]}
       />
       <PageHero
-        title={`${tierLabel} Interview Practice`}
+        title={`Prática de Entrevista: ${tierLabel}`}
         description={meta.description}
         icon={Briefcase}
         breadcrumbs={[
-          { label: 'Interview Questions', href: '/interview-questions' },
+          { label: 'Perguntas de Entrevista', href: '/interview-questions' },
           { label: tierLabel },
         ]}
-        stats={[{ label: 'questions', value: questions.length }]}
+        stats={[{ label: 'perguntas', value: questions.length }]}
       />
 
       <div className="container mx-auto px-4 max-w-4xl py-10">

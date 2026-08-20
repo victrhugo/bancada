@@ -328,7 +328,7 @@ export default function CICDStackGenerator() {
 
     const combo = reels.map((r) => r.value).join(' | ');
     const text = encodeURIComponent(
-      `I spun the CI/CD Stack Generator and got: ${combo}. The verdict: ${rating.emoji} ${rating.text} Try your luck at DevOps Daily!`
+      `I spun the CI/CD Stack Generator and got: ${combo}. The verdict: ${rating.emoji} ${rating.text} Try your luck at Bancada!`
     );
     const url = encodeURIComponent(window.location.href);
 

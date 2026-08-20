@@ -32,7 +32,7 @@ function EmbedLayoutInner({ children, gameSlug, gameTitle }: EmbedLayoutProps) {
         <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
           <h1 className="text-sm font-semibold truncate">{gameTitle}</h1>
           <a
-            href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://devops-daily.com'}/games/${gameSlug}`}
+            href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app'}/games/${gameSlug}`}
             target="_blank"
             rel="noopener"
             className="text-xs text-muted-foreground hover:text-primary transition-colors"

@@ -25,63 +25,63 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const metadata: Record<RoadmapSlug, Metadata> = {
     junior: {
-      title: { absolute: 'Junior DevOps Roadmap - Start Your DevOps Journey' },
+      title: { absolute: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps' },
       description:
-        'A beginner-friendly roadmap specifically designed for aspiring DevOps engineers. Clear, focused learning path without the overwhelm.',
+        'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
       alternates: {
         canonical: '/roadmaps/junior',
       },
       openGraph: {
-        title: 'Junior DevOps Roadmap - Start Your DevOps Journey',
+        title: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps',
         description:
-          'A beginner-friendly roadmap specifically designed for aspiring DevOps engineers. Clear, focused learning path without the overwhelm.',
-        url: 'https://devops-daily.com/roadmaps/junior',
+          'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
+        url: 'https://bancada.app/roadmaps/junior',
         type: 'website',
         images: [
           {
-            url: 'https://devops-daily.com/images/junior-roadmap-og.png',
+            url: 'https://bancada.app/images/junior-roadmap-og.png',
             width: 1200,
             height: 630,
-            alt: 'Junior DevOps Roadmap - Start Your Journey',
+            alt: 'Roadmap DevOps Júnior - Comece Sua Jornada',
           },
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'Junior DevOps Roadmap - Start Your DevOps Journey',
+        title: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps',
         description:
-          'A beginner-friendly roadmap for aspiring DevOps engineers. Clear, focused learning path without the overwhelm.',
-        images: ['https://devops-daily.com/images/junior-roadmap-og.png'],
+          'Um roadmap para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
+        images: ['https://bancada.app/images/junior-roadmap-og.png'],
       },
     },
     devsecops: {
-      title: { absolute: 'DevSecOps Roadmap - Security-First DevOps' },
+      title: { absolute: 'Roadmap DevSecOps - DevOps com Foco em Segurança' },
       description:
-        'Master the integration of security practices into the DevOps pipeline. Learn to build secure, compliant, and resilient systems.',
+        'Domine a integração de práticas de segurança no pipeline de DevOps. Aprenda a construir sistemas seguros, em conformidade e resilientes.',
       alternates: {
         canonical: '/roadmaps/devsecops',
       },
       openGraph: {
-        title: 'DevSecOps Roadmap - Security-First DevOps',
+        title: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
         description:
-          'Master the integration of security practices into the DevOps pipeline. Learn to build secure, compliant, and resilient systems.',
-        url: 'https://devops-daily.com/roadmaps/devsecops',
+          'Domine a integração de práticas de segurança no pipeline de DevOps. Aprenda a construir sistemas seguros, em conformidade e resilientes.',
+        url: 'https://bancada.app/roadmaps/devsecops',
         type: 'website',
         images: [
           {
-            url: 'https://devops-daily.com/images/devsecops-roadmap-og.png',
+            url: 'https://bancada.app/images/devsecops-roadmap-og.png',
             width: 1200,
             height: 630,
-            alt: 'DevSecOps Roadmap - Security-First DevOps',
+            alt: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
           },
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'DevSecOps Roadmap - Security-First DevOps',
+        title: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
         description:
-          'Master security practices in the DevOps pipeline. Build secure, compliant, and resilient systems.',
-        images: ['https://devops-daily.com/images/devsecops-roadmap-og.png'],
+          'Domine as práticas de segurança no pipeline de DevOps. Construa sistemas seguros, em conformidade e resilientes.',
+        images: ['https://bancada.app/images/devsecops-roadmap-og.png'],
       },
     },
   };

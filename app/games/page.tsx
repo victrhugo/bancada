@@ -8,16 +8,16 @@ import { GamesList } from '@/components/games-list';
 import { LottiePlayer } from '@/components/lottie-player';
 
 export const metadata: Metadata = {
-  title: 'DevOps Games & Interactive Tools',
+  title: 'Jogos e Ferramentas Interativas de DevOps',
   description:
-    'Interactive games and fun simulators for DevOps professionals to learn and practice skills in a playful way. Explore our collection of DevOps-themed games designed to enhance your skills and knowledge.',
+    'Jogos interativos e simuladores divertidos para profissionais de DevOps aprenderem e praticarem habilidades de forma lúdica. Explore nossa coleção de jogos com temática DevOps criados para aprimorar seus conhecimentos.',
   alternates: {
     canonical: '/games',
   },
   openGraph: {
-    title: 'DevOps Games & Interactive Tools - DevOps Daily',
+    title: 'Jogos e Ferramentas Interativas de DevOps - Bancada',
     description:
-      'Interactive games and fun simulators for DevOps professionals to learn and practice skills in a playful way. Explore our collection of DevOps-themed games designed to enhance your skills and knowledge.',
+      'Jogos interativos e simuladores divertidos para profissionais de DevOps aprenderem e praticarem habilidades de forma lúdica. Explore nossa coleção de jogos com temática DevOps criados para aprimorar seus conhecimentos.',
     type: 'website',
     url: '/games',
     images: [
@@ -25,15 +25,15 @@ export const metadata: Metadata = {
         url: '/images/pages/simulators.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Games & Interactive Tools',
+        alt: 'Jogos e Ferramentas Interativas de DevOps',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DevOps Games & Interactive Tools - DevOps Daily',
+    title: 'Jogos e Ferramentas Interativas de DevOps - Bancada',
     description:
-      'Interactive games and fun simulators for DevOps professionals to learn and practice skills in a playful way. Explore our collection of DevOps-themed games designed to enhance your skills and knowledge.',
+      'Jogos interativos e simuladores divertidos para profissionais de DevOps aprenderem e praticarem habilidades de forma lúdica. Explore nossa coleção de jogos com temática DevOps criados para aprimorar seus conhecimentos.',
     images: ['/images/pages/simulators.png'],
   },
 };
@@ -48,20 +48,20 @@ export default async function GamesPage() {
   return (
     <div className="min-h-screen">
       <PageHero
-        title="DevOps Games & Simulators"
-        accentWord="Simulators"
-        description="Master DevOps with interactive games and simulators designed by industry experts. Test your knowledge, track your progress, and earn achievements as you advance."
+        title="Jogos e Simuladores DevOps"
+        accentWord="Simuladores"
+        description="Domine DevOps com jogos interativos e simuladores criados por especialistas do setor. Teste seus conhecimentos, acompanhe seu progresso e conquiste medalhas à medida que avança."
         icon={Gamepad2}
-        breadcrumbs={[{ label: 'Games & Simulators' }]}
+        breadcrumbs={[{ label: 'Jogos e Simuladores' }]}
         stats={[
-          { label: 'available', value: availableGames.length },
-          { label: 'coming soon', value: comingSoonGames.length },
+          { label: 'disponíveis', value: availableGames.length },
+          { label: 'em breve', value: comingSoonGames.length },
         ]}
         sideContent={
           <LottiePlayer
             path="/lottie/games-hero.json"
             className="h-48 w-64 xl:h-56 xl:w-72"
-            ariaLabel="Animated terminal window surrounded by floating game shapes"
+            ariaLabel="Janela de terminal animada cercada por formas de jogos flutuantes"
           />
         }
       />
@@ -77,16 +77,16 @@ export default async function GamesPage() {
           <div className="max-w-3xl mx-auto text-center">
             <Sparkles className="h-12 w-12 mx-auto mb-6 text-primary" />
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Have an idea for a DevOps game or simulator?
+              Tem uma ideia para um jogo ou simulador de DevOps?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              We are always looking to expand our collection with useful DevOps games and
-              simulators. Share your idea and we might build it next.
+              Estamos sempre buscando expandir nossa coleção com jogos e simuladores de DevOps
+              úteis. Compartilhe sua ideia e talvez a construamos em seguida.
             </p>
             <Button size="lg" asChild>
               <Link href="https://github.com/The-DevOps-Daily/devops-daily/issues/new/choose">
                 <Dice6 className="mr-2 h-4 w-4" />
-                Suggest a Game
+                Sugerir um Jogo
               </Link>
             </Button>
           </div>

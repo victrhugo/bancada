@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 /**
  * Shared shape for content detail pages ([slug]/[id] routes). Every page
  * was repeating the same Metadata skeleton: absolute title (skipping the
- * '%s | DevOps Daily' layout template), canonical path, OpenGraph card with
+ * '%s | Bancada' layout template), canonical path, OpenGraph card with
  * a 1200x630 image, and a summary_large_image Twitter card. The variation
  * points (social title suffixes, article timestamps, Twitter handles) are
  * explicit inputs so each page keeps its exact previous output.

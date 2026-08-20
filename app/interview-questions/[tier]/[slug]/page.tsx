@@ -19,6 +19,12 @@ import type { ExperienceTier } from '@/lib/interview-utils';
 
 const validTiers: ExperienceTier[] = ['junior', 'mid', 'senior'];
 
+const tierDisplayLabels: Record<ExperienceTier, string> = {
+  junior: 'Júnior',
+  mid: 'Pleno',
+  senior: 'Sênior',
+};
+
 interface PageProps {
   params: Promise<{ tier: string; slug: string }>;
 }
@@ -36,24 +42,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { tier, slug } = await params;
 
   if (!validTiers.includes(tier as ExperienceTier)) {
-    return { title: 'Not Found' };
+    return { title: 'Não encontrado' };
   }
 
   const question = getQuestionBySlug(slug);
 
   if (!question || question.tier !== tier) {
-    return { title: 'Not Found' };
+    return { title: 'Não encontrado' };
   }
 
   const socialImage = getSocialImagePath(slug, 'interview-questions');
   // Some questions are long enough that the auto-built description blows
   // past 160 chars; trim at sentence boundary so Google does not truncate.
   const description = truncateMetaDescription(
-    `${question.question} - ${question.category} interview question for ${tier} DevOps engineers`
+    `${question.question} - pergunta de entrevista de ${question.category} para engenheiros DevOps nível ${tierDisplayLabels[tier as ExperienceTier].toLowerCase()}`
   );
 
   return {
-    title: { absolute: `${question.title} - Interview Question` },
+    title: { absolute: `${question.title} - Pergunta de Entrevista` },
     description,
     alternates: {
       canonical: `/interview-questions/${tier}/${slug}`,
@@ -94,7 +100,7 @@ export default async function QuestionPage({ params }: PageProps) {
     notFound();
   }
 
-  const capitalizedTier = tier.charAt(0).toUpperCase() + tier.slice(1);
+  const capitalizedTier = tierDisplayLabels[tier as ExperienceTier];
 
   // Prev/next within the same tier so the question page doubles as a walk-through.
   const tierQuestions = getQuestionsByTier(tier as ExperienceTier);
@@ -148,8 +154,8 @@ export default async function QuestionPage({ params }: PageProps) {
       />
       <BreadcrumbSchema
         items={[
-          { name: 'Home', url: '/' },
-          { name: 'Interview Questions', url: '/interview-questions' },
+          { name: 'Início', url: '/' },
+          { name: 'Perguntas de Entrevista', url: '/interview-questions' },
           { name: capitalizedTier, url: `/interview-questions/${tier}` },
           { name: question.title, url: `/interview-questions/${tier}/${slug}` },
         ]}
@@ -159,7 +165,7 @@ export default async function QuestionPage({ params }: PageProps) {
         description={question.question}
         icon={Briefcase}
         breadcrumbs={[
-          { label: 'Interview Questions', href: '/interview-questions' },
+          { label: 'Perguntas de Entrevista', href: '/interview-questions' },
           { label: capitalizedTier },
           { label: question.title },
         ]}
@@ -181,7 +187,7 @@ export default async function QuestionPage({ params }: PageProps) {
       {related.length > 0 && (
         <section className="container mx-auto px-4 max-w-4xl pb-12">
           <h2 className="text-xl font-semibold mb-4">
-            More {question.category} interview questions
+            Mais perguntas de entrevista de {question.category}
           </h2>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
             {related.map((q) => (
@@ -193,7 +199,9 @@ export default async function QuestionPage({ params }: PageProps) {
                   {q.title}
                 </Link>
                 {q.tier !== tier && (
-                  <span className="ml-2 text-xs text-muted-foreground">{q.tier}</span>
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    {tierDisplayLabels[q.tier]}
+                  </span>
                 )}
               </li>
             ))}

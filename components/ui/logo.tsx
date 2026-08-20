@@ -23,15 +23,9 @@ export function Logo({ className, size = 40, href, showText = false, textClassNa
       >
         <defs>
           <linearGradient id="logo-gradient-hover" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#8b5cf6">
-              <animate attributeName="stop-color" values="#8b5cf6;#ec4899;#8b5cf6" dur="2s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="50%" stopColor="#3b82f6">
-              <animate attributeName="stop-color" values="#3b82f6;#06b6d4;#3b82f6" dur="2s" repeatCount="indefinite" />
-            </stop>
-            <stop offset="100%" stopColor="#10b981">
-              <animate attributeName="stop-color" values="#10b981;#84cc16;#10b981" dur="2s" repeatCount="indefinite" />
-            </stop>
+            <stop offset="0%" stopColor="#0d9488" />
+            <stop offset="50%" stopColor="#14b8a6" />
+            <stop offset="100%" stopColor="#5eead4" />
           </linearGradient>
           
           <filter id="logo-glow">
@@ -70,7 +64,7 @@ export function Logo({ className, size = 40, href, showText = false, textClassNa
           'group-hover:text-primary',
           textClassName
         )}>
-          DevOps Daily
+          Bancada
         </span>
       )}
     </div>

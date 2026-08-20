@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Breadcrumb } from '@/components/breadcrumb';
-import { SponsorSidebar } from '@/components/sponsor-sidebar';
 import { ReportIssue } from '@/components/report-issue';
 import { cn } from '@/lib/utils';
 import {
@@ -175,7 +174,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
 
   // Breadcrumb items
   const breadcrumbItems = [
-    { label: 'Exercises', href: '/exercises' },
+    { label: 'Exercícios', href: '/exercises' },
     { label: exercise.title, href: `/exercises/${exercise.id}`, isCurrent: true },
   ];
 
@@ -218,7 +217,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                     className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 text-sm rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors border border-primary/20"
                   >
                     <Cloud className="w-3.5 h-3.5" />
-                    Need a server? Get $200 free credits on DigitalOcean
+                    Precisa de um servidor? Ganhe $200 em créditos grátis na DigitalOcean
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 )}
@@ -237,7 +236,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                   </div>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <Target className="w-4 h-4" />
-                    {exercise.steps.length} steps
+                    {exercise.steps.length} etapas
                   </div>
                 </div>
               </div>
@@ -247,9 +246,9 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
             {isStarted && (
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Progress</span>
+                  <span className="text-sm font-medium">Progresso</span>
                   <span className="text-sm text-muted-foreground">
-                    {completedSteps.length} of {exercise.steps.length} steps completed
+                    {completedSteps.length} de {exercise.steps.length} etapas concluídas
                   </span>
                 </div>
                 <Progress value={progressPercentage} className="h-2" />
@@ -261,12 +260,12 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
               {!isStarted ? (
                 <Button onClick={startExercise} size="lg" className="gap-2">
                   <Play className="w-4 h-4" />
-                  Start Exercise
+                  Iniciar Exercício
                 </Button>
               ) : (
                 <Button onClick={resetProgress} variant="outline" size="lg" className="gap-2">
                   <RotateCcw className="w-4 h-4" />
-                  Reset Progress
+                  Reiniciar Progresso
                 </Button>
               )}
             </div>
@@ -281,7 +280,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <AlertTriangle className="w-5 h-5 text-amber-500" />
-                      Prerequisites
+                      Pré-requisitos
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -306,7 +305,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                           {exercise.sponsorCta.text}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          Get $200 in free credits to get started.
+                          Ganhe $200 em créditos grátis para começar.
                         </p>
                       </div>
                       <a
@@ -320,7 +319,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                       </a>
                     </div>
                     <p className="text-[10px] text-muted-foreground mt-3">
-                      Disclosure: This is an affiliate link. We may earn a commission at no extra cost to you.
+                      Divulgação: este é um link de afiliado. Podemos ganhar uma comissão sem custo extra para você.
                     </p>
                   </CardContent>
                 </Card>
@@ -331,7 +330,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Target className="w-5 h-5 text-primary" />
-                    Learning Objectives
+                    Objetivos de Aprendizado
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -349,7 +348,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
               {/* Technologies */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Technologies Used</CardTitle>
+                  <CardTitle>Tecnologias Utilizadas</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
@@ -365,7 +364,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
               {/* Steps Overview */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Exercise Steps</CardTitle>
+                  <CardTitle>Etapas do Exercício</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -407,7 +406,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                             </h4>
                             {currentStep === index && (
                               <Badge variant="secondary" className="text-xs">
-                                Current
+                                Atual
                               </Badge>
                             )}
                           </div>
@@ -439,11 +438,11 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                   className="gap-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Previous
+                  Anterior
                 </Button>
 
                 <div className="text-sm text-muted-foreground">
-                  Step {currentStep + 1} of {exercise.steps.length}
+                  Etapa {currentStep + 1} de {exercise.steps.length}
                 </div>
 
                 <Button
@@ -452,7 +451,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                   disabled={currentStep === exercise.steps.length - 1}
                   className="gap-2"
                 >
-                  Next
+                  Próxima
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
@@ -472,7 +471,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                       </div>
                     </CardTitle>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline">Step {currentStep + 1}</Badge>
+                      <Badge variant="outline">Etapa {currentStep + 1}</Badge>
                       <Button
                         onClick={() => toggleStepCompletion(currentStepData.id)}
                         variant={
@@ -489,12 +488,12 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                         {completedSteps.includes(currentStepData.id) ? (
                           <>
                             <CheckCircle2 className="w-4 h-4 mr-1" />
-                            Completed
+                            Concluída
                           </>
                         ) : (
                           <>
                             <Circle className="w-4 h-4 mr-1" />
-                            Mark Complete
+                            Marcar como Concluída
                           </>
                         )}
                       </Button>
@@ -509,7 +508,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                     <div>
                       <h4 className="flex items-center gap-2 mb-2 font-medium">
                         <Terminal className="w-4 h-4" />
-                        Commands to Run
+                        Comandos para Executar
                       </h4>
                       <div className="space-y-2">
                         {currentStepData.commands.map((command, index) => (
@@ -540,7 +539,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                     <div>
                       <h4 className="flex items-center gap-2 mb-2 font-medium">
                         <Code className="w-4 h-4" />
-                        Code Example
+                        Exemplo de Código
                       </h4>
                       <div className="relative group">
                         <pre className="p-4 pr-12 overflow-x-auto text-sm rounded-lg bg-muted">
@@ -566,7 +565,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                   {currentStepData.expectedOutput && (
                     <div className="p-3 border border-green-200 rounded-lg bg-green-50 dark:bg-green-950/20 dark:border-green-800">
                       <h4 className="mb-1 font-medium text-green-800 dark:text-green-200">
-                        Expected Output
+                        Saída Esperada
                       </h4>
                       <pre className="text-sm text-green-700 dark:text-green-300 whitespace-pre-wrap font-mono overflow-x-auto">
                         {currentStepData.expectedOutput}
@@ -578,7 +577,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                   {currentStepData.hints && currentStepData.hints.length > 0 && (
                     <div className="p-3 border border-blue-200 rounded-lg bg-blue-50 dark:bg-blue-950/20 dark:border-blue-800">
                       <h4 className="mb-2 font-medium text-blue-800 dark:text-blue-200">
-                        💡 Hints
+                        💡 Dicas
                       </h4>
                       <ul className="space-y-1 text-sm text-blue-700 dark:text-blue-300">
                         {currentStepData.hints.map((hint, index) => (
@@ -594,7 +593,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                   {currentStepData.validationCriteria &&
                     currentStepData.validationCriteria.length > 0 && (
                       <div>
-                        <h4 className="mb-2 font-medium">Validation Criteria</h4>
+                        <h4 className="mb-2 font-medium">Critérios de Validação</h4>
                         <ul className="space-y-1">
                           {currentStepData.validationCriteria.map((criteria, index) => (
                             <li key={index} className="flex items-start gap-2">
@@ -613,10 +612,10 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                         {completedSteps.includes(currentStepData.id) ? (
                           <span className="flex items-center gap-1 text-green-600">
                             <CheckCircle2 className="w-4 h-4" />
-                            Step completed
+                            Etapa concluída
                           </span>
                         ) : (
-                          "Mark this step as complete when you're done"
+                          'Marque esta etapa como concluída quando terminar'
                         )}
                       </div>
                       <div className="flex items-center gap-2">
@@ -636,12 +635,12 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                           {completedSteps.includes(currentStepData.id) ? (
                             <>
                               <RotateCcw className="w-4 h-4 mr-1" />
-                              Mark Incomplete
+                              Marcar como Incompleta
                             </>
                           ) : (
                             <>
                               <CheckCircle2 className="w-4 h-4 mr-1" />
-                              Complete Step
+                              Concluir Etapa
                             </>
                           )}
                         </Button>
@@ -654,7 +653,7 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                               size="sm"
                               className="gap-1"
                             >
-                              Next Step
+                              Próxima Etapa
                               <ArrowRight className="w-4 h-4" />
                             </Button>
                           )}
@@ -785,8 +784,6 @@ export function ExerciseDetailClient({ exercise }: ExerciseDetailClientProps) {
                 </CardContent>
               </Card>
             )}
-
-            <SponsorSidebar />
           </div>
         </aside>
       </div>

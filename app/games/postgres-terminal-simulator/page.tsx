@@ -120,7 +120,7 @@ function PostgresTerminalEducational() {
         <ul className="space-y-2 text-sm text-muted-foreground">
           <li>
             <a
-              href="https://devops-daily.com/posts/postgres-18-uuidv7-primary-keys"
+              href="https://bancada.app/posts/postgres-18-uuidv7-primary-keys"
               className="font-medium text-primary underline underline-offset-2"
             >
               Stop Using Random UUIDs as Primary Keys
@@ -129,7 +129,7 @@ function PostgresTerminalEducational() {
           </li>
           <li>
             <a
-              href="https://devops-daily.com/posts/stop-paginating-with-offset"
+              href="https://bancada.app/posts/stop-paginating-with-offset"
               className="font-medium text-primary underline underline-offset-2"
             >
               Stop Paginating With OFFSET

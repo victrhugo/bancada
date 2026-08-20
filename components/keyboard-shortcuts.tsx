@@ -19,38 +19,38 @@ const shortcutGroups: ShortcutGroup[] = [
   {
     title: 'Global',
     shortcuts: [
-      { keys: ['⌘/Ctrl', 'K'], description: 'Open search' },
-      { keys: ['?'], description: 'Show keyboard shortcuts' },
-      { keys: ['Esc'], description: 'Close modal / dialog' },
-      { keys: ['/'], description: 'Focus search (when not in input)' },
+      { keys: ['⌘/Ctrl', 'K'], description: 'Abrir busca' },
+      { keys: ['?'], description: 'Mostrar atalhos de teclado' },
+      { keys: ['Esc'], description: 'Fechar modal / diálogo' },
+      { keys: ['/'], description: 'Focar busca (fora de um campo de texto)' },
     ],
   },
   {
     title: 'Quizzes',
     shortcuts: [
-      { keys: ['1-4'], description: 'Select answer option' },
-      { keys: ['Enter'], description: 'Submit selected answer' },
-      { keys: ['N'], description: 'Next question' },
-      { keys: ['H'], description: 'Toggle hint' },
-      { keys: ['R'], description: 'Restart quiz' },
+      { keys: ['1-4'], description: 'Selecionar opção de resposta' },
+      { keys: ['Enter'], description: 'Enviar resposta selecionada' },
+      { keys: ['N'], description: 'Próxima pergunta' },
+      { keys: ['H'], description: 'Alternar dica' },
+      { keys: ['R'], description: 'Reiniciar quiz' },
     ],
   },
   {
-    title: 'Games',
+    title: 'Jogos',
     shortcuts: [
-      { keys: ['Space'], description: 'Start / Pause' },
-      { keys: ['R'], description: 'Reset game' },
-      { keys: ['→'], description: 'Next step (step-by-step games)' },
-      { keys: ['←'], description: 'Previous step' },
-      { keys: ['Esc'], description: 'Exit / Reset' },
+      { keys: ['Space'], description: 'Iniciar / Pausar' },
+      { keys: ['R'], description: 'Reiniciar jogo' },
+      { keys: ['→'], description: 'Próxima etapa (jogos passo a passo)' },
+      { keys: ['←'], description: 'Etapa anterior' },
+      { keys: ['Esc'], description: 'Sair / Reiniciar' },
     ],
   },
   {
-    title: 'Navigation',
+    title: 'Navegação',
     shortcuts: [
-      { keys: ['Tab'], description: 'Move to next focusable element' },
-      { keys: ['Shift', 'Tab'], description: 'Move to previous element' },
-      { keys: ['Enter'], description: 'Activate focused element' },
+      { keys: ['Tab'], description: 'Mover para o próximo elemento focável' },
+      { keys: ['Shift', 'Tab'], description: 'Mover para o elemento anterior' },
+      { keys: ['Enter'], description: 'Ativar elemento focado' },
     ],
   },
 ];
@@ -92,10 +92,10 @@ export function KeyboardShortcuts() {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Keyboard className="h-5 w-5" />
-            Keyboard Shortcuts
+            Atalhos de Teclado
           </DialogTitle>
           <DialogDescription>
-            Use these keyboard shortcuts to navigate the site more efficiently.
+            Use estes atalhos de teclado para navegar pelo site com mais eficiência.
           </DialogDescription>
         </DialogHeader>
 
@@ -132,7 +132,7 @@ export function KeyboardShortcuts() {
         </div>
 
         <div className="text-xs text-muted-foreground text-center border-t pt-4">
-          Press <kbd className="px-1.5 py-0.5 bg-muted border rounded">?</kbd> anytime to show this help
+          Pressione <kbd className="px-1.5 py-0.5 bg-muted border rounded">?</kbd> a qualquer momento para ver esta ajuda
         </div>
       </DialogContent>
     </Dialog>

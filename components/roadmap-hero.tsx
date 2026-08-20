@@ -144,7 +144,7 @@ export function RoadmapHero() {
               className="px-4 py-2 text-sm font-medium bg-primary/10 border-primary/20 text-primary"
             >
               <Sparkles className="inline-block w-4 h-4 mr-2 text-amber-500" />
-              Your Complete DevOps Learning Path
+              Sua Trilha Completa de Aprendizado em DevOps
             </Badge>
           </motion.div>
 
@@ -158,9 +158,9 @@ export function RoadmapHero() {
              animate="animate"
              className="block text-primary"
            >
-             Excel in DevOps
+             Destaque-se em DevOps
            </motion.span>
-           <span className="block mt-2 text-foreground">From Zero to Hero</span>
+           <span className="block mt-2 text-foreground">Do Zero ao Herói</span>
          </motion.h1>
 
           {/* Description */}
@@ -168,8 +168,8 @@ export function RoadmapHero() {
             variants={itemVariants}
            className="max-w-2xl mx-auto mb-10 text-lg leading-relaxed sm:text-xl text-muted-foreground"
          >
-           A comprehensive, structured roadmap designed to guide you through every stage of your
-           DevOps career: from foundational skills to senior-level expertise.
+           Um roadmap completo e estruturado, criado para guiar você por todas as etapas da sua
+           carreira em DevOps: das habilidades fundamentais à expertise de nível sênior.
          </motion.p>
 
           {/* Stats with animated cards */}
@@ -178,13 +178,13 @@ export function RoadmapHero() {
             className="grid max-w-3xl grid-cols-1 gap-6 mx-auto mb-12 sm:grid-cols-3"
           >
             {[
-              { icon: Target, label: '6 Career Stages', color: 'text-primary' },
+              { icon: Target, label: '6 Etapas de Carreira', color: 'text-primary' },
               {
                 icon: TrendingUp,
-                label: '150+ Skills',
+                label: '150+ Habilidades',
                 color: 'text-primary',
               },
-              { icon: Rocket, label: '500+ Resources', color: 'text-primary' },
+              { icon: Rocket, label: '500+ Recursos', color: 'text-primary' },
             ].map((stat, index) => (
              <motion.div
                key={stat.label}

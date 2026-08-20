@@ -36,14 +36,14 @@ export async function generateMetadata({ params }: FlashcardPageProps): Promise<
 
   if (!flashcardSet) {
     return {
-      title: 'Flashcard Set Not Found',
+      title: 'Conjunto de Flashcards Não Encontrado',
     }
   }
 
   return detailPageMetadata({
     path: `/flashcards/${id}`,
-    title: `${flashcardSet.title} - DevOps Flashcards`,
-    socialTitle: `${flashcardSet.title} - DevOps Daily`,
+    title: `${flashcardSet.title} - Flashcards de DevOps`,
+    socialTitle: `${flashcardSet.title} - Bancada`,
     description: truncateMetaDescription(flashcardSet.description),
     image: `/images/flashcards/${id}-og.png`,
     imageAlt: flashcardSet.title,
@@ -105,7 +105,7 @@ export default async function FlashcardPage({ params }: FlashcardPageProps) {
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <BookOpen className="w-4 h-4" />
-                  <span>{flashcardSet.cardCount} cards</span>
+                  <span>{flashcardSet.cardCount} cartões</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
@@ -186,7 +186,7 @@ async function FlashcardRelated({ currentSet }: { currentSet: FlashCardSet }) {
     <section className="container mx-auto px-4 pb-16">
       <div className="max-w-4xl mx-auto">
         <RelatedContent
-          title="More flashcard decks"
+          title="Mais conjuntos de flashcards"
           items={related.map((r) => ({
             slug: r.slug,
             title: r.title,

@@ -77,9 +77,6 @@ function DatabaseScalingEducational() {
           <Link className="rounded-md border bg-background px-3 py-2 hover:border-primary/50" href="/games/dbms-simulator">
             DBMS simulator
           </Link>
-          <Link className="rounded-md border bg-background px-3 py-2 hover:border-primary/50" href="/guides/introduction-to-postgres">
-            PostgreSQL guide
-          </Link>
         </div>
       </div>
     </>
@@ -91,7 +88,7 @@ export default function DatabaseReplicationShardingScalingPage() {
     <SimulatorShell
       slug="database-replication-sharding-scaling"
       educational={<DatabaseScalingEducational />}
-      shareText="Try the Database Replication, Sharding & Scaling Simulator on DevOps Daily."
+      shareText="Try the Database Replication, Sharding & Scaling Simulator on Bancada."
       seoLearningPoints={[
         'Understand when replication helps reads and availability',
         'See why sharding is needed for write scaling',

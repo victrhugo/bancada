@@ -1031,27 +1031,27 @@ export default function RoadmapPage() {
                 </h2>
 
                 <p className="max-w-2xl mx-auto mb-8 text-xl text-muted-foreground">
-                  Join thousands of engineers who are learning DevOps with our interactive learning
-                  resources and hands-on guides.
+                  Join thousands of engineers who are learning DevOps with our interactive
+                  exercises and simulators.
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-4 mb-8">
                   <Button asChild size="lg">
-                    <Link href="/guides">
+                    <Link href="/exercises">
                       <BookOpen className="w-4 h-4 mr-2" />
-                      Browse Learning Resources
+                      Browse Exercises
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
-                    <Link href="/posts">
+                    <Link href="/quizzes">
                       <TrendingUp className="w-4 h-4 mr-2" />
-                      Read Latest Articles
+                      Take a Quiz
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
                     <Link href="/games">
                       <PlayCircle className="w-4 h-4 mr-2" />
-                      Practice with Quizzes
+                      Practice with Simulators
                     </Link>
                   </Button>
                 </div>

@@ -194,7 +194,7 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
       '🎉 DEPLOYMENT SUCCESSFUL! 🎉',
       '',
       '🚀 Your application is now live!',
-      '📊 Dashboard: https://devops-daily.com',
+      '📊 Dashboard: https://bancada.app',
       '📈 Metrics: All systems operational',
     ],
   ];
@@ -387,7 +387,7 @@ export function EasterEggTerminal({ variant = 'icon' }: { variant?: 'icon' | 'te
       response: {
         output: [
           '╔═══════════════════════════════════════════════╗',
-          '║   Welcome to DevOps Daily Terminal v1.0.0    ║',
+          '║   Welcome to Bancada Terminal v1.0.0    ║',
           '╚═══════════════════════════════════════════════╝',
           '',
           'Type "help" to see available commands.',

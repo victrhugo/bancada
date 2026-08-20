@@ -39,7 +39,7 @@ export function BackToTop() {
    <button
      onClick={scrollToTop}
      onKeyDown={handleKeyDown}
-     aria-label="Back to top"
+     aria-label="Voltar ao topo"
      className="
        fixed bottom-8 right-8 z-50
        p-3 rounded-full

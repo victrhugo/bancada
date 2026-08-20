@@ -74,7 +74,7 @@ export function QuestionPractice({
                   : 'bg-amber-500/10 text-amber-700 dark:text-amber-400'
               }`}
             >
-              {rated ? 'got it' : 'review'}
+              {rated ? 'já sei' : 'revisar'}
             </span>
           )}
         </div>
@@ -85,7 +85,7 @@ export function QuestionPractice({
       <div className="p-5 sm:p-6 bg-muted/30 border-b">
         <p className="text-xs font-mono text-primary mb-2 flex items-center gap-1.5">
           <Lightbulb className="w-3.5 h-3.5" strokeWidth={1.5} />
-          // interview question
+          // pergunta de entrevista
         </p>
         <p className="text-base sm:text-lg leading-relaxed text-foreground">{question.question}</p>
       </div>
@@ -109,11 +109,11 @@ export function QuestionPractice({
         {!revealed && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-card/20 via-card/70 to-card">
             <p className="text-sm text-muted-foreground text-center max-w-xs px-4">
-              Answer out loud first, then check yourself against the model answer.
+              Responda em voz alta primeiro e depois confira com a resposta modelo.
             </p>
             <Button onClick={() => setRevealed(true)}>
               <Eye className="w-4 h-4 mr-2" />
-              Reveal answer
+              Revelar resposta
             </Button>
           </div>
         )}
@@ -123,7 +123,7 @@ export function QuestionPractice({
       {revealed && (
         <div className="p-5 sm:p-6 border-t">
           <p className="text-sm text-muted-foreground mb-3 text-center">
-            How did you do on this one?
+            Como você se saiu nessa?
           </p>
           <div className="flex gap-3 justify-center">
             <Button
@@ -134,7 +134,7 @@ export function QuestionPractice({
               }`}
             >
               <CheckCircle className="w-4 h-4 mr-2" />
-              Got it
+              Já sei
             </Button>
             <Button
               onClick={() => handleRate(false)}
@@ -144,7 +144,7 @@ export function QuestionPractice({
               }`}
             >
               <RotateCcw className="w-4 h-4 mr-2" />
-              Need review
+              Preciso revisar
             </Button>
           </div>
         </div>
@@ -159,7 +159,7 @@ function AnswerBody({ question }: { question: InterviewQuestion }) {
       {/* Sample answer */}
       <div>
         <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wide mb-2">
-          Sample answer
+          Resposta de exemplo
         </h3>
         <div className="rounded-md border border-emerald-500/30 bg-emerald-500/[0.06] p-4">
           <p className="leading-relaxed whitespace-pre-line text-foreground/90">
@@ -173,7 +173,7 @@ function AnswerBody({ question }: { question: InterviewQuestion }) {
         <div className="rounded-md border border-primary/30 bg-primary/[0.06] p-4">
           <h3 className="text-sm font-semibold mb-1.5 flex items-center gap-2 text-primary">
             <Lightbulb className="w-4 h-4" strokeWidth={1.5} />
-            Why this matters
+            Por que isso importa
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
             {question.explanation}
@@ -186,7 +186,7 @@ function AnswerBody({ question }: { question: InterviewQuestion }) {
         <div>
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wide mb-2 flex items-center gap-2">
             <Code className="w-3.5 h-3.5" strokeWidth={1.5} />
-            Code examples
+            Exemplos de código
           </h3>
           <div className="space-y-4">
             {question.codeExamples.map((example, index) => (
@@ -206,7 +206,7 @@ function AnswerBody({ question }: { question: InterviewQuestion }) {
         <div className="rounded-md border border-amber-500/30 bg-amber-500/[0.06] p-4">
           <h3 className="text-sm font-semibold mb-2 flex items-center gap-2 text-amber-700 dark:text-amber-400">
             <AlertTriangle className="w-4 h-4" strokeWidth={1.5} />
-            Common mistakes to avoid
+            Erros comuns a evitar
           </h3>
           <ul className="space-y-1.5">
             {question.commonMistakes.map((mistake, index) => (
@@ -223,7 +223,7 @@ function AnswerBody({ question }: { question: InterviewQuestion }) {
         <div>
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wide mb-2 flex items-center gap-2">
             <BookOpen className="w-3.5 h-3.5" strokeWidth={1.5} />
-            Likely follow-ups
+            Prováveis perguntas de acompanhamento
           </h3>
           <ul className="space-y-1.5">
             {question.followUpQuestions.map((fq, index) => (

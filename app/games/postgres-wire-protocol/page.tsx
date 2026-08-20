@@ -72,12 +72,6 @@ function PostgresWireProtocolEducational() {
           >
             Database indexing simulator
           </Link>
-          <Link
-            className="rounded-md border bg-background px-3 py-2 hover:border-primary/50"
-            href="/comparisons/postgresql-vs-mysql"
-          >
-            PostgreSQL vs MySQL
-          </Link>
         </div>
       </div>
     </>
@@ -89,7 +83,7 @@ export default function PostgresWireProtocolPage() {
     <SimulatorShell
       slug="postgres-wire-protocol"
       educational={<PostgresWireProtocolEducational />}
-      shareText="Try the PostgreSQL Wire Protocol Simulator on DevOps Daily."
+      shareText="Try the PostgreSQL Wire Protocol Simulator on Bancada."
       seoLearningPoints={[
         'Visualize PostgreSQL frontend and backend protocol messages',
         'Understand StartupMessage, AuthenticationSASL, and ReadyForQuery',

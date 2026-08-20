@@ -2,38 +2,38 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Junior DevOps Roadmap - Start Your DevOps Journey' },
+  title: { absolute: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps' },
   description:
-    'A beginner-friendly roadmap specifically designed for aspiring DevOps engineers. Clear, focused learning path without the overwhelm.',
+    'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
   alternates: {
     canonical: '/roadmap/junior',
   },
   openGraph: {
-    title: 'Junior DevOps Roadmap - Start Your DevOps Journey',
+    title: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps',
     description:
-      'A beginner-friendly roadmap specifically designed for aspiring DevOps engineers. Clear, focused learning path without the overwhelm.',
-    url: 'https://devops-daily.com/roadmap/junior',
+      'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
+    url: 'https://bancada.app/roadmap/junior',
     type: 'website',
     images: [
       {
-        url: 'https://devops-daily.com/images/junior-roadmap-og.png',
+        url: 'https://bancada.app/images/junior-roadmap-og.png',
         width: 1200,
         height: 630,
-        alt: 'Junior DevOps Roadmap - Start Your Journey',
+        alt: 'Roadmap DevOps Júnior - Comece Sua Jornada',
       },
     ],
   },
   twitter: {
-    title: 'Junior DevOps Roadmap - Start Your DevOps Journey',
+    title: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps',
     description:
-      'A beginner-friendly roadmap specifically designed for aspiring DevOps engineers. Clear, focused learning path without the overwhelm.',
+      'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
     card: 'summary_large_image',
     images: [
       {
-        url: 'https://devops-daily.com/images/junior-roadmap-og.png',
+        url: 'https://bancada.app/images/junior-roadmap-og.png',
         width: 1200,
         height: 630,
-        alt: 'Junior DevOps Roadmap - Start Your Journey',
+        alt: 'Roadmap DevOps Júnior - Comece Sua Jornada',
       },
     ],
   },
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: 'DevOps Daily',
-      url: 'https://devops-daily.com',
+      name: 'Bancada',
+      url: 'https://bancada.app',
     },
   ],
 };

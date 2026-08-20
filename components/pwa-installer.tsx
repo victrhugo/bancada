@@ -115,17 +115,17 @@ export function PWAInstaller() {
             </div>
 
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-sm">Install DevOps Daily</h3>
+              <h3 className="font-semibold text-sm">Instalar o Bancada</h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Get quick access and work offline with our PWA!
+                Tenha acesso rápido e funcione offline com nosso PWA!
               </p>
 
               <div className="flex gap-2 mt-3">
                 <Button size="sm" onClick={handleInstallClick} className="text-xs h-8">
-                  Install
+                  Instalar
                 </Button>
                 <Button variant="ghost" size="sm" onClick={handleDismiss} className="text-xs h-8">
-                  No thanks
+                  Não, obrigado
                 </Button>
               </div>
             </div>
@@ -135,7 +135,7 @@ export function PWAInstaller() {
               size="sm"
               onClick={handleDismiss}
               className="shrink-0 h-8 w-8 p-0"
-              aria-label="Dismiss install prompt"
+              aria-label="Dispensar aviso de instalação"
             >
               <X className="h-4 w-4" />
             </Button>

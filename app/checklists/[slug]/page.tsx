@@ -28,18 +28,18 @@ export async function generateMetadata(
 
   if (!checklist) {
     return {
-      title: 'Checklist Not Found',
+      title: 'Checklist não encontrado',
     };
   }
 
   return detailPageMetadata({
     path: `/checklists/${resolvedParams.slug}`,
     title: checklist.title,
-    socialTitle: `${checklist.title} - The DevOps Daily`,
+    socialTitle: `${checklist.title} - Bancada`,
     description: truncateMetaDescription(checklist.description),
     image: `/images/checklists/${resolvedParams.slug}-og.png`,
     ogType: 'website',
-    siteName: 'The DevOps Daily',
+    siteName: 'Bancada',
     locale: 'en_US',
     twitterHandle: '@TheDevOpsDaily',
   });
@@ -88,7 +88,7 @@ export default async function ChecklistPage(
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'Home', url: '/' },
+          { name: 'Início', url: '/' },
           { name: 'Checklists', url: '/checklists' },
           { name: checklist.title, url: `/checklists/${checklist.slug}` },
         ]}
@@ -111,7 +111,7 @@ export default async function ChecklistPage(
           { label: checklist.title },
         ]}
         stats={[
-          { label: 'items', value: checklist.items.length },
+          { label: 'itens', value: checklist.items.length },
           { label: checklist.difficulty, value: '' },
           { label: checklist.estimatedTime, value: '' },
         ].filter(s => s.value !== '')}
@@ -129,7 +129,7 @@ export default async function ChecklistPage(
       {related.length > 0 && (
         <div className="container mx-auto px-4 pb-8">
           <RelatedContent
-            title="More checklists"
+            title="Mais checklists"
             items={related.map((c) => ({
               slug: c.slug,
               title: c.title,

@@ -103,7 +103,7 @@ function MongodbEducational() {
         <p className="text-sm text-muted-foreground">
           The{' '}
           <a
-            href="https://devops-daily.com/games/sql-terminal-simulator"
+            href="https://bancada.app/games/sql-terminal-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
             SQL Terminal Simulator
@@ -111,7 +111,7 @@ function MongodbEducational() {
           uses the same e-commerce data as tables, so you can see the exact difference between a
           document find() and a SQL SELECT. The{' '}
           <a
-            href="https://devops-daily.com/games/dbms-simulator"
+            href="https://bancada.app/games/dbms-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
             Database Types Simulator

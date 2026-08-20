@@ -1,38 +1,37 @@
 import { ExercisesList } from '@/components/exercises-list';
-import { SponsorSidebar } from '@/components/sponsor-sidebar';
 import { getAllExercises, getExerciseStats } from '@/lib/exercises';
 import { Target } from 'lucide-react';
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/page-hero';
 
 export const metadata: Metadata = {
-  title: 'DevOps Exercises & Labs - Hands-On Learning',
+  title: 'Exercícios e Laboratórios de DevOps - Aprendizado na Prática',
   description:
-    'Practice real-world DevOps skills with our comprehensive collection of hands-on exercises and labs. From Docker to Kubernetes, CI/CD to Infrastructure as Code.',
+    'Pratique habilidades reais de DevOps com nossa coleção completa de exercícios práticos e laboratórios. De Docker a Kubernetes, CI/CD a Infrastructure as Code.',
   alternates: {
     canonical: '/exercises',
   },
   openGraph: {
-    title: 'DevOps Exercises & Labs - Hands-On Learning | DevOps Daily',
+    title: 'Exercícios e Laboratórios de DevOps - Aprendizado na Prática | Bancada',
     description:
-      'Practice real-world DevOps skills with our comprehensive collection of hands-on exercises and labs. From Docker to Kubernetes, CI/CD to Infrastructure as Code.',
+      'Pratique habilidades reais de DevOps com nossa coleção completa de exercícios práticos e laboratórios. De Docker a Kubernetes, CI/CD a Infrastructure as Code.',
     url: '/exercises',
     type: 'website',
     images: [
       {
-        url: 'https://devops-daily.com/images/exercises-og-image.png',
+        url: 'https://bancada.app/images/exercises-og-image.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Exercises & Labs',
+        alt: 'Exercícios e Laboratórios de DevOps',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DevOps Exercises & Labs - Hands-On Learning | DevOps Daily',
+    title: 'Exercícios e Laboratórios de DevOps - Aprendizado na Prática | Bancada',
     description:
-      'Practice real-world DevOps skills with our comprehensive collection of hands-on exercises and labs.',
-    images: ['https://devops-daily.com/images/exercises-og-image.png'],
+      'Pratique habilidades reais de DevOps com nossa coleção completa de exercícios práticos e laboratórios.',
+    images: ['https://bancada.app/images/exercises-og-image.png'],
   },
 };
 
@@ -42,31 +41,20 @@ export default async function ExercisesPage() {
   return (
     <div className="min-h-screen">
       <PageHero
-        title="Learn DevOps Through Real-World Exercises"
-        accentWord="Real-World"
-        description="Strengthen your DevOps expertise with hands-on exercises designed to simulate real-world environments. Build skills through practice, not theory."
+        title="Aprenda DevOps Através de Exercícios Reais"
+        accentWord="Reais"
+        description="Fortaleça sua expertise em DevOps com exercícios práticos criados para simular ambientes reais. Desenvolva habilidades através da prática, não da teoria."
         icon={Target}
-        breadcrumbs={[{ label: 'Exercises' }]}
+        breadcrumbs={[{ label: 'Exercícios' }]}
         stats={[
-          { label: 'exercises', value: stats.total },
-          { label: 'min avg. time', value: Math.round(stats.averageTime) },
+          { label: 'exercícios', value: stats.total },
+          { label: 'min. tempo médio', value: Math.round(stats.averageTime) },
         ]}
       />
 
-      <div className="py-8 container mx-auto px-4 grid grid-cols-1 gap-8 lg:grid-cols-12">
-        {/* Main Content */}
-        <div className="lg:col-span-9">
-          <ExercisesList exercises={exercises} />
-        </div>
-
-        {/* Sidebar */}
-        <aside className="lg:col-span-3">
-          <div className="sticky space-y-6 top-8">
-            <SponsorSidebar />
-          </div>
-        </aside>
+      <div className="py-8 container mx-auto px-4">
+        <ExercisesList exercises={exercises} />
       </div>
-
     </div>
   );
 }

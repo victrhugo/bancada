@@ -16,16 +16,16 @@ import {
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'DevOps Quizzes & Tests',
+  title: 'Quizzes e Testes de DevOps',
   description:
-    'Interactive quizzes to test and improve your DevOps knowledge across various technologies and practices.',
+    'Quizzes interativos para testar e aprimorar seus conhecimentos de DevOps em diversas tecnologias e práticas.',
   alternates: {
     canonical: '/quizzes',
   },
   openGraph: {
-    title: 'DevOps Quizzes & Tests - DevOps Daily',
+    title: 'Quizzes e Testes de DevOps - Bancada',
     description:
-      'Test your DevOps knowledge with interactive quizzes covering Git, Docker, Kubernetes, Terraform, and more.',
+      'Teste seus conhecimentos de DevOps com quizzes interativos sobre Git, Docker, Kubernetes, Terraform e muito mais.',
     type: 'website',
     url: '/quizzes',
     images: [
@@ -33,15 +33,15 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Quizzes',
+        alt: 'Quizzes de DevOps',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DevOps Quizzes & Tests - DevOps Daily',
+    title: 'Quizzes e Testes de DevOps - Bancada',
     description:
-      'Test your DevOps knowledge with interactive quizzes covering Git, Docker, Kubernetes, Terraform, and more.',
+      'Teste seus conhecimentos de DevOps com quizzes interativos sobre Git, Docker, Kubernetes, Terraform e muito mais.',
     images: ['/og-image.png'],
   },
 };
@@ -52,9 +52,9 @@ export default async function QuizzesPage() {
   return (
     <div className="min-h-screen">
       <PageHero
-        title="Challenge Yourself, Level Up Your Skills"
-        accentWord="Level Up"
-        description="Master DevOps with interactive quizzes designed by industry experts. Test your knowledge, track your progress, and earn achievements as you advance."
+        title="Desafie-se e Evolua Suas Habilidades"
+        accentWord="Evolua Suas Habilidades"
+        description="Domine DevOps com quizzes interativos criados por especialistas do setor. Teste seus conhecimentos, acompanhe seu progresso e conquiste medalhas à medida que avança."
         icon={Trophy}
         breadcrumbs={[{ label: 'Quizzes' }]}
         stats={[{ label: 'quizzes', value: quizzes.length }]}
@@ -64,10 +64,10 @@ export default async function QuizzesPage() {
       {quizzes.length > 0 ? (
         <section className="py-8 container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Available Quizzes</h2>
+            <h2 className="text-3xl font-bold mb-4">Quizzes Disponíveis</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose from our collection of DevOps quizzes designed to test your practical knowledge
-              and help you identify areas for skill development.
+              Escolha entre nossa coleção de quizzes de DevOps criados para testar seu conhecimento
+              prático e ajudar você a identificar áreas para desenvolver suas habilidades.
             </p>
           </div>
 
@@ -77,9 +77,9 @@ export default async function QuizzesPage() {
         <section className="py-16 container mx-auto px-4">
           <div className="text-center">
             <BookOpen className="h-16 w-16 mx-auto mb-6 text-muted-foreground" />
-            <h2 className="text-2xl font-bold mb-4">No Quizzes Available</h2>
+            <h2 className="text-2xl font-bold mb-4">Nenhum Quiz Disponível</h2>
             <p className="text-muted-foreground mb-8">
-              We're working on adding more quizzes. Check back soon!
+              Estamos trabalhando para adicionar mais quizzes. Volte em breve!
             </p>
           </div>
         </section>
@@ -89,9 +89,9 @@ export default async function QuizzesPage() {
       <section className="py-16 container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Take Our Quizzes?</h2>
+            <h2 className="text-3xl font-bold mb-4">Por Que Fazer Nossos Quizzes?</h2>
             <p className="text-muted-foreground">
-              Our quizzes are designed to provide practical learning experiences
+              Nossos quizzes foram criados para proporcionar experiências de aprendizado prático
             </p>
           </div>
 
@@ -100,10 +100,10 @@ export default async function QuizzesPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-linear-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                 <Target className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Skill Assessment</h3>
+              <h3 className="text-xl font-semibold mb-2">Avaliação de Habilidades</h3>
               <p className="text-muted-foreground">
-                Evaluate your current knowledge and identify areas for improvement across different
-                DevOps technologies.
+                Avalie seu conhecimento atual e identifique áreas de melhoria em diferentes
+                tecnologias de DevOps.
               </p>
             </div>
 
@@ -111,10 +111,10 @@ export default async function QuizzesPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                 <Activity className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Interactive Learning</h3>
+              <h3 className="text-xl font-semibold mb-2">Aprendizado Interativo</h3>
               <p className="text-muted-foreground">
-                Get immediate feedback on your answers with detailed explanations to help you learn
-                from mistakes.
+                Receba feedback imediato sobre suas respostas com explicações detalhadas para ajudar
+                você a aprender com os erros.
               </p>
             </div>
 
@@ -122,10 +122,10 @@ export default async function QuizzesPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-linear-to-br from-indigo-500 to-indigo-600 flex items-center justify-center">
                 <Trophy className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Track Progress</h3>
+              <h3 className="text-xl font-semibold mb-2">Acompanhe seu Progresso</h3>
               <p className="text-muted-foreground">
-                Monitor your improvement over time and see how you stack up against other DevOps
-                professionals.
+                Monitore sua evolução ao longo do tempo e veja como você se compara a outros
+                profissionais de DevOps.
               </p>
             </div>
           </div>
@@ -137,22 +137,22 @@ export default async function QuizzesPage() {
         <div className="bg-primary/5 backdrop-blur-sm border border-border/50 rounded-md p-8 md:p-12">
           <div className="max-w-3xl mx-auto text-center">
             <Sparkles className="h-12 w-12 mx-auto mb-6 text-primary" />
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Want to contribute a quiz?</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Quer contribuir com um quiz?</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Help us expand our quiz collection by contributing questions for technologies you're
-              passionate about. Share your expertise with the DevOps community!
+              Ajude-nos a expandir nossa coleção de quizzes contribuindo com perguntas sobre
+              tecnologias que você domina. Compartilhe seu conhecimento com a comunidade DevOps!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg">
                 <GitFork className="mr-2 h-4 w-4" />
                 <Link href="https://github.com/The-DevOps-Daily/devops-daily/issues/new/choose">
-                  Contribute Questions
+                  Contribuir com Perguntas
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="/games">
                   <Zap className="mr-2 h-4 w-4" />
-                  Try Interactive Games
+                  Experimente os Jogos Interativos
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

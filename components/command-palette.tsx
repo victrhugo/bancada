@@ -12,12 +12,9 @@ import {
   CommandSeparator,
 } from '@/components/ui/command';
 import {
-  FileText,
-  BookOpen,
   Dumbbell,
   HelpCircle,
   Gamepad2,
-  Newspaper,
   Home,
   Search,
   Clock,
@@ -25,26 +22,19 @@ import {
   Sparkles,
   ListChecks,
   MessageSquare,
-  Scale,
   Layers,
-  Wrench,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { TYPE_COLORS, TYPE_LABELS, type SearchItem } from '@/lib/search-types';
 
 const TYPE_ICONS = {
-  post: FileText,
-  guide: BookOpen,
   exercise: Dumbbell,
   quiz: HelpCircle,
   game: Gamepad2,
-  news: Newspaper,
   page: Home,
   checklist: ListChecks,
   'interview-question': MessageSquare,
-  comparison: Scale,
   flashcard: Layers,
-  tool: Wrench,
 };
 
 export function CommandPalette() {
@@ -75,7 +65,7 @@ export function CommandPalette() {
   // Load recent searches from localStorage
   useEffect(() => {
     if (open) {
-      const saved = localStorage.getItem('devops-daily-recent-searches');
+      const saved = localStorage.getItem('bancada-recent-searches');
       if (saved) {
         try {
           setRecentSearches(JSON.parse(saved));
@@ -182,7 +172,7 @@ export function CommandPalette() {
     // Save to recent searches
     const recent = [item, ...recentSearches.filter((r) => r.id !== item.id)].slice(0, 5);
     setRecentSearches(recent);
-    localStorage.setItem('devops-daily-recent-searches', JSON.stringify(recent));
+    localStorage.setItem('bancada-recent-searches', JSON.stringify(recent));
 
     // Navigate
     router.push(item.url);
@@ -192,7 +182,7 @@ export function CommandPalette() {
 
   const clearRecentSearches = () => {
     setRecentSearches([]);
-    localStorage.removeItem('devops-daily-recent-searches');
+    localStorage.removeItem('bancada-recent-searches');
   };
 
   return (
@@ -203,7 +193,7 @@ export function CommandPalette() {
         className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-lg transition-colors border border-border/50 hover:border-border"
       >
         <Search className="w-4 h-4" />
-        <span>Search...</span>
+        <span>Buscar...</span>
         <kbd className="hidden md:inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-background px-1.5 font-mono text-xs font-medium text-muted-foreground">
           <span className="text-xs">⌘</span>K
         </kbd>
@@ -213,7 +203,7 @@ export function CommandPalette() {
       <button
         onClick={() => setOpen(true)}
         className="sm:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
-        aria-label="Search"
+        aria-label="Buscar"
       >
         <Search className="w-5 h-5" />
       </button>
@@ -221,7 +211,7 @@ export function CommandPalette() {
       {/* Command Palette Dialog */}
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput
-          placeholder="Search posts, guides, comparisons, flashcards, tools..."
+          placeholder="Buscar exercícios, quizzes, flashcards, checklists..."
           value={query}
           onValueChange={setQuery}
         />
@@ -230,14 +220,14 @@ export function CommandPalette() {
             <div className="py-6 text-center text-sm text-muted-foreground">
               <div className="flex items-center justify-center gap-2">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-                Loading search index...
+                Carregando índice de busca...
               </div>
             </div>
           ) : query === '' ? (
             <>
               {/* Recent Searches */}
               {recentSearches.length > 0 && (
-                <CommandGroup heading="Recent">
+                <CommandGroup heading="Recentes">
                   {recentSearches.map((item) => {
                     const Icon = TYPE_ICONS[item.type];
                     return (
@@ -263,30 +253,21 @@ export function CommandPalette() {
                     );
                   })}
                   <CommandItem onSelect={clearRecentSearches} className="justify-center text-xs">
-                    Clear recent searches
+                    Limpar buscas recentes
                   </CommandItem>
                 </CommandGroup>
               )}
 
               {/* Quick Actions */}
-              <CommandGroup heading="Quick Actions">
+              <CommandGroup heading="Ações Rápidas">
                 <CommandItem
                   onSelect={() => {
-                    router.push('/posts');
+                    router.push('/exercises');
                     setOpen(false);
                   }}
                 >
-                  <FileText className="w-4 h-4 mr-2" />
-                  Browse All Posts
-                </CommandItem>
-                <CommandItem
-                  onSelect={() => {
-                    router.push('/guides');
-                    setOpen(false);
-                  }}
-                >
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  View Guides
+                  <Dumbbell className="w-4 h-4 mr-2" />
+                  Ver Exercícios
                 </CommandItem>
                 <CommandItem
                   onSelect={() => {
@@ -295,7 +276,7 @@ export function CommandPalette() {
                   }}
                 >
                   <Gamepad2 className="w-4 h-4 mr-2" />
-                  Play Games
+                  Jogar
                 </CommandItem>
                 <CommandItem
                   onSelect={() => {
@@ -304,7 +285,16 @@ export function CommandPalette() {
                   }}
                 >
                   <HelpCircle className="w-4 h-4 mr-2" />
-                  Take a Quiz
+                  Fazer um Quiz
+                </CommandItem>
+                <CommandItem
+                  onSelect={() => {
+                    router.push('/flashcards');
+                    setOpen(false);
+                  }}
+                >
+                  <Layers className="w-4 h-4 mr-2" />
+                  Estudar Flashcards
                 </CommandItem>
               </CommandGroup>
 
@@ -312,12 +302,12 @@ export function CommandPalette() {
               <div className="px-4 py-3 text-xs text-muted-foreground border-t">
                 <div className="flex items-center gap-2 mb-1">
                   <Sparkles className="w-3 h-3" />
-                  <span className="font-medium">Pro tips:</span>
+                  <span className="font-medium">Dicas:</span>
                 </div>
                 <ul className="space-y-1 ml-5">
-                  <li>• Search by title, description, category, or tags</li>
-                  <li>• Try: "kubernetes", "docker guide", "ci/cd quiz"</li>
-                  <li>• Press ⌘K (or Ctrl+K) to toggle search anytime</li>
+                  <li>• Busque por título, descrição, categoria ou tags</li>
+                  <li>• Tente: "kubernetes", "docker", "quiz de ci/cd"</li>
+                  <li>• Pressione ⌘K (ou Ctrl+K) para abrir a busca a qualquer momento</li>
                 </ul>
               </div>
             </>
@@ -325,9 +315,9 @@ export function CommandPalette() {
             <CommandEmpty>
               <div className="py-6 text-center">
                 <Search className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-sm font-medium">No results found</p>
+                <p className="text-sm font-medium">Nenhum resultado encontrado</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Try different keywords or browse categories
+                  Tente outras palavras-chave ou explore as categorias
                 </p>
               </div>
             </CommandEmpty>
@@ -386,8 +376,8 @@ export function CommandPalette() {
 
               {/* Results Summary */}
               <div className="px-4 py-3 text-xs text-muted-foreground border-t">
-                Found {filteredResults.length} result{filteredResults.length !== 1 ? 's' : ''} for
-                &quot;{query}&quot;
+                {filteredResults.length} resultado{filteredResults.length !== 1 ? 's' : ''}{' '}
+                encontrado{filteredResults.length !== 1 ? 's' : ''} para &quot;{query}&quot;
               </div>
             </>
           )}

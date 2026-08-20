@@ -30,7 +30,7 @@ export function ChecklistActions({ checklist, progress, onReset }: ChecklistActi
   };
 
   const handleReset = () => {
-    if (window.confirm('Are you sure you want to reset all progress? This action cannot be undone.')) {
+    if (window.confirm('Tem certeza de que deseja redefinir todo o progresso? Essa ação não pode ser desfeita.')) {
       onReset();
     }
   };
@@ -40,26 +40,26 @@ export function ChecklistActions({ checklist, progress, onReset }: ChecklistActi
       <button
         onClick={handleExport}
         className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium"
-        aria-label="Export checklist as markdown"
+        aria-label="Exportar checklist como markdown"
       >
         <Download className="w-4 h-4" />
-        Export Markdown
+        Exportar Markdown
       </button>
 
       <button
         onClick={handleShare}
         className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 rounded-lg transition-colors text-sm font-medium"
-        aria-label="Copy shareable link"
+        aria-label="Copiar link para compartilhar"
       >
         {copied ? (
           <>
             <Check className="w-4 h-4" />
-            Copied!
+            Copiado!
           </>
         ) : (
           <>
             <Share2 className="w-4 h-4" />
-            Share
+            Compartilhar
         </>
         )}
       </button>
@@ -67,10 +67,10 @@ export function ChecklistActions({ checklist, progress, onReset }: ChecklistActi
       <button
         onClick={handleReset}
         className="flex items-center gap-2 px-4 py-2 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 rounded-lg transition-colors text-sm font-medium"
-        aria-label="Reset checklist progress"
+        aria-label="Redefinir progresso do checklist"
       >
         <RotateCcw className="w-4 h-4" />
-        Reset
+        Redefinir
       </button>
     </div>
   );

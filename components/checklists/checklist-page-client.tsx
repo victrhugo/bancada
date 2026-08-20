@@ -72,7 +72,7 @@ export function ChecklistPageClient({ checklist }: ChecklistPageClientProps) {
         className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline mb-6 print:hidden"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to all checklists
+        Voltar para todos os checklists
       </Link>
 
       {/* Title + description + estimated-time stats live in <PageHero>; we keep
@@ -138,7 +138,7 @@ export function ChecklistPageClient({ checklist }: ChecklistPageClientProps) {
       {checklist.resources && checklist.resources.length > 0 && (
         <div className="mt-12 p-6 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg">
           <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Additional Resources
+            Recursos Adicionais
           </h2>
           <ul className="space-y-2">
             {checklist.resources.map((resource, index) => (

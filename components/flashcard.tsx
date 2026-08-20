@@ -108,14 +108,14 @@ export function FlashCard({
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
             <span>
-              Card {currentIndex + 1} of {totalCards}
+              Cartão {currentIndex + 1} de {totalCards}
             </span>
             <Badge variant="outline">{card.category}</Badge>
           </div>
           {/* Mobile swipe hint - only show on touch devices */}
           <div className="sm:hidden flex items-center justify-center gap-2 text-xs text-muted-foreground/70 bg-muted/30 rounded-md py-2 px-3">
             <MoveHorizontal className="h-3 w-3" />
-            <span>Swipe left/right to navigate cards</span>
+            <span>Deslize para a esquerda/direita para navegar entre os cartões</span>
           </div>
         </div>
       )}
@@ -143,7 +143,7 @@ export function FlashCard({
             handleFlip()
           }
         }}
-        aria-label="Flip card"
+        aria-label="Virar cartão"
       >
         <div
           className={cn(
@@ -161,14 +161,14 @@ export function FlashCard({
             <div className="flex flex-col h-full w-full">
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="text-xs font-semibold text-primary uppercase tracking-wider">Question</div>
+                  <div className="text-xs font-semibold text-primary uppercase tracking-wider">Pergunta</div>
                   <p className="text-lg sm:text-xl md:text-2xl font-bold leading-tight">{card.front}</p>
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2 text-muted-foreground text-xs sm:text-sm pb-2">
                 <RotateCw className="h-4 w-4" />
-                <span className="hidden sm:inline">Click to reveal answer</span>
-                <span className="sm:hidden">Tap to reveal</span>
+                <span className="hidden sm:inline">Clique para revelar a resposta</span>
+                <span className="sm:hidden">Toque para revelar</span>
               </div>
             </div>
           </Card>
@@ -182,7 +182,7 @@ export function FlashCard({
           >
             <div className="text-center space-y-4">
               <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-                Answer
+                Resposta
               </div>
               <p className="text-base sm:text-lg leading-relaxed">{card.back}</p>
               <div className="pt-4 flex flex-wrap gap-2 justify-center">

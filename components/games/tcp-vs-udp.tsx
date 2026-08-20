@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 /**
  * TCP vs UDP Visual Simulator
- * Designed for devops-daily.com
+ * Designed for bancada.app
  * * Features:
  * - Particle-based network simulation
  * - TCP 3-Way Handshake visualization

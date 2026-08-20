@@ -44,21 +44,21 @@ export function CookieBanner() {
       style={{ willChange: 'transform, opacity' }}
     >
       {/* Gradient border accent */}
-      <div className="absolute inset-0 bg-linear-to-r from-primary/20 via-purple-500/20 to-primary/20 rounded-2xl opacity-50 blur-sm" />
+      <div className="absolute inset-0 bg-linear-to-r from-primary/20 via-primary/10 to-primary/20 rounded-2xl opacity-50 blur-sm" />
 
       <div className="relative p-4">
         {/* Header with icon and close button */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-linear-to-br from-primary/10 to-purple-500/10 rounded-lg">
+            <div className="p-1.5 bg-linear-to-br from-primary/10 to-primary/5 rounded-lg">
               <Cookie className="h-4 w-4 text-primary" />
             </div>
-            <span className="text-sm font-medium text-foreground">Cookie Notice</span>
+            <span className="text-sm font-medium text-foreground">Aviso de Cookies</span>
           </div>
           <button
             onClick={dismissBanner}
             className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
-            aria-label="Dismiss cookie notice"
+            aria-label="Dispensar aviso de cookies"
           >
             <X className="h-4 w-4" />
           </button>
@@ -66,9 +66,7 @@ export function CookieBanner() {
 
         {/* Content */}
         <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-          We use cookies to analyse site usage and improve DevOps Daily.
-          <br className="hidden sm:block" />
-          See our <a href="/privacy" className="underline hover:text-foreground">Privacy Policy</a> for details.
+          Usamos cookies para analisar o uso do site e melhorar o Bancada.
         </p>
 
         {/* Action buttons */}
@@ -86,18 +84,18 @@ export function CookieBanner() {
             "
           >
             <Check className="h-3.5 w-3.5" />
-            Got it
+            Entendi
           </button>
           <button
             onClick={dismissBanner}
             className="
-              px-4 py-2 text-sm font-medium text-muted-foreground 
-              hover:text-foreground hover:bg-muted/50 
+              px-4 py-2 text-sm font-medium text-muted-foreground
+              hover:text-foreground hover:bg-muted/50
               rounded-xl transition-all duration-200
               focus:outline-none focus:ring-2 focus:ring-muted focus:ring-offset-2
             "
           >
-            Dismiss
+            Dispensar
           </button>
         </div>
       </div>

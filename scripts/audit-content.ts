@@ -3,9 +3,8 @@
 /**
  * Audit content files for structural issues.
  *
- * Checks posts (frontmatter fields, code blocks), quizzes (totalPoints,
- * difficulty counts, correctAnswer), exercises (required fields, categories),
- * and guides (index.md, part ordering).
+ * Checks quizzes (totalPoints, difficulty counts, correctAnswer) and
+ * exercises (required fields, categories).
  *
  * Usage:
  *   npx tsx scripts/audit-content.ts                # audit everything
@@ -13,7 +12,7 @@
  *   npx tsx scripts/audit-content.ts --json          # JSON output for agents
  */
 
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
 const CONTENT_DIR = join(process.cwd(), 'content');
@@ -33,112 +32,9 @@ interface Issue {
 }
 
 interface AuditReport {
-  postsScanned: number;
   quizzesScanned: number;
   exercisesScanned: number;
-  guidesScanned: number;
   issues: Issue[];
-}
-
-const VALID_CATEGORIES = readdirSync(join(CONTENT_DIR, 'categories'))
-  .filter(f => f.endsWith('.md'))
-  .map(f => f.replace('.md', ''));
-
-// ── Post Auditing ──
-
-function parseFrontmatter(content: string): Record<string, any> | null {
-  const match = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return null;
-
-  const fm: Record<string, any> = {};
-  const lines = match[1].split('\n');
-  let currentKey = '';
-  let inArray = false;
-
-  for (const line of lines) {
-    if (line.match(/^\w[\w\s]*:/)) {
-      const [key, ...rest] = line.split(':');
-      currentKey = key.trim();
-      const value = rest.join(':').trim();
-      if (value) {
-        fm[currentKey] = value.replace(/^['"]|['"]$/g, '');
-      }
-      inArray = false;
-    } else if (line.match(/^\s+-\s/)) {
-      if (!fm[currentKey]) fm[currentKey] = [];
-      if (Array.isArray(fm[currentKey])) {
-        fm[currentKey].push(line.replace(/^\s+-\s/, '').trim());
-      }
-    } else if (line.match(/^\s+\w+:/)) {
-      // Nested object (category, author)
-      if (!fm[currentKey] || typeof fm[currentKey] === 'string') {
-        fm[currentKey] = {};
-      }
-      const [subKey, ...subRest] = line.trim().split(':');
-      fm[currentKey][subKey.trim()] = subRest.join(':').trim().replace(/^['"]|['"]$/g, '');
-    }
-  }
-
-  return fm;
-}
-
-function auditPosts(): { count: number; issues: Issue[] } {
-  const dir = join(CONTENT_DIR, 'posts');
-  const files = readdirSync(dir).filter(f => f.endsWith('.md'));
-  const issues: Issue[] = [];
-
-  const requiredFields = ['title', 'excerpt', 'category', 'date', 'publishedAt', 'author', 'tags'];
-
-  for (const file of files) {
-    const content = readFileSync(join(dir, file), 'utf-8');
-    const fm = parseFrontmatter(content);
-    const path = `content/posts/${file}`;
-
-    if (!fm) {
-      issues.push({ file: path, severity: 'critical', message: 'Missing or invalid frontmatter' });
-      continue;
-    }
-
-    // Check required fields
-    for (const field of requiredFields) {
-      if (!fm[field]) {
-        issues.push({ file: path, severity: 'critical', message: `Missing frontmatter field: ${field}` });
-      }
-    }
-
-    // Check category slug is valid
-    if (fm.category && typeof fm.category === 'object' && fm.category.slug) {
-      if (!VALID_CATEGORIES.includes(fm.category.slug)) {
-        issues.push({ file: path, severity: 'critical', message: `Invalid category slug: ${fm.category.slug}` });
-      }
-    }
-
-    // Check tags count
-    if (Array.isArray(fm.tags)) {
-      if (fm.tags.length < 3) {
-        issues.push({ file: path, severity: 'warning', message: `Only ${fm.tags.length} tags (recommend 3-8)` });
-      }
-    }
-
-    // Check for unlabeled code blocks
-    const body = content.split('---').slice(2).join('---');
-    const codeOpens = body.match(/^```(.*)$/gm) || [];
-    let inBlock = false;
-    for (const line of codeOpens) {
-      if (!inBlock) {
-        const lang = line.slice(3).trim();
-        if (!lang) {
-          issues.push({ file: path, severity: 'warning', message: 'Code block without language identifier' });
-          break; // Only report once per file
-        }
-        inBlock = true;
-      } else {
-        inBlock = false;
-      }
-    }
-  }
-
-  return { count: files.length, issues };
 }
 
 // ── Quiz Auditing ──
@@ -215,11 +111,6 @@ function auditExercises(): { count: number; issues: Issue[] } {
       continue;
     }
 
-    // Category check
-    if (data.category?.slug && !VALID_CATEGORIES.includes(data.category.slug)) {
-      issues.push({ file: path, severity: 'critical', message: `Invalid category slug: ${data.category.slug}` });
-    }
-
     // Steps required fields
     for (const step of (data.steps || [])) {
       if (!step.id || !step.title || !step.description) {
@@ -244,49 +135,6 @@ function auditExercises(): { count: number; issues: Issue[] } {
   return { count: files.length, issues };
 }
 
-// ── Guide Auditing ──
-
-function auditGuides(): { count: number; issues: Issue[] } {
-  const dir = join(CONTENT_DIR, 'guides');
-  const guideDirs = readdirSync(dir, { withFileTypes: true })
-    .filter(d => d.isDirectory())
-    .map(d => d.name);
-  const issues: Issue[] = [];
-
-  for (const guideDir of guideDirs) {
-    const guidePath = join(dir, guideDir);
-    const path = `content/guides/${guideDir}`;
-
-    // Check index.md exists
-    if (!existsSync(join(guidePath, 'index.md'))) {
-      issues.push({ file: path, severity: 'critical', message: 'Missing index.md' });
-      continue;
-    }
-
-    // Check index.md frontmatter
-    const indexContent = readFileSync(join(guidePath, 'index.md'), 'utf-8');
-    const fm = parseFrontmatter(indexContent);
-    if (!fm || !fm.title) {
-      issues.push({ file: `${path}/index.md`, severity: 'critical', message: 'Missing or invalid frontmatter in index.md' });
-    }
-
-    // Check parts have order field
-    const parts = readdirSync(guidePath)
-      .filter(f => f !== 'index.md' && f.endsWith('.md'))
-      .sort();
-
-    for (const part of parts) {
-      const partContent = readFileSync(join(guidePath, part), 'utf-8');
-      const partFm = parseFrontmatter(partContent);
-      if (!partFm || !partFm.order) {
-        issues.push({ file: `${path}/${part}`, severity: 'warning', message: 'Missing order field in frontmatter' });
-      }
-    }
-  }
-
-  return { count: guideDirs.length, issues };
-}
-
 // ── Main ──
 
 function run() {
@@ -296,18 +144,11 @@ function run() {
   const typeFilter = typeIdx !== -1 ? args[typeIdx + 1] : undefined;
 
   const report: AuditReport = {
-    postsScanned: 0,
     quizzesScanned: 0,
     exercisesScanned: 0,
-    guidesScanned: 0,
     issues: [],
   };
 
-  if (!typeFilter || typeFilter === 'posts') {
-    const r = auditPosts();
-    report.postsScanned = r.count;
-    report.issues.push(...r.issues);
-  }
   if (!typeFilter || typeFilter === 'quizzes') {
     const r = auditQuizzes();
     report.quizzesScanned = r.count;
@@ -316,11 +157,6 @@ function run() {
   if (!typeFilter || typeFilter === 'exercises') {
     const r = auditExercises();
     report.exercisesScanned = r.count;
-    report.issues.push(...r.issues);
-  }
-  if (!typeFilter || typeFilter === 'guides') {
-    const r = auditGuides();
-    report.guidesScanned = r.count;
     report.issues.push(...r.issues);
   }
 
@@ -339,10 +175,8 @@ function printHumanReport(report: AuditReport) {
   const warnings = report.issues.filter(i => i.severity === 'warning');
 
   console.log(`\n${BOLD}Content Audit Report${RESET}\n`);
-  console.log(`  Posts:     ${report.postsScanned}`);
   console.log(`  Quizzes:   ${report.quizzesScanned}`);
   console.log(`  Exercises: ${report.exercisesScanned}`);
-  console.log(`  Guides:    ${report.guidesScanned}`);
   console.log(`  Issues:    ${critical.length} critical, ${warnings.length} warnings\n`);
 
   if (critical.length > 0) {

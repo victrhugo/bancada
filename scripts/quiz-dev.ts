@@ -355,7 +355,7 @@ export const metadata: Metadata = {
   title: '${config.title} - Learn ${config.category} Concepts',
   description: '${config.description}',
   openGraph: {
-    title: '${config.title} - DevOps Daily',
+    title: '${config.title} - Bancada',
     description: '${config.description}',
     type: 'website',
     images: [
@@ -369,7 +369,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '${config.title} - DevOps Daily',
+    title: '${config.title} - Bancada',
     description: '${config.description}',
     images: ['/images/quizzes/${quizId}-og.svg'],
   },
@@ -412,7 +412,7 @@ export default async function ${componentName}QuizPage() {
             <h3 className="text-center text-lg font-medium mb-4">Share this quiz</h3>
             <div className="flex justify-center gap-4">
               <a
-                href={\`https://twitter.com/intent/tweet?text=\${encodeURIComponent('Test your ${config.category} skills with this interactive quiz!')}&url=\${encodeURIComponent('https://devops-daily.com/games/${quizId}-quiz')}\`}
+                href={\`https://twitter.com/intent/tweet?text=\${encodeURIComponent('Test your ${config.category} skills with this interactive quiz!')}&url=\${encodeURIComponent('https://bancada.app/games/${quizId}-quiz')}\`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center p-3 bg-[#1DA1F2] text-white rounded-full hover:bg-[#1a91da] transition-colors"
@@ -421,7 +421,7 @@ export default async function ${componentName}QuizPage() {
                 <span className="sr-only">Share on Twitter</span>
               </a>
               <a
-                href={\`https://www.facebook.com/sharer/sharer.php?u=\${encodeURIComponent('https://devops-daily.com/games/${quizId}-quiz')}\`}
+                href={\`https://www.facebook.com/sharer/sharer.php?u=\${encodeURIComponent('https://bancada.app/games/${quizId}-quiz')}\`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center p-3 bg-[#1877F2] text-white rounded-full hover:bg-[#166fe5] transition-colors"
@@ -430,7 +430,7 @@ export default async function ${componentName}QuizPage() {
                 <span className="sr-only">Share on Facebook</span>
               </a>
               <a
-                href={\`https://www.linkedin.com/sharing/share-offsite/?url=\${encodeURIComponent('https://devops-daily.com/games/${quizId}-quiz')}\`}
+                href={\`https://www.linkedin.com/sharing/share-offsite/?url=\${encodeURIComponent('https://bancada.app/games/${quizId}-quiz')}\`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center p-3 bg-[#0A66C2] text-white rounded-full hover:bg-[#095fb8] transition-colors"

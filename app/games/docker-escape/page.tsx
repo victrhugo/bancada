@@ -44,19 +44,6 @@ function DockerEscapeEducational() {
           </p>
         </div>
       </div>
-      <div className="mt-6 rounded-lg border p-4 text-sm text-muted-foreground">
-        <p>
-          Related reading:{' '}
-          <a className="underline" href="/posts/why-your-base-image-has-1684-cves">
-            why your base image reports thousands of CVEs
-          </a>{' '}
-          covers the other half of container security, the part scanners do look at. See also{' '}
-          <a className="underline" href="/posts/ghostlock-cve-2026-43499-container-boundary">
-            your container is not a security boundary
-          </a>
-          .
-        </p>
-      </div>
     </>
   );
 }

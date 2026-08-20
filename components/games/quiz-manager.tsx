@@ -70,9 +70,9 @@ const iconMapExtended = {
 // Helper function to format difficulty labels
 const formatDifficultyLabel = (difficulty: string): string => {
   const labels: Record<string, string> = {
-    beginner: 'Beginner/Junior',
-    intermediate: 'Intermediate/Mid',
-    advanced: 'Advanced/Senior',
+    beginner: 'Iniciante/Júnior',
+    intermediate: 'Intermediário/Pleno',
+    advanced: 'Avançado/Sênior',
   };
   return labels[difficulty] || difficulty;
 };
@@ -267,9 +267,9 @@ export function QuizManager({ quizzes, className }: QuizManagerProps) {
       <div className={cn('text-center py-12', className)}>
         <div className="max-w-md mx-auto">
           <BookOpen className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="mb-2 text-lg font-semibold">No Quizzes Available</h3>
+          <h3 className="mb-2 text-lg font-semibold">Nenhum Quiz Disponível</h3>
           <p className="text-sm text-muted-foreground">
-            Check back later for new interactive quizzes and learning tools.
+            Volte mais tarde para novos quizzes interativos e ferramentas de aprendizado.
           </p>
         </div>
       </div>
@@ -334,11 +334,11 @@ export function QuizManager({ quizzes, className }: QuizManagerProps) {
                  <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <BookOpen className="w-4 h-4" />
-                      <span>{quiz.totalQuestions} questions</span>
+                      <span>{quiz.totalQuestions} perguntas</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4" />
-                      <span>{quiz.totalPoints} points</span>
+                      <span>{quiz.totalPoints} pontos</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -356,7 +356,7 @@ export function QuizManager({ quizzes, className }: QuizManagerProps) {
                     className="flex items-center justify-center gap-2"
                   >
                     <Play className="w-4 h-4" />
-                    Start Quiz
+                    Iniciar Quiz
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
@@ -371,12 +371,12 @@ export function QuizManager({ quizzes, className }: QuizManagerProps) {
         <Card className="border-2 border-dashed bg-linear-to-br from-muted/50 to-muted/30 border-muted-foreground/20">
           <CardContent className="p-8 text-center">
             <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="mb-2 text-lg font-semibold">No Quizzes Found</h3>
+            <h3 className="mb-2 text-lg font-semibold">Nenhum Quiz Encontrado</h3>
             <p className="mb-4 text-sm text-muted-foreground">
-              Try adjusting your filters to find more quizzes.
+              Tente ajustar seus filtros para encontrar mais quizzes.
             </p>
             <Button variant="outline" onClick={handleClearFilters}>
-              Clear All Filters
+              Limpar Todos os Filtros
             </Button>
           </CardContent>
         </Card>
@@ -387,14 +387,14 @@ export function QuizManager({ quizzes, className }: QuizManagerProps) {
         <Card className="border-2 border-dashed bg-linear-to-br from-muted/50 to-muted/30 border-muted-foreground/20">
         <CardContent className="p-8 text-center">
           <Sparkles className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="mb-2 text-lg font-semibold">More Quizzes Coming Soon!</h3>
+          <h3 className="mb-2 text-lg font-semibold">Mais Quizzes em Breve!</h3>
           <p className="mb-4 text-sm text-muted-foreground">
-            We're working on adding more interactive quizzes covering Kubernetes, AWS, Terraform,
-            and more DevOps topics.
+            Estamos trabalhando para adicionar mais quizzes interativos sobre Kubernetes, AWS,
+            Terraform e outros temas de DevOps.
           </p>
           <Button variant="outline" asChild>
             <Link href="https://github.com/The-DevOps-Daily/devops-daily/issues/new/choose">
-              Suggest a Quiz Topic
+              Sugira um Tema de Quiz
             </Link>
           </Button>
         </CardContent>

@@ -295,9 +295,9 @@ export function SearchPageClient() {
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">Search</h1>
+        <h1 className="text-4xl font-bold mb-4">Buscar</h1>
         <p className="text-muted-foreground text-lg">
-          Find posts, guides, quizzes, games, and more
+          Encontre exercícios, checklists, quizzes, jogos e mais
         </p>
       </div>
 
@@ -308,7 +308,7 @@ export function SearchPageClient() {
           <Input
             ref={inputRef}
             type="text"
-            placeholder="Search for tutorials, guides, quizzes..."
+            placeholder="Busque por exercícios, checklists, quizzes..."
             value={query}
             onChange={(e) => handleQueryChange(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -330,7 +330,7 @@ export function SearchPageClient() {
         {showSuggestions && suggestions.length > 0 && (
           <div className="absolute z-50 w-full mt-2 bg-background border rounded-xl shadow-lg overflow-hidden">
             <div className="p-2">
-              <div className="text-xs text-muted-foreground px-3 py-2">Suggestions</div>
+              <div className="text-xs text-muted-foreground px-3 py-2">Sugestões</div>
               {suggestions.map((suggestion, index) => (
                 <button
                   key={index}
@@ -368,7 +368,7 @@ export function SearchPageClient() {
             className="gap-2"
           >
             <SlidersHorizontal className="w-4 h-4" />
-            Filters
+            Filtros
             {hasActiveFilters && (
               <Badge variant="secondary" className="ml-1">
                 {filters.types.length + filters.categories.length + filters.tags.length}
@@ -377,7 +377,7 @@ export function SearchPageClient() {
           </Button>
           {hasActiveFilters && (
             <Button variant="ghost" size="sm" onClick={clearFilters}>
-              Clear all
+              Limpar tudo
             </Button>
           )}
         </div>
@@ -390,13 +390,13 @@ export function SearchPageClient() {
             }
           >
             <SelectTrigger className="w-32">
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder="Ordenar por" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="relevance">Relevance</SelectItem>
-              <SelectItem value="title">Title</SelectItem>
-              <SelectItem value="type">Type</SelectItem>
-              <SelectItem value="date">Date</SelectItem>
+              <SelectItem value="relevance">Relevância</SelectItem>
+              <SelectItem value="title">Título</SelectItem>
+              <SelectItem value="type">Tipo</SelectItem>
+              <SelectItem value="date">Data</SelectItem>
             </SelectContent>
           </Select>
           {filters.sortBy !== 'relevance' && (
@@ -409,7 +409,7 @@ export function SearchPageClient() {
                   sortDirection: filters.sortDirection === 'asc' ? 'desc' : 'asc',
                 })
               }
-              title={filters.sortDirection === 'asc' ? 'Ascending' : 'Descending'}
+              title={filters.sortDirection === 'asc' ? 'Crescente' : 'Decrescente'}
             >
               {filters.sortDirection === 'asc' ? (
                 <ArrowUp className="w-4 h-4" />
@@ -425,15 +425,15 @@ export function SearchPageClient() {
       <Sheet open={isMobile && showFilters} onOpenChange={setShowFilters}>
         <SheetContent side="left" className="w-[300px] sm:w-[350px] overflow-y-auto">
           <SheetHeader>
-            <SheetTitle>Filters</SheetTitle>
-            <SheetDescription>Refine your search results</SheetDescription>
+            <SheetTitle>Filtros</SheetTitle>
+            <SheetDescription>Refine os resultados da busca</SheetDescription>
           </SheetHeader>
           <div className="mt-6 space-y-6">
             {/* Content Type Filter */}
             <div>
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <Filter className="w-4 h-4" />
-                Content Type
+                Tipo de Conteúdo
               </h3>
               <div className="flex flex-wrap gap-2">
                 {filterOptions.types.map((type) => (
@@ -457,7 +457,7 @@ export function SearchPageClient() {
               <Collapsible defaultOpen>
                 <CollapsibleTrigger className="flex items-center gap-2 font-semibold">
                   <Hash className="w-4 h-4" />
-                  Categories
+                  Categorias
                   <ChevronDown className="w-4 h-4" />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
@@ -510,7 +510,7 @@ export function SearchPageClient() {
             {/* Clear Filters Button */}
             {hasActiveFilters && (
               <Button variant="outline" onClick={clearFilters} className="w-full">
-                Clear all filters
+                Limpar todos os filtros
               </Button>
             )}
           </div>
@@ -525,7 +525,7 @@ export function SearchPageClient() {
             <div>
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <Filter className="w-4 h-4" />
-                Content Type
+                Tipo de Conteúdo
               </h3>
               <div className="flex flex-wrap gap-2">
                 {filterOptions.types.map((type) => (
@@ -549,7 +549,7 @@ export function SearchPageClient() {
               <Collapsible>
                 <CollapsibleTrigger className="flex items-center gap-2 font-semibold">
                   <Hash className="w-4 h-4" />
-                  Categories
+                  Categorias
                   <ChevronDown className="w-4 h-4" />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
@@ -614,16 +614,16 @@ export function SearchPageClient() {
         <>
           {(query || results.length > 0) && (
             <div className="mb-4 text-sm text-muted-foreground">
-              Found {results.length} result{results.length !== 1 ? 's' : ''}
-              {query ? <> for &quot;{query}&quot;</> : ' matching your filters'}
+              {results.length} resultado{results.length !== 1 ? 's' : ''} encontrado{results.length !== 1 ? 's' : ''}
+              {query ? <> para &quot;{query}&quot;</> : ' com os filtros aplicados'}
             </div>
           )}
 
           {query && results.length === 0 && (
             <div className="text-center py-12">
               <Search className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h2 className="text-xl font-semibold mb-2">No results found</h2>
-              <p className="text-muted-foreground mb-4">No matches for &quot;{query}&quot;</p>
+              <h2 className="text-xl font-semibold mb-2">Nenhum resultado encontrado</h2>
+              <p className="text-muted-foreground mb-4">Nenhuma correspondência para &quot;{query}&quot;</p>
 
               {/* Did you mean suggestions */}
               {(() => {
@@ -631,7 +631,7 @@ export function SearchPageClient() {
                 if (didYouMean.length > 0) {
                   return (
                     <div className="mb-6">
-                      <p className="text-sm text-muted-foreground mb-2">Did you mean:</p>
+                      <p className="text-sm text-muted-foreground mb-2">Você quis dizer:</p>
                       <div className="flex flex-wrap justify-center gap-2">
                         {didYouMean.map((term) => (
                           <Button
@@ -654,13 +654,13 @@ export function SearchPageClient() {
 
               {hasActiveFilters && (
                 <Button variant="outline" onClick={clearFilters} className="mb-6">
-                  Clear filters
+                  Limpar filtros
                 </Button>
               )}
 
               {/* Popular searches */}
               <div className="mt-8 pt-6 border-t">
-                <p className="text-sm text-muted-foreground mb-3">Popular searches:</p>
+                <p className="text-sm text-muted-foreground mb-3">Buscas populares:</p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {POPULAR_SEARCHES.map((term) => (
                     <Button
@@ -681,9 +681,10 @@ export function SearchPageClient() {
           {!query && results.length === 0 && (
             <div className="text-center py-20">
               <Search className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h2 className="text-xl font-semibold mb-2">Start searching</h2>
+              <h2 className="text-xl font-semibold mb-2">Comece a buscar</h2>
               <p className="text-muted-foreground">
-                Type above to search across {searchIndex.length} items, or use filters to browse
+                Digite acima para buscar entre {searchIndex.length} itens, ou use os filtros para
+                navegar
               </p>
             </div>
           )}
@@ -740,7 +741,7 @@ function SearchResultCard({ result, isSelected }: { result: SearchResult; isSele
                   dateTime={result.date}
                   className="text-xs text-muted-foreground ml-auto"
                 >
-                  {new Date(result.date).toLocaleDateString('en-US', {
+                  {new Date(result.date).toLocaleDateString('pt-BR', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric',

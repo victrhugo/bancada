@@ -81,7 +81,7 @@ export function ExerciseCard({
         <div className="absolute z-10 top-4 right-4">
           <Badge className="text-white border-none bg-linear-to-r from-yellow-500 to-orange-500">
             <Zap className="w-3 h-3 mr-1" />
-            Featured
+            Destaque
           </Badge>
         </div>
       )}
@@ -143,7 +143,7 @@ export function ExerciseCard({
         {showProgress && (
           <div className="mb-4">
             <div className="flex items-center justify-between mb-1 text-xs">
-              <span className="text-muted-foreground">Progress</span>
+              <span className="text-muted-foreground">Progresso</span>
               <span className="font-medium">{progressPercentage}%</span>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-muted">
@@ -165,21 +165,21 @@ export function ExerciseCard({
 
             <div className="flex items-center gap-1">
               <Target className="w-3 h-3" />
-              <span>{exercise.steps.length} steps</span>
+              <span>{exercise.steps.length} etapas</span>
             </div>
           </div>
 
           {exercise.difficulty === 'beginner' && (
             <div className="flex items-center gap-1 text-green-600">
               <CheckCircle2 className="w-3 h-3" />
-              <span>Beginner-friendly</span>
+              <span>Indicado para iniciantes</span>
             </div>
           )}
         </div>
 
         {/* Learning objectives preview */}
         <div className="pt-4 mt-4 border-t border-border/50">
-          <div className="mb-2 text-xs font-medium text-muted-foreground">You'll learn:</div>
+          <div className="mb-2 text-xs font-medium text-muted-foreground">Você vai aprender:</div>
           <ul className="space-y-1 text-xs text-muted-foreground">
             {exercise.learningObjectives.slice(0, 2).map((objective, index) => (
               <li key={index} className="flex items-start gap-2">
@@ -189,7 +189,7 @@ export function ExerciseCard({
             ))}
             {exercise.learningObjectives.length > 2 && (
               <li className="font-medium text-primary">
-                +{exercise.learningObjectives.length - 2} more objectives
+                +{exercise.learningObjectives.length - 2} objetivos adicionais
               </li>
             )}
           </ul>

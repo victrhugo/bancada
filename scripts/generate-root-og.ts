@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 /**
  * Generates the site-wide root OG image shown when anyone shares
- * https://devops-daily.com/ (homepage).
+ * https://bancada.app/ (homepage).
  *
  * Run with:  bun run scripts/generate-root-og.ts
  */
@@ -34,7 +34,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     <circle cx="22" cy="22" r="7" fill="#f87171" opacity="0.8"/>
     <circle cx="44" cy="22" r="7" fill="#fbbf24" opacity="0.85"/>
     <circle cx="66" cy="22" r="7" fill="#34d399" opacity="0.85"/>
-    <text x="94" y="28" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af">devops-daily.com</text>
+    <text x="94" y="28" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af">bancada.app</text>
 
     <text x="36" y="100" font-family="Menlo, Monaco, monospace" font-size="18" fill="#34d399">$</text>
     <text x="60" y="100" font-family="Menlo, Monaco, monospace" font-size="18" fill="#9ca3af">cat about.md</text>
@@ -48,8 +48,8 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     <text x="52" y="385" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af">open /games</text>
   </g>
 
-  <text x="100" y="588" font-family="Menlo, Monaco, monospace" font-size="18" fill="#fbbf24" font-weight="600">DevOps Daily</text>
-  <text x="1100" y="588" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af" text-anchor="end">devops-daily.com</text>
+  <text x="100" y="588" font-family="Menlo, Monaco, monospace" font-size="18" fill="#fbbf24" font-weight="600">Bancada</text>
+  <text x="1100" y="588" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af" text-anchor="end">bancada.app</text>
 </svg>`;
 
 fs.writeFileSync(OUT_SVG, svg, 'utf-8');

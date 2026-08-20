@@ -99,7 +99,7 @@ async function generateFlashcardOG(options: FlashcardOGOptions): Promise<void> {
   <text x="80" y="530" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#9ca3af">Interactive Flashcards for DevOps Learning</text>
   
   <!-- Logo/branding -->
-  <text x="1120" y="600" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#d97706" text-anchor="end">DevOps Daily</text>
+  <text x="1120" y="600" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#d97706" text-anchor="end">Bancada</text>
 </svg>`;
 
   // Write SVG file

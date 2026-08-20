@@ -2,38 +2,38 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: { absolute: 'DevOps Roadmap - Your Path to DevOps Mastery' },
+  title: { absolute: 'Roadmap DevOps - Seu Caminho para a Maestria em DevOps' },
   description:
-    'Strategic learning path for aspiring DevOps engineers. Discover the skills, technologies, and career progression from beginner to expert level.',
+    'Trilha de aprendizado estratégica para futuros engenheiros de DevOps. Descubra as habilidades, tecnologias e a progressão de carreira do nível iniciante ao avançado.',
   alternates: {
     canonical: '/roadmap',
   },
   openGraph: {
-    title: 'DevOps Roadmap - Your Path to DevOps Mastery',
+    title: 'Roadmap DevOps - Seu Caminho para a Maestria em DevOps',
     description:
-      'Strategic learning path for aspiring DevOps engineers. Discover the skills, technologies, and career progression from beginner to expert level.',
-    url: 'https://devops-daily.com/roadmap',
+      'Trilha de aprendizado estratégica para futuros engenheiros de DevOps. Descubra as habilidades, tecnologias e a progressão de carreira do nível iniciante ao avançado.',
+    url: 'https://bancada.app/roadmap',
     type: 'website',
     images: [
       {
-        url: 'https://devops-daily.com/images/roadmap.png',
+        url: 'https://bancada.app/images/roadmap.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Learning Roadmap - Skills and Technologies Path',
+        alt: 'Roadmap de Aprendizado DevOps - Trilha de Habilidades e Tecnologias',
       },
     ],
   },
   twitter: {
-    title: 'DevOps Roadmap - Your Path to DevOps Mastery',
+    title: 'Roadmap DevOps - Seu Caminho para a Maestria em DevOps',
     description:
-      'Strategic learning path for aspiring DevOps engineers. Discover the skills, technologies, and career progression from beginner to expert level.',
+      'Trilha de aprendizado estratégica para futuros engenheiros de DevOps. Descubra as habilidades, tecnologias e a progressão de carreira do nível iniciante ao avançado.',
     card: 'summary_large_image',
     images: [
       {
-        url: 'https://devops-daily.com/images/roadmap.png',
+        url: 'https://bancada.app/images/roadmap.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Learning Roadmap - Skills and Technologies Path',
+        alt: 'Roadmap de Aprendizado DevOps - Trilha de Habilidades e Tecnologias',
       },
     ],
   },
@@ -53,8 +53,8 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: 'DevOps Daily',
-      url: 'https://devops-daily.com',
+      name: 'Bancada',
+      url: 'https://bancada.app',
     },
   ],
 };
@@ -62,24 +62,24 @@ export const metadata: Metadata = {
 const stagesJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'DevOps Learning Roadmap',
+  name: 'Roadmap de Aprendizado DevOps',
   description:
-    'Staged learning path for DevOps engineers, from fundamentals to advanced platform skills.',
+    'Trilha de aprendizado por etapas para engenheiros de DevOps, dos fundamentos até habilidades avançadas de plataforma.',
   itemListElement: [
-    'Fundamentals',
-    'Infrastructure as Code',
-    'Containerization & Orchestration',
-    'CI/CD Pipelines',
-    'Cloud Platforms',
-    'Monitoring & Observability',
-    'Security & Compliance',
-    'Database Management',
-    'Continuous Learning',
+    'Fundamentos',
+    'Infraestrutura como Código',
+    'Conteinerização e Orquestração',
+    'Pipelines de CI/CD',
+    'Plataformas de Nuvem',
+    'Monitoramento e Observabilidade',
+    'Segurança e Conformidade',
+    'Gerenciamento de Banco de Dados',
+    'Aprendizado Contínuo',
   ].map((name, i) => ({
     '@type': 'ListItem',
     position: i + 1,
     name,
-    url: 'https://devops-daily.com/roadmap',
+    url: 'https://bancada.app/roadmap',
   })),
 };
 

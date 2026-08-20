@@ -56,10 +56,10 @@ export function QuizFilters({
   // Helper to get display label for sort field
   const getSortLabel = (field: SortField, direction: SortDirection): string => {
     const labels: Record<SortField, { asc: string; desc: string }> = {
-      date: { asc: 'Oldest First', desc: 'Newest First' },
-      difficulty: { asc: 'Easiest First', desc: 'Hardest First' },
-      time: { asc: 'Quickest First', desc: 'Longest First' },
-      points: { asc: 'Least Points', desc: 'Most Points' },
+      date: { asc: 'Mais Antigos Primeiro', desc: 'Mais Recentes Primeiro' },
+      difficulty: { asc: 'Mais Fáceis Primeiro', desc: 'Mais Difíceis Primeiro' },
+      time: { asc: 'Mais Rápidos Primeiro', desc: 'Mais Longos Primeiro' },
+      points: { asc: 'Menos Pontos', desc: 'Mais Pontos' },
     };
     return labels[field][direction];
   };
@@ -78,12 +78,12 @@ export function QuizFilters({
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex items-center gap-2">
           <SlidersHorizontal className="w-5 h-5 text-muted-foreground" />
-          <h3 className="text-lg font-semibold">Filters</h3>
+          <h3 className="text-lg font-semibold">Filtros</h3>
         </div>
 
         {/* Results count */}
         <div className="text-sm text-muted-foreground">
-          Showing <span className="font-semibold text-foreground">{filteredCount}</span> of{' '}
+          Mostrando <span className="font-semibold text-foreground">{filteredCount}</span> de{' '}
           <span className="font-semibold text-foreground">{totalCount}</span> quizzes
         </div>
       </div>
@@ -93,12 +93,12 @@ export function QuizFilters({
         {/* Category Filter */}
         <Select value={selectedCategory} onValueChange={onCategoryChange}>
           <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue placeholder="All Categories" />
+            <SelectValue placeholder="Todas as Categorias" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Category</SelectLabel>
-              <SelectItem value="all">All Categories</SelectItem>
+              <SelectLabel>Categoria</SelectLabel>
+              <SelectItem value="all">Todas as Categorias</SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
@@ -111,15 +111,15 @@ export function QuizFilters({
         {/* Difficulty Filter */}
        <Select value={selectedDifficulty} onValueChange={(value) => onDifficultyChange(value as DifficultyLevel)}>
          <SelectTrigger className="w-full sm:w-[200px]">
-           <SelectValue placeholder="All Difficulties" />
+           <SelectValue placeholder="Todas as Dificuldades" />
          </SelectTrigger>
          <SelectContent>
            <SelectGroup>
-            <SelectLabel>Difficulty</SelectLabel>
-            <SelectItem value="all">All Difficulties</SelectItem>
-            <SelectItem value="beginner">Beginner/Junior</SelectItem>
-            <SelectItem value="intermediate">Intermediate/Mid</SelectItem>
-            <SelectItem value="advanced">Advanced/Senior</SelectItem>
+            <SelectLabel>Dificuldade</SelectLabel>
+            <SelectItem value="all">Todas as Dificuldades</SelectItem>
+            <SelectItem value="beginner">Iniciante/Júnior</SelectItem>
+            <SelectItem value="intermediate">Intermediário/Pleno</SelectItem>
+            <SelectItem value="advanced">Avançado/Sênior</SelectItem>
           </SelectGroup>
        </SelectContent>
       </Select>
@@ -134,24 +134,24 @@ export function QuizFilters({
               toggleSortDirection();
             }}
             className="absolute left-2 top-1/2 -translate-y-1/2 z-10 hover:bg-accent rounded p-1 transition-colors"
-            title={`Currently: ${getSortLabel(sortConfig.field, sortConfig.direction)}. Click to reverse.`}
+            title={`Atual: ${getSortLabel(sortConfig.field, sortConfig.direction)}. Clique para inverter.`}
           >
             <ArrowUpDown className="w-4 h-4" />
           </button>
-          <Select 
-          value={sortConfig.field} 
+          <Select
+          value={sortConfig.field}
           onValueChange={(value) => onSortChange({ ...sortConfig, field: value as SortField })}
           >
             <SelectTrigger className="w-full pl-10">
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder="Ordenar por" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Sort By</SelectLabel>
-              <SelectItem value="date">Date</SelectItem>
-              <SelectItem value="difficulty">Difficulty</SelectItem>
-              <SelectItem value="time">Time</SelectItem>
-              <SelectItem value="points">Points</SelectItem>
+              <SelectLabel>Ordenar Por</SelectLabel>
+              <SelectItem value="date">Data</SelectItem>
+              <SelectItem value="difficulty">Dificuldade</SelectItem>
+              <SelectItem value="time">Tempo</SelectItem>
+              <SelectItem value="points">Pontos</SelectItem>
             </SelectGroup>
           </SelectContent>
           </Select>
@@ -166,7 +166,7 @@ export function QuizFilters({
             className="flex items-center gap-2"
           >
             <X className="w-4 h-4" />
-            Clear Filters
+            Limpar Filtros
           </Button>
         )}
       </div>

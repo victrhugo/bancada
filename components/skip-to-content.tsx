@@ -51,7 +51,7 @@ export function SkipToContent() {
       onClick={handleClick}
       onKeyDown={handleKeyDown}
     >
-      Skip to main content
+      Pular para o conteúdo principal
     </a>
   );
 }

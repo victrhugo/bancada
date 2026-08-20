@@ -162,7 +162,7 @@ function generateChecklistSVG(
   ${titleElements}
   
   <!-- Bottom branding -->
-  <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="${COLORS.accent}">DevOps Daily</text>
+  <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="${COLORS.accent}">Bancada</text>
   <text x="80" y="${IMAGE_HEIGHT - 35}" font-family="Arial, sans-serif" font-size="20" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Interactive Checklists</text>
 </svg>`;
 }
@@ -204,7 +204,7 @@ function generateListingPageSVG(): string {
   </g>
   
   <!-- Bottom branding -->
-  <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="${COLORS.accent}">DevOps Daily</text>
+  <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="${COLORS.accent}">Bancada</text>
   <text x="80" y="${IMAGE_HEIGHT - 30}" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Interactive DevOps Resources</text>
 </svg>`;
 }

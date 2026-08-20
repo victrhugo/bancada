@@ -38,7 +38,7 @@ export async function generateMetadata({
 
   return detailPageMetadata({
     path: `/exercises/${exercise.id}`,
-    title: `${exercise.title} - DevOps Exercise`,
+    title: `${exercise.title} - Exercício de DevOps`,
     description: truncateMetaDescription(exercise.description),
     image: getSocialImagePath(exercise.id, 'exercises'),
     imageAlt: exercise.title,
@@ -123,7 +123,7 @@ export default async function ExerciseDetailPage({ params }: { params: Promise<{
       {related.length > 0 && (
         <div className="container mx-auto px-4 pb-8">
           <RelatedContent
-            title="More exercises"
+            title="Mais exercícios"
             items={related.map((r) => ({
               slug: r.slug,
               title: r.title,

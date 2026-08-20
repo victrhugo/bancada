@@ -1,5 +1,5 @@
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://devops-daily.com';
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
 
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 
@@ -8,20 +8,14 @@ export function OrganizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': ORGANIZATION_ID,
-    name: 'DevOps Daily',
+    name: 'Bancada',
     url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
       url: `${SITE_URL}/logo.png`,
     },
     description:
-      'DevOps Daily is an educational platform providing tutorials, guides, exercises, and news for DevOps engineers.',
-    sameAs: [
-      'https://github.com/The-DevOps-Daily',
-      'https://x.com/thedevopsdaily',
-      'https://www.linkedin.com/company/thedevopsdaily',
-      'https://www.instagram.com/thedailydevops',
-    ],
+      'Bancada é uma plataforma de prática para engenheiros de DevOps: exercícios, quizzes, flashcards, checklists e simuladores interativos.',
     knowsAbout: [
       'DevOps',
       'Kubernetes',
@@ -46,8 +40,8 @@ export function WebsiteSchema() {
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
-    name: 'DevOps Daily',
-    description: 'The latest DevOps news, tutorials, and guides',
+    name: 'Bancada',
+    description: 'Exercícios, quizzes, flashcards e simuladores para praticar DevOps',
     publisher: {
       '@id': ORGANIZATION_ID,
     },
@@ -56,179 +50,6 @@ export function WebsiteSchema() {
       target: `${SITE_URL}/search?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
-
-interface PostLike {
-  slug?: string;
-  title?: string;
-  excerpt?: string;
-  image?: string;
-  publishedAt?: string;
-  updatedAt?: string;
-  date?: string;
-  author?: { name?: string };
-  category?: { name?: string };
-  tags?: string[];
-  content?: string;
-}
-
-export function ArticleSchema({
-  post,
-  title,
-  description,
-  publishedDate,
-  modifiedDate,
-  imageUrl,
-  authorName,
-  url,
-  articleSection,
-  keywords,
-  wordCount,
-}: {
-  post?: PostLike;
-  title?: string;
-  description?: string;
-  publishedDate?: string;
-  modifiedDate?: string;
-  imageUrl?: string;
-  authorName?: string;
-  url?: string;
-  articleSection?: string;
-  keywords?: string[];
-  wordCount?: number;
-}) {
-  const articleUrl = url ? `${SITE_URL}${url}` : `${SITE_URL}/posts/${post?.slug}`;
-  const articleTitle = title || post?.title;
-  const articleDescription = description || post?.excerpt;
-  const articleImage = imageUrl
-    ? imageUrl.startsWith('http')
-      ? imageUrl
-      : `${SITE_URL}${imageUrl}`
-    : post?.image
-      ? `${SITE_URL}${post.image}`
-      : `${SITE_URL}/og-image.png`;
-  const articlePublished = publishedDate || post?.publishedAt || post?.date;
-  const articleModified = modifiedDate || post?.updatedAt || post?.date;
-  const articleAuthor = authorName || post?.author?.name || 'DevOps Daily Team';
-
-  // Derive section, keywords, and word count from post object if not passed directly
-  const section = articleSection || post?.category?.name;
-  const tags = keywords || post?.tags;
-  const contentWordCount =
-    wordCount || (post?.content ? post.content.split(/\s+/).length : undefined);
-
-  const schema: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': articleUrl,
-    },
-    headline: articleTitle,
-    description: articleDescription,
-    image: articleImage,
-    datePublished: articlePublished,
-    dateModified: articleModified,
-    // Team-authored content credits the Organization entity (referencing the
-    // full node already on every page); only named individuals are a Person.
-    author:
-      articleAuthor === 'DevOps Daily Team'
-        ? { '@id': ORGANIZATION_ID }
-        : { '@type': 'Person', name: articleAuthor },
-    publisher: {
-      '@id': ORGANIZATION_ID,
-    },
-    ...(section ? { articleSection: section } : {}),
-    ...(tags && tags.length > 0 ? { keywords: tags.join(', ') } : {}),
-    ...(contentWordCount ? { wordCount: contentWordCount } : {}),
-    speakable: {
-      '@type': 'SpeakableSpecification',
-      cssSelector: ['article h1', 'article h2', 'article p:first-of-type'],
-    },
-    isAccessibleForFree: true,
-    inLanguage: 'en',
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
-
-export function TechArticleSchema({
-  title,
-  description,
-  publishedDate,
-  modifiedDate,
-  imageUrl,
-  authorName,
-  url,
-  articleSection,
-  keywords,
-  partsCount,
-}: {
-  title: string;
-  description?: string;
-  publishedDate?: string;
-  modifiedDate?: string;
-  imageUrl?: string;
-  authorName?: string;
-  url: string;
-  articleSection?: string;
-  keywords?: string[];
-  partsCount?: number;
-}) {
-  const articleImage = imageUrl
-    ? imageUrl.startsWith('http')
-      ? imageUrl
-      : `${SITE_URL}${imageUrl}`
-    : `${SITE_URL}/og-image.png`;
-
-  const articleAuthor = authorName || 'DevOps Daily Team';
-
-  const schema: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'TechArticle',
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `${SITE_URL}${url}`,
-    },
-    headline: title,
-    description,
-    url: `${SITE_URL}${url}`,
-    image: articleImage,
-    datePublished: publishedDate,
-    dateModified: modifiedDate,
-    // Same Organization-vs-Person split as ArticleSchema above.
-    author:
-      articleAuthor === 'DevOps Daily Team'
-        ? { '@id': ORGANIZATION_ID }
-        : { '@type': 'Person', name: articleAuthor },
-    publisher: {
-      '@id': ORGANIZATION_ID,
-    },
-    proficiencyLevel: 'Beginner',
-    ...(articleSection ? { articleSection } : {}),
-    ...(keywords && keywords.length > 0
-      ? { keywords: keywords.join(', ') }
-      : {}),
-    ...(partsCount ? { numberOfPages: partsCount } : {}),
-    speakable: {
-      '@type': 'SpeakableSpecification',
-      cssSelector: ['article h1', 'article > p:first-of-type'],
-    },
-    isAccessibleForFree: true,
-    inLanguage: 'en',
   };
 
   return (
@@ -290,7 +111,7 @@ export function LearningResourceSchema({
       : {}),
     interactivityType: 'active',
     isAccessibleForFree: true,
-    inLanguage: 'en',
+    inLanguage: 'pt-BR',
     provider: {
       '@id': ORGANIZATION_ID,
     },
@@ -331,7 +152,7 @@ export function SoftwareApplicationSchema({
     educationalUse: ['practice', 'self-directed learning'],
     interactivityType: 'active',
     isAccessibleForFree: true,
-    inLanguage: 'en',
+    inLanguage: 'pt-BR',
     offers: {
       '@type': 'Offer',
       price: '0',

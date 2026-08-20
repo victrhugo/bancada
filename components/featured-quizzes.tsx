@@ -56,8 +56,8 @@ export default async function FeaturedQuizzes({
     <section className={cn(className)}>
       <SectionHeader
         label="quizzes"
-        title="Test Your Knowledge"
-        description="Short interactive quizzes across Docker, Kubernetes, Terraform, networking, and more"
+        title="Teste Seus Conhecimentos"
+        description="Quizzes interativos e rápidos sobre Docker, Kubernetes, Terraform, redes e mais"
         viewAllHref="/quizzes"
       />
 

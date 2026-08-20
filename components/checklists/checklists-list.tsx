@@ -140,7 +140,7 @@ export function ChecklistsList({
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search checklists by name, description, tags, or category..."
+                placeholder="Buscar checklists por nome, descrição, tags ou categoria..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 h-12"
@@ -159,7 +159,7 @@ export function ChecklistsList({
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   className="px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 >
-                  <option value="all">All Categories</option>
+                  <option value="all">Todas as Categorias</option>
                   {categories.map((category) => (
                     <option key={category} value={category}>
                       {category}
@@ -173,7 +173,7 @@ export function ChecklistsList({
                   onChange={(e) => setSelectedDifficulty(e.target.value)}
                   className="px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring capitalize"
                 >
-                  <option value="all">All Difficulties</option>
+                  <option value="all">Todas as Dificuldades</option>
                   {difficulties.map((difficulty) => (
                     <option key={difficulty} value={difficulty} className="capitalize">
                       {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
@@ -187,11 +187,11 @@ export function ChecklistsList({
                   onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
                   className="px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 >
-                  <option value="category">By Category</option>
-                  <option value="title">By Title (A-Z)</option>
-                  <option value="title-desc">By Title (Z-A)</option>
-                  <option value="items-asc">Fewest Items First</option>
-                  <option value="items-desc">Most Items First</option>
+                  <option value="category">Por Categoria</option>
+                  <option value="title">Por Título (A-Z)</option>
+                  <option value="title-desc">Por Título (Z-A)</option>
+                  <option value="items-asc">Menos Itens Primeiro</option>
+                  <option value="items-desc">Mais Itens Primeiro</option>
                 </select>
 
                 {/* Clear Filters */}
@@ -203,7 +203,7 @@ export function ChecklistsList({
                     className="flex items-center gap-2"
                   >
                     <RotateCcw className="h-3 w-3" />
-                    Clear Filters
+                    Limpar Filtros
                   </Button>
                 )}
               </div>
@@ -212,10 +212,10 @@ export function ChecklistsList({
 
           {/* Results Counter */}
           <div className="text-sm text-muted-foreground">
-            Showing {filteredChecklists.length} of {checklists.length} checklists
+            Mostrando {filteredChecklists.length} de {checklists.length} checklists
             {activeFiltersCount > 0 && (
               <Badge variant="secondary" className="ml-2">
-                {activeFiltersCount} active filter{activeFiltersCount > 1 ? 's' : ''}
+                {activeFiltersCount} filtro{activeFiltersCount > 1 ? 's' : ''} ativo{activeFiltersCount > 1 ? 's' : ''}
               </Badge>
             )}
           </div>
@@ -256,15 +256,15 @@ export function ChecklistsList({
           <ListChecks className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-50" />
           <p className="text-muted-foreground mb-4">
             {activeFiltersCount > 0 ? (
-              <>No checklists match your current filters</>
+              <>Nenhum checklist corresponde aos filtros atuais</>
             ) : (
-              <>No checklists available</>
+              <>Nenhum checklist disponível</>
             )}
           </p>
           {activeFiltersCount > 0 && (
             <Button variant="outline" onClick={clearFilters}>
               <RotateCcw className="h-4 w-4 mr-2" />
-              Clear All Filters
+              Limpar Todos os Filtros
             </Button>
           )}
         </div>

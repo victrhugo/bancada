@@ -20,12 +20,12 @@ export async function generateGameMetadata(gameId: string): Promise<Metadata> {
   // Prefer the longer SEO title for the page <title> when one is set.
   // Falls back to the display title for games that already read fine.
   const pageTitle = game.seoTitle || game.title;
-  const title = `${pageTitle} - DevOps Daily`;
+  const title = `${pageTitle} - Bancada`;
   const description = truncateMetaDescription(game.description);
   const ogImage = getSocialImagePath(gameId, 'games');
 
   return {
-    // Absolute title so Next.js doesn't append '| DevOps Daily'. Game page
+    // Absolute title so Next.js doesn't append '| Bancada'. Game page
     // titles already identify the site through topic context; the brand is
     // picked up by Google from the Organization/WebSite schema. OG + Twitter
     // titles below keep the suffix because social previews benefit from

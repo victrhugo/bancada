@@ -1,9 +1,9 @@
 /**
  * Cross-content-type related lookup. Within-type related sections
  * (`pickRelatedItems` in lib/related-content.ts) only show siblings of the
- * same kind. This module aggregates posts, checklists, flashcards, exercises,
+ * same kind. This module aggregates checklists, flashcards, exercises,
  * quizzes, and interview questions into a uniform shape and scores them all
- * together so that a post about Istio can surface the matching quiz,
+ * together so that an exercise about Istio can surface the matching quiz,
  * checklist, and flashcard right under it.
  *
  * Scoring follows the same shape as `pickRelatedItems` (10 pts per matching
@@ -14,7 +14,6 @@
  * same-type siblings; this section's value is the *other* kinds of content.
  */
 
-import { getAllPosts } from './posts';
 import { getAllChecklists } from './checklists';
 import { getAllFlashCardSets } from './flashcard-loader';
 import { getAllExercises } from './exercises';
@@ -22,7 +21,6 @@ import { getAllQuizzes } from './quiz-loader';
 import { interviewQuestions } from '@/content/interview-questions';
 
 export type CrossContentType =
-  | 'post'
   | 'checklist'
   | 'flashcard'
   | 'exercise'
@@ -49,8 +47,7 @@ export interface CrossContentItem {
  * Cached implicitly because each underlying loader has its own cache.
  */
 async function loadAllCrossContent(): Promise<CrossContentItem[]> {
-  const [posts, checklists, flashcards, exercises, quizzes] = await Promise.all([
-    getAllPosts(),
+  const [checklists, flashcards, exercises, quizzes] = await Promise.all([
     getAllChecklists(),
     getAllFlashCardSets(),
     getAllExercises(),
@@ -58,18 +55,6 @@ async function loadAllCrossContent(): Promise<CrossContentItem[]> {
   ]);
 
   const items: CrossContentItem[] = [];
-
-  for (const post of posts) {
-    items.push({
-      id: post.slug,
-      type: 'post',
-      title: post.title,
-      description: post.excerpt || '',
-      href: `/posts/${post.slug}`,
-      category: post.category?.slug || '',
-      tags: (post.tags || []).map((t) => String(t)),
-    });
-  }
 
   for (const c of checklists) {
     items.push({
@@ -239,7 +224,6 @@ export async function getRelatedAcrossTypes(
 
 /** Display label for each content type. Used for the small chip on the card. */
 export const TYPE_LABELS: Record<CrossContentType, string> = {
-  post: 'Article',
   checklist: 'Checklist',
   flashcard: 'Flashcards',
   exercise: 'Exercise',

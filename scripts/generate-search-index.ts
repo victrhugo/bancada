@@ -1,16 +1,11 @@
 // scripts/generate-search-index.ts
 import fs from 'fs/promises';
 import path from 'path';
-import { getAllPosts } from '../lib/posts.js';
-import { getAllGuides } from '../lib/guides.js';
 import { getAllExercises } from '../lib/exercises.js';
-import { getAllNews } from '../lib/news.js';
 import { getActiveGames } from '../lib/games.js';
 import { getAllChecklists } from '../lib/checklists.js';
-import { getAllComparisons } from '../lib/comparisons.js';
 import { getAllFlashCardSets } from '../lib/flashcard-loader.js';
 import { getAllQuizzes } from '../lib/quiz-loader.js';
-import { TOOLS, CATEGORY_LABEL } from '../lib/tools.js';
 import { interviewQuestions, getAllTopics } from '../content/interview-questions/index.js';
 import type { SearchItem } from '../lib/search-types.js';
 
@@ -20,25 +15,9 @@ const PAGES: SearchItem[] = [
     id: 'page-home',
     type: 'page',
     title: 'Home',
-    description: 'DevOps Daily - Latest news, tutorials, and guides',
+    description: 'Bancada - Latest news, tutorials, and guides',
     url: '/',
     icon: '🏠',
-  },
-  {
-    id: 'page-posts',
-    type: 'page',
-    title: 'All Posts',
-    description: 'Browse all blog posts',
-    url: '/posts',
-    icon: '📝',
-  },
-  {
-    id: 'page-guides',
-    type: 'page',
-    title: 'Guides',
-    description: 'Comprehensive DevOps guides',
-    url: '/guides',
-    icon: '📚',
   },
   {
     id: 'page-exercises',
@@ -65,14 +44,6 @@ const PAGES: SearchItem[] = [
     icon: '🎮',
   },
   {
-    id: 'page-news',
-    type: 'page',
-    title: 'News',
-    description: 'Latest DevOps news and updates',
-    url: '/news',
-    icon: '📰',
-  },
-  {
     id: 'page-roadmap',
     type: 'page',
     title: 'Learning Roadmap',
@@ -97,22 +68,6 @@ const PAGES: SearchItem[] = [
     icon: '🔒',
   },
   {
-    id: 'page-toolbox',
-    type: 'page',
-    title: 'Toolbox',
-    description: 'Essential DevOps tools and resources',
-    url: '/toolbox',
-    icon: '🧰',
-  },
-  {
-    id: 'page-categories',
-    type: 'page',
-    title: 'Categories',
-    description: 'Browse content by category',
-    url: '/categories',
-    icon: '📑',
-  },
-  {
     id: 'page-checklists',
     type: 'page',
     title: 'Checklists',
@@ -121,28 +76,12 @@ const PAGES: SearchItem[] = [
     icon: '✅',
   },
   {
-    id: 'page-comparisons',
-    type: 'page',
-    title: 'Comparisons',
-    description: 'Side-by-side DevOps tool and platform comparisons',
-    url: '/comparisons',
-    icon: '⚖️',
-  },
-  {
     id: 'page-flashcards',
     type: 'page',
     title: 'Flashcards',
     description: 'DevOps flashcard sets for focused practice',
     url: '/flashcards',
     icon: '🧠',
-  },
-  {
-    id: 'page-tools',
-    type: 'page',
-    title: 'Tools',
-    description: 'Browser-based DevOps calculators, decoders, and utilities',
-    url: '/tools',
-    icon: '🛠️',
   },
   {
     id: 'page-interview-questions',
@@ -222,40 +161,6 @@ async function generateSearchIndex() {
   searchIndex.push(...gameItems);
   console.log(`  ✓ Added ${gameItems.length} games`);
 
-  // Add posts
-  console.log('📝 Adding posts...');
-  const posts = await getAllPosts();
-  const postItems: SearchItem[] = posts.slice(0, 1000).map((post) => ({
-    id: `post-${post.slug}`,
-    type: 'post',
-    title: post.title,
-    description: post.excerpt || '',
-    url: `/posts/${post.slug}`,
-    category: post.category?.name,
-    tags: post.tags,
-    icon: '📝',
-    date: post.date || post.publishedAt,
-  }));
-  searchIndex.push(...postItems);
-  console.log(`  ✓ Added ${postItems.length} posts (limited to 1000 most recent)`);
-
-  // Add guides
-  console.log('📚 Adding guides...');
-  const guides = await getAllGuides();
-  const guideItems: SearchItem[] = guides.map((guide) => ({
-    id: `guide-${guide.slug}`,
-    type: 'guide',
-    title: guide.title,
-    description: guide.description || guide.excerpt || '',
-    url: `/guides/${guide.slug}`,
-    category: guide.category?.name,
-    tags: guide.tags,
-    icon: '📚',
-    date: guide.publishedAt,
-  }));
-  searchIndex.push(...guideItems);
-  console.log(`  ✓ Added ${guideItems.length} guides`);
-
   // Add exercises
   console.log('🧪 Adding exercises...');
   const exercises = await getAllExercises();
@@ -278,26 +183,6 @@ async function generateSearchIndex() {
   searchIndex.push(...quizzes);
   console.log(`  ✓ Added ${quizzes.length} quizzes`);
 
-  // Add news (limited to recent)
-  console.log('📰 Adding news...');
-  try {
-    const news = await getAllNews();
-    const newsItems: SearchItem[] = news.slice(0, 50).map((item) => ({
-      id: `news-${item.slug}`,
-      type: 'news',
-      title: item.title,
-      description: `Week ${item.week}, ${item.year} digest`,
-      url: `/news/${item.slug}`,
-      category: 'News',
-      icon: '📰',
-      date: item.date || item.publishedAt,
-    }));
-    searchIndex.push(...newsItems);
-    console.log(`  ✓ Added ${newsItems.length} news items (limited to 50 most recent)`);
-  } catch (error) {
-    console.log('  ⚠️ Could not load news items');
-  }
-
   // Add checklists
   console.log('Adding checklists...');
   const checklists = await getAllChecklists();
@@ -314,23 +199,6 @@ async function generateSearchIndex() {
   searchIndex.push(...checklistItems);
   console.log(`  ✓ Added ${checklistItems.length} checklists`);
 
-  // Add comparisons
-  console.log('⚖️ Adding comparisons...');
-  const comparisons = await getAllComparisons();
-  const comparisonItems: SearchItem[] = comparisons.map((comparison) => ({
-    id: `comparison-${comparison.slug}`,
-    type: 'comparison',
-    title: comparison.title || `${comparison.toolA.name} vs ${comparison.toolB.name}`,
-    description: comparison.description,
-    url: `/comparisons/${comparison.slug}`,
-    category: comparison.category,
-    tags: comparison.tags,
-    icon: '⚖️',
-    date: comparison.updatedDate || comparison.createdDate,
-  }));
-  searchIndex.push(...comparisonItems);
-  console.log(`  ✓ Added ${comparisonItems.length} comparisons`);
-
   // Add flashcards
   console.log('🧠 Adding flashcards...');
   const flashcards = await getAllFlashCardSets();
@@ -346,21 +214,6 @@ async function generateSearchIndex() {
   }));
   searchIndex.push(...flashcardItems);
   console.log(`  ✓ Added ${flashcardItems.length} flashcard sets`);
-
-  // Add tools
-  console.log('🛠️ Adding tools...');
-  const toolItems: SearchItem[] = TOOLS.map((tool) => ({
-    id: `tool-${tool.slug}`,
-    type: 'tool',
-    title: tool.title,
-    description: tool.description,
-    url: `/tools/${tool.slug}`,
-    category: CATEGORY_LABEL[tool.category],
-    tags: tool.keywords,
-    icon: '🛠️',
-  }));
-  searchIndex.push(...toolItems);
-  console.log(`  ✓ Added ${toolItems.length} tools`);
 
   // Add interview questions
   console.log('💬 Adding interview questions...');

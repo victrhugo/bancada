@@ -24,10 +24,10 @@ export function GameActions({ gameSlug, gameTitle }: GameActionsProps) {
 
   const shareUrl = typeof window !== 'undefined'
     ? window.location.href
-    : `https://devops-daily.com/games/${gameSlug}`;
+    : `https://bancada.app/games/${gameSlug}`;
 
   const handleShare = useCallback(async (method: 'copy' | 'twitter' | 'linkedin') => {
-    const title = `Check out ${gameTitle} on DevOps Daily!`;
+    const title = `Confira ${gameTitle} no Bancada!`;
 
     switch (method) {
       case 'copy':
@@ -73,18 +73,18 @@ export function GameActions({ gameSlug, gameTitle }: GameActionsProps) {
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm" className="gap-2">
             <Share2 size={16} />
-            {copied ? 'Copied!' : 'Share'}
+            {copied ? 'Copiado!' : 'Compartilhar'}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => handleShare('copy')}>
-            Copy Link
+            Copiar Link
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleShare('twitter')}>
-            Share on Twitter
+            Compartilhar no Twitter
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleShare('linkedin')}>
-            Share on LinkedIn
+            Compartilhar no LinkedIn
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -95,10 +95,10 @@ export function GameActions({ gameSlug, gameTitle }: GameActionsProps) {
         size="sm"
         className="gap-2"
         onClick={handleFullscreen}
-        title="Toggle fullscreen"
+        title="Alternar tela cheia"
       >
         <Maximize2 size={16} />
-        <span className="hidden sm:inline">Fullscreen</span>
+        <span className="hidden sm:inline">Tela cheia</span>
       </Button>
     </div>
   );

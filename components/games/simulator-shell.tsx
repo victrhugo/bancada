@@ -4,7 +4,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Breadcrumb } from '@/components/breadcrumb';
 import { BreadcrumbSchema, SoftwareApplicationSchema } from '@/components/schema-markup';
 import { GameActions } from '@/components/games/game-actions';
-import { GameSponsors } from '@/components/games/game-sponsors';
 import { GameSeoContent } from '@/components/games/game-seo-content';
 import { CarbonAds } from '@/components/carbon-ads';
 import { getGameById, getActiveGames } from '@/lib/games';
@@ -76,16 +75,16 @@ export async function SimulatorShell({
   );
   const relatedGames = [...sameCategory, ...otherGames].slice(0, 3);
 
-  const shareUrl = `https://devops-daily.com${href}`;
-  const defaultShareText = shareText ?? `Check out ${title} on DevOps Daily`;
+  const shareUrl = `https://bancada.app${href}`;
+  const defaultShareText = shareText ?? `Confira ${title} no Bancada`;
 
   const breadcrumbItems = [
-    { label: 'Games', href: '/games' },
+    { label: 'Jogos', href: '/games' },
     { label: title, href, isCurrent: true },
   ];
   const schemaItems = [
-    { name: 'Home', url: '/' },
-    { name: 'Games', url: '/games' },
+    { name: 'Início', url: '/' },
+    { name: 'Jogos', url: '/games' },
     { name: title, url: href },
   ];
 
@@ -119,7 +118,7 @@ export async function SimulatorShell({
         <div className="flex flex-col mx-auto max-w-7xl">
           {/* Monospace label matches the homepage section chrome */}
           <p className="text-xs font-mono text-muted-foreground mb-1">
-            // simulator
+            // simulador
           </p>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1">
             {title}
@@ -127,8 +126,6 @@ export async function SimulatorShell({
           {description && (
             <p className="text-sm text-muted-foreground max-w-3xl mb-6">{description}</p>
           )}
-
-          <GameSponsors />
 
           {/* Simulator itself */}
           <div className="w-full">{children}</div>
@@ -145,7 +142,7 @@ export async function SimulatorShell({
               link, from /games index, before this section existed). */}
           {relatedGames.length > 0 && (
             <section className="w-full my-10">
-              <h2 className="text-lg font-semibold mb-4">Try next</h2>
+              <h2 className="text-lg font-semibold mb-4">Experimente também</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {relatedGames.map((g) => (
                   <li key={g.id}>
@@ -154,7 +151,7 @@ export async function SimulatorShell({
                       className="block rounded-lg border p-4 hover:border-primary/50 hover:bg-muted/30 transition-colors"
                     >
                       <p className="text-xs text-muted-foreground font-mono mb-2">
-                        {g.type === 'simulator' ? '// simulator' : '// game'}
+                        {g.type === 'simulator' ? '// simulador' : '// jogo'}
                       </p>
                       <p className="font-medium mb-1">{g.title}</p>
                       <p className="text-xs text-muted-foreground line-clamp-2">
@@ -185,12 +182,12 @@ export async function SimulatorShell({
                 <span className="text-green-500/80">$</span> cd /games
               </Link>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <span className="font-mono text-xs">// share</span>
+                <span className="font-mono text-xs">// compartilhar</span>
                 <a
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(defaultShareText)}&url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on Twitter"
+                  aria-label="Compartilhar no Twitter"
                   className="inline-flex items-center justify-center w-8 h-8 rounded-md border border-border hover:border-primary/50 hover:text-primary transition-colors"
                 >
                   <Twitter className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -199,7 +196,7 @@ export async function SimulatorShell({
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on Facebook"
+                  aria-label="Compartilhar no Facebook"
                   className="inline-flex items-center justify-center w-8 h-8 rounded-md border border-border hover:border-primary/50 hover:text-primary transition-colors"
                 >
                   <Facebook className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -208,7 +205,7 @@ export async function SimulatorShell({
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on LinkedIn"
+                  aria-label="Compartilhar no LinkedIn"
                   className="inline-flex items-center justify-center w-8 h-8 rounded-md border border-border hover:border-primary/50 hover:text-primary transition-colors"
                 >
                   <Linkedin className="w-3.5 h-3.5" strokeWidth={1.5} />

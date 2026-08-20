@@ -31,43 +31,38 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'DevOps Daily - The latest DevOps news, tutorials, and guides',
-    template: '%s | DevOps Daily',
+    default: 'Bancada - Pratique DevOps com exercícios, quizzes e simuladores',
+    template: '%s | Bancada',
   },
   description:
-    'Stay up to date with the latest DevOps practices, tools, and techniques. Dive into our comprehensive guides and tutorials to level up your skills.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://devops-daily.com'),
+    'Aprenda DevOps na prática. Exercícios, quizzes, flashcards, checklists e simuladores interativos sobre Docker, Kubernetes, Terraform, CI/CD e mais.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app'),
   alternates: {
     canonical: '/',
-    types: {
-      'application/rss+xml': '/feed.xml',
-    },
   },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'pt_BR',
     url: '/',
-    siteName: 'DevOps Daily',
-    title: 'DevOps Daily - The latest DevOps news, tutorials, and guides',
+    siteName: 'Bancada',
+    title: 'Bancada - Pratique DevOps com exercícios, quizzes e simuladores',
     description:
-      'Stay up to date with the latest DevOps practices, tools, and techniques. Dive into our comprehensive guides and tutorials to level up your skills.',
+      'Aprenda DevOps na prática. Exercícios, quizzes, flashcards, checklists e simuladores interativos.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Daily',
+        alt: 'Bancada',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DevOps Daily - The latest DevOps news, tutorials, and guides',
+    title: 'Bancada - Pratique DevOps com exercícios, quizzes e simuladores',
     description:
-      'Stay up to date with the latest DevOps practices, tools, and techniques. Dive into our comprehensive guides and tutorials to level up your skills.',
+      'Aprenda DevOps na prática. Exercícios, quizzes, flashcards, checklists e simuladores interativos.',
     images: ['/og-image.png'],
-    creator: '@thedevopsdaily',
-    site: '@thedevopsdaily',
   },
   robots: {
     index: true,
@@ -81,7 +76,7 @@ export const metadata: Metadata = {
     },
   },
   generator: 'Next.js',
-  applicationName: 'DevOps Daily',
+  applicationName: 'Bancada',
   referrer: 'origin-when-cross-origin',
   keywords: [
     'DevOps',
@@ -89,11 +84,11 @@ export const metadata: Metadata = {
     'Cloud',
     'Kubernetes',
     'Docker',
-    'Tutorials',
-    'Guides',
+    'Exercícios',
+    'Quizzes',
     'Infrastructure as Code',
   ],
-  authors: [{ name: 'DevOps Daily Team', url: 'https://devops-daily.com/experts' }],
+  authors: [{ name: 'Bancada' }],
   category: 'Technology',
   icons: {
     icon: [
@@ -117,14 +112,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title="DevOps Daily RSS Feed"
-          href="/feed.xml"
-        />
         <OrganizationSchema />
         <WebsiteSchema />
       </head>

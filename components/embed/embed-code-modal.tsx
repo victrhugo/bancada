@@ -43,7 +43,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
   const [theme, setTheme] = useState<ThemeOption>('dark');
   const [showTitle, setShowTitle] = useState(true);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devops-daily.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
   const size = SIZE_PRESETS[sizePreset];
 
   const buildEmbedUrl = useCallback(() => {
@@ -65,7 +65,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
   frameborder="0"
   allowfullscreen
   loading="lazy"
-  title="${gameTitle} - DevOps Daily"
+  title="${gameTitle} - Bancada"
   style="border-radius: 8px; border: 1px solid #334155;"
 ></iframe>`;
 
@@ -76,7 +76,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
     frameborder="0"
     allowfullscreen
     loading="lazy"
-    title="${gameTitle} - DevOps Daily"
+    title="${gameTitle} - Bancada"
   ></iframe>
 </div>`;
 
@@ -202,7 +202,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
             <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg text-sm">
               <p className="text-blue-400 font-medium">Attribution included</p>
               <p className="text-muted-foreground text-xs mt-1">
-                The embed includes a &quot;Powered by DevOps Daily&quot; badge that links back to our site.
+                The embed includes a &quot;Powered by Bancada&quot; badge that links back to our site.
                 This helps spread DevOps education while giving us credit. Thank you!
               </p>
             </div>

@@ -1,29 +1,24 @@
-import { CategoryGrid } from '@/components/category-grid';
 import { Hero } from '@/components/hero';
-import LatestPosts from '@/components/latest-posts';
-import LatestGuides from '@/components/latest-guides';
 import FeaturedExercises from '@/components/featured-exercises';
 import FeaturedQuizzes from '@/components/featured-quizzes';
-import { FeaturedTools } from '@/components/featured-tools';
 import { SectionHeader } from '@/components/section-header';
 import { SectionSeparator } from '@/components/section-separator';
 import { ArrowRight, Globe, Anchor, Scale, GitBranch, Database, Shield } from 'lucide-react';
-import { TerminalNewsletterSignup } from '@/components/newsletter/terminal-newsletter-signup';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getActiveGames } from '@/lib/games';
 
 export const metadata: Metadata = {
-  title: 'DevOps Daily - Tutorials, Guides, Simulators & News for DevOps Engineers',
+  title: 'Bancada - Pratique DevOps com Exercícios, Quizzes e Simuladores',
   description:
-    'Learn DevOps with hands-on tutorials, interactive simulators, quizzes, exercises, and weekly news. Covering Docker, Kubernetes, Terraform, CI/CD, and more.',
+    'Aprenda DevOps na prática. Exercícios, quizzes, flashcards, checklists e simuladores interativos sobre Docker, Kubernetes, Terraform, CI/CD e mais.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'DevOps Daily - Tutorials, Guides, Simulators & News for DevOps Engineers',
+    title: 'Bancada - Pratique DevOps com Exercícios, Quizzes e Simuladores',
     description:
-      'Learn DevOps with hands-on tutorials, interactive simulators, quizzes, exercises, and weekly news. Covering Docker, Kubernetes, Terraform, CI/CD, and more.',
+      'Aprenda DevOps na prática. Exercícios, quizzes, flashcards, checklists e simuladores interativos.',
     url: '/',
     type: 'website',
     images: [
@@ -31,53 +26,53 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Daily',
+        alt: 'Bancada',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DevOps Daily - Tutorials, Guides, Simulators & News for DevOps Engineers',
+    title: 'Bancada - Pratique DevOps com Exercícios, Quizzes e Simuladores',
     description:
-      'Learn DevOps with hands-on tutorials, interactive simulators, quizzes, and weekly news. 250+ free resources.',
+      'Aprenda DevOps na prática. Exercícios, quizzes, flashcards, checklists e simuladores interativos.',
     images: ['/og-image.png'],
   },
 };
 
 const FEATURED_SIMULATORS = [
   {
-    title: 'DNS Resolution Simulator',
-    description: 'Walk through the full DNS resolution process step by step',
+    title: 'Simulador de Resolução DNS',
+    description: 'Percorra todo o processo de resolução DNS passo a passo',
     href: '/games/dns-simulator',
     icon: Globe,
   },
   {
-    title: 'Kubernetes Scheduler',
-    description: 'Place pods on nodes based on resource requests and constraints',
+    title: 'Escalonador do Kubernetes',
+    description: 'Posicione pods em nós com base em requisições de recursos e restrições',
     href: '/games/k8s-scheduler',
     icon: Anchor,
   },
   {
-    title: 'Load Balancer Simulator',
-    description: 'Compare round-robin, least connections, and weighted algorithms',
+    title: 'Simulador de Load Balancer',
+    description: 'Compare round-robin, least connections e algoritmos ponderados',
     href: '/games/load-balancer-simulator',
     icon: Scale,
   },
   {
-    title: 'CI/CD Pipeline Builder',
-    description: 'Design a deployment pipeline with stages, gates, and rollbacks',
+    title: 'Construtor de Pipeline CI/CD',
+    description: 'Projete um pipeline de deploy com estágios, gates e rollbacks',
     href: '/games/cicd-stack-generator',
     icon: GitBranch,
   },
   {
-    title: 'Caching Simulator',
-    description: 'See how cache hit rates change with different strategies',
+    title: 'Simulador de Cache',
+    description: 'Veja como a taxa de acerto do cache muda com diferentes estratégias',
     href: '/games/caching-simulator',
     icon: Database,
   },
   {
-    title: 'DDoS Defense',
-    description: 'Protect your infrastructure from simulated attack patterns',
+    title: 'Defesa contra DDoS',
+    description: 'Proteja sua infraestrutura de padrões de ataque simulados',
     href: '/games/ddos-simulator',
     icon: Shield,
   },
@@ -111,7 +106,7 @@ export default async function Home() {
 
         {/* Featured Simulators */}
         <section className="my-16">
-          <SectionHeader label="featured" title="Interactive Simulators" viewAllHref="/games" />
+          <SectionHeader label="destaque" title="Simuladores Interativos" viewAllHref="/games" />
           <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3 bg-border border rounded-md overflow-hidden">
             {FEATURED_SIMULATORS.map((sim) => {
               const Icon = sim.icon;
@@ -137,20 +132,10 @@ export default async function Home() {
             href="/games"
             className="sm:hidden inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors mt-4"
           >
-            Browse all simulators
+            Ver todos os simuladores
             <ArrowRight className="w-4 h-4" />
           </Link>
         </section>
-
-        <SectionSeparator command="cd /categories" />
-
-        <CategoryGrid
-          className="my-16"
-          limit={8}
-          showHeader
-          showViewAll
-          gridClassName="lg:grid-cols-4"
-        />
 
         <SectionSeparator command="ls /exercises --recent" />
 
@@ -160,95 +145,46 @@ export default async function Home() {
 
         <FeaturedQuizzes className="my-16" />
 
-        <SectionSeparator command="ls /posts --latest" />
-
-        <LatestPosts className="my-16" />
-
-        <SectionSeparator command="ls /guides --latest" />
-
-        <LatestGuides className="my-16" limit={3} />
-
-        <SectionSeparator command="ls /tools" />
-
-        <FeaturedTools className="my-16" limit={6} />
-
         {/* About - editorial identity block, citable for AI search */}
-        <section className="my-16 max-w-4xl mx-auto px-4" aria-label="About DevOps Daily">
-          <p className="text-xs font-mono text-muted-foreground mb-3">{'// about'}</p>
+        <section className="my-16 max-w-4xl mx-auto px-4" aria-label="Sobre o Bancada">
+          <p className="text-xs font-mono text-muted-foreground mb-3">{'// sobre'}</p>
           <p className="text-xl sm:text-2xl leading-relaxed tracking-tight">
-            <span className="font-semibold text-foreground">DevOps Daily</span>{' '}
+            <span className="font-semibold text-foreground">Bancada</span>{' '}
             <span className="text-muted-foreground">
-              is a free, independent education platform for engineers who want to learn by running
-              things, not by reading pitch decks. Kubernetes, Docker, Terraform, CI/CD,
-              observability, and security, through
+              é uma plataforma de prática gratuita e independente para engenheiros que querem
+              aprender executando coisas de verdade, não lendo slides. Kubernetes, Docker,
+              Terraform, CI/CD, observabilidade e segurança, através de
             </span>{' '}
             <span className="text-foreground">
-              hands-on simulators, quizzes, exercises, and a weekly newsletter.
+              simuladores práticos, quizzes, exercícios, flashcards e checklists.
             </span>
           </p>
           <dl className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-px bg-border border rounded-md overflow-hidden font-mono">
             <div className="bg-card p-4">
-              <dt className="text-[11px] uppercase tracking-wider text-muted-foreground">Free</dt>
+              <dt className="text-[11px] uppercase tracking-wider text-muted-foreground">Grátis</dt>
               <dd className="text-lg tabular-nums font-semibold mt-1">$0</dd>
-              <dd className="text-xs text-muted-foreground/80 mt-0.5">forever</dd>
+              <dd className="text-xs text-muted-foreground/80 mt-0.5">para sempre</dd>
             </div>
             <div className="bg-card p-4">
-              <dt className="text-[11px] uppercase tracking-wider text-muted-foreground">Tools</dt>
+              <dt className="text-[11px] uppercase tracking-wider text-muted-foreground">Ferramentas</dt>
               <dd className="text-lg tabular-nums font-semibold mt-1">{activeToolCount}</dd>
-              <dd className="text-xs text-muted-foreground/80 mt-0.5">interactive</dd>
+              <dd className="text-xs text-muted-foreground/80 mt-0.5">interativas</dd>
             </div>
             <div className="bg-card p-4">
               <dt className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                Subscribers
+                Foco
               </dt>
-              <dd className="text-lg tabular-nums font-semibold mt-1">5,000+</dd>
-              <dd className="text-xs text-muted-foreground/80 mt-0.5">engineers</dd>
+              <dd className="text-lg tabular-nums font-semibold mt-1">Prática</dd>
+              <dd className="text-xs text-muted-foreground/80 mt-0.5">não teoria</dd>
             </div>
             <div className="bg-card p-4">
               <dt className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                Cadence
+                Acesso
               </dt>
-              <dd className="text-lg tabular-nums font-semibold mt-1">Weekly</dd>
-              <dd className="text-xs text-muted-foreground/80 mt-0.5">no spam</dd>
+              <dd className="text-lg tabular-nums font-semibold mt-1">Aberto</dd>
+              <dd className="text-xs text-muted-foreground/80 mt-0.5">sem cadastro</dd>
             </div>
           </dl>
-        </section>
-
-        {/* Newsletter CTA - terminal style */}
-        <section className="my-20 max-w-3xl mx-auto">
-          <div className="rounded-md border bg-card overflow-hidden font-mono text-sm">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/60 border-b">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400/70" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400/70" />
-                <div className="w-3 h-3 rounded-full bg-green-400/70" />
-              </div>
-              <span className="text-xs text-muted-foreground ml-2">devops-daily --subscribe</span>
-            </div>
-            <div className="p-6 space-y-3">
-              <div>
-                <span className="text-green-500">$</span>{' '}
-                <span className="text-muted-foreground">
-                  echo &quot;Weekly DevOps digest. No spam. Unsubscribe anytime.&quot;
-                </span>
-              </div>
-              <div className="pl-4 text-foreground">
-                Weekly DevOps digest. No spam. Unsubscribe anytime.
-              </div>
-              <div>
-                <span className="text-green-500">$</span>{' '}
-                <span className="text-muted-foreground">subscribe --email</span>
-              </div>
-              <TerminalNewsletterSignup />
-              <div className="text-xs text-muted-foreground pl-4 pt-1">
-                <span className="text-green-500/70">$</span>{' '}
-                <span className="inline-block w-[0.6em] h-[1em] align-middle bg-foreground/60 animate-cursor-blink" />
-              </div>
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground text-center mt-4 font-mono tabular-nums">
-            5,000+ engineers subscribed
-          </p>
         </section>
       </div>
     </div>

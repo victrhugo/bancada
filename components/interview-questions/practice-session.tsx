@@ -17,6 +17,12 @@ interface PracticeSessionProps {
   questions: InterviewQuestion[];
 }
 
+const TIER_LABELS: Record<string, string> = {
+  junior: 'Júnior',
+  mid: 'Pleno',
+  senior: 'Sênior',
+};
+
 function param(key: string): string {
   if (typeof window === 'undefined') return '';
   return new URLSearchParams(window.location.search).get(key) ?? '';
@@ -40,19 +46,24 @@ export function PracticeSession({ questions }: PracticeSessionProps) {
   // Describe where the session came from, for the header + exit link.
   const context = useMemo(() => {
     if (typeof window === 'undefined')
-      return { label: 'All questions', backHref: '/interview-questions' };
+      return { label: 'Todas as perguntas', backHref: '/interview-questions' };
     const tier = param('tier');
     const topic = param('topic');
     const mode = param('mode');
-    if (mode === 'review') return { label: 'Your review pile', backHref: '/interview-questions' };
+    if (mode === 'review')
+      return { label: 'Sua pilha de revisão', backHref: '/interview-questions' };
     if (topic)
       return {
-        label: `${topic.replace(/-/g, ' ')} questions`,
+        label: `perguntas de ${topic.replace(/-/g, ' ')}`,
         backHref: `/interview-questions/topic/${topic}`,
       };
-    if (tier) return { label: `${tier} questions`, backHref: `/interview-questions/${tier}` };
-    if (param('random')) return { label: 'Random mix', backHref: '/interview-questions' };
-    return { label: 'All questions', backHref: '/interview-questions' };
+    if (tier)
+      return {
+        label: `Perguntas de ${TIER_LABELS[tier] ?? tier}`,
+        backHref: `/interview-questions/${tier}`,
+      };
+    if (param('random')) return { label: 'Mistura aleatória', backHref: '/interview-questions' };
+    return { label: 'Todas as perguntas', backHref: '/interview-questions' };
   }, []);
 
   // Build the working set once, from the URL filters.
@@ -135,19 +146,19 @@ export function PracticeSession({ questions }: PracticeSessionProps) {
   };
 
   if (!ready) {
-    return <div className="py-16 text-center text-sm text-muted-foreground">Loading…</div>;
+    return <div className="py-16 text-center text-sm text-muted-foreground">Carregando…</div>;
   }
 
   if (set.length === 0) {
     return (
       <div className="rounded-md border bg-card p-10 text-center">
         <p className="text-sm text-muted-foreground mb-4">
-          {context.label === 'Your review pile'
-            ? "Nothing in your review pile yet. Mark a few questions 'Need review' and they'll show up here."
-            : 'No questions match this set.'}
+          {context.label === 'Sua pilha de revisão'
+            ? 'Ainda não há nada na sua pilha de revisão. Marque algumas perguntas como "Preciso revisar" e elas vão aparecer aqui.'
+            : 'Nenhuma pergunta corresponde a este conjunto.'}
         </p>
         <Button asChild variant="outline">
-          <Link href="/interview-questions">Back to all questions</Link>
+          <Link href="/interview-questions">Voltar para todas as perguntas</Link>
         </Button>
       </div>
     );
@@ -165,14 +176,14 @@ export function PracticeSession({ questions }: PracticeSessionProps) {
             {context.label}
           </p>
           <p className="text-sm font-medium">
-            Question {index + 1} of {set.length}
-            <span className="text-muted-foreground font-normal"> · {confidentCount} got it</span>
+            Pergunta {index + 1} de {set.length}
+            <span className="text-muted-foreground font-normal"> · {confidentCount} já sei</span>
           </p>
         </div>
         <Button asChild variant="ghost" size="sm" className="text-muted-foreground flex-shrink-0">
           <Link href={context.backHref}>
             <X className="w-4 h-4 mr-1" />
-            Exit
+            Sair
           </Link>
         </Button>
       </div>
@@ -192,12 +203,12 @@ export function PracticeSession({ questions }: PracticeSessionProps) {
       <div className="flex items-center justify-between mt-5">
         <Button onClick={() => go(-1)} disabled={index === 0} variant="outline" size="sm">
           <ChevronLeft className="w-4 h-4 mr-1" />
-          Prev
+          Anterior
         </Button>
         <div className="flex items-center gap-2">
           <Button onClick={reshuffle} variant="outline" size="sm">
             <Shuffle className="w-4 h-4 mr-1" />
-            Shuffle
+            Embaralhar
           </Button>
           <span className="hidden sm:flex items-center gap-1 text-xs font-mono text-muted-foreground">
             <Keyboard className="w-3.5 h-3.5" strokeWidth={1.5} />← →
@@ -209,7 +220,7 @@ export function PracticeSession({ questions }: PracticeSessionProps) {
           variant="outline"
           size="sm"
         >
-          Next
+          Próxima
           <ChevronRight className="w-4 h-4 ml-1" />
         </Button>
       </div>
@@ -220,7 +231,7 @@ export function PracticeSession({ questions }: PracticeSessionProps) {
           href={`/interview-questions/${current.tier}/${current.slug}`}
           className="text-xs font-mono text-muted-foreground hover:text-primary"
         >
-          open this question&apos;s page →
+          abrir a página desta pergunta →
         </Link>
       </div>
     </div>

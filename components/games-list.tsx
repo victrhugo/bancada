@@ -151,7 +151,7 @@ function GameCard({ game, featured = false }: { game: SerializableGame; featured
         <div className="absolute inset-0 bg-background/80 backdrop-blur-[1px] z-10 flex items-center justify-center">
           <div className="text-center">
             <Timer className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-            <p className="text-sm font-medium text-muted-foreground">Coming Soon</p>
+            <p className="text-sm font-medium text-muted-foreground">Em breve</p>
           </div>
         </div>
       )}
@@ -176,7 +176,7 @@ function GameCard({ game, featured = false }: { game: SerializableGame; featured
                 className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs flex items-center gap-1"
               >
                 <Activity className="h-3 w-3" />
-                Featured
+                Destaque
               </Badge>
             )}
           </div>
@@ -210,7 +210,7 @@ function GameCard({ game, featured = false }: { game: SerializableGame; featured
               : 'text-primary group-hover:gap-3 transition-all'
           }`}
         >
-          {game.isComingSoon ? 'Stay tuned' : 'Start Learning'}
+          {game.isComingSoon ? 'Fique de olho' : 'Começar a Aprender'}
           {!game.isComingSoon && <ArrowRight className="h-4 w-4" />}
         </div>
       </CardFooter>
@@ -289,9 +289,9 @@ export function GamesList({
   const regularGames = filteredGames.filter((game) => !game.featured);
 
   const tabs = [
-    { value: 'all' as const, label: 'All', count: availableGames.length, Icon: LayoutGrid },
-    { value: 'game' as const, label: 'Games', count: gameCount, Icon: Gamepad2 },
-    { value: 'simulator' as const, label: 'Simulators', count: simulatorCount, Icon: FlaskConical },
+    { value: 'all' as const, label: 'Todos', count: availableGames.length, Icon: LayoutGrid },
+    { value: 'game' as const, label: 'Jogos', count: gameCount, Icon: Gamepad2 },
+    { value: 'simulator' as const, label: 'Simuladores', count: simulatorCount, Icon: FlaskConical },
   ];
 
   return (
@@ -299,7 +299,7 @@ export function GamesList({
       <div
         className="mb-6 grid w-full grid-cols-3 items-center gap-1 rounded-xl bg-muted/50 p-1 sm:w-fit"
         role="group"
-        aria-label="Filter by tool type"
+        aria-label="Filtrar por tipo de ferramenta"
       >
         {tabs.map((tab) => (
           <button
@@ -333,8 +333,8 @@ export function GamesList({
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                aria-label="Search games and simulators"
-                placeholder="Search games by name, description, tags, or category..."
+                aria-label="Buscar jogos e simuladores"
+                placeholder="Busque jogos por nome, descrição, tags ou categoria..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 h-12"
@@ -346,12 +346,12 @@ export function GamesList({
             <div className="flex flex-col gap-4">
               <div className="flex flex-wrap gap-4 items-center">
                 <select
-                  aria-label="Filter by category"
+                  aria-label="Filtrar por categoria"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   className="px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 >
-                  <option value="all">All Categories</option>
+                  <option value="all">Todas as Categorias</option>
                   {categories.map((category) => (
                     <option key={category} value={category}>
                       {category}
@@ -360,18 +360,18 @@ export function GamesList({
                 </select>
 
                 <select
-                  aria-label="Sort tools"
+                  aria-label="Ordenar ferramentas"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
                   className="px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 >
-                  <option value="newest">Newest First</option>
-                  <option value="oldest">Oldest First</option>
-                  <option value="popular">Popular First</option>
-                  <option value="unpopular">Least Popular First</option>
-                  <option value="title">By Title (A-Z)</option>
-                  <option value="title-desc">By Title (Z-A)</option>
-                  <option value="featured">Featured First</option>
+                  <option value="newest">Mais Recentes Primeiro</option>
+                  <option value="oldest">Mais Antigos Primeiro</option>
+                  <option value="popular">Populares Primeiro</option>
+                  <option value="unpopular">Menos Populares Primeiro</option>
+                  <option value="title">Por Título (A-Z)</option>
+                  <option value="title-desc">Por Título (Z-A)</option>
+                  <option value="featured">Destaques Primeiro</option>
                 </select>
 
                 {activeFiltersCount > 0 && (
@@ -382,7 +382,7 @@ export function GamesList({
                     className="flex items-center gap-2"
                   >
                     <RotateCcw className="h-3 w-3" />
-                    Clear Filters
+                    Limpar Filtros
                   </Button>
                 )}
               </div>
@@ -390,10 +390,10 @@ export function GamesList({
           )}
 
           <div className="text-sm text-muted-foreground">
-            Showing {filteredGames.length} of {availableGames.length} available tools
+            Mostrando {filteredGames.length} de {availableGames.length} ferramentas disponíveis
             {activeFiltersCount > 0 && (
               <Badge variant="secondary" className="ml-2">
-                {activeFiltersCount} active filter{activeFiltersCount > 1 ? 's' : ''}
+                {activeFiltersCount} filtro{activeFiltersCount > 1 ? 's' : ''} ativo{activeFiltersCount > 1 ? 's' : ''}
               </Badge>
             )}
           </div>
@@ -405,8 +405,8 @@ export function GamesList({
         {featuredGames.length > 0 && (
           <div>
             <div className="flex items-center gap-2 mb-6">
-              <h2 className="text-2xl font-bold">Featured Tools</h2>
-              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500">Spotlight</Badge>
+              <h2 className="text-2xl font-bold">Ferramentas em Destaque</h2>
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500">Em Alta</Badge>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredGames.map((game) => (
@@ -417,7 +417,7 @@ export function GamesList({
         )}
 
         <div>
-          {featuredGames.length > 0 && <h2 className="text-2xl font-bold mb-6">More Tools</h2>}
+          {featuredGames.length > 0 && <h2 className="text-2xl font-bold mb-6">Mais Ferramentas</h2>}
           {filteredGames.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularGames.map((game) => (
@@ -428,15 +428,15 @@ export function GamesList({
             <div className="text-center py-12">
               <p className="text-muted-foreground mb-4">
                 {activeFiltersCount > 0 ? (
-                  <>No tools match your current filters</>
+                  <>Nenhuma ferramenta corresponde aos filtros atuais</>
                 ) : (
-                  <>No tools available</>
+                  <>Nenhuma ferramenta disponível</>
                 )}
               </p>
               {activeFiltersCount > 0 && (
                 <Button variant="outline" onClick={clearFilters}>
                   <RotateCcw className="h-4 w-4 mr-2" />
-                  Clear All Filters
+                  Limpar Todos os Filtros
                 </Button>
               )}
             </div>
@@ -447,10 +447,10 @@ export function GamesList({
           <section aria-labelledby="coming-soon-heading">
             <div className="mb-6">
               <h2 id="coming-soon-heading" className="text-2xl font-bold">
-                Coming Soon
+                Em Breve
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Tools currently being prepared for release.
+                Ferramentas que estão sendo preparadas para o lançamento.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

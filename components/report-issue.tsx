@@ -69,7 +69,7 @@ export function ReportIssue({
         onMouseLeave={() => setIsHovered(false)}
       >
         <AlertTriangle className="w-3.5 h-3.5" />
-        <span>Report issue</span>
+        <span>Reportar problema</span>
         <ExternalLink className="w-3 h-3" />
       </button>
     );
@@ -89,7 +89,7 @@ export function ReportIssue({
           <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-foreground">Found an issue?</p>
+          <p className="text-sm font-medium text-foreground">Encontrou um problema?</p>
         </div>
         <Button
           variant="ghost"
@@ -97,7 +97,7 @@ export function ReportIssue({
           onClick={handleClick}
           className="shrink-0 h-8 px-3 text-xs hover:bg-background/80"
         >
-          Report
+          Reportar
           <ExternalLink className="w-3 h-3 ml-1.5" />
         </Button>
       </motion.div>
@@ -136,10 +136,10 @@ export function ReportIssue({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <h3 className="mb-2 text-lg font-semibold text-foreground">Found an issue?</h3>
+          <h3 className="mb-2 text-lg font-semibold text-foreground">Encontrou um problema?</h3>
           <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-            Help us improve this content by reporting any errors, typos, or suggestions for
-            enhancement.
+            Ajude-nos a melhorar este conteúdo reportando erros, erros de digitação ou sugestões
+            de melhoria.
           </p>
 
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
@@ -165,7 +165,7 @@ export function ReportIssue({
                 ) : (
                   <AlertTriangle className="w-4 h-4 text-amber-600 group-hover:text-amber-500" />
                 )}
-                <span className="font-medium">{isClicked ? 'Thank you!' : 'Report Issue'}</span>
+                <span className="font-medium">{isClicked ? 'Obrigado!' : 'Reportar Problema'}</span>
                 {!isClicked && (
                   <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-amber-500 transition-colors" />
                 )}

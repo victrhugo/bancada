@@ -179,18 +179,18 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
   const getScoreRating = () => {
     const percentage = (score / totalPoints) * 100;
     if (percentage >= 90)
-      return { rating: `${quizConfig.category} Expert!`, icon: Trophy, color: 'text-yellow-500' };
+      return { rating: `Mestre em ${quizConfig.category}!`, icon: Trophy, color: 'text-yellow-500' };
     if (percentage >= 75)
-      return { rating: `${quizConfig.category} Specialist`, icon: Star, color: 'text-purple-500' };
+      return { rating: `Especialista em ${quizConfig.category}`, icon: Star, color: 'text-purple-500' };
     if (percentage >= 60)
       return {
-        rating: `${quizConfig.category} Practitioner`,
+        rating: `Praticante de ${quizConfig.category}`,
         icon: CheckCircle,
         color: 'text-blue-500',
       };
     if (percentage >= 40)
-      return { rating: `${quizConfig.category} Learner`, icon: BookOpen, color: 'text-green-500' };
-    return { rating: 'Keep Learning!', icon: Target, color: 'text-gray-500' };
+      return { rating: `Aprendiz de ${quizConfig.category}`, icon: BookOpen, color: 'text-green-500' };
+    return { rating: 'Continue Aprendendo!', icon: Target, color: 'text-gray-500' };
   };
 
   // Start Screen
@@ -251,39 +251,39 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                 <div className="text-center p-6 bg-card rounded-md border border-green-200 dark:border-green-800">
                   <Badge className="mb-3 bg-green-500 hover:bg-green-600 text-white border-0 px-4 py-1">
                     <Target className="w-3 h-3 mr-1" />
-                    Beginner
+                    Iniciante
                   </Badge>
                   <p className="text-sm text-muted-foreground font-medium">
-                    Basic concepts and fundamentals
+                    Conceitos básicos e fundamentos
                   </p>
                   <div className="mt-2 text-xs text-green-600 dark:text-green-400">
-                    {quizConfig.metadata.difficultyLevels.beginner} questions
+                    {quizConfig.metadata.difficultyLevels.beginner} perguntas
                   </div>
                 </div>
 
                 <div className="text-center p-6 bg-card rounded-md border border-yellow-200 dark:border-yellow-800">
                   <Badge className="mb-3 bg-yellow-500 hover:bg-yellow-600 text-white border-0 px-4 py-1">
                     <Zap className="w-3 h-3 mr-1" />
-                    Intermediate
+                    Intermediário
                   </Badge>
                   <p className="text-sm text-muted-foreground font-medium">
-                    Advanced workflows and optimization
+                    Fluxos de trabalho avançados e otimização
                   </p>
                   <div className="mt-2 text-xs text-yellow-600 dark:text-yellow-400">
-                    {quizConfig.metadata.difficultyLevels.intermediate} questions
+                    {quizConfig.metadata.difficultyLevels.intermediate} perguntas
                   </div>
                 </div>
 
                 <div className="text-center p-6 bg-card rounded-md border border-red-200 dark:border-red-800">
                   <Badge className="mb-3 bg-red-500 hover:bg-red-600 text-white border-0 px-4 py-1">
                     <BookOpen className="w-3 h-3 mr-1" />
-                    Advanced
+                    Avançado
                   </Badge>
                   <p className="text-sm text-muted-foreground font-medium">
-                    Expert-level scenarios and edge cases
+                    Cenários de nível especialista e casos extremos
                   </p>
                   <div className="mt-2 text-xs text-red-600 dark:text-red-400">
-                    {quizConfig.metadata.difficultyLevels.advanced} questions
+                    {quizConfig.metadata.difficultyLevels.advanced} perguntas
                   </div>
                 </div>
               </motion.div>
@@ -297,11 +297,11 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                 <div className="inline-flex items-center gap-6 text-sm text-muted-foreground bg-white/30 dark:bg-gray-800/30 rounded-full px-6 py-3 border border-border/50">
                   <div className="flex items-center gap-2">
                     <div className={`w-2 h-2 ${quizConfig.theme.gradientFrom} rounded-full`}></div>
-                    <span>{quizConfig.questions.length} questions</span>
+                    <span>{quizConfig.questions.length} perguntas</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className={`w-2 h-2 ${quizConfig.theme.gradientTo} rounded-full`}></div>
-                    <span>{totalPoints} total points</span>
+                    <span>{totalPoints} pontos totais</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -322,11 +322,11 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                   className="px-8 py-4 text-lg"
                 >
                   <Play className="mr-2 h-5 w-5" />
-                  Start Quiz
+                  Iniciar Quiz
                 </Button>
                 <p className="mt-4 text-xs text-muted-foreground flex items-center justify-center gap-1.5">
                   <Keyboard className="h-3 w-3" />
-                  <span>Press <kbd className="px-1.5 py-0.5 bg-muted border rounded text-[10px] font-mono">1-4</kbd> to select, <kbd className="px-1.5 py-0.5 bg-muted border rounded text-[10px] font-mono">Enter</kbd> to submit</span>
+                  <span>Pressione <kbd className="px-1.5 py-0.5 bg-muted border rounded text-[10px] font-mono">1-4</kbd> para selecionar, <kbd className="px-1.5 py-0.5 bg-muted border rounded text-[10px] font-mono">Enter</kbd> para enviar</span>
                 </p>
               </motion.div>
             </CardContent>
@@ -359,7 +359,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
               >
                 <RatingIcon className="h-8 w-8 text-white" />
               </motion.div>
-              <CardTitle className="text-3xl mb-2">Quiz Complete!</CardTitle>
+              <CardTitle className="text-3xl mb-2">Quiz Concluído!</CardTitle>
               <CardDescription className="text-xl">
                 <span className={color}>{rating}</span>
               </CardDescription>
@@ -384,7 +384,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                     <div className="text-2xl font-bold text-green-500">
                       {completedQuestions.length}
                     </div>
-                    <div className="text-sm text-muted-foreground">Correct</div>
+                    <div className="text-sm text-muted-foreground">Corretas</div>
                   </motion.div>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -394,7 +394,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                     <div className="text-2xl font-bold text-red-500">
                       {quizConfig.questions.length - completedQuestions.length}
                     </div>
-                    <div className="text-sm text-muted-foreground">Incorrect</div>
+                    <div className="text-sm text-muted-foreground">Incorretas</div>
                   </motion.div>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -404,7 +404,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                     <div className="text-2xl font-bold text-blue-500">
                       {Math.round((score / totalPoints) * 100)}%
                     </div>
-                    <div className="text-sm text-muted-foreground">Score</div>
+                    <div className="text-sm text-muted-foreground">Pontuação</div>
                   </motion.div>
                 </div>
 
@@ -420,7 +420,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                     className={`bg-linear-to-r ${quizConfig.theme.gradientFrom} ${quizConfig.theme.gradientTo} hover:opacity-90`}
                   >
                     <RotateCcw className="mr-2 h-4 w-4" />
-                    Play Again
+                    Jogar Novamente
                   </Button>
                 </motion.div>
               </div>
@@ -440,7 +440,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-3">
               <Badge variant="outline" className="px-3 py-1">
-                Question {currentQuestion + 1} of {quizConfig.questions.length}
+                Pergunta {currentQuestion + 1} de {quizConfig.questions.length}
               </Badge>
               <Badge
                 className={`${getDifficultyColor(question.difficulty)} text-white border-0 px-3 py-1`}
@@ -456,7 +456,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
               </Badge>
             </div>
             <div className="text-sm text-muted-foreground font-medium">
-              Score: <span className="font-bold text-primary text-lg">{score}</span>
+              Pontuação: <span className="font-bold text-primary text-lg">{score}</span>
             </div>
           </div>
           <Progress value={progress} className="h-2" />
@@ -478,7 +478,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
             <div className="bg-muted/30 p-4 rounded-lg border-l-4 border-blue-500">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
                 <Target className="h-4 w-4" />
-                Scenario
+                Cenário
               </h4>
               <p className="text-sm text-muted-foreground mb-3">{question.situation}</p>
 
@@ -525,7 +525,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
 
           {/* Answer Options */}
           <div className="space-y-3">
-            <h4 className="font-semibold">Select the correct answer:</h4>
+            <h4 className="font-semibold">Selecione a resposta correta:</h4>
             {question.options.map((option, index) => (
               <motion.div key={index} whileTap={{ scale: 0.98 }}>
                 <Button
@@ -583,7 +583,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
               className="text-muted-foreground hover:text-primary"
             >
               <Lightbulb className="mr-2 h-4 w-4" />
-              {showHint ? 'Hide Hint' : 'Show Hint'}
+              {showHint ? 'Ocultar Dica' : 'Mostrar Dica'}
             </Button>
           )}
 
@@ -627,7 +627,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                     )}
                     <div>
                       <div className="font-semibold mb-2">
-                        {selectedAnswer === question.correctAnswer ? 'Correct!' : 'Not quite right'}
+                        {selectedAnswer === question.correctAnswer ? 'Correto!' : 'Incorreto'}
                       </div>
                       <AlertDescription>{question.explanation}</AlertDescription>
                     </div>
@@ -641,7 +641,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
           <div className="flex justify-between pt-4">
             <Button variant="outline" onClick={handleRestart}>
               <RotateCcw className="mr-2 h-4 w-4" />
-              Restart
+              Reiniciar
             </Button>
 
             <div className="space-x-2">
@@ -651,7 +651,7 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                   disabled={selectedAnswer === null}
                   className={`bg-linear-to-r ${quizConfig.theme.gradientFrom} ${quizConfig.theme.gradientTo} hover:opacity-90`}
                 >
-                  Submit Answer
+                  Enviar Resposta
                 </Button>
               ) : (
                 <Button
@@ -659,8 +659,8 @@ export default function GenericQuiz({ quizConfig }: GenericQuizProps) {
                   className={`bg-linear-to-r ${quizConfig.theme.gradientFrom} ${quizConfig.theme.gradientTo} hover:opacity-90`}
                 >
                   {currentQuestion < quizConfig.questions.length - 1
-                    ? 'Next Question'
-                    : 'See Results'}
+                    ? 'Próxima Pergunta'
+                    : 'Ver Resultados'}
                   <Sparkles className="ml-2 h-4 w-4" />
                 </Button>
               )}

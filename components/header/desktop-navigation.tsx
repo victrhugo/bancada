@@ -4,24 +4,17 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { CommandPalette } from '@/components/command-palette';
-import { DropdownTrigger } from './dropdown-trigger';
-import { mainNavigation, dropdownNavigation } from './nav-items';
-import { Wrench, MoreHorizontal } from 'lucide-react';
+import { mainNavigation } from './nav-items';
 
 export function DesktopNavigation() {
   return (
     <>
       {/* Desktop Navigation */}
       <div className="hidden lg:flex lg:items-center lg:gap-1">
-        {/* Main Navigation Links */}
         {mainNavigation.map((item) => (
-          // External entries leave the site, so they render as a plain anchor
-          // with the usual noopener guard rather than a client-routed Link.
           <Link
             key={item.href}
             href={item.href}
-            target={item.external ? '_blank' : undefined}
-            rel={item.external ? 'noopener noreferrer' : undefined}
             className={cn(
               'flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-300',
               'hover:bg-primary/8 hover:text-primary hover:shadow-sm',
@@ -37,13 +30,6 @@ export function DesktopNavigation() {
             )}
           </Link>
         ))}
-
-        {/* Separator */}
-        <div className="w-px h-6 mx-2 bg-border/50" />
-
-        {/* Dropdown Navigation */}
-        <DropdownTrigger label="Tools" sections={dropdownNavigation.tools} icon={Wrench} />
-        <DropdownTrigger label="More" sections={dropdownNavigation.more} icon={MoreHorizontal} />
       </div>
 
       {/* Right side */}

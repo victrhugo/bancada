@@ -2,38 +2,38 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: { absolute: 'DevSecOps Roadmap - Security-First DevOps Journey' },
+  title: { absolute: 'Roadmap DevSecOps - Jornada DevOps com Foco em Segurança' },
   description:
-    'A comprehensive roadmap for integrating security into your DevOps practices. Learn to build secure pipelines, implement security automation, and shift security left.',
+    'Um roadmap completo para integrar segurança às suas práticas de DevOps. Aprenda a construir pipelines seguros, implementar automação de segurança e trazer a segurança para as etapas iniciais do desenvolvimento.',
   alternates: {
     canonical: '/roadmap/devsecops',
   },
   openGraph: {
-    title: 'DevSecOps Roadmap - Security-First DevOps Journey',
+    title: 'Roadmap DevSecOps - Jornada DevOps com Foco em Segurança',
     description:
-      'A comprehensive roadmap for integrating security into your DevOps practices. Learn to build secure pipelines, implement security automation, and shift security left.',
-    url: 'https://devops-daily.com/roadmap/devsecops',
+      'Um roadmap completo para integrar segurança às suas práticas de DevOps. Aprenda a construir pipelines seguros, implementar automação de segurança e trazer a segurança para as etapas iniciais do desenvolvimento.',
+    url: 'https://bancada.app/roadmap/devsecops',
     type: 'website',
     images: [
       {
-        url: 'https://devops-daily.com/images/devsecops-roadmap-og.png',
+        url: 'https://bancada.app/images/devsecops-roadmap-og.png',
         width: 1200,
         height: 630,
-        alt: 'DevSecOps Roadmap - Security-First DevOps',
+        alt: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
       },
     ],
   },
   twitter: {
-    title: 'DevSecOps Roadmap - Security-First DevOps Journey',
+    title: 'Roadmap DevSecOps - Jornada DevOps com Foco em Segurança',
     description:
-      'A comprehensive roadmap for integrating security into your DevOps practices. Learn to build secure pipelines, implement security automation, and shift security left.',
+      'Um roadmap completo para integrar segurança às suas práticas de DevOps. Aprenda a construir pipelines seguros, implementar automação de segurança e trazer a segurança para as etapas iniciais do desenvolvimento.',
     card: 'summary_large_image',
     images: [
       {
-        url: 'https://devops-daily.com/images/devsecops-roadmap-og.png',
+        url: 'https://bancada.app/images/devsecops-roadmap-og.png',
         width: 1200,
         height: 630,
-        alt: 'DevSecOps Roadmap - Security-First DevOps',
+        alt: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
       },
     ],
   },
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: 'DevOps Daily',
-      url: 'https://devops-daily.com',
+      name: 'Bancada',
+      url: 'https://bancada.app',
     },
   ],
 };

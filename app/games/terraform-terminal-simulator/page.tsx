@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import TerraformTerminalSimulator from '@/components/games/terraform-terminal-simulator';
 import { SimulatorShell } from '@/components/games/simulator-shell';
 import { generateGameMetadata } from '@/lib/game-metadata';
@@ -108,39 +107,6 @@ function TerraformEducational() {
         </p>
       </div>
 
-      <div className="mt-6">
-        <h4 className="mb-3 text-sm font-semibold">Keep learning</h4>
-        <ul className="grid gap-2 text-sm sm:grid-cols-2">
-          <li>
-            <Link href="/guides/introduction-to-terraform" className="text-primary hover:underline">
-              Introduction to Terraform guide
-            </Link>
-          </li>
-          <li>
-            <Link href="/categories/terraform" className="text-primary hover:underline">
-              All Terraform articles
-            </Link>
-          </li>
-          <li>
-            <Link href="/comparisons/terraform-vs-opentofu" className="text-primary hover:underline">
-              Terraform vs OpenTofu
-            </Link>
-          </li>
-          <li>
-            <Link href="/comparisons/terraform-vs-pulumi" className="text-primary hover:underline">
-              Terraform vs Pulumi
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/comparisons/terraform-vs-cloudformation"
-              className="text-primary hover:underline"
-            >
-              Terraform vs CloudFormation
-            </Link>
-          </li>
-        </ul>
-      </div>
     </>
   );
 }

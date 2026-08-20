@@ -3,17 +3,17 @@ import { Suspense } from 'react';
 import { SearchPageClient } from '@/components/search-page-client';
 
 export const metadata: Metadata = {
-  title: 'Search',
+  title: 'Busca',
   // The results are client-rendered, so there is nothing here for a crawler to
   // index. follow is kept so the links out of it still pass through.
   robots: { index: false, follow: true },
-  description: 'Search across DevOps Daily posts, guides, quizzes, games, flashcards, comparisons, and tools to find content on Docker, Kubernetes, AWS, CI/CD, and more.',
+  description: 'Busque exercícios, quizzes, flashcards, checklists, jogos e perguntas de entrevista sobre Docker, Kubernetes, AWS, CI/CD e mais.',
   alternates: {
     canonical: '/search',
   },
   openGraph: {
-    title: 'Search | DevOps Daily',
-    description: 'Search across DevOps Daily posts, guides, quizzes, games, flashcards, comparisons, and tools to find content on Docker, Kubernetes, AWS, CI/CD, and more.',
+    title: 'Busca | Bancada',
+    description: 'Busque exercícios, quizzes, flashcards, checklists, jogos e perguntas de entrevista sobre Docker, Kubernetes, AWS, CI/CD e mais.',
     type: 'website',
     url: '/search',
     images: [
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Daily Search',
+        alt: 'Busca no Bancada',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Search | DevOps Daily',
-    description: 'Search across DevOps Daily posts, guides, quizzes, games, flashcards, comparisons, and tools to find content on Docker, Kubernetes, AWS, CI/CD, and more.',
+    title: 'Busca | Bancada',
+    description: 'Busque exercícios, quizzes, flashcards, checklists, jogos e perguntas de entrevista sobre Docker, Kubernetes, AWS, CI/CD e mais.',
     images: ['/og-image.png'],
   },
 };

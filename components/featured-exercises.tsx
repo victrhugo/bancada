@@ -80,7 +80,7 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
             </span>
             <span className="flex items-center gap-1">
               <Target className="w-3 h-3" />
-              {exercise.steps.length} steps
+              {exercise.steps.length} passos
             </span>
           </div>
           <ArrowRight className="w-3.5 h-3.5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -104,9 +104,9 @@ export default async function FeaturedExercises({ className }: FeaturedExercises
   return (
     <section className={cn(className)}>
       <SectionHeader
-        label="exercises"
-        title="Hands-On Exercises"
-        description="Practice real-world DevOps scenarios with step-by-step guidance"
+        label="exercícios"
+        title="Exercícios Práticos"
+        description="Pratique cenários reais de DevOps com orientação passo a passo"
         viewAllHref="/exercises"
       />
 
@@ -120,7 +120,7 @@ export default async function FeaturedExercises({ className }: FeaturedExercises
         href="/exercises"
         className="sm:hidden inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors mt-4"
       >
-        View all exercises
+        Ver todos os exercícios
         <ArrowRight className="w-4 h-4" />
       </Link>
     </section>

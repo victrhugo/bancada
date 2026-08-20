@@ -44,14 +44,14 @@ export function ChecklistCard({ checklist, progress }: ChecklistCardProps) {
             {checklist.estimatedTime}
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-400">
-            {checklist.items.length} items
+            {checklist.items.length} itens
           </div>
         </div>
 
         {progress !== undefined && progress > 0 && (
           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between text-xs mb-2">
-              <span className="text-gray-600 dark:text-gray-400">Progress</span>
+              <span className="text-gray-600 dark:text-gray-400">Progresso</span>
               <span className="font-semibold text-green-600 dark:text-green-400">{progress}%</span>
             </div>
             <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">

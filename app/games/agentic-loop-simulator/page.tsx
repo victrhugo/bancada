@@ -81,7 +81,7 @@ function AgenticLoopEducational() {
         <p className="text-sm text-muted-foreground">
           The companion post,{' '}
           <a
-            href="https://devops-daily.com/posts/stop-prompting-start-looping"
+            href="https://bancada.app/posts/stop-prompting-start-looping"
             className="font-medium text-primary underline underline-offset-2"
           >
             Stop Prompting, Start Looping
