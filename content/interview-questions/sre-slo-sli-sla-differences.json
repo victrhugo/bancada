@@ -1,10 +1,10 @@
 {
   "id": "sre-slo-sli-sla-differences",
   "slug": "sre-slo-sli-sla-differences",
-  "title": "SLO vs SLI vs SLA Differences",
-  "question": "Your team just launched a new API service. Your manager asks you to set up SLOs for it. Can you walk me through what SLOs, SLIs, and SLAs are, and how they relate to each other?",
-  "answer": "An SLI (Service Level Indicator) is a measurement of your service's behavior -- something you can actually observe and put a number on. For example, the percentage of HTTP requests that return in under 300ms, or the ratio of successful responses to total responses.\n\nAn SLO (Service Level Objective) is a target you set for an SLI. You're saying \"we want this SLI to meet this threshold over this time window.\" For example, \"99.9% of requests should succeed over a rolling 30-day window.\"\n\nAn SLA (Service Level Agreement) is a contract with your customers that says what happens if you miss your targets. It has business consequences -- refunds, credits, or penalties. Not every service needs an SLA, but every production service should have SLOs.\n\nThe relationship flows like this: you pick SLIs (what to measure), set SLOs (what target to hit), and if you make a promise to customers, that becomes an SLA. Your SLOs should always be tighter than your SLAs. If your SLA promises 99.9% availability, your internal SLO should be something like 99.95%. That gap gives you a buffer to catch problems before they become contract violations.",
-  "explanation": "This is a foundational SRE question. You're testing whether the candidate understands the relationship between these three concepts or just memorized definitions. Strong candidates will explain the hierarchy (SLI feeds SLO, SLO is stricter than SLA) and give concrete examples. Weak candidates mix up SLOs and SLAs or can't give real numbers.",
+  "title": "Diferenças entre SLO, SLI e SLA",
+  "question": "Seu time acabou de lançar um novo serviço de API. Seu gerente pede para você configurar SLOs para ele. Você pode explicar o que são SLOs, SLIs e SLAs, e como eles se relacionam?",
+  "answer": "Um SLI (Service Level Indicator) é uma medição do comportamento do seu serviço -- algo que você realmente consegue observar e colocar um número. Por exemplo, a porcentagem de requisições HTTP que retornam em menos de 300ms, ou a proporção de respostas bem-sucedidas sobre o total de respostas.\n\nUm SLO (Service Level Objective) é uma meta que você define para um SLI. Você está dizendo \"queremos que esse SLI atinja esse limiar nessa janela de tempo\". Por exemplo, \"99,9% das requisições devem ter sucesso em uma janela móvel de 30 dias\".\n\nUm SLA (Service Level Agreement) é um contrato com seus clientes que diz o que acontece se você não atingir suas metas. Ele tem consequências de negócio -- reembolsos, créditos ou multas. Nem todo serviço precisa de um SLA, mas todo serviço em produção deveria ter SLOs.\n\nA relação flui assim: você escolhe SLIs (o que medir), define SLOs (qual meta atingir), e se você faz uma promessa aos clientes, isso vira um SLA. Seus SLOs devem sempre ser mais rígidos que seus SLAs. Se seu SLA promete 99,9% de disponibilidade, seu SLO interno deveria ser algo como 99,95%. Essa margem te dá um buffer para detectar problemas antes que virem violações de contrato.",
+  "explanation": "Essa é uma pergunta fundamental de SRE. Você está testando se o candidato entende a relação entre esses três conceitos ou só decorou definições. Bons candidatos vão explicar a hierarquia (SLI alimenta o SLO, o SLO é mais rígido que o SLA) e dar exemplos concretos. Candidatos fracos confundem SLOs com SLAs ou não conseguem dar números reais.",
   "category": "SRE",
   "difficulty": "beginner",
   "tier": "junior",
@@ -12,24 +12,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "SLO definition in a config file (OpenSLO format)",
+      "label": "Definição de SLO em um arquivo de configuração (formato OpenSLO)",
       "code": "apiVersion: openslo/v1\nkind: SLO\nmetadata:\n  name: api-availability\nspec:\n  service: payment-api\n  description: Payment API availability SLO\n  budgetingMethod: Occurrences\n  objectives:\n    - displayName: Availability\n      target: 0.999\n      op: gte\n  indicator:\n    metadata:\n      name: availability-ratio\n    spec:\n      ratioMetric:\n        good:\n          source: prometheus\n          queryType: promql\n          query: sum(rate(http_requests_total{status!~\"5..\"}[5m]))\n        total:\n          source: prometheus\n          queryType: promql\n          query: sum(rate(http_requests_total[5m]))"
     },
     {
       "language": "bash",
-      "label": "Quick availability calculation from logs",
+      "label": "Cálculo rápido de disponibilidade a partir de logs",
       "code": "# Count total requests and errors in the last hour\ntotal=$(grep \"$(date -d '1 hour ago' '+%Y-%m-%d %H')\" access.log | wc -l)\nerrors=$(grep \"$(date -d '1 hour ago' '+%Y-%m-%d %H')\" access.log | grep ' 5[0-9][0-9] ' | wc -l)\n\n# Calculate availability\necho \"scale=6; ($total - $errors) / $total * 100\" | bc\n# Output: 99.972000"
     }
   ],
   "followUpQuestions": [
-    "Why should your SLO always be stricter than your SLA?",
-    "Can you have SLOs without SLAs? When would you do that?",
-    "What happens if you set your SLO target too high, like 99.99% for an internal tool?"
+    "Por que seu SLO deveria sempre ser mais rígido que seu SLA?",
+    "Você pode ter SLOs sem SLAs? Quando você faria isso?",
+    "O que acontece se você definir sua meta de SLO alta demais, tipo 99,99% para uma ferramenta interna?"
   ],
   "commonMistakes": [
-    "Treating SLOs and SLAs as the same thing. SLAs are contracts with business consequences; SLOs are internal engineering targets.",
-    "Setting SLOs at 100%. No service should target 100% reliability -- it leaves zero room for deployments, maintenance, or any changes at all.",
-    "Picking SLIs that don't reflect user experience, like CPU usage instead of request latency or error rate."
+    "Tratar SLOs e SLAs como a mesma coisa. SLAs são contratos com consequências de negócio; SLOs são metas internas de engenharia.",
+    "Definir SLOs em 100%. Nenhum serviço deveria ter como meta 100% de confiabilidade -- isso não deixa espaço nenhum para deploys, manutenção ou qualquer mudança.",
+    "Escolher SLIs que não refletem a experiência do usuário, como uso de CPU em vez de latência de requisição ou taxa de erro."
   ],
   "relatedTopics": ["sre-error-budget-management", "sre-slo-alerting", "monitoring-basics"]
 }

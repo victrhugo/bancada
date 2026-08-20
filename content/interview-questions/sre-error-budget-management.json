@@ -1,10 +1,10 @@
 {
   "id": "sre-error-budget-management",
   "slug": "sre-error-budget-management",
-  "title": "Error Budget Management",
-  "question": "Your service has a 99.9% availability SLO over a 30-day window. How much downtime does that give you, and what do you actually do with that error budget day-to-day?",
-  "answer": "A 99.9% SLO over 30 days gives you an error budget of 0.1%, which is about 43.2 minutes of total downtime (or roughly 4,320 failed requests out of every 4.32 million).\n\nThe error budget is not just a number to watch -- it's a decision-making tool. Here's how I'd use it:\n\nWhen the budget is healthy (say, 70%+ remaining), the team moves fast. Ship features, run experiments, do risky deployments. You have room to absorb failures. This is the whole point -- error budgets turn the reliability vs. velocity argument into a data-driven decision.\n\nWhen the budget is getting low (under 30% remaining with time left in the window), slow down. Require extra review on deployments, hold off on risky changes, and focus on reliability work like adding retry logic or improving rollback speed.\n\nWhen the budget is burned (0% remaining), stop feature deployments entirely. The team shifts to reliability work only: fixing the issues that burned the budget, improving monitoring, adding automated rollbacks. This is the error budget policy, and it needs to be agreed on before you need it, not during an incident.\n\nThe key insight is that error budgets align incentives. Product teams want to ship fast, SRE teams want reliability. The error budget gives both sides a shared framework: \"We can ship this risky feature because we have budget\" or \"We need to pause and fix things because we're out of budget.\"",
-  "explanation": "This question separates candidates who understand error budgets as a cultural and operational tool from those who just know the math. The calculation is table stakes -- what matters is whether they can explain the error budget policy and how it changes team behavior. Strong candidates will talk about the policy being pre-agreed and about using budgets to balance velocity and reliability.",
+  "title": "Gerenciamento de Orçamento de Erro",
+  "question": "Seu serviço tem um SLO de disponibilidade de 99,9% em uma janela de 30 dias. Quanto tempo de indisponibilidade isso te dá, e o que você realmente faz com esse orçamento de erro no dia a dia?",
+  "answer": "Um SLO de 99,9% em 30 dias te dá um orçamento de erro de 0,1%, o que é cerca de 43,2 minutos de indisponibilidade total (ou aproximadamente 4.320 requisições falhas a cada 4,32 milhões).\n\nO orçamento de erro não é só um número para observar -- é uma ferramenta de tomada de decisão. Veja como eu o usaria:\n\nQuando o orçamento está saudável (digamos, 70%+ restante), o time avança rápido. Lança funcionalidades, roda experimentos, faz deploys arriscados. Você tem espaço para absorver falhas. Esse é todo o objetivo -- orçamentos de erro transformam o debate confiabilidade vs. velocidade em uma decisão orientada por dados.\n\nQuando o orçamento está ficando baixo (abaixo de 30% restante com tempo ainda na janela), desacelere. Exija revisão extra nos deploys, segure mudanças arriscadas e foque em trabalho de confiabilidade, como adicionar lógica de retry ou melhorar a velocidade de rollback.\n\nQuando o orçamento está esgotado (0% restante), pare completamente os deploys de funcionalidades. O time muda para trabalho só de confiabilidade: corrigir os problemas que consumiram o orçamento, melhorar o monitoramento, adicionar rollbacks automatizados. Essa é a política de orçamento de erro, e ela precisa ser acordada antes de você precisar dela, não durante um incidente.\n\nO insight chave é que orçamentos de erro alinham incentivos. Times de produto querem lançar rápido, times de SRE querem confiabilidade. O orçamento de erro dá aos dois lados um framework compartilhado: \"Podemos lançar essa funcionalidade arriscada porque temos orçamento\" ou \"Precisamos pausar e consertar as coisas porque estamos sem orçamento\".",
+  "explanation": "Essa pergunta separa candidatos que entendem orçamentos de erro como uma ferramenta cultural e operacional daqueles que só sabem a matemática. O cálculo é o básico -- o que importa é se eles conseguem explicar a política de orçamento de erro e como ela muda o comportamento do time. Bons candidatos vão falar sobre a política ser acordada previamente e sobre usar orçamentos para equilibrar velocidade e confiabilidade.",
   "category": "SRE",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -12,25 +12,25 @@
   "codeExamples": [
     {
       "language": "python",
-      "label": "Error budget calculation and burn rate",
+      "label": "Cálculo do orçamento de erro e taxa de consumo",
       "code": "from datetime import datetime, timedelta\n\ndef calculate_error_budget(slo_target: float, window_days: int, total_requests: int, failed_requests: int):\n    \"\"\"Calculate remaining error budget.\"\"\"\n    budget_fraction = 1 - slo_target  # e.g., 0.001 for 99.9%\n    total_allowed_failures = total_requests * budget_fraction\n    remaining_failures = total_allowed_failures - failed_requests\n    budget_remaining_pct = (remaining_failures / total_allowed_failures) * 100\n\n    return {\n        \"slo_target\": f\"{slo_target * 100}%\",\n        \"allowed_failures\": int(total_allowed_failures),\n        \"actual_failures\": failed_requests,\n        \"remaining_failures\": int(remaining_failures),\n        \"budget_remaining\": f\"{budget_remaining_pct:.1f}%\",\n        \"budget_exhausted\": budget_remaining_pct <= 0,\n    }\n\n# Example: 99.9% SLO, 30-day window\nresult = calculate_error_budget(\n    slo_target=0.999,\n    window_days=30,\n    total_requests=4_320_000,\n    failed_requests=2_800\n)\nprint(result)\n# {'slo_target': '99.9%', 'allowed_failures': 4320,\n#  'actual_failures': 2800, 'remaining_failures': 1520,\n#  'budget_remaining': '35.2%', 'budget_exhausted': False}"
     },
     {
       "language": "yaml",
-      "label": "Error budget policy document (team agreement)",
+      "label": "Documento de política de orçamento de erro (acordo do time)",
       "code": "error_budget_policy:\n  service: payment-api\n  slo_target: \"99.9%\"\n  window: 30d\n\n  thresholds:\n    healthy:\n      budget_remaining: \">50%\"\n      actions:\n        - Normal deployment cadence\n        - Feature work proceeds as planned\n        - Risky experiments allowed with rollback plan\n\n    warning:\n      budget_remaining: \"20-50%\"\n      actions:\n        - Reduce deployment frequency\n        - Require extra review on risky changes\n        - Start investigating top error sources\n        - No experimental features\n\n    critical:\n      budget_remaining: \"<20%\"\n      actions:\n        - Feature freeze -- reliability work only\n        - All hands on fixing error sources\n        - Post-incident reviews for budget-burning events\n        - Escalate to engineering leadership\n\n    exhausted:\n      budget_remaining: \"0%\"\n      actions:\n        - Full deployment freeze\n        - Mandatory blameless postmortem\n        - Reliability improvements before any new features\n        - Weekly check-ins until budget recovers"
     }
   ],
   "followUpQuestions": [
-    "What's the difference between a time-based and request-based error budget, and when would you pick one over the other?",
-    "How do you handle a situation where a single incident burns 80% of the error budget? Is that different from many small incidents adding up to 80%?",
-    "What do you do when the product team pushes back on a feature freeze because of a burned error budget?",
-    "How do rolling windows vs. calendar windows affect error budget behavior?"
+    "Qual a diferença entre um orçamento de erro baseado em tempo e um baseado em requisições, e quando você escolheria um em vez do outro?",
+    "Como você lida com uma situação em que um único incidente consome 80% do orçamento de erro? Isso é diferente de vários pequenos incidentes que somam 80%?",
+    "O que você faz quando o time de produto resiste a um congelamento de funcionalidades por causa de um orçamento de erro esgotado?",
+    "Como janelas móveis vs. janelas de calendário afetam o comportamento do orçamento de erro?"
   ],
   "commonMistakes": [
-    "Treating the error budget as just a monitoring metric instead of a decision-making tool with real consequences (like deployment freezes).",
-    "Not having a pre-agreed error budget policy. If you decide what to do after the budget is burned, the conversation becomes political instead of data-driven.",
-    "Confusing burn rate with budget remaining. A high burn rate with 90% budget left is more urgent than a low burn rate with 20% left -- you need to react to the rate of consumption, not just the current level."
+    "Tratar o orçamento de erro como só uma métrica de monitoramento em vez de uma ferramenta de tomada de decisão com consequências reais (como congelamentos de deploy).",
+    "Não ter uma política de orçamento de erro pré-acordada. Se você decide o que fazer depois que o orçamento é consumido, a conversa vira política em vez de orientada por dados.",
+    "Confundir taxa de consumo com orçamento restante. Uma taxa de consumo alta com 90% de orçamento restante é mais urgente do que uma taxa de consumo baixa com 20% restante -- você precisa reagir à velocidade do consumo, não só ao nível atual."
   ],
   "relatedTopics": ["sre-slo-sli-sla-differences", "sre-slo-alerting", "sre-burn-rate-alerting"]
 }

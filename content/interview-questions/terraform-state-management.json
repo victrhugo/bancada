@@ -1,10 +1,10 @@
 {
   "id": "terraform-state-management",
   "slug": "terraform-state-management",
-  "title": "Terraform State Management",
-  "question": "What is Terraform state, why is it important, and how do you manage state in a team environment?",
-  "answer": "Terraform state is a JSON file that maps real-world resources to your configuration. It tracks metadata, improves performance, and enables collaboration. For teams, use remote backends (S3, GCS, Terraform Cloud) with state locking to prevent concurrent modifications. Never commit state to version control as it may contain secrets.",
-  "explanation": "State is the source of truth for what Terraform has created. Without it, Terraform cannot know which resources it manages or their current configuration. Proper state management is critical for team collaboration and preventing infrastructure drift.",
+  "title": "Gerenciamento de State no Terraform",
+  "question": "O que é o state do Terraform, por que ele é importante, e como você gerencia o state em um ambiente de equipe?",
+  "answer": "O state do Terraform é um arquivo JSON que mapeia recursos do mundo real para sua configuração. Ele rastreia metadados, melhora o desempenho e permite colaboração. Para times, use backends remotos (S3, GCS, Terraform Cloud) com bloqueio de state para evitar modificações concorrentes. Nunca commite o state no controle de versão, pois ele pode conter segredos.",
+  "explanation": "O state é a fonte da verdade sobre o que o Terraform criou. Sem ele, o Terraform não consegue saber quais recursos gerencia ou sua configuração atual. O gerenciamento adequado do state é fundamental para colaboração em equipe e para evitar drift de infraestrutura.",
   "category": "Terraform",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "hcl",
-      "label": "S3 backend configuration",
+      "label": "Configuração de backend S3",
       "code": "terraform {\n  backend \"s3\" {\n    bucket         = \"my-terraform-state\"\n    key            = \"prod/terraform.tfstate\"\n    region         = \"us-east-1\"\n    encrypt        = true\n    dynamodb_table = \"terraform-locks\"  # State locking\n  }\n}\n\n# Create the DynamoDB table for locking\nresource \"aws_dynamodb_table\" \"terraform_locks\" {\n  name         = \"terraform-locks\"\n  billing_mode = \"PAY_PER_REQUEST\"\n  hash_key     = \"LockID\"\n\n  attribute {\n    name = \"LockID\"\n    type = \"S\"\n  }\n}"
     },
     {
       "language": "bash",
-      "label": "Common state commands",
+      "label": "Comandos comuns de state",
       "code": "# List resources in state\nterraform state list\n\n# Show specific resource\nterraform state show aws_instance.web\n\n# Move resource (refactoring)\nterraform state mv aws_instance.old aws_instance.new\n\n# Import existing resource\nterraform import aws_instance.web i-1234567890\n\n# Remove from state (without destroying)\nterraform state rm aws_instance.legacy"
     }
   ],
   "followUpQuestions": [
-    "How do you handle state file corruption or conflicts?",
-    "What is state locking and why is it important?",
-    "How do you migrate from local state to a remote backend?"
+    "Como você lida com corrupção ou conflitos no arquivo de state?",
+    "O que é bloqueio de state (state locking) e por que ele é importante?",
+    "Como você migra de state local para um backend remoto?"
   ],
   "commonMistakes": [
-    "Committing terraform.tfstate to Git, exposing sensitive data",
-    "Not using state locking, leading to concurrent modification issues",
-    "Running terraform apply from multiple machines simultaneously"
+    "Commitar o terraform.tfstate no Git, expondo dados sensíveis",
+    "Não usar bloqueio de state, levando a problemas de modificação concorrente",
+    "Rodar terraform apply a partir de múltiplas máquinas simultaneamente"
   ],
   "relatedTopics": [
     "remote-backends",
