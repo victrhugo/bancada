@@ -31,10 +31,10 @@ type SizePreset = 'small' | 'medium' | 'large' | 'responsive';
 type ThemeOption = 'dark' | 'light' | 'auto';
 
 const SIZE_PRESETS: Record<SizePreset, { width: string; height: string; label: string; icon: React.ReactNode }> = {
-  small: { width: '400', height: '300', label: 'Small', icon: <Smartphone size={14} /> },
-  medium: { width: '800', height: '600', label: 'Medium', icon: <Tablet size={14} /> },
-  large: { width: '1200', height: '800', label: 'Large', icon: <Monitor size={14} /> },
-  responsive: { width: '100%', height: '600', label: 'Responsive', icon: <Settings2 size={14} /> },
+  small: { width: '400', height: '300', label: 'Pequeno', icon: <Smartphone size={14} /> },
+  medium: { width: '800', height: '600', label: 'Médio', icon: <Tablet size={14} /> },
+  large: { width: '1200', height: '800', label: 'Grande', icon: <Monitor size={14} /> },
+  responsive: { width: '100%', height: '600', label: 'Responsivo', icon: <Settings2 size={14} /> },
 };
 
 export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
@@ -96,30 +96,30 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
           <Code size={16} />
-          Embed
+          Incorporar
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Code size={20} />
-            Embed {gameTitle}
+            Incorporar {gameTitle}
           </DialogTitle>
           <DialogDescription>
-            Add this interactive simulator to your website, blog, or documentation.
+            Adicione este simulador interativo ao seu site, blog ou documentação.
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="iframe" className="mt-4">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="iframe">Iframe Embed</TabsTrigger>
-            <TabsTrigger value="preview">Preview</TabsTrigger>
+            <TabsTrigger value="iframe">Código Iframe</TabsTrigger>
+            <TabsTrigger value="preview">Pré-visualização</TabsTrigger>
           </TabsList>
 
           <TabsContent value="iframe" className="space-y-3 mt-3 overflow-hidden">
             {/* Size Presets */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Size</Label>
+              <Label className="text-sm font-medium">Tamanho</Label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {(Object.keys(SIZE_PRESETS) as SizePreset[]).map((preset) => (
                   <button
@@ -144,16 +144,16 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
             {/* Theme Selection */}
             <div className="flex items-center justify-between">
               <Label htmlFor="theme-select" className="text-sm font-medium">
-                Theme
+                Tema
               </Label>
               <Select value={theme} onValueChange={(v) => setTheme(v as ThemeOption)}>
                 <SelectTrigger className="w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="auto">Auto</SelectItem>
+                  <SelectItem value="dark">Escuro</SelectItem>
+                  <SelectItem value="light">Claro</SelectItem>
+                  <SelectItem value="auto">Automático</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -161,7 +161,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
             {/* Show Title Toggle */}
             <div className="flex items-center justify-between">
               <Label htmlFor="show-title" className="text-sm font-medium">
-                Show title header
+                Mostrar cabeçalho com título
               </Label>
               <Switch
                 id="show-title"
@@ -173,7 +173,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
             {/* Generated Code - Fixed height with internal scroll */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label className="text-sm font-medium">Embed Code</Label>
+                <Label className="text-sm font-medium">Código de Incorporação</Label>
                 <Button
                   variant="outline"
                   size="sm"
@@ -183,12 +183,12 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
                   {copied ? (
                     <>
                       <Check size={14} className="text-green-500" />
-                      Copied!
+                      Copiado!
                     </>
                   ) : (
                     <>
                       <Copy size={14} />
-                      Copy Code
+                      Copiar Código
                     </>
                   )}
                 </Button>
@@ -200,10 +200,11 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
 
             {/* Attribution Notice */}
             <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg text-sm">
-              <p className="text-blue-400 font-medium">Attribution included</p>
+              <p className="text-blue-400 font-medium">Atribuição incluída</p>
               <p className="text-muted-foreground text-xs mt-1">
-                The embed includes a &quot;Powered by Bancada&quot; badge that links back to our site.
-                This helps spread DevOps education while giving us credit. Thank you!
+                O código incorporado inclui um selo &quot;Powered by Bancada&quot; que aponta de volta
+                para nosso site. Isso ajuda a espalhar o aprendizado de DevOps e nos dá crédito.
+                Obrigado!
               </p>
             </div>
           </TabsContent>
@@ -212,7 +213,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Eye size={16} />
-                <span>Preview how the embed will look</span>
+                <span>Veja como ficará o conteúdo incorporado</span>
               </div>
               <div
                 className="border border-border rounded-lg overflow-hidden bg-slate-900"
@@ -229,7 +230,8 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
                 />
               </div>
               <p className="text-xs text-muted-foreground text-center">
-                Preview is scaled to fit. Actual embed will use your selected dimensions.
+                A pré-visualização é ajustada para caber na tela. O código incorporado real usará
+                as dimensões selecionadas.
               </p>
             </div>
           </TabsContent>

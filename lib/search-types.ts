@@ -20,12 +20,12 @@ export interface SearchItem {
 }
 
 export const TYPE_LABELS: Record<SearchItemType, string> = {
-  exercise: 'Exercises',
+  exercise: 'Exercícios',
   quiz: 'Quizzes',
-  game: 'Games',
-  page: 'Pages',
+  game: 'Jogos',
+  page: 'Páginas',
   checklist: 'Checklists',
-  'interview-question': 'Interview Questions',
+  'interview-question': 'Perguntas de Entrevista',
   flashcard: 'Flashcards',
 };
 

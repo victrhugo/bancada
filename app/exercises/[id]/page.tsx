@@ -55,8 +55,8 @@ export default async function ExerciseDetailPage({ params }: { params: Promise<{
 
   // Breadcrumb items for schema
   const schemaItems = [
-    { name: 'Home', url: '/' },
-    { name: 'Exercises', url: '/exercises' },
+    { name: 'Início', url: '/' },
+    { name: 'Exercícios', url: '/exercises' },
     { name: exercise.title, url: `/exercises/${exercise.id}` },
   ];
 

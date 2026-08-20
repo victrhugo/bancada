@@ -167,7 +167,11 @@ function GameCard({ game, featured = false }: { game: SerializableGame; featured
               <Badge variant="secondary" className="text-xs flex items-center gap-1">
                 {game.badgeText === 'New' && <Sparkles className="h-3 w-3" />}
                 {game.badgeText === 'Popular' && <Zap className="h-3 w-3" />}
-                {game.badgeText}
+                {game.badgeText === 'New'
+                  ? 'Novo'
+                  : game.badgeText === 'Popular'
+                    ? 'Popular'
+                    : game.badgeText}
               </Badge>
             )}
             {game.featured && (

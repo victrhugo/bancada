@@ -77,6 +77,12 @@ const colorClasses = {
   },
 } as const;
 
+const difficultyLabels: Record<Roadmap['difficulty'], string> = {
+  Beginner: 'Iniciante',
+  Intermediate: 'Intermediário',
+  Advanced: 'Avançado',
+};
+
 function getDifficultyColor(difficulty: string) {
   switch (difficulty) {
     case 'Beginner':
@@ -136,7 +142,7 @@ export default function RoadmapsPage() {
                             </Badge>
                           )}
                           <Badge className={getDifficultyColor(roadmap.difficulty)}>
-                            {roadmap.difficulty}
+                            {difficultyLabels[roadmap.difficulty]}
                           </Badge>
                         </div>
                       </div>

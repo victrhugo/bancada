@@ -769,7 +769,7 @@ function SearchResultCard({ result, isSelected }: { result: SearchResult; isSele
                 ))}
                 {result.tags.length > 5 && (
                   <span className="text-xs text-muted-foreground">
-                    +{result.tags.length - 5} more
+                    +{result.tags.length - 5} mais
                   </span>
                 )}
               </div>

@@ -233,7 +233,7 @@ export function RoadmapHero() {
             transition={{ delay: 1, duration: 0.5 }}
             className="flex flex-col items-center gap-2 text-sm text-muted-foreground"
           >
-            <span>Scroll to explore the roadmap</span>
+            <span>Role para explorar o roadmap</span>
             <motion.div
               animate={{ y: [0, 5, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}

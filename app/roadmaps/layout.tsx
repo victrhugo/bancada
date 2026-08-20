@@ -2,16 +2,16 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'DevOps Roadmaps - Learning Paths for Every Level',
+  title: 'Roadmaps de DevOps - Trilhas de Aprendizado para Todos os Níveis',
   description:
-    'Explore structured DevOps learning paths. From junior engineers to security specialists, find the roadmap that fits your career goals.',
+    'Explore trilhas estruturadas de aprendizado em DevOps. De engenheiros juniores a especialistas em segurança, encontre o roadmap ideal para seus objetivos de carreira.',
   alternates: {
     canonical: '/roadmaps',
   },
   openGraph: {
-    title: 'DevOps Roadmaps - Learning Paths for Every Level',
+    title: 'Roadmaps de DevOps - Trilhas de Aprendizado para Todos os Níveis',
     description:
-      'Explore structured DevOps learning paths. From junior engineers to security specialists, find the roadmap that fits your career goals.',
+      'Explore trilhas estruturadas de aprendizado em DevOps. De engenheiros juniores a especialistas em segurança, encontre o roadmap ideal para seus objetivos de carreira.',
     url: 'https://bancada.app/roadmaps',
     type: 'website',
     images: [
@@ -19,32 +19,32 @@ export const metadata: Metadata = {
         url: 'https://bancada.app/images/roadmaps-og.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Roadmaps - Learning Paths',
+        alt: 'Roadmaps de DevOps - Trilhas de Aprendizado',
       },
     ],
   },
   twitter: {
-    title: 'DevOps Roadmaps - Learning Paths for Every Level',
+    title: 'Roadmaps de DevOps - Trilhas de Aprendizado para Todos os Níveis',
     description:
-      'Explore structured DevOps learning paths. From junior engineers to security specialists, find the roadmap that fits your career goals.',
+      'Explore trilhas estruturadas de aprendizado em DevOps. De engenheiros juniores a especialistas em segurança, encontre o roadmap ideal para seus objetivos de carreira.',
     card: 'summary_large_image',
     images: [
       {
         url: 'https://bancada.app/images/roadmaps-og.png',
         width: 1200,
         height: 630,
-        alt: 'DevOps Roadmaps - Learning Paths',
+        alt: 'Roadmaps de DevOps - Trilhas de Aprendizado',
       },
     ],
   },
   keywords: [
-    'DevOps Roadmaps',
-    'DevOps Learning Paths',
-    'Junior DevOps',
+    'Roadmaps de DevOps',
+    'Trilhas de Aprendizado DevOps',
+    'DevOps Júnior',
     'DevSecOps',
-    'DevOps Career',
-    'Learning DevOps',
-    'DevOps Skills',
+    'Carreira em DevOps',
+    'Aprender DevOps',
+    'Habilidades DevOps',
   ],
 };
 

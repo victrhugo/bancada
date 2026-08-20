@@ -101,7 +101,7 @@ export default async function QuizPage({ params }: { params: Promise<{ slug: str
           {/* Quiz Description Section */}
           <div className="max-w-4xl mx-auto mt-12">
             <div className="prose dark:prose-invert max-w-none">
-              <h1 className="mb-4 text-3xl font-bold">{quizConfig.title} - Quiz Overview</h1>
+              <h1 className="mb-4 text-3xl font-bold">{quizConfig.title} - Visão Geral do Quiz</h1>
               <p className="mb-6 text-lg leading-relaxed">{quizConfig.description}</p>
 
               {/* Quiz Stats */}

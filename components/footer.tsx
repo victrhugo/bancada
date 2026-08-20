@@ -19,8 +19,8 @@ export function Footer() {
             </p>
           </div>
 
-          <FooterSection section={practiceSection} label="practice" />
-          <FooterSection section={learnSection} label="learn" />
+          <FooterSection section={practiceSection} label="praticar" />
+          <FooterSection section={learnSection} label="aprender" />
         </div>
 
         {/* Footer bottom — terminal-style bar */}

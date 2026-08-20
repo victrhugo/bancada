@@ -48,12 +48,12 @@ export function RoadmapStageNav({ stages }: { stages: StageNavItem[] }) {
       {/* Slim icon rail, large screens */}
       {!hidden && (
         <nav
-          aria-label="Roadmap stages"
+          aria-label="Etapas do roadmap"
           className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 flex-col items-end gap-1"
         >
           <button
             onClick={() => setHidden(true)}
-            aria-label="Hide stage navigation"
+            aria-label="Esconder navegação de etapas"
             className="mb-1 flex h-6 w-6 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
           >
             <X className="h-3 w-3" />
@@ -64,7 +64,7 @@ export function RoadmapStageNav({ stages }: { stages: StageNavItem[] }) {
               <button
                 key={stage.id}
                 onClick={() => scrollTo(stage.id)}
-                aria-label={`Jump to ${stage.title}`}
+                aria-label={`Ir para ${stage.title}`}
                 aria-current={active ? 'true' : undefined}
                 className="group flex items-center justify-end gap-0"
               >
@@ -97,7 +97,7 @@ export function RoadmapStageNav({ stages }: { stages: StageNavItem[] }) {
       {hidden && (
         <button
           onClick={() => setHidden(false)}
-          aria-label="Show stage navigation"
+          aria-label="Mostrar navegação de etapas"
           className="hidden xl:flex fixed right-4 bottom-6 z-30 h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/95 text-muted-foreground shadow-md transition-colors hover:text-foreground hover:bg-muted"
         >
           <Map className="h-4 w-4" />
@@ -106,7 +106,7 @@ export function RoadmapStageNav({ stages }: { stages: StageNavItem[] }) {
 
       {/* Horizontal scroller, small and medium screens (in flow, never overlaps) */}
       <nav
-        aria-label="Roadmap stages"
+        aria-label="Etapas do roadmap"
         className="xl:hidden sticky top-14 z-30 -mx-4 border-y border-border/50 bg-background/90 px-4 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/70"
       >
         <div className="flex gap-2 overflow-x-auto scrollbar-none">

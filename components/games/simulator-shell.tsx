@@ -55,10 +55,10 @@ export async function SimulatorShell({
   className,
 }: SimulatorShellProps) {
   const game = await getGameById(slug);
-  const title = game?.title ?? fallbackTitle ?? 'Simulator';
+  const title = game?.title ?? fallbackTitle ?? 'Simulador';
   const description = game?.description ?? fallbackDescription ?? '';
   const href = game?.href ?? `/games/${slug}`;
-  const category = game?.category ?? 'DevOps Simulator';
+  const category = game?.category ?? 'Simulador DevOps';
   const tags = game?.tags;
 
   // Pick up to 3 related games. Same category first, then fall back to any
