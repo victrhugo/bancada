@@ -1,10 +1,10 @@
 {
   "id": "immutable-infrastructure",
   "slug": "immutable-infrastructure",
-  "title": "Immutable Infrastructure",
-  "question": "Explain immutable infrastructure and its benefits. How does it differ from traditional server management?",
-  "answer": "Immutable infrastructure means never modifying running instances post-deployment. Instead of patching servers, you build new machine images with updates, deploy fresh instances, and destroy old ones. Benefits include: no configuration drift, consistent environments, easy rollbacks (previous image), simpler debugging (fewer variables), and better security (no SSH access needed).",
-  "explanation": "The key principle is 'pets vs cattle' - treating infrastructure as disposable rather than precious. Traditional approaches SSH into servers and run updates, leading to drift over time where servers become unique snowflakes. Immutable infrastructure ensures every deployment is identical and reproducible.",
+  "title": "Infraestrutura Imutável",
+  "question": "Explique infraestrutura imutável e seus benefícios. Como ela difere do gerenciamento tradicional de servidores?",
+  "answer": "Infraestrutura imutável significa nunca modificar instâncias em execução após a implantação. Em vez de aplicar patches nos servidores, você constrói novas imagens de máquina com as atualizações, implanta instâncias novas e destrói as antigas. Os benefícios incluem: nenhum configuration drift, ambientes consistentes, rollbacks fáceis (imagem anterior), depuração mais simples (menos variáveis) e melhor segurança (não é necessário acesso SSH).",
+  "explanation": "O princípio-chave é 'pets vs cattle' - tratar a infraestrutura como descartável em vez de preciosa. As abordagens tradicionais acessam os servidores via SSH e executam atualizações, o que leva a drift ao longo do tempo, tornando os servidores flocos de neve únicos. A infraestrutura imutável garante que toda implantação seja idêntica e reprodutível.",
   "category": "Infrastructure",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "hcl",
-      "label": "Packer AMI build",
+      "label": "Build de AMI com o Packer",
       "code": "source \"amazon-ebs\" \"app\" {\n  ami_name      = \"app-{{timestamp}}\"\n  instance_type = \"t3.small\"\n  region        = \"us-east-1\"\n  source_ami_filter {\n    filters = {\n      name = \"ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*\"\n    }\n    most_recent = true\n    owners      = [\"099720109477\"]\n  }\n  ssh_username = \"ubuntu\"\n}\n\nbuild {\n  sources = [\"source.amazon-ebs.app\"]\n\n  provisioner \"shell\" {\n    scripts = [\"scripts/install_deps.sh\"]\n  }\n}"
     },
     {
       "language": "hcl",
-      "label": "Blue-green with new AMI",
+      "label": "Blue-green com nova AMI",
       "code": "resource \"aws_launch_template\" \"app\" {\n  name_prefix   = \"app-\"\n  image_id      = var.ami_id  # New AMI for each release\n  instance_type = \"t3.small\"\n\n  lifecycle {\n    create_before_destroy = true\n  }\n}\n\n# ASG automatically replaces instances with new AMI\nresource \"aws_autoscaling_group\" \"app\" {\n  launch_template {\n    id      = aws_launch_template.app.id\n    version = \"$Latest\"\n  }\n  instance_refresh {\n    strategy = \"Rolling\"\n  }\n}"
     }
   ],
   "followUpQuestions": [
-    "How do you handle stateful applications with immutable infrastructure?",
-    "What tools do you use to build machine images?",
-    "How do you manage secrets in an immutable infrastructure setup?"
+    "Como você lida com aplicações stateful em uma infraestrutura imutável?",
+    "Quais ferramentas você usa para construir imagens de máquina?",
+    "Como você gerencia segredos em uma configuração de infraestrutura imutável?"
   ],
   "commonMistakes": [
-    "SSH-ing into production servers to make 'quick fixes'",
-    "Not versioning machine images properly",
-    "Building images too slowly, making deployments take too long"
+    "Acessar servidores de produção via SSH para fazer 'correções rápidas'",
+    "Não versionar as imagens de máquina corretamente",
+    "Construir imagens de forma muito lenta, fazendo as implantações demorarem demais"
   ],
   "relatedTopics": [
     "packer",

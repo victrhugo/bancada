@@ -1,10 +1,10 @@
 {
   "id": "linux-file-permissions",
   "slug": "linux-file-permissions",
-  "title": "Linux File Permissions",
-  "question": "Explain Linux file permissions. What does the permission 'rwxr-xr--' mean?",
-  "answer": "Linux file permissions are divided into three groups: owner, group, and others. Each has read (r), write (w), and execute (x) permissions. 'rwxr-xr--' means: owner has full access (rwx), group can read and execute (r-x), others can only read (r--). Use chmod to modify permissions and chown to change ownership.",
-  "explanation": "File permissions are fundamental to Linux security. They control who can read, write, or execute files. Understanding permissions is essential for troubleshooting access issues, setting up secure deployments, and managing shared resources in team environments.",
+  "title": "Permissões de Arquivo no Linux",
+  "question": "Explique as permissões de arquivo no Linux. O que significa a permissão 'rwxr-xr--'?",
+  "answer": "As permissões de arquivo no Linux são divididas em três grupos: proprietário (owner), grupo (group) e outros (others). Cada um tem permissões de leitura (r), escrita (w) e execução (x). 'rwxr-xr--' significa: o proprietário tem acesso total (rwx), o grupo pode ler e executar (r-x), os outros só podem ler (r--). Use chmod para modificar permissões e chown para alterar a propriedade.",
+  "explanation": "Permissões de arquivo são fundamentais para a segurança do Linux. Elas controlam quem pode ler, escrever ou executar arquivos. Entender permissões é essencial para depurar problemas de acesso, configurar implantações seguras e gerenciar recursos compartilhados em ambientes de equipe.",
   "category": "Linux",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "View and modify permissions",
+      "label": "Visualizar e modificar permissões",
       "code": "# View file permissions\nls -la myfile.sh\n# Output: -rwxr-xr-- 1 devops team 1234 Dec 1 10:00 myfile.sh\n\n# Make file executable\nchmod +x script.sh\n\n# Set specific permissions (owner: rwx, group: rx, others: r)\nchmod 754 script.sh\n\n# Recursive permission change\nchmod -R 755 /var/www/html/"
     },
     {
       "language": "bash",
-      "label": "Change ownership",
+      "label": "Alterar a propriedade",
       "code": "# Change owner\nchown newuser myfile.txt\n\n# Change owner and group\nchown newuser:newgroup myfile.txt\n\n# Recursive ownership change\nchown -R www-data:www-data /var/www/"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between chmod 755 and chmod 777?",
-    "How do special permissions like setuid, setgid, and sticky bit work?",
-    "What is umask and how does it affect default file permissions?"
+    "Qual é a diferença entre chmod 755 e chmod 777?",
+    "Como funcionam permissões especiais como setuid, setgid e sticky bit?",
+    "O que é o umask e como ele afeta as permissões padrão de arquivo?"
   ],
   "commonMistakes": [
-    "Setting chmod 777 on production files (security risk)",
-    "Forgetting that directories need execute permission for traversal",
-    "Not understanding the difference between numeric and symbolic notation"
+    "Definir chmod 777 em arquivos de produção (risco de segurança)",
+    "Esquecer que diretórios precisam de permissão de execução para navegação",
+    "Não entender a diferença entre a notação numérica e a simbólica"
   ],
   "relatedTopics": [
     "chown",

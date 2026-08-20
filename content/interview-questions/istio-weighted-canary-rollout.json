@@ -1,10 +1,10 @@
 {
   "id": "istio-weighted-canary-rollout",
   "slug": "istio-weighted-canary-rollout",
-  "title": "Weighted Canary Rollout with Istio",
-  "question": "Walk me through how you'd canary a new version of a service with Istio. Say you want to start at 5% traffic to v2 and ramp up.",
-  "answer": "First, both versions need to be running with distinct labels — `version: v1` on the stable pods and `version: v2` on the new ones. Then I write a DestinationRule that declares both subsets so Istio knows what v1 and v2 mean. Next, a VirtualService with a weighted route: 95 to v1, 5 to v2. To ramp, I bump the weight values and re-apply. Most teams script this or wire it into Flagger or Argo Rollouts so the ramp is automated based on success rate and latency metrics from Prometheus. The key thing to verify after each step is that the subset labels actually match real pods. A common failure mode is shifting weight to v2 when v2 has zero healthy pods because the pod label is `app=reviews-v2` instead of `version: v2`. You'll see 503s spike on the percentage of traffic you shifted. Also remember weights are percentages of matched traffic, not absolute. If your VirtualService has a header match before the weighted route, the weights only apply to requests that fell through to that rule.",
-  "explanation": "This is the most common real-world Istio use case. The interviewer wants to hear that the candidate understands the two-CRD pattern, the label-matching gotcha, and ideally that they know weights are not an SLO-aware progressive delivery system on their own — that's what Flagger or Argo Rollouts add on top. Bonus points for mentioning sticky sessions or session affinity considerations.",
+  "title": "Rollout Canário Ponderado com Istio",
+  "question": "Explique como você faria o canário de uma nova versão de um serviço com Istio. Digamos que você queira começar com 5% do tráfego indo para v2 e ir aumentando gradualmente.",
+  "answer": "Primeiro, as duas versões precisam estar rodando com labels distintos — `version: v1` nos pods estáveis e `version: v2` nos novos. Depois eu escrevo um DestinationRule que declara os dois subsets, para que o Istio saiba o que v1 e v2 significam. Em seguida, um VirtualService com uma rota ponderada: 95 para v1, 5 para v2. Para aumentar gradualmente, eu ajusto os valores de peso e reaplico. A maioria dos times automatiza isso via script ou integra com Flagger ou Argo Rollouts, para que o ramp seja automatizado com base na taxa de sucesso e nas métricas de latência vindas do Prometheus. O ponto-chave a verificar depois de cada etapa é se os labels dos subsets realmente correspondem a pods reais. Um modo de falha comum é deslocar peso para v2 quando v2 tem zero pods saudáveis porque o label do pod é `app=reviews-v2` em vez de `version: v2`. Você vai ver os erros 503 dispararem na porcentagem de tráfego que foi deslocada. Também vale lembrar que os pesos são porcentagens do tráfego que já passou pelo match, não valores absolutos. Se o seu VirtualService tem um match de header antes da rota ponderada, os pesos só se aplicam às requisições que caíram nessa regra.",
+  "explanation": "Esse é o caso de uso real mais comum do Istio. O entrevistador quer ouvir que o candidato entende o padrão das duas CRDs, a pegadinha do casamento de labels, e idealmente que ele sabe que pesos sozinhos não são um sistema de entrega progressiva ciente de SLO — isso é o que Flagger ou Argo Rollouts acrescentam por cima. Pontos extras por mencionar sticky sessions ou considerações de afinidade de sessão.",
   "category": "Service Mesh",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,29 +18,29 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Initial 95/5 split with DestinationRule subsets",
+      "label": "Split inicial de 95/5 com subsets do DestinationRule",
       "code": "apiVersion: networking.istio.io/v1\nkind: DestinationRule\nmetadata:\n  name: reviews\nspec:\n  host: reviews\n  subsets:\n    - name: v1\n      labels: { version: v1 }\n    - name: v2\n      labels: { version: v2 }\n---\napiVersion: networking.istio.io/v1\nkind: VirtualService\nmetadata:\n  name: reviews\nspec:\n  hosts: [reviews]\n  http:\n    - route:\n        - destination: { host: reviews, subset: v1 }\n          weight: 95\n        - destination: { host: reviews, subset: v2 }\n          weight: 5"
     },
     {
       "language": "bash",
-      "label": "Verify the split is hitting both subsets",
+      "label": "Verificar se o split está atingindo os dois subsets",
       "code": "# Send 100 requests and count which version answered\nfor i in $(seq 1 100); do\n  kubectl exec deploy/curl -- curl -s http://reviews/version\ndone | sort | uniq -c\n\n# Expected output (roughly):\n#   94 v1\n#    6 v2"
     },
     {
       "language": "yaml",
-      "label": "Flagger Canary for automated ramp",
+      "label": "Canary do Flagger para ramp automatizado",
       "code": "apiVersion: flagger.app/v1beta1\nkind: Canary\nmetadata:\n  name: reviews\nspec:\n  targetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: reviews\n  service:\n    port: 9080\n  analysis:\n    interval: 1m\n    threshold: 5\n    stepWeight: 10\n    maxWeight: 50\n    metrics:\n      - name: request-success-rate\n        thresholdRange: { min: 99 }"
     }
   ],
   "followUpQuestions": [
-    "How would you stick a specific user or header to v2 while everyone else stays on v1?",
-    "What metrics would you watch during the ramp, and where would you get them?",
-    "How does this change if your service holds in-memory session state?"
+    "Como você fixaria um usuário ou header específico em v2 enquanto todos os outros permanecem em v1?",
+    "Quais métricas você observaria durante o ramp, e de onde você as obteria?",
+    "Como isso muda se o seu serviço mantém estado de sessão em memória?"
   ],
   "commonMistakes": [
-    "Forgetting to label the v2 pods with `version: v2`, so traffic shifts to an empty subset",
-    "Manually editing weights in production instead of using Flagger or Argo Rollouts",
-    "Assuming weights apply globally when an earlier match rule already routed the request"
+    "Esquecer de rotular os pods de v2 com `version: v2`, fazendo o tráfego ser deslocado para um subset vazio",
+    "Editar pesos manualmente em produção em vez de usar Flagger ou Argo Rollouts",
+    "Assumir que os pesos se aplicam globalmente quando uma regra de match anterior já roteou a requisição"
   ],
   "relatedTopics": [
     "canary-deployment",

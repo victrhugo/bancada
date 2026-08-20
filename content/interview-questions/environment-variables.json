@@ -1,10 +1,10 @@
 {
   "id": "environment-variables",
   "slug": "environment-variables",
-  "title": "Environment Variables",
-  "question": "What are environment variables and how do you use them in Linux? How do you make them persistent?",
-  "answer": "Environment variables are dynamic values that affect processes and programs. Set temporarily with export VAR=value, view with echo $VAR or printenv. For persistence: add to ~/.bashrc (user-specific) or /etc/environment (system-wide). Common vars include PATH, HOME, USER, and custom app configs.",
-  "explanation": "Environment variables are crucial for configuring applications without hardcoding values. They're the standard way to pass configuration to containers, manage secrets (though not ideal for sensitive data), and customize behavior across environments like dev, staging, and production.",
+  "title": "Variáveis de Ambiente",
+  "question": "O que são variáveis de ambiente e como você as usa no Linux? Como você as torna persistentes?",
+  "answer": "Variáveis de ambiente são valores dinâmicos que afetam processos e programas. Definidas temporariamente com export VAR=valor, visualizadas com echo $VAR ou printenv. Para persistência: adicione ao ~/.bashrc (específico do usuário) ou ao /etc/environment (para todo o sistema). Variáveis comuns incluem PATH, HOME, USER e configurações personalizadas de aplicações.",
+  "explanation": "Variáveis de ambiente são fundamentais para configurar aplicações sem fixar valores no código. Elas são a forma padrão de passar configuração para containers, gerenciar segredos (embora não sejam ideais para dados sensíveis) e personalizar o comportamento entre ambientes como dev, staging e produção.",
   "category": "Linux",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Setting and viewing variables",
+      "label": "Definindo e visualizando variáveis",
       "code": "# Set variable for current session\nexport DATABASE_URL='postgres://localhost:5432/mydb'\n\n# View specific variable\necho $DATABASE_URL\n\n# View all environment variables\nprintenv\n\n# Set variable for single command\nDEBUG=true ./my-script.sh"
     },
     {
       "language": "bash",
-      "label": "Making variables persistent",
+      "label": "Tornando as variáveis persistentes",
       "code": "# Add to ~/.bashrc for user persistence\necho 'export API_KEY=abc123' >> ~/.bashrc\nsource ~/.bashrc\n\n# Or add to /etc/environment for system-wide\nsudo echo 'API_KEY=abc123' >> /etc/environment\n\n# Check if variable is set\nif [ -z \"$API_KEY\" ]; then\n  echo 'API_KEY not set'\nfi"
     }
   ],
   "followUpQuestions": [
-    "What's the difference between setting a variable with and without export?",
-    "How do environment variables work with Docker containers?",
-    "Why shouldn't you store sensitive secrets in environment variables?"
+    "Qual é a diferença entre definir uma variável com e sem export?",
+    "Como as variáveis de ambiente funcionam com containers Docker?",
+    "Por que você não deveria armazenar segredos sensíveis em variáveis de ambiente?"
   ],
   "commonMistakes": [
-    "Forgetting to export variables (they won't be available to child processes)",
-    "Putting spaces around the = sign (VAR = value won't work)",
-    "Storing secrets in plain text environment variables in production"
+    "Esquecer de exportar as variáveis (elas não ficam disponíveis para processos filhos)",
+    "Colocar espaços ao redor do sinal de = (VAR = valor não funciona)",
+    "Armazenar segredos em texto puro em variáveis de ambiente na produção"
   ],
   "relatedTopics": [
     "dotenv",

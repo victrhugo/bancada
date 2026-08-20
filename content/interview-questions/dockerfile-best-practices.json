@@ -1,10 +1,10 @@
 {
   "id": "dockerfile-best-practices",
   "slug": "dockerfile-best-practices",
-  "title": "Dockerfile Best Practices",
-  "question": "What is the difference between a Docker image and a container? What are some Dockerfile best practices?",
-  "answer": "An image is a read-only template containing the application and dependencies. A container is a running instance of an image. Best practices include: use official base images, minimize layers by combining RUN commands, use multi-stage builds to reduce image size, don't run as root, use specific version tags instead of latest, and order instructions from least to most frequently changing to leverage layer caching.",
-  "explanation": "Container optimization directly impacts deployment speed, security, and costs. Smaller images deploy faster, have fewer vulnerabilities, and cost less to store. Understanding these concepts helps DevOps engineers build efficient CI/CD pipelines.",
+  "title": "Boas Práticas de Dockerfile",
+  "question": "Qual é a diferença entre uma imagem Docker e um container? Quais são algumas boas práticas de Dockerfile?",
+  "answer": "Uma imagem é um template somente leitura que contém a aplicação e as dependências. Um container é uma instância em execução de uma imagem. Boas práticas incluem: usar imagens base oficiais, minimizar o número de camadas combinando comandos RUN, usar builds em múltiplos estágios para reduzir o tamanho da imagem, não executar como root, usar tags de versão específicas em vez de latest, e ordenar as instruções da que muda com menos frequência para a que muda mais, aproveitando o cache de camadas.",
+  "explanation": "A otimização de containers impacta diretamente a velocidade de implantação, a segurança e os custos. Imagens menores são implantadas mais rápido, têm menos vulnerabilidades e custam menos para armazenar. Entender esses conceitos ajuda engenheiros de DevOps a construir pipelines de CI/CD eficientes.",
   "category": "Docker",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "dockerfile",
-      "label": "Optimized multi-stage Dockerfile",
+      "label": "Dockerfile otimizado em múltiplos estágios",
       "code": "# Build stage\nFROM node:20-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY . .\nRUN npm run build\n\n# Production stage\nFROM node:20-alpine\nWORKDIR /app\nRUN addgroup -g 1001 appgroup && \\\n    adduser -S -u 1001 -G appgroup appuser\nCOPY --from=builder /app/dist ./dist\nCOPY --from=builder /app/node_modules ./node_modules\nUSER appuser\nEXPOSE 3000\nCMD [\"node\", \"dist/index.js\"]"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between COPY and ADD?",
-    "How does layer caching work in Docker builds?",
-    "What is the difference between CMD and ENTRYPOINT?"
+    "Qual é a diferença entre COPY e ADD?",
+    "Como funciona o cache de camadas nos builds do Docker?",
+    "Qual é a diferença entre CMD e ENTRYPOINT?"
   ],
   "commonMistakes": [
-    "Using 'latest' tag in production",
-    "Running containers as root",
-    "Not using .dockerignore to exclude unnecessary files"
+    "Usar a tag 'latest' em produção",
+    "Executar containers como root",
+    "Não usar o .dockerignore para excluir arquivos desnecessários"
   ],
   "relatedTopics": [
     "docker",

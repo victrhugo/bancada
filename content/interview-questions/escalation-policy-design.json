@@ -1,10 +1,10 @@
 {
   "id": "escalation-policy-design",
   "slug": "escalation-policy-design",
-  "title": "Designing an Escalation Policy",
-  "question": "An alert fires at 3am and pages the primary on-call. Walk me through what your escalation policy should do from that moment, step by step, and tell me what failure modes you're designing around.",
-  "answer": "Step one: the primary gets paged through a channel that will actually wake them, push plus an escalating phone call, not just a Slack message. The policy starts an acknowledgement timer, say 5 to 8 minutes.\n\nStep two: if the primary acks, escalation stops and they own it. If the timer expires with no ack, the policy automatically pages the secondary. Same ack timer.\n\nStep three: if the secondary also doesn't ack, it escalates to the on-call manager or engineering manager. For a real major incident, this is also where you'd auto-create an incident channel and pull in an incident commander.\n\nThat's the happy path. The failure modes I'm actually designing around are the interesting part:\n\n- The first responder is asleep or has no signal. That's why there's a secondary, and why the notification escalates from push to phone call rather than relying on one quiet channel.\n- The alert dead-ends. Every policy needs a final catch-all so an unacked alert eventually reaches a manager or opens an incident. It should never just stop.\n- The wrong team gets paged. Routing should send the alert to the team that owns the failing service, based on a service or team label, not to a single central pager.\n- Non-urgent things page humans. Severity-based routing matters here. A SEV1 pages immediately and notifies the manager and incident channel. A SEV3 should become a ticket or a Slack message, not a 3am phone call. If it doesn't need a human right now, it isn't a page.\n- Alert storms. When one outage trips fifty alerts, grouping and deduplication keep it to one notification instead of fifty phone calls.\n\nThe edge case I'd call out: don't let escalation loop forever. Loop the chain once, maybe twice, then hand off to a guaranteed catch-all like a major-incident process. And every page should carry a link to its runbook, so the person you woke up at 3am has somewhere to start instead of a blank screen.",
-  "explanation": "This is the core mid-level question on the topic. A weak candidate describes only the happy path (primary, then secondary, then manager). A strong one talks about what they're defending against: dead-ended alerts, single points of failure, wrong-team routing, and non-actionable pages. The phrase to listen for is severity-based routing, because that's where most teams' escalation pain actually comes from. Auto-creating an incident channel, attaching runbooks, and capping the escalation loop are senior-leaning signals.",
+  "title": "Projetando uma Política de Escalonamento",
+  "question": "Um alerta dispara às 3h da manhã e aciona o plantonista principal. Explique passo a passo o que sua política de escalonamento deveria fazer a partir desse momento, e me diga contra quais modos de falha você está projetando.",
+  "answer": "Passo um: o principal é acionado por um canal que realmente vai acordá-lo, notificação push mais uma ligação telefônica escalonada, não só uma mensagem no Slack. A política inicia um temporizador de confirmação (ack), digamos, de 5 a 8 minutos.\n\nPasso dois: se o principal confirma, o escalonamento para e ele assume o caso. Se o temporizador expira sem confirmação, a política aciona automaticamente o secundário. Mesmo temporizador de confirmação.\n\nPasso três: se o secundário também não confirma, o escalonamento sobe para o gerente de plantão ou o gerente de engenharia. Para um incidente maior de verdade, é também nesse ponto que você criaria automaticamente um canal de incidente e traria um incident commander.\n\nEsse é o caminho feliz. Os modos de falha contra os quais eu realmente estou projetando são a parte interessante:\n\n- O primeiro respondente está dormindo ou sem sinal. É por isso que existe um secundário, e por isso a notificação escala de push para ligação telefônica em vez de depender de um único canal silencioso.\n- O alerta chega a um beco sem saída. Toda política precisa de um catch-all final, para que um alerta não confirmado eventualmente chegue a um gerente ou abra um incidente. Ele nunca deveria simplesmente parar.\n- O time errado é acionado. O roteamento deve enviar o alerta para o time dono do serviço com falha, com base em um label de serviço ou time, não para um único pager central.\n- Coisas não urgentes acionam humanos. O roteamento baseado em severidade importa muito aqui. Um SEV1 aciona imediatamente e notifica o gerente e o canal de incidente. Um SEV3 deveria virar um ticket ou uma mensagem no Slack, não uma ligação às 3h da manhã. Se não precisa de um humano agora, não é um acionamento.\n- Tempestades de alertas. Quando uma interrupção dispara cinquenta alertas, o agrupamento e a deduplicação reduzem isso a uma única notificação em vez de cinquenta ligações telefônicas.\n\nO caso extremo que eu destacaria: não deixe o escalonamento entrar em loop para sempre. Repita a cadeia uma vez, talvez duas, e depois passe para um catch-all garantido, como um processo de incidente maior. E todo acionamento deveria trazer um link para o runbook correspondente, para que a pessoa que você acordou às 3h da manhã tenha por onde começar em vez de uma tela em branco.",
+  "explanation": "Essa é a questão central de nível pleno sobre o tema. Um candidato fraco descreve apenas o caminho feliz (principal, depois secundário, depois gerente). Um candidato forte fala sobre o que está tentando evitar: alertas em beco sem saída, pontos únicos de falha, roteamento para o time errado e acionamentos não acionáveis. A frase a se prestar atenção é roteamento baseado em severidade, porque é daí que vem a maior parte da dor de escalonamento da maioria dos times. Criar automaticamente um canal de incidente, anexar runbooks e limitar o loop de escalonamento são sinais de nível sênior.",
   "category": "Incident Management",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -17,25 +17,25 @@
   "codeExamples": [
     {
       "language": "hcl",
-      "label": "Escalation policy with ack timeouts and a manager catch-all (Terraform + PagerDuty)",
+      "label": "Política de escalonamento com timeouts de confirmação e catch-all do gerente (Terraform + PagerDuty)",
       "code": "resource \"pagerduty_escalation_policy\" \"payments\" {\n  name      = \"Payments escalation\"\n  num_loops = 2 # loop the chain twice, then stop dead-ending\n\n  rule {\n    escalation_delay_in_minutes = 6 # ack window before next level\n    target {\n      type = \"schedule_reference\"\n      id   = pagerduty_schedule.payments_primary.id\n    }\n  }\n\n  rule {\n    escalation_delay_in_minutes = 6\n    target {\n      type = \"schedule_reference\"\n      id   = pagerduty_schedule.payments_secondary.id\n    }\n  }\n\n  rule {\n    escalation_delay_in_minutes = 10\n    target {\n      type = \"user_reference\"\n      id   = var.engineering_manager_id # final catch-all\n    }\n  }\n}"
     },
     {
       "language": "yaml",
-      "label": "Severity-based routing so only real urgency pages a human (Alertmanager)",
+      "label": "Roteamento baseado em severidade para que só urgência real acione um humano (Alertmanager)",
       "code": "route:\n  receiver: default-ticket\n  group_by: ['alertname', 'service']\n  group_wait: 30s\n  group_interval: 5m\n  routes:\n    # SEV1: page immediately, also notify the incident channel\n    - matchers: [severity=\"critical\"]\n      receiver: pagerduty-page\n      continue: true\n    - matchers: [severity=\"critical\"]\n      receiver: slack-incidents\n    # SEV3 and below: ticket, not a 3am phone call\n    - matchers: [severity=~\"warning|info\"]\n      receiver: default-ticket\n\n# Don't page for every pod when the whole cluster is down\ninhibit_rules:\n  - source_matchers: [alertname=\"ClusterDown\"]\n    target_matchers: [severity=\"warning\"]\n    equal: ['cluster']"
     }
   ],
   "followUpQuestions": [
-    "How does your escalation policy change for a SEV1 versus a SEV3?",
-    "What would you do differently when you've got 100 services instead of one?",
-    "How do you stop a non-urgent alert from waking up an entire escalation chain?"
+    "Como sua política de escalonamento muda para um SEV1 comparado a um SEV3?",
+    "O que você faria diferente quando tivesse 100 serviços em vez de um?",
+    "Como você impede que um alerta não urgente acorde toda uma cadeia de escalonamento?"
   ],
   "commonMistakes": [
-    "No acknowledgement timeout, or one so long the alert sits unanswered for 20 minutes before escalating.",
-    "No final catch-all. If the last person in the chain misses the page, the alert silently dies and nobody finds out until customers complain.",
-    "Paging on non-actionable or low-severity alerts. Every false page at 3am makes the next real one easier to ignore.",
-    "Relying on a single notification channel like Slack. If their phone is on silent, a Slack ping does nothing."
+    "Nenhum timeout de confirmação, ou um tão longo que o alerta fica sem resposta por 20 minutos antes de escalar.",
+    "Nenhum catch-all final. Se a última pessoa da cadeia perder o acionamento, o alerta morre silenciosamente e ninguém descobre até os clientes reclamarem.",
+    "Acionar humanos para alertas não acionáveis ou de baixa severidade. Todo acionamento falso às 3h da manhã torna mais fácil ignorar o próximo, que pode ser real.",
+    "Depender de um único canal de notificação como o Slack. Se o celular da pessoa estiver no silencioso, uma notificação do Slack não faz nada."
   ],
   "relatedTopics": [
     "incident-response",

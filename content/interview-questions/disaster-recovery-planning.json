@@ -1,10 +1,10 @@
 {
   "id": "disaster-recovery-planning",
   "slug": "disaster-recovery-planning",
-  "title": "Disaster Recovery Planning",
-  "question": "How do you design a disaster recovery strategy? Explain RPO, RTO, and different DR approaches.",
-  "answer": "RPO (Recovery Point Objective) is the maximum acceptable data loss measured in time - how much data can you afford to lose? RTO (Recovery Time Objective) is the maximum acceptable downtime - how quickly must you recover? DR strategies from cheapest to most expensive: Backup and Restore (high RPO/RTO, low cost), Pilot Light (minimal always-on resources), Warm Standby (scaled-down duplicate environment), and Multi-Site Active-Active (near-zero RPO/RTO, highest cost). Choose based on business requirements and criticality.",
-  "explanation": "Disaster recovery is essential for business continuity. Senior engineers must understand the trade-offs between cost, complexity, and recovery capabilities. The right strategy depends on the cost of downtime versus the cost of redundancy.",
+  "title": "Planejamento de Disaster Recovery",
+  "question": "Como você projeta uma estratégia de disaster recovery? Explique RPO, RTO e as diferentes abordagens de DR.",
+  "answer": "O RPO (Recovery Point Objective) é a perda máxima de dados aceitável, medida em tempo - quanto de dado você pode se dar ao luxo de perder? O RTO (Recovery Time Objective) é o tempo máximo de indisponibilidade aceitável - quão rápido você precisa se recuperar? Estratégias de DR da mais barata à mais cara: Backup and Restore (RPO/RTO altos, baixo custo), Pilot Light (recursos mínimos sempre ativos), Warm Standby (ambiente duplicado com capacidade reduzida) e Multi-Site Active-Active (RPO/RTO próximos de zero, custo mais alto). Escolha com base nos requisitos e na criticidade do negócio.",
+  "explanation": "Disaster recovery é essencial para a continuidade do negócio. Engenheiros seniores precisam entender os trade-offs entre custo, complexidade e capacidade de recuperação. A estratégia certa depende do custo do downtime comparado ao custo da redundância.",
   "category": "Architecture",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "text",
-      "label": "DR Strategy Comparison",
+      "label": "Comparação de estratégias de DR",
       "code": "Strategy          | RPO      | RTO      | Cost\n------------------|----------|----------|--------\nBackup/Restore    | Hours    | Hours    | $\nPilot Light       | Minutes  | 10-30min | $$\nWarm Standby      | Seconds  | Minutes  | $$$\nMulti-Site Active | Near-zero| Seconds  | $$$$\n\nChoose based on:\n- Cost of downtime per hour\n- Data criticality\n- Compliance requirements\n- Budget constraints"
     }
   ],
   "followUpQuestions": [
-    "How do you test your disaster recovery plan?",
-    "What is the difference between disaster recovery and high availability?",
-    "How do you handle data replication across regions for DR?"
+    "Como você testa o seu plano de disaster recovery?",
+    "Qual é a diferença entre disaster recovery e alta disponibilidade?",
+    "Como você lida com a replicação de dados entre regiões para DR?"
   ],
   "commonMistakes": [
-    "Never testing the DR plan until a real disaster",
-    "Not considering application-level DR, only infrastructure",
-    "Underestimating the complexity of data consistency across regions"
+    "Nunca testar o plano de DR até um desastre real acontecer",
+    "Não considerar o DR em nível de aplicação, apenas de infraestrutura",
+    "Subestimar a complexidade da consistência de dados entre regiões"
   ],
   "relatedTopics": [
     "high-availability",

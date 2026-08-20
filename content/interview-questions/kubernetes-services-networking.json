@@ -1,10 +1,10 @@
 {
   "id": "kubernetes-services-networking",
   "slug": "kubernetes-services-networking",
-  "title": "Kubernetes Services and Networking",
-  "question": "Explain the different types of Kubernetes Services (ClusterIP, NodePort, LoadBalancer) and when to use each.",
-  "answer": "ClusterIP (default) exposes the service on an internal IP, accessible only within the cluster - use for internal communication between pods. NodePort exposes the service on each node's IP at a static port (30000-32767) - use for development or when you manage your own load balancer. LoadBalancer provisions an external load balancer (in cloud environments) - use for production external traffic. Ingress is not a service type but a separate resource for HTTP/HTTPS routing with a single entry point.",
-  "explanation": "Kubernetes networking is essential for connecting microservices and exposing applications. Understanding service types helps architects design secure, scalable systems and troubleshoot connectivity issues efficiently.",
+  "title": "Services e Rede no Kubernetes",
+  "question": "Explique os diferentes tipos de Services do Kubernetes (ClusterIP, NodePort, LoadBalancer) e quando usar cada um.",
+  "answer": "ClusterIP (padrão) expõe o serviço em um IP interno, acessível apenas dentro do cluster - use para comunicação interna entre pods. NodePort expõe o serviço no IP de cada nó em uma porta estática (30000-32767) - use para desenvolvimento ou quando você gerencia seu próprio load balancer. LoadBalancer provisiona um load balancer externo (em ambientes de nuvem) - use para tráfego externo de produção. Ingress não é um tipo de service, mas um recurso separado para roteamento HTTP/HTTPS com um único ponto de entrada.",
+  "explanation": "A rede do Kubernetes é essencial para conectar microsserviços e expor aplicações. Entender os tipos de service ajuda arquitetos a projetar sistemas seguros e escaláveis e a depurar problemas de conectividade com eficiência.",
   "category": "Kubernetes",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Kubernetes Service types",
+      "label": "Tipos de Service do Kubernetes",
       "code": "# ClusterIP (internal only)\napiVersion: v1\nkind: Service\nmetadata:\n  name: backend-service\nspec:\n  type: ClusterIP\n  selector:\n    app: backend\n  ports:\n    - port: 80\n      targetPort: 8080\n---\n# LoadBalancer (external traffic)\napiVersion: v1\nkind: Service\nmetadata:\n  name: frontend-service\nspec:\n  type: LoadBalancer\n  selector:\n    app: frontend\n  ports:\n    - port: 80\n      targetPort: 3000"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between port, targetPort, and nodePort?",
-    "How does kube-proxy handle service traffic?",
-    "When would you use an Ingress instead of a LoadBalancer service?"
+    "Qual é a diferença entre port, targetPort e nodePort?",
+    "Como o kube-proxy lida com o tráfego de service?",
+    "Quando você usaria um Ingress em vez de um service LoadBalancer?"
   ],
   "commonMistakes": [
-    "Using LoadBalancer for every service (costly and unnecessary)",
-    "Confusing targetPort with port",
-    "Not understanding that NodePort opens ports on ALL nodes"
+    "Usar LoadBalancer para todo service (caro e desnecessário)",
+    "Confundir targetPort com port",
+    "Não entender que o NodePort abre portas em TODOS os nós"
   ],
   "relatedTopics": [
     "kubernetes",

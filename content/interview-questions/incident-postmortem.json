@@ -1,10 +1,10 @@
 {
   "id": "incident-postmortem",
   "slug": "incident-postmortem",
-  "title": "Incident Postmortems",
-  "question": "Describe a production incident you handled and how you structured the postmortem. What makes a good blameless postmortem?",
-  "answer": "A blameless postmortem focuses on systems improvement, not individual blame. Structure: incident timeline (what happened), impact assessment (users affected, duration), root cause analysis (5 whys technique), contributing factors, action items with owners and deadlines, and lessons learned. Share widely to prevent similar issues across teams.",
-  "explanation": "Blameless postmortems create psychological safety where engineers report issues honestly. If people fear punishment, they hide problems. Focus questions on 'how did our systems allow this?' not 'who made a mistake?'. This cultural shift is essential for building reliable systems and learning organizations.",
+  "title": "Postmortems de Incidentes",
+  "question": "Descreva um incidente de produção que você tratou e como você estruturou o postmortem. O que torna um bom postmortem sem culpados (blameless)?",
+  "answer": "Um postmortem blameless foca na melhoria dos sistemas, não na culpa individual. Estrutura: linha do tempo do incidente (o que aconteceu), avaliação de impacto (usuários afetados, duração), análise de causa raiz (técnica dos 5 porquês), fatores contribuintes, itens de ação com responsáveis e prazos, e lições aprendidas. Compartilhe amplamente para prevenir problemas semelhantes em outros times.",
+  "explanation": "Postmortems blameless criam segurança psicológica, onde os engenheiros relatam problemas honestamente. Se as pessoas temem punição, elas escondem os problemas. Foque as perguntas em 'como nossos sistemas permitiram isso?' e não em 'quem cometeu o erro?'. Essa mudança cultural é essencial para construir sistemas confiáveis e organizações que aprendem.",
   "category": "SRE",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "markdown",
-      "label": "Postmortem template",
+      "label": "Template de postmortem",
       "code": "# Incident Postmortem: API Outage 2024-01-15\n\n## Summary\nAPI service was unavailable for 47 minutes due to database connection pool exhaustion.\n\n## Impact\n- Duration: 10:15 - 11:02 UTC (47 minutes)\n- Users affected: ~12,000 (30% of active users)\n- Revenue impact: ~$8,500 in failed transactions\n\n## Timeline\n- 10:15 - PagerDuty alert: API error rate > 50%\n- 10:18 - On-call engineer begins investigation\n- 10:25 - Root cause identified: DB connection pool\n- 10:45 - Fix deployed: increased pool size\n- 11:02 - All systems normal\n\n## Root Cause\nA slow query caused connections to be held longer, exhausting the pool.\n\n## Action Items\n1. [ ] Add connection pool monitoring (@alice, due: Jan 20)\n2. [ ] Implement query timeout (@bob, due: Jan 22)\n3. [ ] Add runbook for connection issues (@charlie, due: Jan 25)"
     }
   ],
   "followUpQuestions": [
-    "How do you ensure action items from postmortems actually get completed?",
-    "What's the difference between root cause and contributing factors?",
-    "How do you balance incident response speed with thoroughness?"
+    "Como você garante que os itens de ação dos postmortems realmente sejam concluídos?",
+    "Qual é a diferença entre causa raiz e fatores contribuintes?",
+    "Como você equilibra a velocidade de resposta a incidentes com a profundidade da análise?"
   ],
   "commonMistakes": [
-    "Blaming individuals instead of focusing on systemic improvements",
-    "Not following up on action items from previous postmortems",
-    "Writing postmortems only for major incidents (minor ones teach too)"
+    "Culpar indivíduos em vez de focar em melhorias sistêmicas",
+    "Não fazer o acompanhamento dos itens de ação de postmortems anteriores",
+    "Escrever postmortems apenas para incidentes maiores (os menores também ensinam)"
   ],
   "relatedTopics": [
     "incident-response",

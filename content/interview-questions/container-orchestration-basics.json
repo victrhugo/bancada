@@ -1,10 +1,10 @@
 {
   "id": "container-orchestration-basics",
   "slug": "container-orchestration-basics",
-  "title": "Container Orchestration Basics",
-  "question": "What is container orchestration and why do we need it? Name some common orchestration platforms.",
-  "answer": "Container orchestration automates container deployment, scaling, networking, and management. It handles: scheduling containers across hosts, load balancing traffic, auto-scaling based on demand, self-healing (restarting failed containers), rolling updates, and service discovery. Popular platforms: Kubernetes (most common), Docker Swarm (simpler), Amazon ECS, and Nomad.",
-  "explanation": "Running a few containers manually is easy, but managing hundreds or thousands in production requires orchestration. Kubernetes has become the industry standard, supported by all major cloud providers. Understanding basic orchestration concepts is essential even if you primarily use managed services.",
+  "title": "Fundamentos de Orquestração de Containers",
+  "question": "O que é orquestração de containers e por que precisamos dela? Cite algumas plataformas de orquestração comuns.",
+  "answer": "A orquestração de containers automatiza a implantação, o escalonamento, a rede e o gerenciamento de containers. Ela cuida de: agendar containers entre hosts, balancear a carga de tráfego, escalar automaticamente conforme a demanda, autorrecuperação (reiniciar containers com falha), atualizações contínuas (rolling updates) e descoberta de serviços. Plataformas populares: Kubernetes (a mais comum), Docker Swarm (mais simples), Amazon ECS e Nomad.",
+  "explanation": "Executar alguns containers manualmente é fácil, mas gerenciar centenas ou milhares deles em produção exige orquestração. O Kubernetes se tornou o padrão da indústria, com suporte de todos os grandes provedores de nuvem. Entender os conceitos básicos de orquestração é essencial mesmo que você use principalmente serviços gerenciados.",
   "category": "Kubernetes",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Simple Kubernetes deployment",
+      "label": "Deployment simples do Kubernetes",
       "code": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web-app\nspec:\n  replicas: 3  # Run 3 instances\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      containers:\n      - name: app\n        image: nginx:1.25\n        ports:\n        - containerPort: 80"
     },
     {
       "language": "bash",
-      "label": "Basic kubectl commands",
+      "label": "Comandos básicos do kubectl",
       "code": "# View running pods\nkubectl get pods\n\n# View deployments\nkubectl get deployments\n\n# Scale a deployment\nkubectl scale deployment web-app --replicas=5\n\n# View pod logs\nkubectl logs pod-name\n\n# Describe a resource\nkubectl describe pod pod-name"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between a Pod and a Container in Kubernetes?",
-    "How does Kubernetes know when a container is healthy?",
-    "What happens when a container crashes in a Kubernetes pod?"
+    "Qual é a diferença entre um Pod e um Container no Kubernetes?",
+    "Como o Kubernetes sabe quando um container está saudável?",
+    "O que acontece quando um container trava dentro de um pod do Kubernetes?"
   ],
   "commonMistakes": [
-    "Thinking Kubernetes is always necessary - simpler solutions may suffice",
-    "Running stateful applications without understanding persistent storage",
-    "Not setting resource limits, leading to noisy neighbor problems"
+    "Achar que o Kubernetes é sempre necessário - soluções mais simples podem ser suficientes",
+    "Executar aplicações stateful sem entender de armazenamento persistente",
+    "Não definir limites de recursos, o que leva a problemas de noisy neighbor"
   ],
   "relatedTopics": [
     "docker",

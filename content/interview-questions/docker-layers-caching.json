@@ -1,10 +1,10 @@
 {
   "id": "docker-layers-caching",
   "slug": "docker-layers-caching",
-  "title": "Docker Image Layers and Caching",
-  "question": "How do Docker image layers work, and how can you optimize your Dockerfile to take advantage of layer caching?",
-  "answer": "Docker images are built from layers, where each instruction in a Dockerfile creates a new layer. Layers are cached and reused when possible. To optimize caching: order instructions from least to most frequently changing, copy dependency files before source code, use multi-stage builds, and leverage .dockerignore to exclude unnecessary files.",
-  "explanation": "Layer caching is crucial for fast build times and efficient storage. When Docker builds an image, it checks if it can reuse cached layers. If a layer changes, all subsequent layers must be rebuilt. Understanding this mechanism helps you structure Dockerfiles for optimal build performance.",
+  "title": "Camadas de Imagem Docker e Cache",
+  "question": "Como funcionam as camadas de uma imagem Docker e como você pode otimizar seu Dockerfile para aproveitar o cache de camadas?",
+  "answer": "As imagens Docker são construídas a partir de camadas, onde cada instrução em um Dockerfile cria uma nova camada. As camadas são armazenadas em cache e reutilizadas sempre que possível. Para otimizar o cache: ordene as instruções da que muda com menos frequência para a que muda mais, copie os arquivos de dependência antes do código-fonte, use builds em múltiplos estágios e aproveite o .dockerignore para excluir arquivos desnecessários.",
+  "explanation": "O cache de camadas é fundamental para tempos de build rápidos e armazenamento eficiente. Quando o Docker constrói uma imagem, ele verifica se pode reutilizar camadas em cache. Se uma camada muda, todas as camadas subsequentes precisam ser reconstruídas. Entender esse mecanismo ajuda você a estruturar Dockerfiles para um desempenho de build ideal.",
   "category": "Docker",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "dockerfile",
-      "label": "Optimized Dockerfile with caching",
+      "label": "Dockerfile otimizado com cache",
       "code": "# Bad: Source changes invalidate npm install cache\n# FROM node:20-alpine\n# COPY . .\n# RUN npm install\n\n# Good: Dependencies cached separately\nFROM node:20-alpine\nWORKDIR /app\n\n# Copy only package files first\nCOPY package*.json ./\nRUN npm ci --only=production\n\n# Then copy source (changes here don't bust npm cache)\nCOPY . .\n\nCMD [\"node\", \"server.js\"]"
     },
     {
       "language": "bash",
-      "label": "Inspect image layers",
+      "label": "Inspecionar as camadas da imagem",
       "code": "# View image history and layer sizes\ndocker history myimage:latest\n\n# Analyze image layers with dive\ndive myimage:latest\n\n# Build with cache info\ndocker build --progress=plain ."
     }
   ],
   "followUpQuestions": [
-    "What is the difference between ADD and COPY, and when should you use each?",
-    "How does multi-stage building help reduce final image size?",
-    "What is BuildKit and how does it improve Docker builds?"
+    "Qual é a diferença entre ADD e COPY, e quando você deve usar cada um?",
+    "Como o build em múltiplos estágios ajuda a reduzir o tamanho final da imagem?",
+    "O que é o BuildKit e como ele melhora os builds do Docker?"
   ],
   "commonMistakes": [
-    "Putting frequently changing files early in the Dockerfile, invalidating cache for subsequent layers",
-    "Not using .dockerignore, causing unnecessary cache invalidation when unrelated files change",
-    "Using COPY . . before installing dependencies"
+    "Colocar arquivos que mudam com frequência no início do Dockerfile, invalidando o cache das camadas seguintes",
+    "Não usar o .dockerignore, causando invalidação desnecessária de cache quando arquivos não relacionados mudam",
+    "Usar COPY . . antes de instalar as dependências"
   ],
   "relatedTopics": [
     "multi-stage-builds",
