@@ -1,13 +1,13 @@
 {
   "id": "prometheus-grafana-monitoring",
-  "title": "Complete Monitoring Stack Setup",
-  "description": "Deploy and configure Prometheus and Grafana for comprehensive application and infrastructure monitoring.",
+  "title": "Configuração Completa de uma Stack de Monitoramento",
+  "description": "Implante e configure o Prometheus e o Grafana para um monitoramento abrangente de aplicações e infraestrutura.",
   "category": {
     "name": "DevOps",
     "slug": "devops"
   },
   "difficulty": "advanced",
-  "estimatedTime": "150 minutes",
+  "estimatedTime": "150 minutos",
   "technologies": [
     "Prometheus",
     "Grafana",
@@ -15,14 +15,14 @@
     "Node Exporter"
   ],
   "prerequisites": [
-    "Docker or Kubernetes cluster",
-    "Basic monitoring concepts"
+    "Cluster Docker ou Kubernetes",
+    "Conceitos básicos de monitoramento"
   ],
   "learningObjectives": [
-    "Deploy monitoring infrastructure",
-    "Configure metrics collection",
-    "Create custom dashboards",
-    "Set up alerting rules"
+    "Implantar infraestrutura de monitoramento",
+    "Configurar a coleta de métricas",
+    "Criar dashboards personalizados",
+    "Configurar regras de alerta"
   ],
   "environment": "local",
   "icon": "Activity",
@@ -36,8 +36,8 @@
   "steps": [
     {
       "id": "prometheus-setup",
-      "title": "Deploy Prometheus Server",
-      "description": "Set up Prometheus server with configuration for scraping metrics from multiple targets.",
+      "title": "Implante o Servidor Prometheus",
+      "description": "Configure o servidor Prometheus para coletar (scrape) métricas de múltiplos alvos.",
       "codeExample": "# docker-compose.yml\nversion: '3.8'\nservices:\n  prometheus:\n    image: prom/prometheus:latest\n    container_name: prometheus\n    ports:\n      - \"9090:9090\"\n    volumes:\n      - ./prometheus.yml:/etc/prometheus/prometheus.yml\n      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml\n      - prometheus_data:/prometheus\n    command:\n      - '--config.file=/etc/prometheus/prometheus.yml'\n      - '--storage.tsdb.path=/prometheus'\n      - '--web.console.libraries=/etc/prometheus/console_libraries'\n      - '--web.console.templates=/etc/prometheus/consoles'\n      - '--storage.tsdb.retention.time=15d'\n      - '--web.enable-lifecycle'\n      - '--web.enable-admin-api'\n\n# prometheus.yml\nglobal:\n  scrape_interval: 15s\n  evaluation_interval: 15s\n\nrule_files:\n  - \"alert_rules.yml\"\n\nscrape_configs:\n  - job_name: 'prometheus'\n    static_configs:\n      - targets: ['localhost:9090']\n  \n  - job_name: 'node-exporter'\n    static_configs:\n      - targets: ['node-exporter:9100']\n  \n  - job_name: 'sample-app'\n    static_configs:\n      - targets: ['sample-app:8080']\n\nalerting:\n  alertmanagers:\n    - static_configs:\n        - targets:\n          - alertmanager:9093\n\nvolumes:\n  prometheus_data:",
       "commands": [
         "mkdir monitoring-stack",
@@ -45,16 +45,16 @@
         "docker-compose up -d prometheus"
       ],
       "validationCriteria": [
-        "Prometheus is accessible on port 9090",
-        "Configuration loads without errors",
-        "Prometheus targets page shows configured jobs"
+        "O Prometheus está acessível na porta 9090",
+        "A configuração carrega sem erros",
+        "A página de targets do Prometheus mostra os jobs configurados"
       ],
       "expectedOutput": "Prometheus server running and ready to scrape metrics"
     },
     {
       "id": "node-exporter",
-      "title": "Deploy Node Exporter for System Metrics",
-      "description": "Add Node Exporter to collect system-level metrics from the host machine.",
+      "title": "Implante o Node Exporter para Métricas de Sistema",
+      "description": "Adicione o Node Exporter para coletar métricas em nível de sistema da máquina host.",
       "codeExample": "# Add to docker-compose.yml services section:\n  node-exporter:\n    image: prom/node-exporter:latest\n    container_name: node-exporter\n    ports:\n      - \"9100:9100\"\n    volumes:\n      - /proc:/host/proc:ro\n      - /sys:/host/sys:ro\n      - /:/rootfs:ro\n    command:\n      - '--path.procfs=/host/proc'\n      - '--path.rootfs=/rootfs'\n      - '--path.sysfs=/host/sys'\n      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'\n    restart: unless-stopped\n\n  sample-app:\n    image: nginx:alpine\n    container_name: sample-app\n    ports:\n      - \"8080:80\"\n    volumes:\n      - ./nginx.conf:/etc/nginx/nginx.conf\n      - ./nginx_status.conf:/etc/nginx/conf.d/status.conf",
       "commands": [
         "docker-compose up -d node-exporter sample-app",
@@ -62,19 +62,19 @@
         "curl http://localhost:9090/api/v1/targets"
       ],
       "validationCriteria": [
-        "Node Exporter exposes metrics on port 9100",
-        "Prometheus discovers node-exporter target",
-        "Sample application is running"
+        "O Node Exporter expõe métricas na porta 9100",
+        "O Prometheus descobre o target node-exporter",
+        "A aplicação de exemplo está em execução"
       ],
       "hints": [
-        "Check Prometheus targets page to verify scraping",
-        "Node Exporter provides system metrics like CPU, memory, disk"
+        "Verifique a página de targets do Prometheus para confirmar o scraping",
+        "O Node Exporter fornece métricas de sistema como CPU, memória e disco"
       ]
     },
     {
       "id": "grafana-setup",
-      "title": "Deploy and Configure Grafana",
-      "description": "Set up Grafana with Prometheus as data source and import dashboards.",
+      "title": "Implante e Configure o Grafana",
+      "description": "Configure o Grafana com o Prometheus como fonte de dados e importe dashboards.",
       "codeExample": "# Add to docker-compose.yml services section:\n  grafana:\n    image: grafana/grafana:latest\n    container_name: grafana\n    ports:\n      - \"3000:3000\"\n    environment:\n      - GF_SECURITY_ADMIN_PASSWORD=admin123\n      - GF_USERS_ALLOW_SIGN_UP=false\n    volumes:\n      - grafana_data:/var/lib/grafana\n      - ./grafana/provisioning:/etc/grafana/provisioning\n      - ./grafana/dashboards:/var/lib/grafana/dashboards\n    depends_on:\n      - prometheus\n\n# grafana/provisioning/datasources/prometheus.yml\napiVersion: 1\ndatasources:\n  - name: Prometheus\n    type: prometheus\n    access: proxy\n    url: http://prometheus:9090\n    isDefault: true\n    editable: true\n\n# grafana/provisioning/dashboards/dashboard.yml\napiVersion: 1\nproviders:\n  - name: 'default'\n    orgId: 1\n    folder: ''\n    type: file\n    disableDeletion: false\n    updateIntervalSeconds: 10\n    options:\n      path: /var/lib/grafana/dashboards",
       "commands": [
         "mkdir -p grafana/provisioning/datasources grafana/provisioning/dashboards grafana/dashboards",
@@ -83,35 +83,35 @@
         "curl -u admin:admin123 http://localhost:3000/api/datasources"
       ],
       "validationCriteria": [
-        "Grafana accessible on port 3000",
-        "Prometheus datasource configured",
-        "Admin login works with admin123"
+        "O Grafana está acessível na porta 3000",
+        "A fonte de dados do Prometheus está configurada",
+        "O login de admin funciona com admin123"
       ],
       "expectedOutput": "Grafana dashboard ready with Prometheus data source"
     },
     {
       "id": "custom-dashboards",
-      "title": "Create Custom Monitoring Dashboards",
-      "description": "Build comprehensive dashboards for system metrics, application performance, and infrastructure monitoring.",
+      "title": "Crie Dashboards de Monitoramento Personalizados",
+      "description": "Construa dashboards abrangentes para métricas de sistema, desempenho de aplicações e monitoramento de infraestrutura.",
       "codeExample": "# grafana/dashboards/system-overview.json\n{\n  \"dashboard\": {\n    \"id\": null,\n    \"title\": \"System Overview\",\n    \"tags\": [\"prometheus\", \"node-exporter\"],\n    \"timezone\": \"browser\",\n    \"panels\": [\n      {\n        \"id\": 1,\n        \"title\": \"CPU Usage\",\n        \"type\": \"stat\",\n        \"targets\": [\n          {\n            \"expr\": \"100 - (avg(rate(node_cpu_seconds_total{mode=\\\"idle\\\"}[5m])) * 100)\",\n            \"refId\": \"A\"\n          }\n        ],\n        \"fieldConfig\": {\n          \"defaults\": {\n            \"unit\": \"percent\",\n            \"min\": 0,\n            \"max\": 100\n          }\n        },\n        \"gridPos\": {\"h\": 8, \"w\": 12, \"x\": 0, \"y\": 0}\n      },\n      {\n        \"id\": 2,\n        \"title\": \"Memory Usage\",\n        \"type\": \"stat\",\n        \"targets\": [\n          {\n            \"expr\": \"(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100\",\n            \"refId\": \"A\"\n          }\n        ],\n        \"fieldConfig\": {\n          \"defaults\": {\n            \"unit\": \"percent\",\n            \"min\": 0,\n            \"max\": 100\n          }\n        },\n        \"gridPos\": {\"h\": 8, \"w\": 12, \"x\": 12, \"y\": 0}\n      }\n    ],\n    \"time\": {\n      \"from\": \"now-1h\",\n      \"to\": \"now\"\n    },\n    \"refresh\": \"5s\"\n  }\n}",
       "commands": [
         "curl -X POST -H 'Content-Type: application/json' -d @grafana/dashboards/system-overview.json -u admin:admin123 http://localhost:3000/api/dashboards/db",
         "docker-compose restart grafana"
       ],
       "validationCriteria": [
-        "Custom dashboard loads in Grafana",
-        "CPU and memory metrics display correctly",
-        "Dashboard refreshes automatically"
+        "O dashboard personalizado carrega no Grafana",
+        "As métricas de CPU e memória são exibidas corretamente",
+        "O dashboard atualiza automaticamente"
       ],
       "hints": [
-        "Use Grafana's dashboard JSON format",
-        "Test PromQL queries in Prometheus before adding to Grafana"
+        "Use o formato JSON de dashboard do Grafana",
+        "Teste as queries PromQL no Prometheus antes de adicioná-las ao Grafana"
       ]
     },
     {
       "id": "alertmanager-setup",
-      "title": "Configure AlertManager for Notifications",
-      "description": "Deploy AlertManager and configure alert rules for critical system conditions.",
+      "title": "Configure o AlertManager para Notificações",
+      "description": "Implante o AlertManager e configure regras de alerta para condições críticas do sistema.",
       "codeExample": "# Add to docker-compose.yml services section:\n  alertmanager:\n    image: prom/alertmanager:latest\n    container_name: alertmanager\n    ports:\n      - \"9093:9093\"\n    volumes:\n      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml\n      - alertmanager_data:/alertmanager\n    command:\n      - '--config.file=/etc/alertmanager/alertmanager.yml'\n      - '--storage.path=/alertmanager'\n\n# alertmanager.yml\nglobal:\n  smtp_smarthost: 'localhost:587'\n  smtp_from: 'alerts@example.com'\n\nroute:\n  group_by: ['alertname']\n  group_wait: 10s\n  group_interval: 10s\n  repeat_interval: 1h\n  receiver: 'web.hook'\n\nreceivers:\n- name: 'web.hook'\n  webhook_configs:\n  - url: 'http://localhost:5001/'\n    send_resolved: true\n\n# alert_rules.yml\ngroups:\n- name: system.rules\n  rules:\n  - alert: HighCPUUsage\n    expr: 100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100) > 80\n    for: 2m\n    labels:\n      severity: warning\n    annotations:\n      summary: \"High CPU usage detected\"\n      description: \"CPU usage is above 80% for more than 2 minutes\"\n\n  - alert: HighMemoryUsage\n    expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85\n    for: 5m\n    labels:\n      severity: critical\n    annotations:\n      summary: \"High memory usage detected\"\n      description: \"Memory usage is above 85% for more than 5 minutes\"\n\n  - alert: DiskSpaceLow\n    expr: (node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"}) * 100 < 10\n    for: 1m\n    labels:\n      severity: critical\n    annotations:\n      summary: \"Disk space is low\"\n      description: \"Less than 10% disk space remaining\"",
       "commands": [
         "docker-compose up -d alertmanager",
@@ -119,16 +119,16 @@
         "curl -X POST http://localhost:9090/-/reload"
       ],
       "validationCriteria": [
-        "AlertManager is accessible on port 9093",
-        "Alert rules are loaded in Prometheus",
-        "Prometheus connects to AlertManager"
+        "O AlertManager está acessível na porta 9093",
+        "As regras de alerta estão carregadas no Prometheus",
+        "O Prometheus se conecta ao AlertManager"
       ],
       "expectedOutput": "AlertManager ready to receive and process alerts from Prometheus"
     },
     {
       "id": "load-testing-alerts",
-      "title": "Load Testing and Alert Validation",
-      "description": "Generate system load to test monitoring setup and validate that alerts fire correctly.",
+      "title": "Teste de Carga e Validação de Alertas",
+      "description": "Gere carga no sistema para testar a configuração de monitoramento e validar se os alertas disparam corretamente.",
       "codeExample": "# stress-test.sh\n#!/bin/bash\necho \"Starting system stress test...\"\n\n# CPU stress test\necho \"Generating CPU load...\"\nfor i in $(seq $(nproc)); do\n  yes > /dev/null &\ndone\n\n# Memory stress test  \necho \"Generating memory pressure...\"\nstress-ng --vm 2 --vm-bytes 75% --timeout 300s &\n\n# Monitor alerts\necho \"Monitoring for alerts...\"\nfor i in {1..20}; do\n  echo \"Checking alerts (attempt $i)...\"\n  curl -s http://localhost:9090/api/v1/alerts | jq '.data.alerts[] | select(.state==\"firing\") | {alertname: .labels.alertname, state: .state}'\n  sleep 30\ndone\n\n# Cleanup\necho \"Cleaning up stress test...\"\nkillall yes 2>/dev/null\nkillall stress-ng 2>/dev/null\necho \"Stress test complete!\"",
       "commands": [
         "chmod +x stress-test.sh",
@@ -137,23 +137,23 @@
         "curl http://localhost:9093/api/v1/alerts"
       ],
       "validationCriteria": [
-        "Stress test triggers high CPU/memory usage",
-        "Prometheus detects threshold breaches",
-        "AlertManager receives and processes alerts",
-        "Grafana dashboards show elevated metrics"
+        "O teste de estresse dispara alto uso de CPU/memória",
+        "O Prometheus detecta as violações de limite",
+        "O AlertManager recebe e processa os alertas",
+        "Os dashboards do Grafana mostram métricas elevadas"
       ],
       "hints": [
-        "Install stress-ng and jq for load testing",
-        "Monitor both Prometheus alerts and Grafana dashboards",
-        "Clean up stress processes after testing"
+        "Instale o stress-ng e o jq para o teste de carga",
+        "Monitore tanto os alertas do Prometheus quanto os dashboards do Grafana",
+        "Limpe os processos de estresse após o teste"
       ],
       "expectedOutput": "Alerts fire during load test and resolve after cleanup"
     }
   ],
   "completionCriteria": [
-    "Prometheus is collecting metrics",
-    "Grafana dashboards display data",
-    "Alerts are configured and firing",
-    "Monitoring covers both infrastructure and applications"
+    "O Prometheus está coletando métricas",
+    "Os dashboards do Grafana exibem dados",
+    "Os alertas estão configurados e disparando",
+    "O monitoramento cobre tanto a infraestrutura quanto as aplicações"
   ]
 }

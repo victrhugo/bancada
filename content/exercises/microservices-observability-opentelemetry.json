@@ -1,13 +1,13 @@
 {
   "id": "microservices-observability-opentelemetry",
-  "title": "Microservices Observability with OpenTelemetry",
-  "description": "Implement comprehensive observability for microservices using OpenTelemetry for distributed tracing, metrics, and logging across multiple services.",
+  "title": "Observabilidade de Microsserviços com OpenTelemetry",
+  "description": "Implemente uma observabilidade abrangente para microsserviços usando o OpenTelemetry para tracing distribuído, métricas e logging em múltiplos serviços.",
   "category": {
     "name": "DevOps",
     "slug": "devops"
   },
   "difficulty": "advanced",
-  "estimatedTime": "140 minutes",
+  "estimatedTime": "140 minutos",
   "technologies": [
     "OpenTelemetry",
     "Jaeger",
@@ -17,24 +17,24 @@
     "Kubernetes"
   ],
   "prerequisites": [
-    "Kubernetes cluster",
+    "Cluster Kubernetes",
     "Docker",
-    "Basic understanding of microservices",
-    "Node.js and Python knowledge"
+    "Compreensão básica de microsserviços",
+    "Conhecimento de Node.js e Python"
   ],
   "learningObjectives": [
-    "Understand OpenTelemetry concepts and architecture",
-    "Implement distributed tracing across microservices",
-    "Collect and analyze application metrics",
-    "Aggregate logs with structured logging",
-    "Set up observability dashboards",
-    "Troubleshoot distributed systems effectively"
+    "Entender os conceitos e a arquitetura do OpenTelemetry",
+    "Implementar tracing distribuído entre microsserviços",
+    "Coletar e analisar métricas de aplicações",
+    "Agregar logs com logging estruturado",
+    "Configurar dashboards de observabilidade",
+    "Depurar sistemas distribuídos de forma eficaz"
   ],
   "environment": "local",
   "icon": "Activity",
   "publishedAt": "2024-12-01T20:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": [
@@ -47,8 +47,8 @@
   "steps": [
     {
       "id": "observability-stack-setup",
-      "title": "Deploy Observability Stack Infrastructure",
-      "description": "Set up Jaeger for tracing, Prometheus for metrics, and configure the foundational observability infrastructure. Note: If using minikube/kind/k3d, cert-manager must be installed first for Jaeger Operator.",
+      "title": "Implante a Infraestrutura da Stack de Observabilidade",
+      "description": "Configure o Jaeger para tracing, o Prometheus para métricas e monte a infraestrutura de observabilidade fundamental. Nota: se estiver usando minikube/kind/k3d, o cert-manager precisa ser instalado primeiro para o Jaeger Operator.",
       "codeExample": "# Create observability namespace\nkubectl create namespace observability\n\n# If using Minikube, enable the built-in Metrics Server addon\nminikube addons enable metrics-server\nkubectl wait --for=condition=available deployment/metrics-server -n kube-system --timeout=300s\n\n# Install cert-manager (required for Jaeger Operator webhooks on local K8s clusters)\nkubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml\n\n# Wait for cert-manager to be ready\nkubectl wait --for=condition=available deployment cert-manager -n cert-manager --timeout=300s\nkubectl wait --for=condition=available deployment cert-manager-webhook -n cert-manager --timeout=300s\nkubectl wait --for=condition=available deployment cert-manager-cainjector -n cert-manager --timeout=300s\n\n# Deploy Jaeger using Operator\nkubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.51.0/jaeger-operator.yaml -n observability\n\n# Wait for operator to be ready\nkubectl wait --for=condition=available deployment jaeger-operator -n observability --timeout=300s\n\n# Create Jaeger instance\ncat > jaeger-instance.yaml <<EOF\napiVersion: jaegertracing.io/v1\nkind: Jaeger\nmetadata:\n  name: jaeger\n  namespace: observability\nspec:\n  strategy: allInOne\n  allInOne:\n    image: jaegertracing/all-in-one:latest\n    options:\n      log-level: info\n      memory:\n        max-traces: 50000\n  storage:\n    type: memory\n  ingress:\n    enabled: false\n  ui:\n    options:\n      dependencies:\n        menuEnabled: true\n      tracking:\n        gaID: UA-000000-2\nEOF\n\nkubectl apply -f jaeger-instance.yaml\n\n# Deploy OpenTelemetry Collector\ncat > otel-collector.yaml <<EOF\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: otel-collector-config\n  namespace: observability\ndata:\n  collector.yaml: |\n    receivers:\n      otlp:\n        protocols:\n          grpc:\n            endpoint: 0.0.0.0:4317\n          http:\n            endpoint: 0.0.0.0:4318\n      prometheus:\n        config:\n          scrape_configs:\n            - job_name: 'otel-collector'\n              scrape_interval: 10s\n              static_configs:\n                - targets: ['0.0.0.0:8888']\n    \n    processors:\n      batch:\n        timeout: 1s\n        send_batch_size: 1024\n      memory_limiter:\n        limit_mib: 512\n    \n    exporters:\n      jaeger:\n        endpoint: jaeger-collector:14250\n        tls:\n          insecure: true\n      prometheus:\n        endpoint: \"0.0.0.0:8889\"\n      debug:\n        verbosity: detailed\n    \n    service:\n      pipelines:\n        traces:\n          receivers: [otlp]\n          processors: [memory_limiter, batch]\n          exporters: [jaeger, debug]\n        metrics:\n          receivers: [otlp, prometheus]\n          processors: [memory_limiter, batch]\n          exporters: [prometheus, debug]\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: otel-collector\n  namespace: observability\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: otel-collector\n  template:\n    metadata:\n      labels:\n        app: otel-collector\n    spec:\n      containers:\n      - name: otel-collector\n        image: otel/opentelemetry-collector-contrib:latest\n        command:\n          - \"/otelcol-contrib\"\n          - \"--config=/conf/collector.yaml\"\n        volumeMounts:\n        - name: otel-collector-config-vol\n          mountPath: /conf\n        ports:\n        - containerPort: 4317   # OTLP gRPC receiver\n        - containerPort: 4318   # OTLP HTTP receiver\n        - containerPort: 8889   # Prometheus metrics\n        env:\n        - name: GOGC\n          value: \"80\"\n      volumes:\n      - name: otel-collector-config-vol\n        configMap:\n          name: otel-collector-config\n          items:\n            - key: collector.yaml\n              path: collector.yaml\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: otel-collector\n  namespace: observability\nspec:\n  ports:\n  - name: otlp-grpc\n    port: 4317\n    targetPort: 4317\n  - name: otlp-http\n    port: 4318\n    targetPort: 4318\n  - name: metrics\n    port: 8889\n    targetPort: 8889\n  selector:\n    app: otel-collector\nEOF\n\nkubectl apply -f otel-collector.yaml",
       "commands": [
         "kubectl create namespace observability",
@@ -65,25 +65,25 @@
         "kubectl port-forward -n observability svc/jaeger-query 16686:16686 &"
       ],
       "validationCriteria": [
-        "Metrics server is running (minikube only)",
-        "cert-manager is installed and all pods are running",
-        "Jaeger operator and instance are running",
-        "OpenTelemetry Collector is deployed and healthy",
-        "Jaeger UI is accessible on port 16686",
-        "All observability pods are in running state"
+        "O metrics server está em execução (apenas no minikube)",
+        "O cert-manager está instalado e todos os pods estão em execução",
+        "O operator e a instância do Jaeger estão em execução",
+        "O OpenTelemetry Collector está implantado e saudável",
+        "A UI do Jaeger está acessível na porta 16686",
+        "Todos os pods de observabilidade estão em estado running"
       ],
       "hints": [
-        "On minikube: run 'minikube addons enable metrics-server' first and wait for it to be ready",
-        "On minikube/kind/k3d: cert-manager must be installed and fully running before Jaeger Operator",
-        "Wait for Jaeger operator to be ready before creating instance",
-        "Check pod logs if services fail to start",
-        "Jaeger UI should show no traces initially"
+        "No minikube: execute 'minikube addons enable metrics-server' primeiro e aguarde ficar pronto",
+        "No minikube/kind/k3d: o cert-manager precisa estar instalado e totalmente em execução antes do Jaeger Operator",
+        "Aguarde o operator do Jaeger ficar pronto antes de criar a instância",
+        "Verifique os logs dos pods se os serviços não iniciarem",
+        "A UI do Jaeger deve mostrar nenhum trace inicialmente"
       ]
     },
     {
       "id": "instrumented-services",
-      "title": "Create Instrumented Microservices",
-      "description": "Build sample microservices with OpenTelemetry instrumentation for automatic tracing and metrics collection.",
+      "title": "Crie Microsserviços Instrumentados",
+      "description": "Construa microsserviços de exemplo com instrumentação OpenTelemetry para tracing automático e coleta de métricas.",
       "codeExample": "# Create sample microservices project structure\nmkdir -p microservices-demo/{user-service,order-service,inventory-service,api-gateway}\ncd microservices-demo\n\n# User Service (Node.js)\ncat > user-service/package.json <<EOF\n{\n  \"name\": \"user-service\",\n  \"version\": \"1.0.0\",\n  \"scripts\": {\n    \"start\": \"node server.js\"\n  },\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"@opentelemetry/api\": \"^1.4.1\",\n    \"@opentelemetry/node\": \"^0.39.1\",\n    \"@opentelemetry/tracing\": \"^0.24.0\",\n    \"@opentelemetry/exporter-jaeger\": \"^1.15.2\",\n    \"@opentelemetry/exporter-otlp-http\": \"^0.39.1\",\n    \"@opentelemetry/instrumentation-express\": \"^0.32.4\",\n    \"@opentelemetry/instrumentation-http\": \"^0.39.1\",\n    \"@opentelemetry/auto-instrumentations-node\": \"^0.39.4\"\n  }\n}\nEOF\n\n# User Service OpenTelemetry configuration\ncat > user-service/tracing.js <<EOF\nconst { NodeSDK } = require('@opentelemetry/node');\nconst { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');\nconst { OTLPTraceExporter } = require('@opentelemetry/exporter-otlp-http');\nconst { Resource } = require('@opentelemetry/resources');\nconst { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');\n\nconst traceExporter = new OTLPTraceExporter({\n  url: process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT || 'http://otel-collector.observability.svc.cluster.local:4318/v1/traces',\n});\n\nconst sdk = new NodeSDK({\n  resource: new Resource({\n    [SemanticResourceAttributes.SERVICE_NAME]: 'user-service',\n    [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0',\n  }),\n  traceExporter,\n  instrumentations: [getNodeAutoInstrumentations()]\n});\n\nsdk.start();\nconsole.log('Tracing initialized');\nEOF\n\n# User Service application\ncat > user-service/server.js <<EOF\nrequire('./tracing');\nconst express = require('express');\nconst { trace, context, SpanStatusCode } = require('@opentelemetry/api');\n\nconst app = express();\nconst port = process.env.PORT || 3001;\nconst tracer = trace.getTracer('user-service');\n\napp.use(express.json());\n\n// Simulated user database\nconst users = [\n  { id: 1, name: 'John Doe', email: 'john@example.com' },\n  { id: 2, name: 'Jane Smith', email: 'jane@example.com' }\n];\n\napp.get('/health', (req, res) => {\n  res.json({ status: 'healthy', service: 'user-service' });\n});\n\napp.get('/users', async (req, res) => {\n  const span = tracer.startSpan('get_all_users');\n  try {\n    // Simulate database query delay\n    await new Promise(resolve => setTimeout(resolve, Math.random() * 100));\n    \n    span.setAttributes({\n      'user.count': users.length,\n      'operation.type': 'read'\n    });\n    \n    res.json(users);\n    span.setStatus({ code: SpanStatusCode.OK });\n  } catch (error) {\n    span.recordException(error);\n    span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });\n    res.status(500).json({ error: 'Internal server error' });\n  } finally {\n    span.end();\n  }\n});\n\napp.get('/users/:id', async (req, res) => {\n  const span = tracer.startSpan('get_user_by_id');\n  const userId = parseInt(req.params.id);\n  \n  try {\n    span.setAttributes({\n      'user.id': userId,\n      'operation.type': 'read'\n    });\n    \n    // Simulate database query\n    await new Promise(resolve => setTimeout(resolve, Math.random() * 50));\n    \n    const user = users.find(u => u.id === userId);\n    if (!user) {\n      span.setStatus({ code: SpanStatusCode.ERROR, message: 'User not found' });\n      return res.status(404).json({ error: 'User not found' });\n    }\n    \n    res.json(user);\n    span.setStatus({ code: SpanStatusCode.OK });\n  } catch (error) {\n    span.recordException(error);\n    span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });\n    res.status(500).json({ error: 'Internal server error' });\n  } finally {\n    span.end();\n  }\n});\n\napp.listen(port, () => {\n  console.log(`User service listening on port ${port}`);\n});\nEOF\n\n# Order Service (Python)\ncat > order-service/requirements.txt <<EOF\nflask==2.3.2\nopentelemetry-api==1.19.0\nopentelemetry-sdk==1.19.0\nopentelemetry-instrumentation-flask==0.40b0\nopentelemetry-instrumentation-requests==0.40b0\nopentelemetry-exporter-otlp==1.19.0\nrequests==2.31.0\nEOF\n\ncat > order-service/app.py <<EOF\nimport os\nimport time\nimport random\nimport requests\nfrom flask import Flask, jsonify, request\nfrom opentelemetry import trace, baggage\nfrom opentelemetry.sdk.trace import TracerProvider\nfrom opentelemetry.sdk.trace.export import BatchSpanProcessor\nfrom opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter\nfrom opentelemetry.sdk.resources import Resource\nfrom opentelemetry.instrumentation.flask import FlaskInstrumentor\nfrom opentelemetry.instrumentation.requests import RequestsInstrumentor\n\n# Configure OpenTelemetry\nresource = Resource.create({\n    \"service.name\": \"order-service\",\n    \"service.version\": \"1.0.0\"\n})\n\ntrace.set_tracer_provider(TracerProvider(resource=resource))\ntracer = trace.get_tracer(__name__)\n\n# Configure OTLP exporter\notlp_exporter = OTLPSpanExporter(\n    endpoint=os.getenv(\"OTEL_EXPORTER_OTLP_TRACES_ENDPOINT\", \n                      \"http://otel-collector.observability.svc.cluster.local:4318/v1/traces\")\n)\nspan_processor = BatchSpanProcessor(otlp_exporter)\ntrace.get_tracer_provider().add_span_processor(span_processor)\n\napp = Flask(__name__)\n\n# Auto-instrument Flask and requests\nFlaskInstrumentor().instrument_app(app)\nRequestsInstrumentor().instrument()\n\n# Sample orders data\norders = [\n    {\"id\": 1, \"user_id\": 1, \"items\": [{\"product_id\": 101, \"quantity\": 2}], \"total\": 99.98, \"status\": \"completed\"},\n    {\"id\": 2, \"user_id\": 2, \"items\": [{\"product_id\": 102, \"quantity\": 1}], \"total\": 49.99, \"status\": \"pending\"}\n]\n\n@app.route('/health')\ndef health():\n    return jsonify({\"status\": \"healthy\", \"service\": \"order-service\"})\n\n@app.route('/orders')\ndef get_orders():\n    with tracer.start_as_current_span(\"get_all_orders\") as span:\n        # Simulate database query\n        time.sleep(random.uniform(0.01, 0.1))\n        \n        span.set_attributes({\n            \"order.count\": len(orders),\n            \"operation.type\": \"read\"\n        })\n        \n        return jsonify(orders)\n\n@app.route('/orders/<int:order_id>')\ndef get_order(order_id):\n    with tracer.start_as_current_span(\"get_order_by_id\") as span:\n        span.set_attributes({\n            \"order.id\": order_id,\n            \"operation.type\": \"read\"\n        })\n        \n        # Simulate database lookup\n        time.sleep(random.uniform(0.01, 0.05))\n        \n        order = next((o for o in orders if o[\"id\"] == order_id), None)\n        if not order:\n            span.set_status(trace.Status(trace.StatusCode.ERROR, \"Order not found\"))\n            return jsonify({\"error\": \"Order not found\"}), 404\n        \n        return jsonify(order)\n\n@app.route('/orders', methods=['POST'])\ndef create_order():\n    with tracer.start_as_current_span(\"create_order\") as span:\n        data = request.get_json()\n        user_id = data.get('user_id')\n        items = data.get('items', [])\n        \n        span.set_attributes({\n            \"order.user_id\": user_id,\n            \"order.items_count\": len(items),\n            \"operation.type\": \"write\"\n        })\n        \n        # Verify user exists (call user service)\n        with tracer.start_as_current_span(\"verify_user\") as user_span:\n            try:\n                user_response = requests.get(\n                    f\"http://user-service:3001/users/{user_id}\",\n                    timeout=5\n                )\n                user_span.set_attributes({\n                    \"http.status_code\": user_response.status_code,\n                    \"user.id\": user_id\n                })\n                \n                if user_response.status_code != 200:\n                    return jsonify({\"error\": \"Invalid user\"}), 400\n            except requests.RequestException as e:\n                user_span.record_exception(e)\n                return jsonify({\"error\": \"User service unavailable\"}), 503\n        \n        # Check inventory (call inventory service)\n        with tracer.start_as_current_span(\"check_inventory\") as inv_span:\n            for item in items:\n                try:\n                    inv_response = requests.get(\n                        f\"http://inventory-service:3003/inventory/{item['product_id']}\",\n                        timeout=5\n                    )\n                    inv_span.set_attributes({\n                        \"product.id\": item['product_id'],\n                        \"requested.quantity\": item['quantity']\n                    })\n                    \n                    if inv_response.status_code != 200:\n                        return jsonify({\"error\": f\"Product {item['product_id']} not found\"}), 400\n                        \n                except requests.RequestException as e:\n                    inv_span.record_exception(e)\n                    return jsonify({\"error\": \"Inventory service unavailable\"}), 503\n        \n        # Create order\n        new_order = {\n            \"id\": len(orders) + 1,\n            \"user_id\": user_id,\n            \"items\": items,\n            \"total\": sum(item.get('price', 25.99) * item['quantity'] for item in items),\n            \"status\": \"pending\"\n        }\n        \n        orders.append(new_order)\n        \n        span.set_attributes({\n            \"order.id\": new_order[\"id\"],\n            \"order.total\": new_order[\"total\"]\n        })\n        \n        return jsonify(new_order), 201\n\nif __name__ == '__main__':\n    app.run(host='0.0.0.0', port=3002, debug=True)\nEOF",
       "commands": [
         "mkdir -p microservices-demo/{user-service,order-service,inventory-service}",
@@ -93,17 +93,17 @@
         "tree microservices-demo/ || find microservices-demo/ -type f"
       ],
       "validationCriteria": [
-        "User service Node.js application is created with OpenTelemetry",
-        "Order service Python application includes tracing",
-        "Dependencies are properly installed",
-        "Services include proper span creation and attributes"
+        "A aplicação Node.js do user service é criada com OpenTelemetry",
+        "A aplicação Python do order service inclui tracing",
+        "As dependências são instaladas corretamente",
+        "Os serviços incluem criação de spans e atributos adequados"
       ],
       "expectedOutput": "Instrumented microservices ready for deployment with distributed tracing"
     },
     {
       "id": "inventory-gateway-services",
-      "title": "Complete Microservices Architecture",
-      "description": "Build the remaining services (inventory and API gateway) and deploy the complete microservices architecture to Kubernetes.",
+      "title": "Complete a Arquitetura de Microsserviços",
+      "description": "Construa os serviços restantes (inventory e API gateway) e implante a arquitetura completa de microsserviços no Kubernetes.",
       "codeExample": "# Inventory Service (Node.js)\ncat > inventory-service/package.json <<EOF\n{\n  \"name\": \"inventory-service\",\n  \"version\": \"1.0.0\",\n  \"scripts\": {\n    \"start\": \"node server.js\"\n  },\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"@opentelemetry/api\": \"^1.4.1\",\n    \"@opentelemetry/node\": \"^0.39.1\",\n    \"@opentelemetry/exporter-otlp-http\": \"^0.39.1\",\n    \"@opentelemetry/auto-instrumentations-node\": \"^0.39.4\"\n  }\n}\nEOF\n\ncat > inventory-service/server.js <<EOF\nrequire('./tracing');\nconst express = require('express');\nconst { trace, metrics } = require('@opentelemetry/api');\n\nconst app = express();\nconst port = process.env.PORT || 3003;\nconst tracer = trace.getTracer('inventory-service');\n\n// Simulated inventory\nconst inventory = {\n  101: { id: 101, name: 'Laptop', stock: 50, price: 999.99 },\n  102: { id: 102, name: 'Mouse', stock: 200, price: 49.99 },\n  103: { id: 103, name: 'Keyboard', stock: 75, price: 79.99 }\n};\n\napp.use(express.json());\n\napp.get('/health', (req, res) => {\n  res.json({ status: 'healthy', service: 'inventory-service' });\n});\n\napp.get('/inventory', async (req, res) => {\n  const span = tracer.startSpan('get_all_inventory');\n  \n  try {\n    // Simulate database query\n    await new Promise(resolve => setTimeout(resolve, Math.random() * 80));\n    \n    span.setAttributes({\n      'inventory.items_count': Object.keys(inventory).length,\n      'operation.type': 'read'\n    });\n    \n    res.json(Object.values(inventory));\n  } catch (error) {\n    span.recordException(error);\n    res.status(500).json({ error: 'Internal server error' });\n  } finally {\n    span.end();\n  }\n});\n\napp.get('/inventory/:productId', async (req, res) => {\n  const span = tracer.startSpan('get_inventory_by_product');\n  const productId = parseInt(req.params.productId);\n  \n  try {\n    span.setAttributes({\n      'product.id': productId,\n      'operation.type': 'read'\n    });\n    \n    // Simulate database lookup\n    await new Promise(resolve => setTimeout(resolve, Math.random() * 40));\n    \n    const item = inventory[productId];\n    if (!item) {\n      return res.status(404).json({ error: 'Product not found' });\n    }\n    \n    span.setAttributes({\n      'product.stock': item.stock,\n      'product.name': item.name\n    });\n    \n    res.json(item);\n  } catch (error) {\n    span.recordException(error);\n    res.status(500).json({ error: 'Internal server error' });\n  } finally {\n    span.end();\n  }\n});\n\napp.listen(port, () => {\n  console.log(`Inventory service listening on port ${port}`);\n});\nEOF\n\n# Copy tracing.js to inventory service\ncp user-service/tracing.js inventory-service/\nsed -i 's/user-service/inventory-service/g' inventory-service/tracing.js\n\n# API Gateway (Node.js with Express)\ncat > api-gateway/package.json <<EOF\n{\n  \"name\": \"api-gateway\",\n  \"version\": \"1.0.0\",\n  \"scripts\": {\n    \"start\": \"node server.js\"\n  },\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"http-proxy-middleware\": \"^2.0.6\",\n    \"@opentelemetry/api\": \"^1.4.1\",\n    \"@opentelemetry/node\": \"^0.39.1\",\n    \"@opentelemetry/exporter-otlp-http\": \"^0.39.1\",\n    \"@opentelemetry/auto-instrumentations-node\": \"^0.39.4\",\n    \"axios\": \"^1.4.0\"\n  }\n}\nEOF\n\ncat > api-gateway/server.js <<EOF\nrequire('./tracing');\nconst express = require('express');\nconst { createProxyMiddleware } = require('http-proxy-middleware');\nconst { trace } = require('@opentelemetry/api');\nconst axios = require('axios');\n\nconst app = express();\nconst port = process.env.PORT || 3000;\nconst tracer = trace.getTracer('api-gateway');\n\napp.use(express.json());\n\n// Health check\napp.get('/health', (req, res) => {\n  res.json({ status: 'healthy', service: 'api-gateway' });\n});\n\n// Aggregate endpoint - demonstrates distributed tracing\napp.get('/api/user/:userId/orders', async (req, res) => {\n  const span = tracer.startSpan('get_user_orders_aggregate');\n  const userId = req.params.userId;\n  \n  try {\n    span.setAttributes({\n      'user.id': userId,\n      'operation.type': 'aggregate'\n    });\n    \n    // Fetch user details\n    const userResponse = await axios.get(`http://user-service:3001/users/${userId}`);\n    const user = userResponse.data;\n    \n    // Fetch user's orders\n    const ordersResponse = await axios.get('http://order-service:3002/orders');\n    const allOrders = ordersResponse.data;\n    const userOrders = allOrders.filter(order => order.user_id == userId);\n    \n    // Enrich orders with inventory details\n    for (let order of userOrders) {\n      for (let item of order.items) {\n        try {\n          const inventoryResponse = await axios.get(`http://inventory-service:3003/inventory/${item.product_id}`);\n          item.product_details = inventoryResponse.data;\n        } catch (error) {\n          console.error(`Failed to fetch inventory for product ${item.product_id}:`, error.message);\n          item.product_details = null;\n        }\n      }\n    }\n    \n    const result = {\n      user: user,\n      orders: userOrders,\n      total_orders: userOrders.length\n    };\n    \n    span.setAttributes({\n      'user.orders_count': userOrders.length,\n      'response.size': JSON.stringify(result).length\n    });\n    \n    res.json(result);\n  } catch (error) {\n    span.recordException(error);\n    console.error('Error in aggregate endpoint:', error.message);\n    res.status(500).json({ error: 'Failed to aggregate user orders' });\n  } finally {\n    span.end();\n  }\n});\n\n// Proxy requests to microservices\napp.use('/api/users', createProxyMiddleware({\n  target: 'http://user-service:3001',\n  changeOrigin: true,\n  pathRewrite: { '^/api/users': '/users' }\n}));\n\napp.use('/api/orders', createProxyMiddleware({\n  target: 'http://order-service:3002',\n  changeOrigin: true,\n  pathRewrite: { '^/api/orders': '/orders' }\n}));\n\napp.use('/api/inventory', createProxyMiddleware({\n  target: 'http://inventory-service:3003',\n  changeOrigin: true,\n  pathRewrite: { '^/api/inventory': '/inventory' }\n}));\n\napp.listen(port, () => {\n  console.log(`API Gateway listening on port ${port}`);\n});\nEOF\n\n# Copy tracing.js to api-gateway\ncp user-service/tracing.js api-gateway/\nsed -i 's/user-service/api-gateway/g' api-gateway/tracing.js\n\n# Create Dockerfiles for each service\nfor service in user-service order-service inventory-service api-gateway; do\n  if [[ $service == \"order-service\" ]]; then\n    cat > $service/Dockerfile <<EOF\nFROM python:3.9-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install -r requirements.txt\nCOPY . .\nEXPOSE 3002\nCMD [\"python\", \"app.py\"]\nEOF\n  else\n    cat > $service/Dockerfile <<EOF\nFROM node:16-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nCMD [\"npm\", \"start\"]\nEOF\n  fi\ndone",
       "commands": [
         "cd microservices-demo/inventory-service && npm install",
@@ -116,17 +116,17 @@
         "docker build -t api-gateway:latest api-gateway/"
       ],
       "validationCriteria": [
-        "All four services are created with OpenTelemetry instrumentation",
-        "Dockerfiles are created for each service",
-        "Docker images build successfully",
-        "Services include proper span creation and correlation"
+        "Os quatro serviços são criados com instrumentação OpenTelemetry",
+        "Os Dockerfiles são criados para cada serviço",
+        "As imagens Docker são construídas com sucesso",
+        "Os serviços incluem criação e correlação de spans adequadas"
       ],
       "expectedOutput": "Complete microservices architecture with container images ready for deployment"
     },
     {
       "id": "kubernetes-deployment",
-      "title": "Deploy Microservices to Kubernetes with Observability",
-      "description": "Deploy the complete microservices stack to Kubernetes with proper observability configuration.",
+      "title": "Implante os Microsserviços no Kubernetes com Observabilidade",
+      "description": "Implante a stack completa de microsserviços no Kubernetes com a configuração de observabilidade adequada.",
       "codeExample": "# Create namespace for microservices\nkubectl create namespace microservices\n\n# Create Kubernetes manifests for all services\ncat > microservices-manifests.yaml <<EOF\n# User Service\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: user-service\n  namespace: microservices\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: user-service\n  template:\n    metadata:\n      labels:\n        app: user-service\n    spec:\n      containers:\n      - name: user-service\n        image: user-service:latest\n        imagePullPolicy: Never\n        ports:\n        - containerPort: 3001\n        env:\n        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT\n          value: \"http://otel-collector.observability.svc.cluster.local:4318/v1/traces\"\n        - name: OTEL_SERVICE_NAME\n          value: \"user-service\"\n        resources:\n          requests:\n            memory: \"128Mi\"\n            cpu: \"100m\"\n          limits:\n            memory: \"256Mi\"\n            cpu: \"200m\"\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: user-service\n  namespace: microservices\nspec:\n  selector:\n    app: user-service\n  ports:\n  - port: 3001\n    targetPort: 3001\n---\n# Order Service\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: order-service\n  namespace: microservices\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: order-service\n  template:\n    metadata:\n      labels:\n        app: order-service\n    spec:\n      containers:\n      - name: order-service\n        image: order-service:latest\n        imagePullPolicy: Never\n        ports:\n        - containerPort: 3002\n        env:\n        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT\n          value: \"http://otel-collector.observability.svc.cluster.local:4318/v1/traces\"\n        - name: OTEL_SERVICE_NAME\n          value: \"order-service\"\n        resources:\n          requests:\n            memory: \"128Mi\"\n            cpu: \"100m\"\n          limits:\n            memory: \"256Mi\"\n            cpu: \"200m\"\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: order-service\n  namespace: microservices\nspec:\n  selector:\n    app: order-service\n  ports:\n  - port: 3002\n    targetPort: 3002\n---\n# Inventory Service\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: inventory-service\n  namespace: microservices\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: inventory-service\n  template:\n    metadata:\n      labels:\n        app: inventory-service\n    spec:\n      containers:\n      - name: inventory-service\n        image: inventory-service:latest\n        imagePullPolicy: Never\n        ports:\n        - containerPort: 3003\n        env:\n        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT\n          value: \"http://otel-collector.observability.svc.cluster.local:4318/v1/traces\"\n        - name: OTEL_SERVICE_NAME\n          value: \"inventory-service\"\n        resources:\n          requests:\n            memory: \"128Mi\"\n            cpu: \"100m\"\n          limits:\n            memory: \"256Mi\"\n            cpu: \"200m\"\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: inventory-service\n  namespace: microservices\nspec:\n  selector:\n    app: inventory-service\n  ports:\n  - port: 3003\n    targetPort: 3003\n---\n# API Gateway\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: api-gateway\n  namespace: microservices\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: api-gateway\n  template:\n    metadata:\n      labels:\n        app: api-gateway\n    spec:\n      containers:\n      - name: api-gateway\n        image: api-gateway:latest\n        imagePullPolicy: Never\n        ports:\n        - containerPort: 3000\n        env:\n        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT\n          value: \"http://otel-collector.observability.svc.cluster.local:4318/v1/traces\"\n        - name: OTEL_SERVICE_NAME\n          value: \"api-gateway\"\n        resources:\n          requests:\n            memory: \"128Mi\"\n            cpu: \"100m\"\n          limits:\n            memory: \"256Mi\"\n            cpu: \"200m\"\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: api-gateway\n  namespace: microservices\nspec:\n  type: LoadBalancer\n  selector:\n    app: api-gateway\n  ports:\n  - port: 80\n    targetPort: 3000\nEOF\n\n# Deploy microservices\nkubectl apply -f microservices-manifests.yaml\n\n# Wait for deployments to be ready\nkubectl wait --for=condition=available deployment --all -n microservices --timeout=300s\n\n# Create load testing script\ncat > load-test.sh <<EOF\n#!/bin/bash\n\nAPI_GATEWAY_URL=\"http://localhost:8080\"\necho \"Starting load test against $API_GATEWAY_URL\"\n\n# Port forward API gateway\nkubectl port-forward -n microservices svc/api-gateway 8080:80 &\nPORT_FORWARD_PID=$!\nsleep 5\n\n# Function to make requests\nmake_requests() {\n  local endpoint=$1\n  local count=$2\n  \n  for i in $(seq 1 $count); do\n    curl -s \"$API_GATEWAY_URL$endpoint\" > /dev/null &\n    sleep 0.1\n  done\n  wait\n}\n\n# Generate various types of requests\necho \"Generating user requests...\"\nmake_requests \"/api/users\" 20\n\necho \"Generating order requests...\"\nmake_requests \"/api/orders\" 15\n\necho \"Generating inventory requests...\"\nmake_requests \"/api/inventory\" 25\n\necho \"Generating aggregate requests...\"\nfor user_id in 1 2; do\n  make_requests \"/api/user/$user_id/orders\" 10\ndone\n\necho \"Creating new orders...\"\nfor i in {1..5}; do\n  curl -s -X POST \"$API_GATEWAY_URL/api/orders\" \\\n    -H \"Content-Type: application/json\" \\\n    -d '{\"user_id\": 1, \"items\": [{\"product_id\": 101, \"quantity\": 1}]}' > /dev/null &\n  sleep 0.2\ndone\nwait\n\necho \"Load test completed!\"\nkill $PORT_FORWARD_PID 2>/dev/null\nEOF\n\nchmod +x load-test.sh",
       "commands": [
         "kubectl create namespace microservices",
@@ -137,17 +137,17 @@
         "kubectl logs -n microservices deployment/api-gateway | head -10"
       ],
       "validationCriteria": [
-        "All microservices are deployed and running",
-        "Services can communicate with each other",
-        "Load test generates traffic successfully",
-        "OpenTelemetry traces are being generated"
+        "Todos os microsserviços estão implantados e em execução",
+        "Os serviços conseguem se comunicar entre si",
+        "O teste de carga gera tráfego com sucesso",
+        "Traces do OpenTelemetry estão sendo gerados"
       ],
       "expectedOutput": "Running microservices architecture generating distributed traces"
     },
     {
       "id": "observability-analysis",
-      "title": "Analyze Distributed Traces and Create Dashboards",
-      "description": "Use Jaeger UI to analyze distributed traces and create comprehensive observability dashboards.",
+      "title": "Analise Traces Distribuídos e Crie Dashboards",
+      "description": "Use a UI do Jaeger para analisar traces distribuídos e criar dashboards de observabilidade abrangentes.",
       "codeExample": "# Create Grafana dashboard for microservices metrics\ncat > microservices-dashboard.json <<EOF\n{\n  \"dashboard\": {\n    \"id\": null,\n    \"title\": \"Microservices Observability\",\n    \"tags\": [\"microservices\", \"opentelemetry\"],\n    \"timezone\": \"browser\",\n    \"panels\": [\n      {\n        \"id\": 1,\n        \"title\": \"Request Rate by Service\",\n        \"type\": \"graph\",\n        \"targets\": [\n          {\n            \"expr\": \"rate(http_requests_total[5m])\",\n            \"legendFormat\": \"{{service_name}}\",\n            \"refId\": \"A\"\n          }\n        ],\n        \"yAxes\": [\n          {\n            \"label\": \"Requests/sec\",\n            \"min\": 0\n          }\n        ],\n        \"xAxis\": {\n          \"show\": true\n        },\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 0,\n          \"y\": 0\n        }\n      },\n      {\n        \"id\": 2,\n        \"title\": \"Response Time by Service\",\n        \"type\": \"graph\",\n        \"targets\": [\n          {\n            \"expr\": \"histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))\",\n            \"legendFormat\": \"95th percentile - {{service_name}}\",\n            \"refId\": \"A\"\n          },\n          {\n            \"expr\": \"histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))\",\n            \"legendFormat\": \"50th percentile - {{service_name}}\",\n            \"refId\": \"B\"\n          }\n        ],\n        \"yAxes\": [\n          {\n            \"label\": \"Duration (s)\",\n            \"min\": 0\n          }\n        ],\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 12,\n          \"y\": 0\n        }\n      },\n      {\n        \"id\": 3,\n        \"title\": \"Error Rate by Service\",\n        \"type\": \"stat\",\n        \"targets\": [\n          {\n            \"expr\": \"rate(http_requests_total{status=~\\\"5.*\\\"}[5m]) / rate(http_requests_total[5m]) * 100\",\n            \"legendFormat\": \"{{service_name}}\",\n            \"refId\": \"A\"\n          }\n        ],\n        \"fieldConfig\": {\n          \"defaults\": {\n            \"unit\": \"percent\",\n            \"thresholds\": {\n              \"steps\": [\n                {\"color\": \"green\", \"value\": null},\n                {\"color\": \"yellow\", \"value\": 1},\n                {\"color\": \"red\", \"value\": 5}\n              ]\n            }\n          }\n        },\n        \"gridPos\": {\n          \"h\": 4,\n          \"w\": 24,\n          \"x\": 0,\n          \"y\": 8\n        }\n      },\n      {\n        \"id\": 4,\n        \"title\": \"Trace Duration Distribution\",\n        \"type\": \"histogram\",\n        \"targets\": [\n          {\n            \"expr\": \"jaeger_traces_total\",\n            \"legendFormat\": \"Total Traces\",\n            \"refId\": \"A\"\n          }\n        ],\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 0,\n          \"y\": 12\n        }\n      },\n      {\n        \"id\": 5,\n        \"title\": \"Service Dependencies\",\n        \"type\": \"nodeGraph\",\n        \"targets\": [\n          {\n            \"expr\": \"rate(jaeger_spans_total[5m])\",\n            \"refId\": \"A\"\n          }\n        ],\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 12,\n          \"y\": 12\n        }\n      }\n    ],\n    \"time\": {\n      \"from\": \"now-1h\",\n      \"to\": \"now\"\n    },\n    \"refresh\": \"5s\"\n  }\n}\nEOF\n\n# Create trace analysis script\ncat > analyze-traces.py <<EOF\n#!/usr/bin/env python3\nimport requests\nimport json\nimport time\nfrom datetime import datetime, timedelta\n\nJAEGER_URL = \"http://localhost:16686\"\n\ndef get_traces(service_name=None, limit=20):\n    \"\"\"Fetch traces from Jaeger API\"\"\"\n    params = {\n        'limit': limit,\n        'lookback': '1h'\n    }\n    if service_name:\n        params['service'] = service_name\n    \n    response = requests.get(f\"{JAEGER_URL}/api/traces\", params=params)\n    if response.status_code == 200:\n        return response.json()\n    return None\n\ndef analyze_trace_performance():\n    \"\"\"Analyze trace performance metrics\"\"\"\n    print(\"🔍 Analyzing trace performance...\")\n    \n    services = ['api-gateway', 'user-service', 'order-service', 'inventory-service']\n    \n    for service in services:\n        traces = get_traces(service)\n        if traces and 'data' in traces:\n            trace_data = traces['data']\n            if trace_data:\n                durations = []\n                for trace in trace_data:\n                    if 'spans' in trace:\n                        root_span = min(trace['spans'], key=lambda x: x['startTime'])\n                        duration = root_span.get('duration', 0) / 1000  # Convert to ms\n                        durations.append(duration)\n                \n                if durations:\n                    avg_duration = sum(durations) / len(durations)\n                    max_duration = max(durations)\n                    min_duration = min(durations)\n                    \n                    print(f\"\\n📊 {service}:\")\n                    print(f\"  Average duration: {avg_duration:.2f}ms\")\n                    print(f\"  Max duration: {max_duration:.2f}ms\")\n                    print(f\"  Min duration: {min_duration:.2f}ms\")\n                    print(f\"  Total traces: {len(durations)}\")\n\ndef find_slow_traces(threshold_ms=1000):\n    \"\"\"Find traces slower than threshold\"\"\"\n    print(f\"\\n🐌 Finding traces slower than {threshold_ms}ms...\")\n    \n    traces = get_traces(limit=50)\n    slow_traces = []\n    \n    if traces and 'data' in traces:\n        for trace in traces['data']:\n            if 'spans' in trace:\n                root_span = min(trace['spans'], key=lambda x: x['startTime'])\n                duration = root_span.get('duration', 0) / 1000\n                \n                if duration > threshold_ms:\n                    slow_traces.append({\n                        'trace_id': trace['traceID'],\n                        'duration': duration,\n                        'operation': root_span.get('operationName', 'unknown'),\n                        'service': root_span.get('process', {}).get('serviceName', 'unknown')\n                    })\n    \n    if slow_traces:\n        print(f\"Found {len(slow_traces)} slow traces:\")\n        for trace in sorted(slow_traces, key=lambda x: x['duration'], reverse=True)[:5]:\n            print(f\"  🔗 Trace ID: {trace['trace_id'][:16]}...\")\n            print(f\"     Duration: {trace['duration']:.2f}ms\")\n            print(f\"     Operation: {trace['operation']}\")\n            print(f\"     Service: {trace['service']}\")\n            print(f\"     URL: {JAEGER_URL}/trace/{trace['trace_id']}\")\n            print()\n    else:\n        print(\"No slow traces found!\")\n\ndef analyze_error_traces():\n    \"\"\"Find traces with errors\"\"\"\n    print(\"\\n❌ Analyzing error traces...\")\n    \n    traces = get_traces(limit=100)\n    error_traces = []\n    \n    if traces and 'data' in traces:\n        for trace in traces['data']:\n            if 'spans' in trace:\n                for span in trace['spans']:\n                    tags = span.get('tags', [])\n                    has_error = any(tag.get('key') == 'error' and tag.get('value') == True for tag in tags)\n                    \n                    if has_error:\n                        error_traces.append({\n                            'trace_id': trace['traceID'],\n                            'operation': span.get('operationName'),\n                            'service': span.get('process', {}).get('serviceName')\n                        })\n                        break\n    \n    if error_traces:\n        print(f\"Found {len(error_traces)} traces with errors:\")\n        for trace in error_traces[:5]:\n            print(f\"  🔗 {trace['trace_id'][:16]}... - {trace['service']} - {trace['operation']}\")\n    else:\n        print(\"No error traces found!\")\n\nif __name__ == \"__main__\":\n    print(\"🔍 Microservices Trace Analysis\")\n    print(\"=\" * 40)\n    \n    try:\n        analyze_trace_performance()\n        find_slow_traces()\n        analyze_error_traces()\n        \n        print(\"\\n✅ Analysis complete!\")\n        print(f\"\\n🌐 View traces in Jaeger UI: {JAEGER_URL}\")\n        \n    except requests.exceptions.ConnectionError:\n        print(f\"❌ Could not connect to Jaeger at {JAEGER_URL}\")\n        print(\"Make sure Jaeger is running and accessible.\")\nEOF\n\nchmod +x analyze-traces.py\n\n# Run trace analysis\npython3 analyze-traces.py",
       "commands": [
         "kubectl port-forward -n observability svc/jaeger-query 16686:16686 &",
@@ -158,27 +158,27 @@
         "echo \"Check Jaeger for the distributed trace of this request\""
       ],
       "validationCriteria": [
-        "Jaeger UI shows distributed traces across all services",
-        "Trace analysis script runs and provides insights",
-        "Service dependencies are visible in trace data",
-        "Performance bottlenecks can be identified",
-        "Error traces are properly tracked"
+        "A UI do Jaeger mostra traces distribuídos entre todos os serviços",
+        "O script de análise de traces roda e fornece insights",
+        "As dependências entre serviços são visíveis nos dados de trace",
+        "Gargalos de desempenho podem ser identificados",
+        "Traces de erro são rastreados corretamente"
       ],
       "expectedOutput": "Comprehensive observability analysis with actionable insights from distributed traces",
       "hints": [
-        "Look for the longest spans to identify bottlenecks",
-        "Check service dependencies in Jaeger's dependency graph",
-        "Use trace search filters to find specific operations"
+        "Procure os spans mais longos para identificar gargalos",
+        "Verifique as dependências entre serviços no gráfico de dependências do Jaeger",
+        "Use os filtros de busca de traces para encontrar operações específicas"
       ]
     }
   ],
   "completionCriteria": [
-    "Complete observability stack is deployed and functional",
-    "Microservices are instrumented with OpenTelemetry",
-    "Distributed traces are collected and visible in Jaeger",
-    "Load testing generates meaningful trace data",
-    "Performance analysis identifies bottlenecks and patterns",
-    "Error tracking and alerting are functional"
+    "A stack completa de observabilidade está implantada e funcional",
+    "Os microsserviços estão instrumentados com OpenTelemetry",
+    "Traces distribuídos são coletados e visíveis no Jaeger",
+    "O teste de carga gera dados de trace significativos",
+    "A análise de desempenho identifica gargalos e padrões",
+    "O rastreamento de erros e o alerta estão funcionais"
   ],
   "resources": [
     {
@@ -202,20 +202,20 @@
   ],
   "troubleshooting": [
     {
-      "issue": "Jaeger Operator deployment hangs or fails",
-      "solution": "cert-manager is required but not installed by default on local clusters (minikube, kind, k3d). Install cert-manager first and wait for all pods to be Ready: kubectl get pods -n cert-manager"
+      "issue": "A implantação do Jaeger Operator trava ou falha",
+      "solution": "O cert-manager é obrigatório, mas não vem instalado por padrão em clusters locais (minikube, kind, k3d). Instale o cert-manager primeiro e aguarde todos os pods ficarem Ready: kubectl get pods -n cert-manager"
     },
     {
-      "issue": "No traces appearing in Jaeger",
-      "solution": "Check OpenTelemetry Collector logs, verify service environment variables, and ensure network connectivity between services and collector"
+      "issue": "Nenhum trace aparece no Jaeger",
+      "solution": "Verifique os logs do OpenTelemetry Collector, confirme as variáveis de ambiente dos serviços e garanta a conectividade de rede entre os serviços e o collector"
     },
     {
-      "issue": "Incomplete trace spans",
-      "solution": "Verify all services are properly instrumented, check for missing OpenTelemetry dependencies, and ensure proper context propagation"
+      "issue": "Spans de trace incompletos",
+      "solution": "Verifique se todos os serviços estão instrumentados corretamente, procure dependências do OpenTelemetry faltando e garanta a propagação correta de contexto"
     },
     {
-      "issue": "High trace latency",
-      "solution": "Optimize batch processor settings in OpenTelemetry Collector, increase collector resources, and review trace sampling configuration"
+      "issue": "Alta latência de trace",
+      "solution": "Otimize as configurações do batch processor no OpenTelemetry Collector, aumente os recursos do collector e revise a configuração de amostragem de traces"
     }
   ],
   "featured": true

@@ -1,101 +1,101 @@
 {
   "id": "terraform-aws-vpc",
-  "title": "AWS VPC with Terraform",
-  "description": "Build a complete AWS VPC infrastructure using Terraform with public/private subnets, NAT gateway, and security groups.",
+  "title": "VPC AWS com Terraform",
+  "description": "Construa uma infraestrutura completa de VPC na AWS usando Terraform, com subnets públicas/privadas, NAT gateway e security groups.",
   "category": {
     "name": "Terraform",
     "slug": "terraform"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "120 minutes",
+  "estimatedTime": "120 minutos",
   "technologies": ["Terraform", "AWS", "VPC", "Networking"],
-  "prerequisites": ["AWS account", "Terraform installed", "AWS CLI configured"],
+  "prerequisites": ["Conta AWS", "Terraform instalado", "AWS CLI configurado"],
   "learningObjectives": [
-    "Design secure VPC architecture",
-    "Implement Infrastructure as Code principles",
-    "Configure network security",
-    "Understand AWS networking concepts"
+    "Projetar uma arquitetura de VPC segura",
+    "Aplicar os princípios de Infrastructure as Code",
+    "Configurar a segurança de rede",
+    "Entender os conceitos de rede da AWS"
   ],
   "environment": "cloud",
   "icon": "Server",
   "publishedAt": "2024-11-25T09:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["Terraform", "AWS", "VPC", "Networking", "Security"],
   "steps": [
     {
       "id": "terraform-setup",
-      "title": "Terraform Configuration Setup",
-      "description": "Initialize Terraform project with AWS provider and define core variables for VPC infrastructure.",
+      "title": "Configuração Inicial do Terraform",
+      "description": "Inicialize o projeto Terraform com o provider da AWS e defina as variáveis principais para a infraestrutura de VPC.",
       "codeExample": "# main.tf\nterraform {\n  required_version = \">= 1.0\"\n  required_providers {\n    aws = {\n      source  = \"hashicorp/aws\"\n      version = \"~> 5.0\"\n    }\n  }\n}\n\nprovider \"aws\" {\n  region = var.aws_region\n}\n\n# variables.tf\nvariable \"aws_region\" {\n  description = \"AWS region\"\n  type        = string\n  default     = \"us-west-2\"\n}\n\nvariable \"environment\" {\n  description = \"Environment name\"\n  type        = string\n  default     = \"dev\"\n}\n\nvariable \"vpc_cidr\" {\n  description = \"CIDR block for VPC\"\n  type        = string\n  default     = \"10.0.0.0/16\"\n}\n\nvariable \"availability_zones\" {\n  description = \"Availability zones\"\n  type        = list(string)\n  default     = [\"us-west-2a\", \"us-west-2b\"]\n}",
       "commands": ["terraform init", "terraform validate"],
       "validationCriteria": [
-        "Terraform initializes successfully",
-        "Configuration validates without errors"
+        "O Terraform inicializa com sucesso",
+        "A configuração é validada sem erros"
       ],
-      "hints": ["Ensure AWS credentials are configured", "Use consistent naming conventions"]
+      "hints": ["Garanta que as credenciais AWS estejam configuradas", "Use convenções de nomenclatura consistentes"]
     },
     {
       "id": "vpc-creation",
-      "title": "VPC and Subnet Configuration",
-      "description": "Create the main VPC with public and private subnets across multiple availability zones.",
+      "title": "Configuração da VPC e das Subnets",
+      "description": "Crie a VPC principal com subnets públicas e privadas em múltiplas zonas de disponibilidade.",
       "codeExample": "# vpc.tf\nresource \"aws_vpc\" \"main\" {\n  cidr_block           = var.vpc_cidr\n  enable_dns_hostnames = true\n  enable_dns_support   = true\n\n  tags = {\n    Name        = \"${var.environment}-vpc\"\n    Environment = var.environment\n  }\n}\n\n# Public Subnets\nresource \"aws_subnet\" \"public\" {\n  count             = length(var.availability_zones)\n  vpc_id            = aws_vpc.main.id\n  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index)\n  availability_zone = var.availability_zones[count.index]\n  map_public_ip_on_launch = true\n\n  tags = {\n    Name = \"${var.environment}-public-subnet-${count.index + 1}\"\n    Type = \"Public\"\n  }\n}\n\n# Private Subnets\nresource \"aws_subnet\" \"private\" {\n  count             = length(var.availability_zones)\n  vpc_id            = aws_vpc.main.id\n  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 10)\n  availability_zone = var.availability_zones[count.index]\n\n  tags = {\n    Name = \"${var.environment}-private-subnet-${count.index + 1}\"\n    Type = \"Private\"\n  }\n}",
       "commands": ["terraform plan", "terraform apply -auto-approve"],
       "validationCriteria": [
-        "VPC is created with correct CIDR",
-        "Subnets are distributed across AZs",
-        "Tags are applied correctly"
+        "A VPC é criada com o CIDR correto",
+        "As subnets são distribuídas entre as AZs",
+        "As tags são aplicadas corretamente"
       ],
       "expectedOutput": "VPC and 4 subnets (2 public, 2 private) created successfully"
     },
     {
       "id": "internet-gateway",
-      "title": "Internet Gateway and NAT Gateway Setup",
-      "description": "Configure internet connectivity for public subnets and NAT gateway for private subnet internet access.",
+      "title": "Configuração do Internet Gateway e do NAT Gateway",
+      "description": "Configure a conectividade com a internet para as subnets públicas e o NAT gateway para o acesso à internet das subnets privadas.",
       "codeExample": "# gateways.tf\n# Internet Gateway\nresource \"aws_internet_gateway\" \"main\" {\n  vpc_id = aws_vpc.main.id\n\n  tags = {\n    Name = \"${var.environment}-igw\"\n  }\n}\n\n# Elastic IP for NAT Gateway\nresource \"aws_eip\" \"nat\" {\n  count  = length(var.availability_zones)\n  domain = \"vpc\"\n\n  tags = {\n    Name = \"${var.environment}-nat-eip-${count.index + 1}\"\n  }\n\n  depends_on = [aws_internet_gateway.main]\n}\n\n# NAT Gateway\nresource \"aws_nat_gateway\" \"main\" {\n  count         = length(var.availability_zones)\n  allocation_id = aws_eip.nat[count.index].id\n  subnet_id     = aws_subnet.public[count.index].id\n\n  tags = {\n    Name = \"${var.environment}-nat-gateway-${count.index + 1}\"\n  }\n\n  depends_on = [aws_internet_gateway.main]\n}",
       "commands": ["terraform plan", "terraform apply -auto-approve"],
       "validationCriteria": [
-        "Internet Gateway attached to VPC",
-        "NAT Gateways created in public subnets",
-        "Elastic IPs allocated"
+        "O Internet Gateway está anexado à VPC",
+        "Os NAT Gateways são criados nas subnets públicas",
+        "Os Elastic IPs são alocados"
       ],
-      "hints": ["NAT Gateway requires Elastic IP", "Place NAT Gateway in public subnet"]
+      "hints": ["O NAT Gateway exige um Elastic IP", "Coloque o NAT Gateway em uma subnet pública"]
     },
     {
       "id": "route-tables",
-      "title": "Route Tables Configuration",
-      "description": "Set up routing tables for public and private subnets with appropriate routes.",
+      "title": "Configuração das Route Tables",
+      "description": "Configure as tabelas de roteamento para subnets públicas e privadas com as rotas adequadas.",
       "codeExample": "# route-tables.tf\n# Public Route Table\nresource \"aws_route_table\" \"public\" {\n  vpc_id = aws_vpc.main.id\n\n  route {\n    cidr_block = \"0.0.0.0/0\"\n    gateway_id = aws_internet_gateway.main.id\n  }\n\n  tags = {\n    Name = \"${var.environment}-public-rt\"\n  }\n}\n\n# Public Route Table Association\nresource \"aws_route_table_association\" \"public\" {\n  count          = length(aws_subnet.public)\n  subnet_id      = aws_subnet.public[count.index].id\n  route_table_id = aws_route_table.public.id\n}\n\n# Private Route Tables\nresource \"aws_route_table\" \"private\" {\n  count  = length(var.availability_zones)\n  vpc_id = aws_vpc.main.id\n\n  route {\n    cidr_block     = \"0.0.0.0/0\"\n    nat_gateway_id = aws_nat_gateway.main[count.index].id\n  }\n\n  tags = {\n    Name = \"${var.environment}-private-rt-${count.index + 1}\"\n  }\n}\n\n# Private Route Table Association\nresource \"aws_route_table_association\" \"private\" {\n  count          = length(aws_subnet.private)\n  subnet_id      = aws_subnet.private[count.index].id\n  route_table_id = aws_route_table.private[count.index].id\n}",
       "commands": ["terraform plan", "terraform apply -auto-approve"],
       "validationCriteria": [
-        "Route tables created for public/private subnets",
-        "Public routes to Internet Gateway",
-        "Private routes to NAT Gateway"
+        "As route tables são criadas para as subnets públicas/privadas",
+        "As rotas públicas apontam para o Internet Gateway",
+        "As rotas privadas apontam para o NAT Gateway"
       ],
       "expectedOutput": "Routing configured for internet access from both subnet types"
     },
     {
       "id": "security-groups",
-      "title": "Security Groups and NACLs",
-      "description": "Create security groups for different tiers (web, app, database) with appropriate access rules.",
+      "title": "Security Groups e NACLs",
+      "description": "Crie security groups para as diferentes camadas (web, aplicação, banco de dados) com as regras de acesso adequadas.",
       "codeExample": "# security-groups.tf\n# Web Tier Security Group\nresource \"aws_security_group\" \"web\" {\n  name_prefix = \"${var.environment}-web-\"\n  vpc_id      = aws_vpc.main.id\n\n  ingress {\n    from_port   = 80\n    to_port     = 80\n    protocol    = \"tcp\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n\n  ingress {\n    from_port   = 443\n    to_port     = 443\n    protocol    = \"tcp\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n\n  ingress {\n    from_port   = 22\n    to_port     = 22\n    protocol    = \"tcp\"\n    cidr_blocks = [\"10.0.0.0/16\"]\n  }\n\n  egress {\n    from_port   = 0\n    to_port     = 0\n    protocol    = \"-1\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n\n  tags = {\n    Name = \"${var.environment}-web-sg\"\n    Tier = \"Web\"\n  }\n}\n\n# Application Tier Security Group\nresource \"aws_security_group\" \"app\" {\n  name_prefix = \"${var.environment}-app-\"\n  vpc_id      = aws_vpc.main.id\n\n  ingress {\n    from_port       = 8080\n    to_port         = 8080\n    protocol        = \"tcp\"\n    security_groups = [aws_security_group.web.id]\n  }\n\n  ingress {\n    from_port   = 22\n    to_port     = 22\n    protocol    = \"tcp\"\n    cidr_blocks = [\"10.0.0.0/16\"]\n  }\n\n  egress {\n    from_port   = 0\n    to_port     = 0\n    protocol    = \"-1\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n\n  tags = {\n    Name = \"${var.environment}-app-sg\"\n    Tier = \"Application\"\n  }\n}\n\n# Database Tier Security Group\nresource \"aws_security_group\" \"db\" {\n  name_prefix = \"${var.environment}-db-\"\n  vpc_id      = aws_vpc.main.id\n\n  ingress {\n    from_port       = 3306\n    to_port         = 3306\n    protocol        = \"tcp\"\n    security_groups = [aws_security_group.app.id]\n  }\n\n  tags = {\n    Name = \"${var.environment}-db-sg\"\n    Tier = \"Database\"\n  }\n}",
       "commands": ["terraform plan", "terraform apply -auto-approve"],
       "validationCriteria": [
-        "Security groups created for each tier",
-        "Proper ingress/egress rules applied",
-        "Security group references working"
+        "Os security groups são criados para cada camada",
+        "As regras de ingress/egress adequadas são aplicadas",
+        "As referências entre security groups funcionam"
       ],
       "hints": [
-        "Use security group references instead of CIDR blocks where possible",
-        "Follow principle of least privilege"
+        "Use referências a security groups em vez de blocos CIDR sempre que possível",
+        "Siga o princípio do menor privilégio"
       ]
     },
     {
       "id": "outputs-testing",
-      "title": "Outputs and Infrastructure Testing",
-      "description": "Define outputs for the infrastructure and test connectivity to validate the setup.",
+      "title": "Outputs e Teste da Infraestrutura",
+      "description": "Defina outputs para a infraestrutura e teste a conectividade para validar a configuração.",
       "codeExample": "# outputs.tf\noutput \"vpc_id\" {\n  description = \"VPC ID\"\n  value       = aws_vpc.main.id\n}\n\noutput \"vpc_cidr\" {\n  description = \"VPC CIDR block\"\n  value       = aws_vpc.main.cidr_block\n}\n\noutput \"public_subnet_ids\" {\n  description = \"Public subnet IDs\"\n  value       = aws_subnet.public[*].id\n}\n\noutput \"private_subnet_ids\" {\n  description = \"Private subnet IDs\"\n  value       = aws_subnet.private[*].id\n}\n\noutput \"internet_gateway_id\" {\n  description = \"Internet Gateway ID\"\n  value       = aws_internet_gateway.main.id\n}\n\noutput \"nat_gateway_ids\" {\n  description = \"NAT Gateway IDs\"\n  value       = aws_nat_gateway.main[*].id\n}\n\noutput \"web_security_group_id\" {\n  description = \"Web tier security group ID\"\n  value       = aws_security_group.web.id\n}\n\noutput \"app_security_group_id\" {\n  description = \"App tier security group ID\"\n  value       = aws_security_group.app.id\n}\n\noutput \"db_security_group_id\" {\n  description = \"Database tier security group ID\"\n  value       = aws_security_group.db.id\n}",
       "commands": [
         "terraform output",
@@ -104,18 +104,18 @@
         "terraform destroy -auto-approve"
       ],
       "validationCriteria": [
-        "All outputs display correctly",
-        "AWS CLI commands return expected resources",
-        "Infrastructure can be destroyed cleanly"
+        "Todos os outputs são exibidos corretamente",
+        "Os comandos do AWS CLI retornam os recursos esperados",
+        "A infraestrutura pode ser destruída sem problemas"
       ],
       "expectedOutput": "Complete VPC infrastructure with multi-AZ setup and proper security configuration"
     }
   ],
   "completionCriteria": [
-    "VPC infrastructure is created successfully",
-    "Resources are properly tagged",
-    "Network connectivity is verified",
-    "Security groups are configured correctly"
+    "A infraestrutura de VPC é criada com sucesso",
+    "Os recursos estão devidamente etiquetados (tags)",
+    "A conectividade de rede é verificada",
+    "Os security groups estão configurados corretamente"
   ],
   "featured": true
 }

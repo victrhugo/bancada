@@ -1,40 +1,40 @@
 {
   "id": "terraform-digitalocean-droplet",
-  "title": "Deploy a DigitalOcean Droplet with Terraform",
-  "description": "Learn Infrastructure as Code basics by deploying a simple web server on DigitalOcean using Terraform. Perfect for beginners starting their IaC journey.",
+  "title": "Implante um Droplet da DigitalOcean com Terraform",
+  "description": "Aprenda os fundamentos de Infrastructure as Code implantando um servidor web simples na DigitalOcean usando Terraform. Perfeito para iniciantes começando sua jornada em IaC.",
   "category": {
     "name": "Terraform",
     "slug": "terraform"
   },
   "difficulty": "beginner",
-  "estimatedTime": "60 minutes",
+  "estimatedTime": "60 minutos",
   "technologies": ["Terraform", "DigitalOcean", "Linux", "Nginx"],
   "prerequisites": [
-    "DigitalOcean account (free trial available)",
-    "Terraform installed (v1.0+)",
-    "Basic command line knowledge",
-    "Text editor (VS Code, vim, etc.)"
+    "Conta na DigitalOcean (teste gratuito disponível)",
+    "Terraform instalado (v1.0+)",
+    "Conhecimento básico de linha de comando",
+    "Editor de texto (VS Code, vim, etc.)"
   ],
   "learningObjectives": [
-    "Understand Infrastructure as Code fundamentals",
-    "Learn Terraform workflow (init, plan, apply, destroy)",
-    "Deploy and manage cloud resources programmatically",
-    "Configure basic web server infrastructure",
-    "Work with Terraform state and outputs"
+    "Entender os fundamentos de Infrastructure as Code",
+    "Aprender o fluxo de trabalho do Terraform (init, plan, apply, destroy)",
+    "Implantar e gerenciar recursos de nuvem de forma programática",
+    "Configurar uma infraestrutura básica de servidor web",
+    "Trabalhar com o state e os outputs do Terraform"
   ],
   "environment": "cloud",
   "icon": "Cloud",
   "publishedAt": "2024-12-08T10:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["Terraform", "DigitalOcean", "IaC", "Beginner", "Cloud"],
   "steps": [
     {
       "id": "prerequisites-setup",
-      "title": "Prerequisites and Initial Setup",
-      "description": "Set up your local environment and create a DigitalOcean API token for Terraform authentication.",
+      "title": "Pré-requisitos e Configuração Inicial",
+      "description": "Configure seu ambiente local e crie um token de API da DigitalOcean para autenticação do Terraform.",
       "codeExample": "# Create project directory\nmkdir terraform-do-demo\ncd terraform-do-demo\n\n# Verify Terraform installation\nterraform version\n\n# Expected output: Terraform v1.x.x\n\n# Create a DigitalOcean API token:\n# 1. Log into DigitalOcean\n# 2. Go to API section (https://cloud.digitalocean.com/account/api/tokens)\n# 3. Generate New Token\n# 4. Name it 'terraform-demo' and select Read & Write scope\n# 5. Copy the token (you'll only see it once!)\n\n# Set environment variable (Linux/Mac)\nexport DIGITALOCEAN_TOKEN=\"your_token_here\"\n\n# Or for Windows PowerShell\n$env:DIGITALOCEAN_TOKEN=\"your_token_here\"",
       "commands": [
         "mkdir terraform-do-demo",
@@ -42,40 +42,40 @@
         "terraform version"
       ],
       "validationCriteria": [
-        "Terraform is installed and version 1.0 or higher",
-        "DigitalOcean API token is created",
-        "Environment variable is set correctly"
+        "O Terraform está instalado com a versão 1.0 ou superior",
+        "O token de API da DigitalOcean é criado",
+        "A variável de ambiente está configurada corretamente"
       ],
       "hints": [
-        "Keep your API token secure - never commit it to version control",
-        "Free trial DigitalOcean accounts get $200 credit for 60 days",
-        "Use 'echo $DIGITALOCEAN_TOKEN' to verify the variable is set (Linux/Mac)"
+        "Mantenha seu token de API seguro - nunca faça commit dele no controle de versão",
+        "Contas de teste gratuito da DigitalOcean recebem US$ 200 de crédito por 60 dias",
+        "Use 'echo $DIGITALOCEAN_TOKEN' para verificar se a variável está definida (Linux/Mac)"
       ]
     },
     {
       "id": "provider-configuration",
-      "title": "Configure Terraform Provider",
-      "description": "Create the main Terraform configuration file and configure the DigitalOcean provider.",
+      "title": "Configure o Provider do Terraform",
+      "description": "Crie o arquivo de configuração principal do Terraform e configure o provider da DigitalOcean.",
       "codeExample": "# main.tf\nterraform {\n  required_version = \">= 1.0\"\n  \n  required_providers {\n    digitalocean = {\n      source  = \"digitalocean/digitalocean\"\n      version = \"~> 2.0\"\n    }\n  }\n}\n\n# Configure the DigitalOcean Provider\nprovider \"digitalocean\" {\n  # Token is read from DIGITALOCEAN_TOKEN environment variable\n}\n\n# Variables\nvariable \"droplet_name\" {\n  description = \"Name of the droplet\"\n  type        = string\n  default     = \"web-server-demo\"\n}\n\nvariable \"region\" {\n  description = \"DigitalOcean region\"\n  type        = string\n  default     = \"nyc3\"  # New York 3\n}\n\nvariable \"droplet_size\" {\n  description = \"Droplet size/plan\"\n  type        = string\n  default     = \"s-1vcpu-1gb\"  # $6/month - 1 vCPU, 1GB RAM\n}",
       "commands": [
         "terraform init"
       ],
       "expectedOutput": "Terraform has been successfully initialized!",
       "validationCriteria": [
-        "Terraform initializes without errors",
-        "DigitalOcean provider is downloaded",
-        ".terraform directory is created"
+        "O Terraform inicializa sem erros",
+        "O provider da DigitalOcean é baixado",
+        "O diretório .terraform é criado"
       ],
       "hints": [
-        "The provider block can be empty if using environment variables",
-        "terraform init downloads the required provider plugins",
-        "Common regions: nyc3 (New York), sfo3 (San Francisco), lon1 (London)"
+        "O bloco do provider pode ficar vazio se você estiver usando variáveis de ambiente",
+        "O terraform init baixa os plugins de provider necessários",
+        "Regiões comuns: nyc3 (Nova York), sfo3 (São Francisco), lon1 (Londres)"
       ]
     },
     {
       "id": "ssh-key-resource",
-      "title": "Create SSH Key Resource",
-      "description": "Generate an SSH key pair and upload the public key to DigitalOcean for secure droplet access.",
+      "title": "Crie o Recurso de Chave SSH",
+      "description": "Gere um par de chaves SSH e envie a chave pública para a DigitalOcean para acesso seguro ao droplet.",
       "codeExample": "# Generate SSH key pair (run in terminal)\nssh-keygen -t ed25519 -f ~/.ssh/terraform-demo -C \"terraform-demo\" -N \"\"\n\n# Add to main.tf:\n\n# SSH Key\nresource \"digitalocean_ssh_key\" \"terraform_demo\" {\n  name       = \"Terraform Demo Key\"\n  public_key = file(\"~/.ssh/terraform-demo.pub\")\n}\n\n# Alternative: Use existing SSH key\n# resource \"digitalocean_ssh_key\" \"terraform_demo\" {\n#   name       = \"Terraform Demo Key\"\n#   public_key = file(\"~/.ssh/id_rsa.pub\")\n# }",
       "commands": [
         "ssh-keygen -t ed25519 -f ~/.ssh/terraform-demo -C 'terraform-demo' -N ''",
@@ -83,20 +83,20 @@
         "terraform plan"
       ],
       "validationCriteria": [
-        "SSH key pair is generated successfully",
-        "Public key file exists and is readable",
-        "Terraform plan shows SSH key resource will be created"
+        "O par de chaves SSH é gerado com sucesso",
+        "O arquivo de chave pública existe e é legível",
+        "O terraform plan mostra que o recurso de chave SSH será criado"
       ],
       "hints": [
-        "The -N '' flag creates a key without a passphrase (OK for demo purposes)",
-        "Keep your private key (~/.ssh/terraform-demo) secure",
-        "terraform validate checks for syntax errors before planning"
+        "A flag -N '' cria uma chave sem senha (ok para fins de demonstração)",
+        "Mantenha sua chave privada (~/.ssh/terraform-demo) segura",
+        "O terraform validate verifica erros de sintaxe antes do plan"
       ]
     },
     {
       "id": "droplet-creation",
-      "title": "Define Droplet Resource",
-      "description": "Create the main droplet resource with basic configuration and cloud-init user data.",
+      "title": "Defina o Recurso do Droplet",
+      "description": "Crie o recurso principal do droplet com a configuração básica e dados de user data do cloud-init.",
       "codeExample": "# Add to main.tf:\n\n# Droplet\nresource \"digitalocean_droplet\" \"web\" {\n  name   = var.droplet_name\n  image  = \"ubuntu-22-04-x64\"\n  region = var.region\n  size   = var.droplet_size\n  \n  ssh_keys = [\n    digitalocean_ssh_key.terraform_demo.fingerprint\n  ]\n  \n  user_data = <<-EOF\n    #!/bin/bash\n    apt-get update\n    apt-get install -y nginx\n    \n    # Create custom HTML page\n    cat > /var/www/html/index.html <<HTML\n    <!DOCTYPE html>\n    <html>\n    <head>\n        <title>Terraform Demo</title>\n        <style>\n            body {\n                font-family: Arial, sans-serif;\n                display: flex;\n                justify-content: center;\n                align-items: center;\n                height: 100vh;\n                margin: 0;\n                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n                color: white;\n            }\n            .container {\n                text-align: center;\n                padding: 2rem;\n                background: rgba(255, 255, 255, 0.1);\n                border-radius: 10px;\n                backdrop-filter: blur(10px);\n            }\n            h1 { margin: 0 0 1rem 0; }\n            p { margin: 0.5rem 0; }\n            .success { color: #4ade80; font-weight: bold; }\n        </style>\n    </head>\n    <body>\n        <div class=\"container\">\n            <h1>🚀 Terraform Deployment Successful!</h1>\n            <p class=\"success\">✓ Droplet Created</p>\n            <p class=\"success\">✓ Nginx Installed</p>\n            <p class=\"success\">✓ Web Server Running</p>\n            <p style=\"margin-top: 2rem; opacity: 0.8;\">\n                Hostname: $(hostname)\n            </p>\n        </div>\n    </body>\n    </html>\nHTML\n    \n    systemctl restart nginx\n    systemctl enable nginx\n  EOF\n  \n  tags = [\"terraform\", \"demo\", \"web-server\"]\n}",
       "commands": [
         "terraform plan",
@@ -104,21 +104,21 @@
       ],
       "expectedOutput": "Apply complete! Resources: 2 added, 0 changed, 0 destroyed.",
       "validationCriteria": [
-        "Terraform plan shows 2 resources to be created",
-        "terraform apply completes successfully",
-        "Droplet is created in DigitalOcean dashboard"
+        "O terraform plan mostra 2 recursos a serem criados",
+        "O terraform apply é concluído com sucesso",
+        "O droplet é criado no painel da DigitalOcean"
       ],
       "hints": [
-        "Review the plan carefully before applying",
-        "Type 'yes' when prompted to confirm the apply",
-        "The user_data script runs automatically on first boot",
-        "It may take 1-2 minutes for the web server to be fully configured"
+        "Revise o plano com atenção antes de aplicar",
+        "Digite 'yes' quando solicitado para confirmar o apply",
+        "O script user_data roda automaticamente na primeira inicialização",
+        "Pode levar de 1 a 2 minutos para o servidor web ser totalmente configurado"
       ]
     },
     {
       "id": "outputs-configuration",
-      "title": "Configure Terraform Outputs",
-      "description": "Define output values to display the droplet's IP address and access URL.",
+      "title": "Configure os Outputs do Terraform",
+      "description": "Defina valores de output para exibir o endereço IP do droplet e a URL de acesso.",
       "codeExample": "# Add to main.tf (or create outputs.tf):\n\noutput \"droplet_id\" {\n  description = \"ID of the droplet\"\n  value       = digitalocean_droplet.web.id\n}\n\noutput \"droplet_ip_address\" {\n  description = \"Public IPv4 address of the droplet\"\n  value       = digitalocean_droplet.web.ipv4_address\n}\n\noutput \"droplet_url\" {\n  description = \"URL to access the web server\"\n  value       = \"http://${digitalocean_droplet.web.ipv4_address}\"\n}\n\noutput \"ssh_connection_string\" {\n  description = \"SSH command to connect to the droplet\"\n  value       = \"ssh -i ~/.ssh/terraform-demo root@${digitalocean_droplet.web.ipv4_address}\"\n}",
       "commands": [
         "terraform apply -auto-approve",
@@ -126,20 +126,20 @@
         "terraform output -json"
       ],
       "validationCriteria": [
-        "Outputs are defined correctly",
-        "terraform output displays all values",
-        "IP address is valid and accessible"
+        "Os outputs são definidos corretamente",
+        "O terraform output exibe todos os valores",
+        "O endereço IP é válido e acessível"
       ],
       "hints": [
-        "Outputs are displayed after terraform apply",
-        "Use 'terraform output droplet_url' to get a specific output",
-        "The -json flag outputs in JSON format for scripting"
+        "Os outputs são exibidos após o terraform apply",
+        "Use 'terraform output droplet_url' para obter um output específico",
+        "A flag -json gera a saída em formato JSON para uso em scripts"
       ]
     },
     {
       "id": "testing-verification",
-      "title": "Test and Verify Deployment",
-      "description": "Verify that the web server is accessible and functioning correctly.",
+      "title": "Teste e Verifique a Implantação",
+      "description": "Verifique se o servidor web está acessível e funcionando corretamente.",
       "codeExample": "# Get the droplet URL\nTERRAFORM_URL=$(terraform output -raw droplet_url)\n\n# Test with curl\ncurl $TERRAFORM_URL\n\n# Or open in browser\necho \"Open this URL in your browser: $TERRAFORM_URL\"\n\n# SSH into the droplet (optional)\nssh -i ~/.ssh/terraform-demo root@$(terraform output -raw droplet_ip_address)\n\n# Once connected, verify nginx\nsudo systemctl status nginx\nsudo nginx -t\n\n# Check the HTML file\ncat /var/www/html/index.html\n\n# Exit SSH\nexit",
       "commands": [
         "curl $(terraform output -raw droplet_url)",
@@ -147,21 +147,21 @@
       ],
       "expectedOutput": "HTML page with success message and nginx status showing active (running)",
       "validationCriteria": [
-        "Web page loads successfully in browser",
-        "Curl returns HTML content",
-        "Nginx service is active and running",
-        "SSH connection works"
+        "A página web carrega com sucesso no navegador",
+        "O curl retorna o conteúdo HTML",
+        "O serviço nginx está ativo e em execução",
+        "A conexão SSH funciona"
       ],
       "hints": [
-        "If the page doesn't load immediately, wait 1-2 minutes for user_data to complete",
-        "Check DigitalOcean firewall settings if you can't connect",
-        "Use 'ssh -v' for verbose SSH debugging if connection fails"
+        "Se a página não carregar imediatamente, aguarde de 1 a 2 minutos para o user_data terminar",
+        "Verifique as configurações de firewall da DigitalOcean se não conseguir conectar",
+        "Use 'ssh -v' para depuração detalhada de SSH caso a conexão falhe"
       ]
     },
     {
       "id": "state-inspection",
-      "title": "Explore Terraform State",
-      "description": "Learn about Terraform state management and inspect the current state.",
+      "title": "Explore o State do Terraform",
+      "description": "Aprenda sobre o gerenciamento de state do Terraform e inspecione o state atual.",
       "codeExample": "# List all resources in state\nterraform state list\n\n# Show detailed information about the droplet\nterraform state show digitalocean_droplet.web\n\n# Show the SSH key\nterraform state show digitalocean_ssh_key.terraform_demo\n\n# View the state file (careful - don't edit manually!)\ncat terraform.tfstate | jq '.resources[] | {type: .type, name: .name}'\n\n# Understanding state:\n# - terraform.tfstate tracks real infrastructure\n# - Never edit this file manually\n# - Use remote state for team collaboration\n# - State can contain sensitive data",
       "commands": [
         "terraform state list",
@@ -169,40 +169,40 @@
         "terraform show"
       ],
       "validationCriteria": [
-        "terraform state list shows 2 resources",
-        "State file exists and is valid JSON",
-        "Understanding of state file purpose"
+        "O terraform state list mostra 2 recursos",
+        "O arquivo de state existe e é um JSON válido",
+        "Compreensão do propósito do arquivo de state"
       ],
       "hints": [
-        "State file contains sensitive information - add to .gitignore",
-        "Use 'terraform show' for human-readable state output",
-        "For production, always use remote state (S3, Terraform Cloud, etc.)"
+        "O arquivo de state contém informações sensíveis - adicione-o ao .gitignore",
+        "Use 'terraform show' para uma saída de state legível por humanos",
+        "Em produção, sempre use remote state (S3, Terraform Cloud, etc.)"
       ]
     },
     {
       "id": "resource-modification",
-      "title": "Modify Infrastructure",
-      "description": "Learn how to update existing infrastructure by modifying Terraform configuration.",
+      "title": "Modifique a Infraestrutura",
+      "description": "Aprenda a atualizar a infraestrutura existente modificando a configuração do Terraform.",
       "codeExample": "# Update the tags in main.tf\nresource \"digitalocean_droplet\" \"web\" {\n  # ... existing config ...\n  \n  tags = [\"terraform\", \"demo\", \"web-server\", \"modified\"]\n}\n\n# Plan the change\nterraform plan\n\n# Apply the change\nterraform apply\n\n# Experiment: Change the droplet name\nvariable \"droplet_name\" {\n  default = \"web-server-demo-v2\"\n}\n\n# Note: This will recreate the droplet!\n# terraform plan will show:\n# -/+ means destroy and recreate\n# ~ means update in-place\n\n# To see what would change without applying:\nterraform plan -out=tfplan\nterraform show tfplan",
       "commands": [
         "terraform plan",
         "terraform apply -auto-approve"
       ],
       "validationCriteria": [
-        "Tags are updated successfully",
-        "Understanding of in-place vs recreate changes",
-        "Terraform plan shows expected modifications"
+        "As tags são atualizadas com sucesso",
+        "Compreensão da diferença entre atualização in-place e recriação",
+        "O terraform plan mostra as modificações esperadas"
       ],
       "hints": [
-        "Some changes update in-place, others require recreation",
-        "Always review the plan before applying",
-        "Use -out flag to save plans for review"
+        "Algumas mudanças atualizam in-place, outras exigem recriação",
+        "Sempre revise o plano antes de aplicar",
+        "Use a flag -out para salvar planos para revisão"
       ]
     },
     {
       "id": "cleanup-destroy",
-      "title": "Clean Up Resources",
-      "description": "Destroy all created resources to avoid unnecessary charges. Learn the importance of cleanup.",
+      "title": "Limpe os Recursos",
+      "description": "Destrua todos os recursos criados para evitar cobranças desnecessárias. Aprenda a importância da limpeza.",
       "codeExample": "# View what will be destroyed\nterraform plan -destroy\n\n# Destroy all resources\nterraform destroy\n\n# Confirm by typing 'yes'\n\n# Verify in DigitalOcean dashboard\n# - Droplet should be deleted\n# - SSH key should be removed\n\n# Alternative: Destroy specific resource\n# terraform destroy -target=digitalocean_droplet.web\n\n# Clean up local files (optional)\nrm -rf .terraform\nrm terraform.tfstate*\nrm .terraform.lock.hcl",
       "commands": [
         "terraform plan -destroy",
@@ -210,24 +210,24 @@
       ],
       "expectedOutput": "Destroy complete! Resources: 2 destroyed.",
       "validationCriteria": [
-        "All resources are destroyed successfully",
-        "DigitalOcean dashboard shows no demo resources",
-        "Understanding of cost management"
+        "Todos os recursos são destruídos com sucesso",
+        "O painel da DigitalOcean não mostra recursos de demonstração",
+        "Compreensão do gerenciamento de custos"
       ],
       "hints": [
-        "Always destroy demo resources to avoid charges",
-        "Use terraform plan -destroy to preview before destroying",
-        "Terraform destroy is the opposite of terraform apply",
-        "State file is updated to reflect destroyed resources"
+        "Sempre destrua os recursos de demonstração para evitar cobranças",
+        "Use terraform plan -destroy para pré-visualizar antes de destruir",
+        "O terraform destroy é o oposto do terraform apply",
+        "O arquivo de state é atualizado para refletir os recursos destruídos"
       ]
     }
   ],
   "completionCriteria": [
-    "Droplet deployed successfully with Terraform",
-    "Web server is accessible from the internet",
-    "Understanding of Terraform workflow (init, plan, apply, destroy)",
-    "SSH access to droplet works",
-    "Resources cleaned up properly"
+    "Droplet implantado com sucesso via Terraform",
+    "O servidor web está acessível pela internet",
+    "Compreensão do fluxo de trabalho do Terraform (init, plan, apply, destroy)",
+    "O acesso SSH ao droplet funciona",
+    "Os recursos foram limpos corretamente"
   ],
   "resources": [
     {
@@ -252,32 +252,32 @@
   "troubleshooting": [
     {
       "issue": "Error: Error creating droplet: POST 401 Unable to authenticate you",
-      "solution": "Your DigitalOcean API token is invalid or not set. Verify the DIGITALOCEAN_TOKEN environment variable is set correctly and the token is valid."
+      "solution": "Seu token de API da DigitalOcean é inválido ou não está definido. Verifique se a variável de ambiente DIGITALOCEAN_TOKEN está configurada corretamente e se o token é válido."
     },
     {
-      "issue": "Web page doesn't load after deployment",
-      "solution": "Wait 1-2 minutes for cloud-init to complete. Check droplet console in DigitalOcean dashboard for errors. Verify firewall allows HTTP traffic on port 80."
+      "issue": "A página web não carrega após a implantação",
+      "solution": "Aguarde de 1 a 2 minutos para o cloud-init terminar. Verifique o console do droplet no painel da DigitalOcean em busca de erros. Confirme que o firewall permite tráfego HTTP na porta 80."
     },
     {
-      "issue": "SSH connection refused",
-      "solution": "Ensure you're using the correct private key (-i ~/.ssh/terraform-demo). Check that the public key was uploaded correctly. Verify the droplet is fully booted."
+      "issue": "Conexão SSH recusada",
+      "solution": "Certifique-se de estar usando a chave privada correta (-i ~/.ssh/terraform-demo). Verifique se a chave pública foi enviada corretamente. Confirme que o droplet terminou de inicializar."
     },
     {
       "issue": "Error: file: open ~/.ssh/terraform-demo.pub: no such file or directory",
-      "solution": "The SSH key wasn't generated or is in the wrong location. Run the ssh-keygen command again and verify the file exists with 'ls ~/.ssh/terraform-demo*'."
+      "solution": "A chave SSH não foi gerada ou está no local errado. Execute o comando ssh-keygen novamente e verifique se o arquivo existe com 'ls ~/.ssh/terraform-demo*'."
     },
     {
-      "issue": "Terraform state is locked",
-      "solution": "Another terraform operation is running or was interrupted. Wait a few minutes and try again. If stuck, use 'terraform force-unlock <LOCK_ID>' (use with caution)."
+      "issue": "O state do Terraform está bloqueado (locked)",
+      "solution": "Outra operação do Terraform está em execução ou foi interrompida. Aguarde alguns minutos e tente novamente. Se persistir, use 'terraform force-unlock <LOCK_ID>' (use com cautela)."
     }
   ],
   "nextSteps": [
-    "Try the AWS VPC with Terraform exercise for more advanced networking",
-    "Learn about remote state management with Terraform Cloud",
-    "Explore terraform modules for reusable infrastructure components",
-    "Add monitoring with DigitalOcean monitoring agent",
-    "Implement a CI/CD pipeline to automate Terraform deployments"
+    "Experimente o exercício de VPC AWS com Terraform para redes mais avançadas",
+    "Aprenda sobre gerenciamento de remote state com o Terraform Cloud",
+    "Explore módulos do Terraform para componentes de infraestrutura reutilizáveis",
+    "Adicione monitoramento com o agente de monitoramento da DigitalOcean",
+    "Implemente um pipeline de CI/CD para automatizar as implantações do Terraform"
   ],
-  "estimatedCost": "$0.01-0.10 (if cleaned up within an hour)",
+  "estimatedCost": "US$ 0,01-0,10 (se limpo dentro de uma hora)",
   "featured": true
 }

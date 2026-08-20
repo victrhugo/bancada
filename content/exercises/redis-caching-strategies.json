@@ -1,13 +1,13 @@
 {
   "id": "redis-caching-strategies",
-  "title": "Redis Caching Strategies for Scalable Applications",
-  "description": "Implement production-ready caching patterns with Redis to dramatically improve application performance and scalability.",
+  "title": "Estratégias de Cache com Redis para Aplicações Escaláveis",
+  "description": "Implemente padrões de cache prontos para produção com Redis para melhorar drasticamente o desempenho e a escalabilidade da aplicação.",
   "category": {
     "name": "DevOps",
     "slug": "devops"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "70 minutes",
+  "estimatedTime": "70 minutos",
   "technologies": [
     "Redis",
     "Node.js",
@@ -15,21 +15,21 @@
     "Caching"
   ],
   "prerequisites": [
-    "Basic Redis knowledge",
-    "Node.js fundamentals",
-    "Understanding of API design"
+    "Conhecimento básico de Redis",
+    "Fundamentos de Node.js",
+    "Compreensão de design de API"
   ],
   "learningObjectives": [
-    "Implement cache-aside and write-through patterns",
-    "Design effective cache invalidation strategies",
-    "Use Redis data structures for complex caching",
-    "Optimize cache hit rates and TTLs"
+    "Implementar os padrões cache-aside e write-through",
+    "Projetar estratégias eficazes de invalidação de cache",
+    "Usar estruturas de dados do Redis para caching complexo",
+    "Otimizar taxas de acerto de cache (hit rate) e TTLs"
   ],
   "environment": "container",
   "icon": "Database",
   "publishedAt": "2025-11-19T11:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": [
@@ -42,8 +42,8 @@
   "steps": [
     {
       "id": "setup-redis-environment",
-      "title": "Setup Redis and Application Environment",
-      "description": "Create a Docker Compose environment with Redis, Redis Commander for visualization, and a Node.js application.",
+      "title": "Configure o Ambiente do Redis e da Aplicação",
+      "description": "Crie um ambiente Docker Compose com Redis, Redis Commander para visualização e uma aplicação Node.js.",
       "codeExample": "# docker-compose.yml\nversion: '3.8'\n\nservices:\n  redis:\n    image: redis:7-alpine\n    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru\n    ports:\n      - \"6379:6379\"\n    volumes:\n      - redis-data:/data\n    networks:\n      - cache-network\n\n  redis-commander:\n    image: rediscommander/redis-commander:latest\n    environment:\n      - REDIS_HOSTS=local:redis:6379\n    ports:\n      - \"8081:8081\"\n    networks:\n      - cache-network\n    depends_on:\n      - redis\n\n  app:\n    build: .\n    ports:\n      - \"3000:3000\"\n    environment:\n      - REDIS_HOST=redis\n      - REDIS_PORT=6379\n      - NODE_ENV=development\n    volumes:\n      - ./src:/app/src\n    networks:\n      - cache-network\n    depends_on:\n      - redis\n\nvolumes:\n  redis-data:\n\nnetworks:\n  cache-network:\n    driver: bridge",
       "commands": [
         "mkdir redis-caching-lab && cd redis-caching-lab",
@@ -52,20 +52,20 @@
         "# Create docker-compose.yml as shown above"
       ],
       "hints": [
-        "maxmemory-policy determines eviction strategy",
-        "Redis Commander provides visual interface",
-        "appendonly ensures data persistence"
+        "O maxmemory-policy determina a estratégia de remoção (eviction)",
+        "O Redis Commander oferece uma interface visual",
+        "O appendonly garante a persistência dos dados"
       ],
       "validationCriteria": [
-        "Redis is running and accessible",
-        "Redis Commander UI is available",
-        "Node.js app can connect to Redis"
+        "O Redis está em execução e acessível",
+        "A UI do Redis Commander está disponível",
+        "A aplicação Node.js consegue se conectar ao Redis"
       ]
     },
     {
       "id": "cache-aside-pattern",
-      "title": "Implement Cache-Aside Pattern",
-      "description": "Build the most common caching pattern where the application checks cache first, then falls back to the database.",
+      "title": "Implemente o Padrão Cache-Aside",
+      "description": "Construa o padrão de cache mais comum, no qual a aplicação verifica o cache primeiro e recorre ao banco de dados apenas se necessário.",
       "codeExample": "// src/cache-aside.js\nconst express = require('express');\nconst redis = require('redis');\n\nconst app = express();\nconst client = redis.createClient({ url: 'redis://redis:6379' });\n\nclient.on('error', (err) => console.error('Redis error:', err));\n\n// Simulate slow database query\nconst fetchFromDatabase = async (userId) => {\n  console.log(`⏳ Fetching user ${userId} from database...`);\n  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate DB latency\n  return {\n    id: userId,\n    name: `User ${userId}`,\n    email: `user${userId}@example.com`,\n    fetchedAt: new Date().toISOString(),\n    source: 'database'\n  };\n};\n\n// Cache-aside implementation\nconst getUserWithCache = async (userId) => {\n  const cacheKey = `user:${userId}`;\n  const TTL = 300; // 5 minutes\n\n  try {\n    // 1. Try to get from cache\n    const cached = await client.get(cacheKey);\n    \n    if (cached) {\n      console.log(`✅ Cache HIT for user ${userId}`);\n      const data = JSON.parse(cached);\n      data.source = 'cache';\n      return data;\n    }\n\n    console.log(`❌ Cache MISS for user ${userId}`);\n    \n    // 2. If not in cache, fetch from database\n    const userData = await fetchFromDatabase(userId);\n    \n    // 3. Store in cache for future requests\n    await client.setEx(cacheKey, TTL, JSON.stringify(userData));\n    \n    return userData;\n  } catch (error) {\n    console.error('Cache error:', error);\n    // Fallback to database on cache failure\n    return await fetchFromDatabase(userId);\n  }\n};\n\napp.get('/api/users/:id', async (req, res) => {\n  const startTime = Date.now();\n  const userData = await getUserWithCache(req.params.id);\n  const duration = Date.now() - startTime;\n  \n  res.json({\n    ...userData,\n    responseTime: `${duration}ms`\n  });\n});\n\n// Clear cache endpoint\napp.delete('/api/cache/users/:id', async (req, res) => {\n  await client.del(`user:${req.params.id}`);\n  res.json({ message: 'Cache cleared', userId: req.params.id });\n});\n\n// Connect and start\n(async () => {\n  await client.connect();\n  app.listen(3000, () => {\n    console.log('🚀 Server running on http://localhost:3000');\n    console.log('📊 Redis Commander: http://localhost:8081');\n  });\n})();",
       "commands": [
         "docker-compose up -d",
@@ -78,37 +78,37 @@
       ],
       "expectedOutput": "First request takes ~1s (database), subsequent requests are instant (cache)",
       "validationCriteria": [
-        "Cache misses hit database",
-        "Cache hits return instantly",
-        "Data stored in Redis with TTL"
+        "Cache misses acionam o banco de dados",
+        "Cache hits retornam instantaneamente",
+        "Os dados são armazenados no Redis com TTL"
       ],
       "hints": [
-        "Always handle cache failures gracefully",
-        "Use appropriate TTL values",
-        "Monitor cache hit rate"
+        "Sempre trate falhas de cache com elegância",
+        "Use valores de TTL apropriados",
+        "Monitore a taxa de acerto do cache"
       ]
     },
     {
       "id": "write-through-pattern",
-      "title": "Implement Write-Through Caching",
-      "description": "Build a write-through cache where writes go to both cache and database simultaneously.",
+      "title": "Implemente o Write-Through Caching",
+      "description": "Construa um cache write-through, no qual as escritas vão simultaneamente para o cache e o banco de dados.",
       "codeExample": "// src/write-through.js\nconst express = require('express');\nconst redis = require('redis');\n\nconst router = express.Router();\nconst client = redis.createClient({ url: 'redis://redis:6379' });\n\n// Simulate database write\nconst writeToDatabase = async (userId, data) => {\n  console.log(`💾 Writing user ${userId} to database...`);\n  await new Promise(resolve => setTimeout(resolve, 500));\n  return { ...data, savedAt: new Date().toISOString() };\n};\n\n// Write-through cache implementation\nconst updateUserWithCache = async (userId, updates) => {\n  const cacheKey = `user:${userId}`;\n  const TTL = 300;\n\n  try {\n    // 1. Write to database first\n    const savedData = await writeToDatabase(userId, updates);\n    \n    // 2. Update cache immediately\n    await client.setEx(cacheKey, TTL, JSON.stringify(savedData));\n    console.log(`✅ Cache updated for user ${userId}`);\n    \n    return savedData;\n  } catch (error) {\n    console.error('Write-through error:', error);\n    // If cache update fails, still return database result\n    // Consider invalidating cache here\n    await client.del(cacheKey);\n    throw error;\n  }\n};\n\nrouter.put('/users/:id', async (req, res) => {\n  try {\n    const userData = await updateUserWithCache(req.params.id, req.body);\n    res.json({ success: true, data: userData });\n  } catch (error) {\n    res.status(500).json({ error: error.message });\n  }\n});\n\nmodule.exports = { router, updateUserWithCache };",
       "expectedOutput": "Writes update both database and cache atomically",
       "validationCriteria": [
-        "Database is updated",
-        "Cache is updated synchronously",
-        "Subsequent reads are served from cache"
+        "O banco de dados é atualizado",
+        "O cache é atualizado de forma síncrona",
+        "As leituras subsequentes são servidas pelo cache"
       ],
       "hints": [
-        "Write-through ensures cache consistency",
-        "Consider using Redis transactions for atomicity",
-        "Handle partial failures appropriately"
+        "O write-through garante a consistência do cache",
+        "Considere usar transações do Redis para atomicidade",
+        "Trate falhas parciais adequadamente"
       ]
     },
     {
       "id": "cache-invalidation",
-      "title": "Advanced Cache Invalidation Strategies",
-      "description": "Implement multiple cache invalidation patterns including TTL-based, event-based, and tag-based invalidation.",
+      "title": "Estratégias Avançadas de Invalidação de Cache",
+      "description": "Implemente múltiplos padrões de invalidação de cache, incluindo invalidação baseada em TTL, em eventos e em tags.",
       "codeExample": "// src/cache-invalidation.js\nconst redis = require('redis');\n\nclass CacheManager {\n  constructor(redisClient) {\n    this.client = redisClient;\n  }\n\n  // Strategy 1: TTL-based expiration (automatic)\n  async setWithTTL(key, value, ttlSeconds) {\n    await this.client.setEx(key, ttlSeconds, JSON.stringify(value));\n    console.log(`✅ Set ${key} with TTL: ${ttlSeconds}s`);\n  }\n\n  // Strategy 2: Pattern-based invalidation\n  async invalidatePattern(pattern) {\n    const keys = await this.client.keys(pattern);\n    if (keys.length > 0) {\n      await this.client.del(keys);\n      console.log(`🗑️  Invalidated ${keys.length} keys matching: ${pattern}`);\n    }\n    return keys.length;\n  }\n\n  // Strategy 3: Tag-based invalidation\n  async setWithTags(key, value, ttl, tags = []) {\n    // Store the actual data\n    await this.client.setEx(key, ttl, JSON.stringify(value));\n    \n    // Store tag references\n    for (const tag of tags) {\n      const tagKey = `tag:${tag}`;\n      await this.client.sAdd(tagKey, key);\n      await this.client.expire(tagKey, ttl);\n    }\n    \n    console.log(`✅ Set ${key} with tags: ${tags.join(', ')}`);\n  }\n\n  async invalidateByTag(tag) {\n    const tagKey = `tag:${tag}`;\n    const keys = await this.client.sMembers(tagKey);\n    \n    if (keys.length > 0) {\n      await this.client.del(keys);\n      await this.client.del(tagKey);\n      console.log(`🗑️  Invalidated ${keys.length} keys with tag: ${tag}`);\n    }\n    \n    return keys.length;\n  }\n\n  // Strategy 4: Conditional invalidation based on version\n  async setWithVersion(key, value, ttl, version) {\n    const versionedKey = `${key}:v${version}`;\n    await this.client.setEx(versionedKey, ttl, JSON.stringify({ ...value, version }));\n    await this.client.set(`${key}:version`, version);\n    \n    // Clean up old versions\n    const oldKeys = await this.client.keys(`${key}:v*`);\n    for (const oldKey of oldKeys) {\n      if (oldKey !== versionedKey) {\n        await this.client.del(oldKey);\n      }\n    }\n  }\n\n  async getWithVersion(key) {\n    const version = await this.client.get(`${key}:version`);\n    if (!version) return null;\n    \n    const versionedKey = `${key}:v${version}`;\n    const data = await this.client.get(versionedKey);\n    return data ? JSON.parse(data) : null;\n  }\n\n  // Strategy 5: Cache warming\n  async warmCache(keys, fetchFunction) {\n    console.log(`🔥 Warming cache for ${keys.length} keys...`);\n    \n    const promises = keys.map(async (key) => {\n      const data = await fetchFunction(key);\n      await this.setWithTTL(key, data, 3600);\n    });\n    \n    await Promise.all(promises);\n    console.log(`✅ Cache warmed with ${keys.length} entries`);\n  }\n\n  // Get cache statistics\n  async getStats() {\n    const info = await this.client.info('stats');\n    const keyspace = await this.client.info('keyspace');\n    const memory = await this.client.info('memory');\n    \n    return {\n      info,\n      keyspace,\n      memory,\n      totalKeys: await this.client.dbSize()\n    };\n  }\n}\n\n// Usage example\nconst client = redis.createClient({ url: 'redis://redis:6379' });\nawait client.connect();\n\nconst cache = new CacheManager(client);\n\n// Example: Tag-based invalidation\nawait cache.setWithTags('product:1', { name: 'Widget' }, 300, ['products', 'user:123']);\nawait cache.setWithTags('product:2', { name: 'Gadget' }, 300, ['products', 'user:123']);\n\n// Invalidate all products for user 123\nawait cache.invalidateByTag('user:123');\n\nmodule.exports = CacheManager;",
       "commands": [
         "# Test pattern-based invalidation",
@@ -119,21 +119,21 @@
       ],
       "expectedOutput": "Multiple invalidation strategies working correctly",
       "validationCriteria": [
-        "TTL-based expiration works automatically",
-        "Pattern-based invalidation clears matching keys",
-        "Tag-based invalidation clears related items",
-        "Version-based cache prevents stale data"
+        "A expiração baseada em TTL funciona automaticamente",
+        "A invalidação baseada em padrão limpa as chaves correspondentes",
+        "A invalidação baseada em tags limpa os itens relacionados",
+        "O cache baseado em versão evita dados desatualizados"
       ],
       "hints": [
-        "Use SCAN instead of KEYS in production",
-        "Tag-based invalidation is powerful but complex",
-        "Consider cache warming after bulk invalidation"
+        "Use SCAN em vez de KEYS em produção",
+        "A invalidação baseada em tags é poderosa, mas complexa",
+        "Considere aquecer o cache (cache warming) após uma invalidação em massa"
       ]
     },
     {
       "id": "complex-data-structures",
-      "title": "Leverage Redis Data Structures",
-      "description": "Use Redis Lists, Sets, Sorted Sets, and Hashes for advanced caching scenarios.",
+      "title": "Aproveite as Estruturas de Dados do Redis",
+      "description": "Use Lists, Sets, Sorted Sets e Hashes do Redis para cenários avançados de caching.",
       "codeExample": "// src/redis-structures.js\nconst redis = require('redis');\n\nclass AdvancedCache {\n  constructor(redisClient) {\n    this.client = redisClient;\n  }\n\n  // Use Redis Hash for object caching\n  async cacheUserProfile(userId, profile) {\n    const key = `user:${userId}:profile`;\n    await this.client.hSet(key, profile);\n    await this.client.expire(key, 3600);\n    console.log(`✅ Cached profile for user ${userId}`);\n  }\n\n  async getUserProfile(userId) {\n    const key = `user:${userId}:profile`;\n    return await this.client.hGetAll(key);\n  }\n\n  // Use Redis List for recent items\n  async addToRecentViews(userId, productId) {\n    const key = `user:${userId}:recent`;\n    await this.client.lPush(key, productId);\n    await this.client.lTrim(key, 0, 9); // Keep only 10 items\n    await this.client.expire(key, 86400); // 24 hours\n  }\n\n  async getRecentViews(userId, limit = 10) {\n    const key = `user:${userId}:recent`;\n    return await this.client.lRange(key, 0, limit - 1);\n  }\n\n  // Use Redis Set for unique items\n  async addToFavorites(userId, productId) {\n    const key = `user:${userId}:favorites`;\n    await this.client.sAdd(key, productId);\n    await this.client.expire(key, 86400);\n  }\n\n  async getFavorites(userId) {\n    const key = `user:${userId}:favorites`;\n    return await this.client.sMembers(key);\n  }\n\n  async isFavorite(userId, productId) {\n    const key = `user:${userId}:favorites`;\n    return await this.client.sIsMember(key, productId);\n  }\n\n  // Use Redis Sorted Set for leaderboards/rankings\n  async updateScore(gameId, userId, score) {\n    const key = `game:${gameId}:leaderboard`;\n    await this.client.zAdd(key, { score, value: userId });\n    await this.client.expire(key, 86400);\n  }\n\n  async getTopPlayers(gameId, count = 10) {\n    const key = `game:${gameId}:leaderboard`;\n    return await this.client.zRangeWithScores(key, 0, count - 1, { REV: true });\n  }\n\n  async getUserRank(gameId, userId) {\n    const key = `game:${gameId}:leaderboard`;\n    return await this.client.zRevRank(key, userId);\n  }\n\n  // Use Redis for distributed rate limiting\n  async checkRateLimit(userId, maxRequests, windowSeconds) {\n    const key = `ratelimit:${userId}`;\n    const current = await this.client.incr(key);\n    \n    if (current === 1) {\n      await this.client.expire(key, windowSeconds);\n    }\n    \n    return {\n      allowed: current <= maxRequests,\n      current,\n      limit: maxRequests,\n      remaining: Math.max(0, maxRequests - current)\n    };\n  }\n\n  // Use Redis for session storage\n  async createSession(sessionId, userData, ttl = 3600) {\n    const key = `session:${sessionId}`;\n    await this.client.setEx(key, ttl, JSON.stringify(userData));\n    return sessionId;\n  }\n\n  async getSession(sessionId) {\n    const key = `session:${sessionId}`;\n    const data = await this.client.get(key);\n    return data ? JSON.parse(data) : null;\n  }\n\n  async extendSession(sessionId, additionalSeconds) {\n    const key = `session:${sessionId}`;\n    await this.client.expire(key, additionalSeconds);\n  }\n}\n\nmodule.exports = AdvancedCache;",
       "commands": [
         "# Test hash operations",
@@ -145,21 +145,21 @@
       ],
       "expectedOutput": "Different Redis data structures used appropriately for different use cases",
       "validationCriteria": [
-        "Hashes store object fields efficiently",
-        "Lists maintain order for recent items",
-        "Sets ensure uniqueness",
-        "Sorted sets enable ranking"
+        "Hashes armazenam campos de objetos de forma eficiente",
+        "Lists mantêm a ordem dos itens recentes",
+        "Sets garantem unicidade",
+        "Sorted sets permitem ranqueamento"
       ],
       "hints": [
-        "Choose data structure based on access pattern",
-        "Hashes are memory-efficient for objects",
-        "Sorted sets are perfect for leaderboards"
+        "Escolha a estrutura de dados com base no padrão de acesso",
+        "Hashes são eficientes em memória para objetos",
+        "Sorted sets são perfeitos para leaderboards"
       ]
     },
     {
       "id": "monitoring-optimization",
-      "title": "Monitor and Optimize Cache Performance",
-      "description": "Implement monitoring, analyze cache metrics, and optimize for production.",
+      "title": "Monitore e Otimize o Desempenho do Cache",
+      "description": "Implemente monitoramento, analise métricas de cache e otimize para produção.",
       "codeExample": "// src/cache-monitor.js\nconst redis = require('redis');\n\nclass CacheMonitor {\n  constructor(redisClient) {\n    this.client = redisClient;\n    this.metrics = {\n      hits: 0,\n      misses: 0,\n      errors: 0\n    };\n  }\n\n  recordHit() {\n    this.metrics.hits++;\n  }\n\n  recordMiss() {\n    this.metrics.misses++;\n  }\n\n  recordError() {\n    this.metrics.errors++;\n  }\n\n  getHitRate() {\n    const total = this.metrics.hits + this.metrics.misses;\n    return total === 0 ? 0 : (this.metrics.hits / total * 100).toFixed(2);\n  }\n\n  async getRedisInfo() {\n    const info = await this.client.info();\n    const stats = await this.client.info('stats');\n    \n    return {\n      connectedClients: this.parseInfo(info, 'connected_clients'),\n      usedMemory: this.parseInfo(info, 'used_memory_human'),\n      totalKeys: await this.client.dbSize(),\n      keyspaceHits: this.parseInfo(stats, 'keyspace_hits'),\n      keyspaceMisses: this.parseInfo(stats, 'keyspace_misses'),\n      evictedKeys: this.parseInfo(stats, 'evicted_keys')\n    };\n  }\n\n  parseInfo(infoString, key) {\n    const match = infoString.match(new RegExp(`${key}:([^\\r\\n]+)`));\n    return match ? match[1] : 'N/A';\n  }\n\n  async getCacheReport() {\n    const redisInfo = await this.getRedisInfo();\n    const appHitRate = this.getHitRate();\n    \n    const redisHits = parseInt(redisInfo.keyspaceHits) || 0;\n    const redisMisses = parseInt(redisInfo.keyspaceMisses) || 0;\n    const redisTotal = redisHits + redisMisses;\n    const redisHitRate = redisTotal === 0 ? 0 : (redisHits / redisTotal * 100).toFixed(2);\n\n    return {\n      timestamp: new Date().toISOString(),\n      application: {\n        hits: this.metrics.hits,\n        misses: this.metrics.misses,\n        errors: this.metrics.errors,\n        hitRate: `${appHitRate}%`\n      },\n      redis: {\n        ...redisInfo,\n        hitRate: `${redisHitRate}%`\n      },\n      recommendations: this.generateRecommendations(redisHitRate, redisInfo)\n    };\n  }\n\n  generateRecommendations(hitRate, info) {\n    const recommendations = [];\n    \n    if (parseFloat(hitRate) < 80) {\n      recommendations.push('Cache hit rate is below 80%. Consider increasing TTLs or cache warming.');\n    }\n    \n    const evicted = parseInt(info.evictedKeys) || 0;\n    if (evicted > 1000) {\n      recommendations.push('High eviction count. Consider increasing maxmemory.');\n    }\n    \n    return recommendations;\n  }\n\n  // Express middleware for automatic monitoring\n  middleware() {\n    return async (req, res, next) => {\n      const originalJson = res.json;\n      \n      res.json = function(data) {\n        if (data && data.source === 'cache') {\n          this.recordHit();\n        } else if (data && data.source === 'database') {\n          this.recordMiss();\n        }\n        return originalJson.call(res, data);\n      }.bind(this);\n      \n      next();\n    };\n  }\n}\n\n// Express endpoint for metrics\napp.get('/metrics/cache', async (req, res) => {\n  const report = await monitor.getCacheReport();\n  res.json(report);\n});\n\nmodule.exports = CacheMonitor;",
       "commands": [
         "# Get Redis statistics",
@@ -173,24 +173,24 @@
       ],
       "expectedOutput": "Comprehensive cache performance metrics and recommendations",
       "validationCriteria": [
-        "Cache hit rate is tracked",
-        "Memory usage is monitored",
-        "Eviction rate is acceptable",
-        "Performance recommendations are generated"
+        "A taxa de acerto do cache é rastreada",
+        "O uso de memória é monitorado",
+        "A taxa de remoção (eviction) é aceitável",
+        "Recomendações de desempenho são geradas"
       ],
       "hints": [
-        "Aim for 80%+ cache hit rate",
-        "Monitor evicted_keys metric",
-        "Use Redis Slow Log for debugging"
+        "Busque uma taxa de acerto de cache acima de 80%",
+        "Monitore a métrica evicted_keys",
+        "Use o Slow Log do Redis para depuração"
       ]
     }
   ],
   "completionCriteria": [
-    "Cache-aside pattern is implemented correctly",
-    "Multiple invalidation strategies work",
-    "Redis data structures are used appropriately",
-    "Cache hit rate is above 70%",
-    "Monitoring and metrics are in place"
+    "O padrão cache-aside é implementado corretamente",
+    "Múltiplas estratégias de invalidação funcionam",
+    "As estruturas de dados do Redis são usadas adequadamente",
+    "A taxa de acerto do cache está acima de 70%",
+    "O monitoramento e as métricas estão em vigor"
   ],
   "resources": [
     {
@@ -214,20 +214,20 @@
   ],
   "troubleshooting": [
     {
-      "issue": "Cache hit rate is very low",
-      "solution": "Review TTL values, ensure cache keys are consistent, check for cache invalidation issues"
+      "issue": "A taxa de acerto do cache está muito baixa",
+      "solution": "Revise os valores de TTL, garanta que as chaves de cache sejam consistentes e verifique se há problemas de invalidação de cache"
     },
     {
-      "issue": "Redis memory growing unexpectedly",
-      "solution": "Verify TTL is set on all keys, check maxmemory-policy, monitor for memory leaks"
+      "issue": "O uso de memória do Redis está crescendo de forma inesperada",
+      "solution": "Verifique se o TTL está definido em todas as chaves, confira o maxmemory-policy e monitore possíveis vazamentos de memória"
     },
     {
-      "issue": "Stale data being served",
-      "solution": "Implement proper cache invalidation, reduce TTL, use versioned keys"
+      "issue": "Dados desatualizados estão sendo servidos",
+      "solution": "Implemente uma invalidação de cache adequada, reduza o TTL e use chaves versionadas"
     },
     {
-      "issue": "Connection pool exhausted",
-      "solution": "Increase connection pool size, check for connection leaks, implement connection reuse"
+      "issue": "O pool de conexões está esgotado",
+      "solution": "Aumente o tamanho do pool de conexões, verifique vazamentos de conexão e implemente reuso de conexões"
     }
   ],
   "featured": true
