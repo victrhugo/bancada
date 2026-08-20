@@ -1,10 +1,10 @@
 {
   "id": "progressive-delivery-feature-flag-types",
   "slug": "progressive-delivery-feature-flag-types",
-  "title": "Feature Flag Types and Use Cases",
-  "question": "Can you walk me through the different types of feature flags and when you'd use each one?",
-  "answer": "There are four main types of feature flags, each serving a different purpose. Release flags control the rollout of new features to users. They're temporary and should be removed once the feature is fully released. Example: rolling out a new search UI to 10% of users first. Ops flags are operational toggles for runtime control. They're semi-permanent and used to manage system behavior without redeploying. Example: a kill switch to disable a non-critical service under heavy load. Experiment flags support A/B testing. Users are consistently placed in the same group so you can measure outcomes. Example: testing whether a one-click checkout increases conversion. Permission flags control access to features based on user attributes like subscription tier, region, or role. They're long-lived and tied to business logic. Example: premium features only available to paying users. The important thing is to treat release flags differently from the others. Release flags are technical debt the moment the rollout is complete. You should have a process to clean them up within days, not months.",
-  "explanation": "This question reveals whether a candidate has practical experience with feature flags beyond basic on/off toggles. Look for awareness of flag lifecycle management, especially cleanup of release flags. Experienced candidates will mention that stale flags are a real operational risk and talk about how they've managed flag hygiene.",
+  "title": "Tipos de Feature Flags e Casos de Uso",
+  "question": "Você pode me explicar os diferentes tipos de feature flags e quando usar cada um?",
+  "answer": "Existem quatro tipos principais de feature flags, cada um servindo a um propósito diferente. Release flags controlam o rollout de novas funcionalidades para os usuários. São temporárias e devem ser removidas assim que a funcionalidade estiver totalmente liberada. Exemplo: liberar uma nova UI de busca para 10% dos usuários primeiro. Ops flags são toggles operacionais para controle em tempo de execução. São semipermanentes e usadas para gerenciar o comportamento do sistema sem precisar de um novo deploy. Exemplo: um kill switch para desabilitar um serviço não crítico sob carga pesada. Experiment flags dão suporte a testes A/B. Os usuários são colocados de forma consistente no mesmo grupo para que você possa medir resultados. Exemplo: testar se um checkout em um clique aumenta a conversão. Permission flags controlam o acesso a funcionalidades com base em atributos do usuário, como plano de assinatura, região ou papel. São de longa duração e ligadas à lógica de negócio. Exemplo: funcionalidades premium disponíveis apenas para usuários pagantes. O importante é tratar as release flags de forma diferente das demais. Release flags são dívida técnica no momento em que o rollout é concluído. Você deve ter um processo para removê-las em dias, não em meses.",
+  "explanation": "Essa pergunta revela se o candidato tem experiência prática com feature flags além de simples toggles liga/desliga. Observe se há consciência sobre o gerenciamento do ciclo de vida das flags, especialmente a limpeza de release flags. Candidatos experientes vão mencionar que flags obsoletas são um risco operacional real e falar sobre como já gerenciaram a higiene de flags.",
   "category": "CI/CD",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,25 +18,25 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "LaunchDarkly-style flag definitions showing different types",
+      "label": "Definições de flags no estilo LaunchDarkly mostrando os diferentes tipos",
       "code": "# Release flag - temporary, remove after full rollout\nnew-payment-page:\n  type: release\n  variation: boolean\n  targets:\n    - percentage: 25\n  expiry: 2026-04-30        # Alert if still active after this date\n\n# Ops flag - semi-permanent kill switch\ndisable-recommendations:\n  type: ops\n  variation: boolean\n  default: false            # Flip to true during incidents\n\n# Experiment flag - A/B test with consistent bucketing\ncheckout-button-color:\n  type: experiment\n  variation: [\"blue\", \"green\", \"orange\"]\n  bucketing: user-id         # Same user always sees the same variant\n\n# Permission flag - long-lived, tied to business rules\nadvanced-analytics:\n  type: permission\n  rules:\n    - attribute: plan\n      operator: in\n      values: [\"pro\", \"enterprise\"]"
     },
     {
       "language": "bash",
-      "label": "Script to find stale feature flags that should be cleaned up",
+      "label": "Script para encontrar feature flags obsoletas que deveriam ser removidas",
       "code": "#!/bin/bash\n# Find release flags older than 30 days that are at 100% rollout\n# These are candidates for removal\n\necho \"Stale release flags (fully rolled out > 30 days):\"\nfor flag_file in flags/release-*.yaml; do\n  created=$(yq '.created' \"$flag_file\")\n  percentage=$(yq '.rollout.percentage' \"$flag_file\")\n  age_days=$(( ($(date +%s) - $(date -d \"$created\" +%s)) / 86400 ))\n\n  if [[ \"$percentage\" == \"100\" && \"$age_days\" -gt 30 ]]; then\n    echo \"  WARNING: $(basename $flag_file) - $age_days days old, 100% rolled out\"\n  fi\ndone"
     }
   ],
   "followUpQuestions": [
-    "How would you prevent stale feature flags from piling up in your codebase?",
-    "What's the risk of having hundreds of active feature flags at once?",
-    "How do you test all the different flag combinations?",
-    "Would you store feature flags in your code repo or use a dedicated service?"
+    "Como você evitaria o acúmulo de feature flags obsoletas no seu código?",
+    "Qual é o risco de ter centenas de feature flags ativas ao mesmo tempo?",
+    "Como você testa todas as diferentes combinações de flags?",
+    "Você armazenaria as feature flags no repositório de código ou usaria um serviço dedicado?"
   ],
   "commonMistakes": [
-    "Treating all feature flags the same without distinguishing release flags from long-lived permission flags",
-    "Never cleaning up release flags after full rollout, leading to code full of dead branches",
-    "Not considering that experiment flags need consistent user bucketing to produce valid results"
+    "Tratar todas as feature flags da mesma forma, sem distinguir release flags de permission flags de longa duração",
+    "Nunca limpar release flags após o rollout completo, resultando em código cheio de branches mortos",
+    "Não considerar que experiment flags precisam de bucketing consistente de usuários para produzir resultados válidos"
   ],
   "relatedTopics": [
     "a-b-testing",

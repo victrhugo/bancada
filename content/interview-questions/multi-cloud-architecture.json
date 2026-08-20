@@ -1,10 +1,10 @@
 {
   "id": "multi-cloud-architecture",
   "slug": "multi-cloud-architecture",
-  "title": "Multi-Cloud Architecture",
-  "question": "When would you recommend a multi-cloud strategy? What are the challenges and how do you address them?",
-  "answer": "Multi-cloud involves using multiple cloud providers strategically. Valid use cases: avoiding vendor lock-in, leveraging best-of-breed services (e.g., GCP for ML, AWS for breadth), compliance requirements (data sovereignty), disaster recovery across providers. Challenges: increased complexity, different APIs/services, networking between clouds, skill requirements, cost management. Address via: abstraction layers (Terraform, Kubernetes), unified observability (Datadog), cloud-agnostic architectures, clear governance policies. Don't go multi-cloud just because - the complexity cost is significant.",
-  "explanation": "Multi-cloud is often oversold. True multi-cloud (workloads running identically on multiple clouds) is rare and expensive. More common is using different clouds for different purposes (hybrid cloud) or having disaster recovery in another cloud. The key question is: does the business value outweigh the operational complexity? For most companies, single cloud with good architecture is simpler and sufficient.",
+  "title": "Arquitetura Multi-Cloud",
+  "question": "Quando você recomendaria uma estratégia multi-cloud? Quais são os desafios e como você os resolveria?",
+  "answer": "Multi-cloud envolve usar múltiplos provedores de nuvem de forma estratégica. Casos de uso válidos: evitar vendor lock-in, aproveitar os melhores serviços de cada provedor (por exemplo, GCP para ML, AWS pela amplitude), requisitos de compliance (soberania de dados), disaster recovery entre provedores. Desafios: complexidade aumentada, APIs/serviços diferentes, rede entre nuvens, necessidade de novas competências, gestão de custos. Como resolver: camadas de abstração (Terraform, Kubernetes), observabilidade unificada (Datadog), arquiteturas agnósticas de nuvem, políticas de governança claras. Não adote multi-cloud só por adotar - o custo de complexidade é significativo.",
+  "explanation": "Multi-cloud costuma ser supervalorizado. O multi-cloud verdadeiro (workloads rodando de forma idêntica em múltiplas nuvens) é raro e caro. O mais comum é usar nuvens diferentes para propósitos diferentes (hybrid cloud) ou ter disaster recovery em outra nuvem. A pergunta chave é: o valor de negócio compensa a complexidade operacional? Para a maioria das empresas, uma única nuvem com boa arquitetura é mais simples e suficiente.",
   "category": "Architecture",
   "difficulty": "advanced",
   "tier": "senior",
@@ -19,24 +19,24 @@
   "codeExamples": [
     {
       "language": "hcl",
-      "label": "Multi-cloud Terraform structure",
+      "label": "Estrutura Terraform multi-cloud",
       "code": "# providers.tf\nterraform {\n  required_providers {\n    aws = {\n      source  = \"hashicorp/aws\"\n      version = \"~> 5.0\"\n    }\n    google = {\n      source  = \"hashicorp/google\"\n      version = \"~> 5.0\"\n    }\n  }\n}\n\nprovider \"aws\" {\n  region = \"us-east-1\"\n}\n\nprovider \"google\" {\n  project = \"my-project\"\n  region  = \"us-central1\"\n}\n\n# Example: Primary on AWS, DR on GCP\nmodule \"primary\" {\n  source = \"./modules/aws-cluster\"\n}\n\nmodule \"dr\" {\n  source = \"./modules/gcp-cluster\"\n}"
     },
     {
       "language": "yaml",
-      "label": "Cloud-agnostic service mesh",
+      "label": "Service mesh agnóstico de nuvem",
       "code": "# Consul for multi-cloud service discovery\napiVersion: consul.hashicorp.com/v1alpha1\nkind: ServiceDefaults\nmetadata:\n  name: payment-service\nspec:\n  protocol: http\n  # Enable cross-datacenter routing\n  meshGateway:\n    mode: local  # Use local mesh gateway\n  # Failover to other cloud\n  failover:\n    - datacenters:\n        - gcp-central\n        - aws-east"
     }
   ],
   "followUpQuestions": [
-    "How do you handle data consistency across multiple clouds?",
-    "What is the difference between multi-cloud, hybrid cloud, and multi-region?",
-    "How do you manage costs when running across multiple cloud providers?"
+    "Como você lida com consistência de dados entre múltiplas nuvens?",
+    "Qual é a diferença entre multi-cloud, hybrid cloud e multi-region?",
+    "Como você gerencia custos ao operar em vários provedores de nuvem?"
   ],
   "commonMistakes": [
-    "Going multi-cloud to avoid lock-in but creating lock-in to abstraction tools",
-    "Underestimating the network latency between cloud providers",
-    "Not accounting for the increased skills/training required"
+    "Adotar multi-cloud para evitar lock-in mas acabar criando lock-in com as ferramentas de abstração",
+    "Subestimar a latência de rede entre provedores de nuvem",
+    "Não considerar o aumento de treinamento/competências necessário"
   ],
   "relatedTopics": [
     "hybrid-cloud",

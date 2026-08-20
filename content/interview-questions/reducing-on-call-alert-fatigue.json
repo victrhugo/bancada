@@ -1,10 +1,10 @@
 {
   "id": "reducing-on-call-alert-fatigue",
   "slug": "reducing-on-call-alert-fatigue",
-  "title": "Reducing On-Call Alert Fatigue",
-  "question": "Your on-call engineers are burning out. They're getting 40 to 50 pages a shift and they tell you most of it is noise they just ack and ignore. How do you fix this?",
-  "answer": "First I'd measure before touching anything. I'd pull pages grouped by alert name, by service, and by time of day, and split them into actionable versus auto-resolved. Almost always a handful of alerts generate most of the volume, and a big chunk auto-resolve before anyone does anything. That tells me where to aim.\n\nThen I work through it in order of impact:\n\n1. Delete or downgrade non-actionable alerts. The test is simple: if a page doesn't require a human to do something right now, it is not a page. Make it a ticket or a dashboard panel. This alone usually cuts the worst noise.\n\n2. Alert on symptoms, not causes. Page on what users feel: elevated error rate, latency past the SLO, a queue that's backing up. Don't page on CPU at 90 percent or memory pressure, because those are often fine and they fire constantly. If high CPU isn't hurting users, it isn't an incident.\n\n3. Add duration guards. A `for:` clause stops flapping alerts that fire and clear every two minutes. If it can't stay broken for five minutes, it probably isn't worth a page.\n\n4. Group and inhibit. When one outage trips twenty alerts, Alertmanager grouping collapses them into one notification, and inhibition rules suppress the downstream noise. If the cluster is down, don't also page for every pod on it.\n\n5. Move to multi-window burn-rate alerts for SLOs. A static threshold either pages too early or too late. A fast-burn plus slow-burn pair catches a real budget burn quickly while staying quiet on blips.\n\n6. Route by severity. Only genuine urgency pages. Everything else goes to Slack or a ticket queue that gets triaged during the day.\n\n7. Set a budget and defend it. Pick a target like fewer than two pages per off-hours shift, and treat going over it as a bug with an owner, reviewed at every on-call handoff. Without a target, noise creeps back.\n\nThe edge cases that bite people: don't just raise thresholds, because that hides real problems instead of removing noise. Watch the auto-resolving alerts, since a thing that flaps and clears all night is a real bug masquerading as harmless. And every remaining page must have a runbook. If a page has no runbook, either it's not worth paging on, or you owe it one.",
-  "explanation": "This is the senior-level question that reveals whether someone has actually owned alerting in production. The tell is sequencing: a strong answer starts with measuring, then cuts and downgrades alerts, and treats symptom-based alerting and severity routing as the structural fixes. Weaker answers jump straight to \"raise the thresholds\" or \"add a dashboard,\" both of which hide problems rather than fix them. Mentioning a pages-per-shift budget, multi-window burn-rate alerts, or making alert tuning part of the on-call retro are clear senior signals.",
+  "title": "Reduzindo a Fadiga de Alertas no On-Call",
+  "question": "Seus engenheiros de plantão estão esgotados. Eles recebem de 40 a 50 pages por turno e dizem que a maior parte é ruído que apenas confirmam e ignoram. Como você resolveria isso?",
+  "answer": "Primeiro eu mediria antes de mexer em qualquer coisa. Eu puxaria os pages agrupados por nome do alerta, por serviço e por horário do dia, e os dividiria entre acionáveis versus auto-resolvidos. Quase sempre um punhado de alertas gera a maior parte do volume, e uma boa parte se auto-resolve antes que alguém faça qualquer coisa. Isso me diz onde focar.\n\nDepois eu trabalho na ordem de impacto:\n\n1. Excluir ou rebaixar alertas não acionáveis. O teste é simples: se um page não exige que um humano faça algo agora, não é um page. Transforme em ticket ou painel de dashboard. Só isso já costuma cortar o pior do ruído.\n\n2. Alertar em cima de sintomas, não de causas. Faça o page disparar com base no que os usuários sentem: taxa de erro elevada, latência acima do SLO, uma fila que está se acumulando. Não faça page em CPU a 90% ou pressão de memória, porque geralmente está tudo bem e isso dispara o tempo todo. Se CPU alta não está prejudicando os usuários, não é um incidente.\n\n3. Adicionar guardas de duração. Uma cláusula `for:` interrompe alertas instáveis que disparam e se resolvem a cada dois minutos. Se não consegue ficar quebrado por cinco minutos, provavelmente não vale um page.\n\n4. Agrupar e inibir. Quando uma interrupção dispara vinte alertas, o agrupamento do Alertmanager os condensa em uma única notificação, e regras de inibição suprimem o ruído downstream. Se o cluster está fora do ar, não precisa também fazer page para cada pod nele.\n\n5. Migrar para alertas de burn-rate multi-janela para SLOs. Um limite estático ou dispara cedo demais ou tarde demais. Um par de burn rápido mais burn lento captura um consumo real de budget rapidamente, ficando quieto em picos passageiros.\n\n6. Rotear por severidade. Só urgência genuína faz page. O resto vai para o Slack ou uma fila de tickets que é triada durante o dia.\n\n7. Definir um orçamento e defendê-lo. Escolha uma meta, como menos de dois pages por turno fora do horário comercial, e trate ultrapassá-la como um bug com dono, revisado em cada troca de plantão. Sem uma meta, o ruído volta a se acumular.\n\nOs casos extremos que costumam pegar as pessoas: não simplesmente aumente os limites, porque isso esconde problemas reais em vez de remover ruído. Fique de olho nos alertas que se auto-resolvem, já que algo que oscila e se resolve a noite toda é um bug real disfarçado de inofensivo. E todo page que sobrar precisa ter um runbook. Se um page não tem runbook, ou ele não vale a pena, ou você deve um a ele.",
+  "explanation": "Essa é a pergunta de nível sênior que revela se alguém realmente já foi dono de alerting em produção. O indício está na sequência: uma boa resposta começa medindo, depois corta e rebaixa alertas, e trata alerting baseado em sintomas e roteamento por severidade como as correções estruturais. Respostas mais fracas vão direto para 'aumentar os limites' ou 'adicionar um dashboard', ambos os quais escondem problemas em vez de corrigi-los. Mencionar um orçamento de pages por turno, alertas de burn-rate multi-janela, ou incluir o ajuste de alertas como parte da retro de on-call são sinais claros de senioridade.",
   "category": "Incident Management",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,30 +18,30 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "A noisy cause-based alert rewritten as a quiet symptom-based one",
+      "label": "Um alerta ruidoso baseado em causa reescrito como um alerta silencioso baseado em sintoma",
       "code": "# BAD: pages constantly, often when nothing is actually wrong\n- alert: HighCPU\n  expr: instance:node_cpu_utilisation:rate5m > 0.9\n  labels: { severity: critical }\n  annotations:\n    summary: \"CPU above 90% on {{ $labels.instance }}\"\n\n# GOOD: pages only when users are actually being hurt\n- alert: CheckoutErrorBudgetFastBurn\n  # 2% of requests failing, sustained, on a user-facing path\n  expr: |\n    sum(rate(http_requests_total{service=\"checkout\",status=~\"5..\"}[5m]))\n      / sum(rate(http_requests_total{service=\"checkout\"}[5m])) > 0.02\n  for: 5m            # duration guard kills flapping\n  labels: { severity: critical }\n  annotations:\n    summary: \"Checkout error rate above 2% for 5m\"\n    runbook: \"https://runbooks.internal/checkout-5xx\""
     },
     {
       "language": "yaml",
-      "label": "Multi-window burn-rate SLO alert: fast and slow, fewer false pages",
+      "label": "Alerta de SLO com burn-rate multi-janela: rápido e lento, menos pages falsos",
       "code": "# Page only when both a fast and a slow window agree the budget\n# is burning. Catches real incidents, ignores momentary blips.\n- alert: CheckoutSLOFastBurn\n  expr: |\n    (\n      slo:error_rate:ratio_rate5m{service=\"checkout\"} > (14.4 * 0.001)\n      and\n      slo:error_rate:ratio_rate1h{service=\"checkout\"} > (14.4 * 0.001)\n    )\n  for: 2m\n  labels: { severity: critical }\n  annotations:\n    summary: \"Checkout burning 30-day budget ~14x too fast\""
     },
     {
       "language": "promql",
-      "label": "Find your noisiest alerts so you fix the right ones first",
+      "label": "Encontre seus alertas mais barulhentos para corrigir os certos primeiro",
       "code": "# Top alert names by firing volume over the last 24h.\n# Start cutting from the top of this list.\ntopk(10,\n  sum by (alertname) (\n    count_over_time(ALERTS{alertstate=\"firing\"}[24h])\n  )\n)"
     }
   ],
   "followUpQuestions": [
-    "How do you decide whether a given alert should page someone versus go to a ticket?",
-    "After you make these changes, how would you measure whether on-call fatigue actually went down?",
-    "What's a multi-window burn-rate alert, and why is it better than a single static threshold?"
+    "Como você decide se um determinado alerta deve fazer page em alguém ou virar um ticket?",
+    "Depois de fazer essas mudanças, como você mediria se a fadiga do on-call realmente diminuiu?",
+    "O que é um alerta de burn-rate multi-janela, e por que ele é melhor do que um limite estático único?"
   ],
   "commonMistakes": [
-    "Just raising the thresholds. That hides real degradation instead of removing noise, and the next real incident slips under the new bar.",
-    "Silencing alerts without fixing the underlying cause. A muted alert that's still flapping is a bug you've agreed to stop looking at.",
-    "Adding more dashboards instead of cutting alerts. Dashboards don't reduce pages; deleting non-actionable alerts does.",
-    "Alerting on causes like CPU and memory instead of user-facing symptoms. Resource metrics belong on dashboards, not on the pager."
+    "Simplesmente aumentar os limites. Isso esconde degradação real em vez de remover ruído, e o próximo incidente real passa despercebido sob o novo limite.",
+    "Silenciar alertas sem corrigir a causa subjacente. Um alerta silenciado que ainda está oscilando é um bug que você concordou em parar de observar.",
+    "Adicionar mais dashboards em vez de cortar alertas. Dashboards não reduzem pages; excluir alertas não acionáveis, sim.",
+    "Alertar em cima de causas como CPU e memória em vez de sintomas voltados ao usuário. Métricas de recurso pertencem aos dashboards, não ao pager."
   ],
   "relatedTopics": [
     "alerting",

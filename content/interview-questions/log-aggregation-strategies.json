@@ -1,10 +1,10 @@
 {
   "id": "log-aggregation-strategies",
   "slug": "log-aggregation-strategies",
-  "title": "Log Aggregation Strategies",
-  "question": "How do you implement centralized logging in a distributed system? What are the key components?",
-  "answer": "Centralized logging collects logs from all services into one searchable system. Key components: 1) Collection - agents like Fluentd, Fluent Bit, or Filebeat. 2) Transport - message queues (Kafka) for buffering. 3) Processing - parsing, filtering, enriching (Logstash). 4) Storage - Elasticsearch, Loki, or cloud services. 5) Visualization - Kibana, Grafana. Best practices: use structured logging (JSON), include correlation IDs for tracing requests, set retention policies, and implement log levels appropriately.",
-  "explanation": "In distributed systems, logs scattered across hundreds of containers are useless. Centralized logging enables searching across all services, correlating events, and debugging issues. The ELK stack (Elasticsearch, Logstash, Kibana) is traditional; newer options like Loki (Grafana) are more cost-effective. Structured logging is crucial - parsing unstructured text at scale is expensive.",
+  "title": "Estratégias de Agregação de Logs",
+  "question": "Como você implementa logging centralizado em um sistema distribuído? Quais são os componentes principais?",
+  "answer": "O logging centralizado coleta logs de todos os serviços em um único sistema pesquisável. Componentes principais: 1) Coleta - agentes como Fluentd, Fluent Bit ou Filebeat. 2) Transporte - filas de mensagens (Kafka) para buffering. 3) Processamento - parsing, filtragem, enriquecimento (Logstash). 4) Armazenamento - Elasticsearch, Loki ou serviços de nuvem. 5) Visualização - Kibana, Grafana. Boas práticas: usar structured logging (JSON), incluir correlation IDs para rastrear requisições, definir políticas de retenção e implementar níveis de log de forma adequada.",
+  "explanation": "Em sistemas distribuídos, logs espalhados por centenas de containers são inúteis. O logging centralizado permite pesquisar em todos os serviços, correlacionar eventos e depurar problemas. A stack ELK (Elasticsearch, Logstash, Kibana) é a tradicional; opções mais novas como Loki (Grafana) são mais econômicas. Structured logging é fundamental - fazer parsing de texto não estruturado em escala é caro.",
   "category": "Monitoring",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Fluent Bit DaemonSet",
+      "label": "DaemonSet do Fluent Bit",
       "code": "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: fluent-bit\nspec:\n  selector:\n    matchLabels:\n      app: fluent-bit\n  template:\n    spec:\n      containers:\n      - name: fluent-bit\n        image: fluent/fluent-bit:latest\n        volumeMounts:\n        - name: varlog\n          mountPath: /var/log\n        - name: config\n          mountPath: /fluent-bit/etc/\n      volumes:\n      - name: varlog\n        hostPath:\n          path: /var/log\n      - name: config\n        configMap:\n          name: fluent-bit-config"
     },
     {
       "language": "json",
-      "label": "Structured log format",
+      "label": "Formato de log estruturado",
       "code": "{\n  \"timestamp\": \"2024-01-15T10:30:00.000Z\",\n  \"level\": \"error\",\n  \"service\": \"payment-api\",\n  \"trace_id\": \"abc123xyz\",\n  \"span_id\": \"def456\",\n  \"user_id\": \"user_789\",\n  \"message\": \"Payment processing failed\",\n  \"error\": {\n    \"type\": \"PaymentGatewayError\",\n    \"message\": \"Connection timeout\",\n    \"stack\": \"...\"\n  },\n  \"duration_ms\": 5023\n}"
     }
   ],
   "followUpQuestions": [
-    "How do you handle high-volume logging without impacting application performance?",
-    "What is the difference between logs, metrics, and traces?",
-    "How do you implement log retention and comply with data regulations?"
+    "Como você lida com logging de alto volume sem impactar a performance da aplicação?",
+    "Qual é a diferença entre logs, métricas e traces?",
+    "Como você implementa retenção de logs e cumpre regulações de dados?"
   ],
   "commonMistakes": [
-    "Logging sensitive data (passwords, PII) that violates compliance",
-    "Using DEBUG level in production, creating massive storage costs",
-    "Not including correlation IDs, making distributed tracing impossible"
+    "Registrar dados sensíveis (senhas, PII) que violam compliance",
+    "Usar nível DEBUG em produção, gerando custos de armazenamento enormes",
+    "Não incluir correlation IDs, tornando o distributed tracing impossível"
   ],
   "relatedTopics": [
     "elk-stack",

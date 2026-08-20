@@ -1,10 +1,10 @@
 {
   "id": "progressive-delivery-canary-releases",
   "slug": "progressive-delivery-canary-releases",
-  "title": "Canary Releases in Progressive Delivery",
-  "question": "You're deploying a new version of a critical payment service. Walk me through how you'd set up a canary release for it.",
-  "answer": "First, I'd deploy the new version alongside the current one but route only a small slice of traffic to it, say 2-5%. The canary gets real production traffic while the stable version handles the rest. I'd set up automated analysis on key metrics: error rate, p99 latency, and business metrics like payment success rate. These metrics would be compared between the canary and the stable version. If the canary's error rate is more than 0.5% higher or its p99 latency is more than 50ms worse, the rollout automatically stops and traffic shifts back to the stable version. If metrics look healthy after 15-30 minutes, I'd step up to 10%, then 25%, then 50%, and finally 100%, with the same automated checks at each step. For a payment service specifically, I'd also watch for downstream effects like increased charge disputes or webhook delivery failures. The whole process might take 2-4 hours for a low-risk change or a full day for something significant. Tools like Flagger or Argo Rollouts can automate the traffic shifting and metric analysis so you're not manually watching dashboards.",
-  "explanation": "This scenario-based question forces the candidate to think through a real deployment instead of reciting definitions. Strong answers include specific metrics, thresholds, and time windows. Listen for whether they mention automated rollback, business-level metrics beyond just error rates, and how they'd size the initial canary percentage based on the service's criticality.",
+  "title": "Canary Releases em Progressive Delivery",
+  "question": "Você está implantando uma nova versão de um serviço de pagamentos crítico. Me explique passo a passo como você configuraria um canary release para ele.",
+  "answer": "Primeiro, eu implantaria a nova versão junto com a atual, mas direcionando apenas uma pequena fatia do tráfego para ela, digamos 2-5%. O canary recebe tráfego real de produção enquanto a versão estável cuida do resto. Eu configuraria uma análise automatizada em métricas-chave: taxa de erro, latência p99 e métricas de negócio como taxa de sucesso de pagamentos. Essas métricas seriam comparadas entre o canary e a versão estável. Se a taxa de erro do canary for mais de 0,5% maior ou sua latência p99 for mais de 50ms pior, o rollout para automaticamente e o tráfego volta para a versão estável. Se as métricas estiverem saudáveis após 15-30 minutos, eu avançaria para 10%, depois 25%, 50% e finalmente 100%, com as mesmas verificações automatizadas em cada etapa. Para um serviço de pagamentos especificamente, eu também observaria efeitos downstream, como aumento de disputas de cobrança ou falhas na entrega de webhooks. Todo o processo pode levar de 2 a 4 horas para uma mudança de baixo risco ou um dia inteiro para algo mais significativo. Ferramentas como Flagger ou Argo Rollouts podem automatizar o deslocamento de tráfego e a análise de métricas para que você não precise ficar observando dashboards manualmente.",
+  "explanation": "Essa pergunta baseada em cenário obriga o candidato a pensar em um deployment real em vez de recitar definições. Boas respostas incluem métricas específicas, limites e janelas de tempo. Preste atenção se o candidato menciona rollback automatizado, métricas de nível de negócio além de apenas taxas de erro, e como ele dimensionaria a porcentagem inicial do canary com base na criticidade do serviço.",
   "category": "CI/CD",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Argo Rollouts canary strategy with automated analysis",
+      "label": "Estratégia canary do Argo Rollouts com análise automatizada",
       "code": "apiVersion: argoproj.io/v1alpha1\nkind: Rollout\nmetadata:\n  name: payment-service\nspec:\n  replicas: 10\n  strategy:\n    canary:\n      steps:\n      - setWeight: 5\n      - pause: { duration: 15m }\n      - analysis:\n          templates:\n          - templateName: payment-success-rate\n      - setWeight: 25\n      - pause: { duration: 15m }\n      - analysis:\n          templates:\n          - templateName: payment-success-rate\n      - setWeight: 50\n      - pause: { duration: 30m }\n      - setWeight: 100\n      canaryMetadata:\n        labels:\n          version: canary\n      stableMetadata:\n        labels:\n          version: stable"
     },
     {
       "language": "yaml",
-      "label": "Prometheus-based canary analysis template",
+      "label": "Template de análise canary baseado em Prometheus",
       "code": "apiVersion: argoproj.io/v1alpha1\nkind: AnalysisTemplate\nmetadata:\n  name: payment-success-rate\nspec:\n  metrics:\n  - name: error-rate\n    interval: 2m\n    failureLimit: 3\n    provider:\n      prometheus:\n        address: http://prometheus:9090\n        query: |\n          sum(rate(http_requests_total{\n            service=\"payment-service\",\n            status=~\"5..\",\n            version=\"canary\"\n          }[5m])) /\n          sum(rate(http_requests_total{\n            service=\"payment-service\",\n            version=\"canary\"\n          }[5m]))\n    successCondition: result[0] < 0.005  # Less than 0.5% error rate"
     }
   ],
   "followUpQuestions": [
-    "How would you handle a canary release for a service that processes async jobs instead of HTTP requests?",
-    "What's the minimum amount of traffic you need through the canary before the metrics are statistically meaningful?",
-    "How do you do canary releases when the change involves a database schema migration?"
+    "Como você trataria um canary release para um serviço que processa jobs assíncronos em vez de requisições HTTP?",
+    "Qual é a quantidade mínima de tráfego necessária no canary para que as métricas sejam estatisticamente significativas?",
+    "Como fazer canary releases quando a mudança envolve uma migração de schema de banco de dados?"
   ],
   "commonMistakes": [
-    "Setting the initial canary percentage too high for a critical service, defeating the purpose of gradual rollout",
-    "Only checking error rates without looking at latency, business metrics, or downstream service health",
-    "Not waiting long enough at each step to collect statistically significant data"
+    "Definir a porcentagem inicial do canary muito alta para um serviço crítico, anulando o propósito do rollout gradual",
+    "Verificar apenas taxas de erro sem observar latência, métricas de negócio ou a saúde de serviços downstream",
+    "Não esperar tempo suficiente em cada etapa para coletar dados estatisticamente significativos"
   ],
   "relatedTopics": [
     "argo-rollouts",

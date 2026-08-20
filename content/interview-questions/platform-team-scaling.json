@@ -1,10 +1,10 @@
 {
   "id": "platform-team-scaling",
   "slug": "platform-team-scaling",
-  "title": "Platform Team Scaling and Processes",
-  "question": "How do you scale a platform/DevOps team to support a growing engineering organization?",
-  "answer": "Scaling platform teams requires balancing self-service with support. Strategies: 1) Build internal platforms - abstract complexity, provide golden paths. 2) Self-service tooling - templates, CLIs, portals for common tasks. 3) Inner source model - development teams contribute back. 4) Documentation and training - reduce support burden. 5) Embedded vs centralized - consider platform engineers embedded in product teams. 6) Toil reduction - automate repetitive requests. 7) SLOs for internal services. Goal: platform team scales sub-linearly with company growth through leverage.",
-  "explanation": "A platform team that must manually handle every request becomes a bottleneck. The modern approach treats internal developers as customers and builds products for them. Spotify's model, Backstage-style portals, and 'you build it, you run it' all aim to increase developer velocity while maintaining standards. Success is measured by developer satisfaction and ability to ship safely without waiting on the platform team.",
+  "title": "Escalando o Time de Plataforma e Processos",
+  "question": "Como você escala um time de plataforma/DevOps para dar suporte a uma organização de engenharia em crescimento?",
+  "answer": "Escalar times de plataforma exige equilibrar self-service com suporte. Estratégias: 1) Construir plataformas internas - abstrair complexidade, oferecer golden paths. 2) Ferramentas de self-service - templates, CLIs, portais para tarefas comuns. 3) Modelo inner source - as equipes de desenvolvimento contribuem de volta. 4) Documentação e treinamento - reduzir a carga de suporte. 5) Embedded vs. centralizado - considerar engenheiros de plataforma embutidos nas equipes de produto. 6) Redução de toil - automatizar solicitações repetitivas. 7) SLOs para serviços internos. Objetivo: o time de plataforma cresce de forma sublinear em relação ao crescimento da empresa por meio de alavancagem.",
+  "explanation": "Um time de plataforma que precisa atender manualmente cada solicitação se torna um gargalo. A abordagem moderna trata os desenvolvedores internos como clientes e constrói produtos para eles. O modelo da Spotify, portais no estilo Backstage e 'you build it, you run it' visam aumentar a velocidade dos desenvolvedores mantendo padrões. O sucesso é medido pela satisfação dos desenvolvedores e pela capacidade de fazer deploy com segurança sem depender do time de plataforma.",
   "category": "DevOps",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Backstage service template",
+      "label": "Template de serviço do Backstage",
       "code": "apiVersion: scaffolder.backstage.io/v1beta3\nkind: Template\nmetadata:\n  name: microservice-template\n  title: New Microservice\n  description: Create a production-ready microservice\nspec:\n  owner: platform-team\n  type: service\n  parameters:\n    - title: Service Info\n      properties:\n        name:\n          title: Name\n          type: string\n        team:\n          title: Owning Team\n          type: string\n          enum: [payments, users, orders]\n  steps:\n    - id: fetch\n      action: fetch:template\n      input:\n        url: ./skeleton\n    - id: publish\n      action: publish:github\n    - id: register\n      action: catalog:register"
     },
     {
       "language": "bash",
-      "label": "Platform CLI example",
+      "label": "Exemplo de CLI da plataforma",
       "code": "#!/bin/bash\n# Internal platform CLI for self-service\n\n# Create new service (templated)\nplatform create service --name payments-api --team payments\n\n# Request database\nplatform request postgres --size medium --team payments\n\n# Deploy to environment\nplatform deploy payments-api --env staging\n\n# View service health\nplatform status payments-api\n\n# Access logs (with proper RBAC)\nplatform logs payments-api --since 1h"
     }
   ],
   "followUpQuestions": [
-    "How do you balance standardization with team autonomy?",
-    "What metrics do you use to measure platform team effectiveness?",
-    "How do you handle teams that want to use non-standard tools?"
+    "Como você equilibra padronização com autonomia das equipes?",
+    "Quais métricas você usa para medir a eficácia do time de plataforma?",
+    "Como você lida com equipes que querem usar ferramentas fora do padrão?"
   ],
   "commonMistakes": [
-    "Building a platform nobody asked for (solution looking for a problem)",
-    "Not treating internal tools with the same rigor as customer-facing products",
-    "Forcing teams to use the platform instead of making it genuinely better"
+    "Construir uma plataforma que ninguém pediu (solução em busca de um problema)",
+    "Não tratar as ferramentas internas com o mesmo rigor de produtos voltados ao cliente",
+    "Forçar as equipes a usar a plataforma em vez de torná-la genuinamente melhor"
   ],
   "relatedTopics": [
     "platform-engineering",
