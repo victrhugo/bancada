@@ -1,34 +1,34 @@
 {
   "id": "git-workflow-collaboration",
-  "title": "Git Workflow and Collaboration Fundamentals",
-  "description": "Master essential Git workflows, branching strategies, and collaboration techniques used in modern development teams.",
+  "title": "Fundamentos de Workflow e Colaboração com Git",
+  "description": "Domine os workflows essenciais do Git, estratégias de branching e técnicas de colaboração usadas em equipes de desenvolvimento modernas.",
   "category": {
     "name": "Git",
     "slug": "git"
   },
   "difficulty": "beginner",
-  "estimatedTime": "50 minutes",
+  "estimatedTime": "50 minutos",
   "technologies": ["Git", "GitHub", "Version Control"],
-  "prerequisites": ["Git installed", "Basic command line knowledge", "GitHub account (optional)"],
+  "prerequisites": ["Git instalado", "Conhecimento básico de linha de comando", "Conta no GitHub (opcional)"],
   "learningObjectives": [
-    "Understand core Git concepts and workflow",
-    "Create and manage branches effectively",
-    "Resolve merge conflicts confidently",
-    "Collaborate using pull requests and code reviews"
+    "Entender os conceitos centrais e o workflow do Git",
+    "Criar e gerenciar branches de forma eficaz",
+    "Resolver conflitos de merge com confiança",
+    "Colaborar usando pull requests e code reviews"
   ],
   "environment": "local",
   "icon": "GitBranch",
   "publishedAt": "2025-11-19T12:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["Git", "Version Control", "Collaboration", "Beginner", "Workflow"],
   "steps": [
     {
       "id": "repository-setup",
-      "title": "Initialize Your First Repository",
-      "description": "Set up a new Git repository and understand the basic structure.",
+      "title": "Inicialize Seu Primeiro Repositório",
+      "description": "Configure um novo repositório Git e entenda a estrutura básica.",
       "commands": [
         "mkdir git-workflow-lab",
         "cd git-workflow-lab",
@@ -39,21 +39,21 @@
       ],
       "codeExample": "# Create a simple project structure\nmkdir src docs\n\n# Create README.md\ncat > README.md << 'EOF'\n# Git Workflow Lab\n\nA hands-on project to learn Git fundamentals.\n\n## Features\n- Version control basics\n- Branching strategies\n- Collaboration workflows\n\n## Getting Started\n\nClone this repository and explore!\nEOF\n\n# Create a simple application file\ncat > src/app.js << 'EOF'\n// Simple greeting application\nfunction greet(name) {\n  return `Hello, ${name}!`;\n}\n\nconsole.log(greet('DevOps'));\nEOF\n\n# Create .gitignore\ncat > .gitignore << 'EOF'\nnode_modules/\n.env\n*.log\n.DS_Store\nEOF",
       "hints": [
-        "Use 'git status' frequently to see what's happening",
-        ".gitignore prevents committing unnecessary files",
-        "Configure your name and email for proper commit attribution"
+        "Use 'git status' com frequência para ver o que está acontecendo",
+        "O .gitignore evita que arquivos desnecessários sejam commitados",
+        "Configure seu nome e email para a atribuição correta dos commits"
       ],
       "validationCriteria": [
-        "Git repository is initialized (.git folder exists)",
-        "User name and email are configured",
-        "Project files are created"
+        "O repositório Git está inicializado (a pasta .git existe)",
+        "Nome de usuário e email estão configurados",
+        "Os arquivos do projeto foram criados"
       ],
       "expectedOutput": "Repository initialized with project structure"
     },
     {
       "id": "first-commits",
-      "title": "Create Your First Commits",
-      "description": "Learn the staging area concept and create meaningful commits.",
+      "title": "Crie Seus Primeiros Commits",
+      "description": "Aprenda o conceito de staging area e crie commits significativos.",
       "commands": [
         "git add README.md",
         "git status",
@@ -64,21 +64,21 @@
       ],
       "codeExample": "# Good commit messages follow a pattern:\n# - Start with a verb (Add, Fix, Update, Remove)\n# - Be concise but descriptive\n# - Explain WHAT and WHY, not HOW\n\n# Examples of GOOD commit messages:\ngit commit -m \"Add user authentication feature\"\ngit commit -m \"Fix memory leak in data processing\"\ngit commit -m \"Update documentation for API endpoints\"\ngit commit -m \"Remove deprecated payment gateway\"\n\n# Examples of BAD commit messages:\ngit commit -m \"fixes\"  # Too vague\ngit commit -m \"WIP\"  # Not descriptive\ngit commit -m \"asdfgh\"  # Not meaningful\n\n# View your commit history\ngit log --oneline --graph --all\n\n# See what changed in a commit\ngit show HEAD\n\n# See changes between commits\ngit diff HEAD~1 HEAD",
       "hints": [
-        "The staging area lets you control what goes in each commit",
-        "Commit early and often with meaningful messages",
-        "Use 'git add -p' for interactive staging of changes"
+        "A staging area permite controlar o que entra em cada commit",
+        "Faça commits cedo e com frequência, usando mensagens significativas",
+        "Use 'git add -p' para o staging interativo das alterações"
       ],
       "validationCriteria": [
-        "At least 2 commits exist",
-        "Commit messages are descriptive",
-        "Can view commit history with git log"
+        "Existem pelo menos 2 commits",
+        "As mensagens de commit são descritivas",
+        "É possível visualizar o histórico de commits com git log"
       ],
       "expectedOutput": "Clean commit history with meaningful messages"
     },
     {
       "id": "branching-basics",
-      "title": "Master Branching and Switching",
-      "description": "Create feature branches and switch between them to work on multiple tasks.",
+      "title": "Domine Branching e Troca de Branches",
+      "description": "Crie branches de feature e alterne entre elas para trabalhar em múltiplas tarefas.",
       "commands": [
         "git branch",
         "git branch feature/add-goodbye",
@@ -88,21 +88,21 @@
       ],
       "codeExample": "# Create a new feature branch\ngit checkout -b feature/add-goodbye\n\n# Add a new feature\ncat >> src/app.js << 'EOF'\n\nfunction goodbye(name) {\n  return `Goodbye, ${name}! See you later.`;\n}\n\nconsole.log(goodbye('DevOps'));\nEOF\n\n# Commit the changes\ngit add src/app.js\ngit commit -m \"Add goodbye function\"\n\n# Switch back to main branch\ngit checkout main\n\n# See the difference - goodbye function doesn't exist here!\ncat src/app.js\n\n# Create another branch from main\ngit checkout -b feature/add-documentation\n\n# Add documentation\ncat > docs/API.md << 'EOF'\n# API Documentation\n\n## Functions\n\n### greet(name)\nReturns a greeting message.\n\n**Parameters:**\n- `name` (string): The name to greet\n\n**Returns:** String\n\n**Example:**\n```javascript\ngreet('World'); // \"Hello, World!\"\n```\nEOF\n\ngit add docs/API.md\ngit commit -m \"Add API documentation\"\n\n# View all branches\ngit branch -a\n\n# View branch graph\ngit log --oneline --graph --all --decorate",
       "hints": [
-        "Branch names should be descriptive: feature/*, bugfix/*, hotfix/*",
-        "Always create branches from the latest main/master",
-        "Use 'git checkout -b' to create and switch in one command"
+        "Nomes de branch devem ser descritivos: feature/*, bugfix/*, hotfix/*",
+        "Sempre crie branches a partir da versão mais recente de main/master",
+        "Use 'git checkout -b' para criar e trocar de branch em um único comando"
       ],
       "validationCriteria": [
-        "Multiple branches exist",
-        "Can switch between branches",
-        "Each branch has different content"
+        "Existem múltiplas branches",
+        "É possível alternar entre branches",
+        "Cada branch possui conteúdo diferente"
       ],
       "expectedOutput": "Multiple feature branches with isolated changes"
     },
     {
       "id": "merging-branches",
-      "title": "Merge Branches and Handle Conflicts",
-      "description": "Merge feature branches back to main and learn to resolve conflicts.",
+      "title": "Faça Merge de Branches e Lide com Conflitos",
+      "description": "Faça merge de branches de feature de volta para main e aprenda a resolver conflitos.",
       "commands": [
         "git checkout main",
         "git merge feature/add-goodbye",
@@ -111,21 +111,21 @@
       ],
       "codeExample": "# Merge the first feature (should be smooth)\ngit checkout main\ngit merge feature/add-goodbye\n\n# Output should show \"Fast-forward\" if no conflicts\n# Delete the merged branch\ngit branch -d feature/add-goodbye\n\n# Merge the documentation branch\ngit merge feature/add-documentation\ngit branch -d feature/add-documentation\n\n# Now let's create a conflict intentionally!\n# First, modify app.js on main\ngit checkout main\nsed -i '' 's/Hello/Hi/g' src/app.js 2>/dev/null || sed -i 's/Hello/Hi/g' src/app.js\ngit add src/app.js\ngit commit -m \"Change greeting from Hello to Hi\"\n\n# Create a conflicting branch\ngit checkout -b feature/change-greeting HEAD~1\nsed -i '' 's/Hello/Hey/g' src/app.js 2>/dev/null || sed -i 's/Hello/Hey/g' src/app.js\ngit add src/app.js\ngit commit -m \"Change greeting from Hello to Hey\"\n\n# Try to merge - this will create a conflict!\ngit checkout main\ngit merge feature/change-greeting\n\n# You'll see a conflict message. Open the file:\ncat src/app.js\n\n# You'll see conflict markers:\n# <<<<<<< HEAD\n#   return `Hi, ${name}!`;\n# =======\n#   return `Hey, ${name}!`;\n# >>>>>>> feature/change-greeting\n\n# Resolve by editing the file (choose one or combine)\ncat > src/app.js << 'EOF'\n// Simple greeting application\nfunction greet(name) {\n  return `Hey there, ${name}!`;  // Resolved: combined both ideas\n}\n\nfunction goodbye(name) {\n  return `Goodbye, ${name}! See you later.`;\n}\n\nconsole.log(greet('DevOps'));\nconsole.log(goodbye('DevOps'));\nEOF\n\n# Mark as resolved and complete the merge\ngit add src/app.js\ngit commit -m \"Merge feature/change-greeting and resolve conflicts\"\n\n# Clean up\ngit branch -d feature/change-greeting",
       "hints": [
-        "Conflict markers: <<<<<<< HEAD, =======, >>>>>>> branch-name",
-        "Always test after resolving conflicts",
-        "Use 'git merge --abort' to cancel a merge if needed"
+        "Marcadores de conflito: <<<<<<< HEAD, =======, >>>>>>> nome-da-branch",
+        "Sempre teste após resolver conflitos",
+        "Use 'git merge --abort' para cancelar um merge, se necessário"
       ],
       "validationCriteria": [
-        "Successfully merged branches",
-        "Resolved at least one conflict",
-        "Final code works correctly"
+        "Branches mescladas com sucesso",
+        "Resolveu pelo menos um conflito",
+        "O código final funciona corretamente"
       ],
       "expectedOutput": "Merged branches with conflicts successfully resolved"
     },
     {
       "id": "viewing-history",
-      "title": "Explore and Understand Git History",
-      "description": "Use Git commands to explore project history and understand changes.",
+      "title": "Explore e Entenda o Histórico do Git",
+      "description": "Use comandos do Git para explorar o histórico do projeto e entender as alterações.",
       "codeExample": "# View commit history in different formats\ngit log --oneline\ngit log --oneline --graph --all\ngit log --stat  # Shows files changed\ngit log -p  # Shows actual changes (patch)\n\n# Search commit history\ngit log --grep=\"greeting\"  # Find commits mentioning 'greeting'\ngit log --author=\"Your Name\"  # Find your commits\ngit log --since=\"1 day ago\"  # Recent commits\n\n# See who changed what and when\ngit blame src/app.js\n\n# View a specific commit\ngit show HEAD  # Latest commit\ngit show HEAD~2  # Two commits ago\n\n# Compare branches\ngit diff main feature/some-branch\n\n# See what changed in a file\ngit log -p src/app.js\n\n# Find when a bug was introduced (binary search)\n# git bisect start\n# git bisect bad  # Current version has the bug\n# git bisect good abc123  # This commit was good\n# Git will checkout middle commits for you to test\n# git bisect good/bad after each test\n# git bisect reset  # When done\n\n# Create aliases for common commands\ngit config --global alias.lg \"log --oneline --graph --all --decorate\"\ngit config --global alias.st \"status -sb\"\ngit config --global alias.co \"checkout\"\ngit config --global alias.br \"branch\"\n\n# Now you can use:\ngit lg  # Beautiful log graph\ngit st  # Short status",
       "commands": [
         "git log --oneline --graph --all",
@@ -135,21 +135,21 @@
         "git diff HEAD~1 HEAD"
       ],
       "hints": [
-        "Use 'git log --help' to see all options",
-        "Aliases save time for frequently used commands",
-        "'git blame' helps find who made specific changes"
+        "Use 'git log --help' para ver todas as opções",
+        "Aliases economizam tempo para comandos usados com frequência",
+        "'git blame' ajuda a encontrar quem fez alterações específicas"
       ],
       "validationCriteria": [
-        "Can view commit history",
-        "Understand git log output",
-        "Can compare different commits"
+        "É possível visualizar o histórico de commits",
+        "Entender a saída do git log",
+        "É possível comparar commits diferentes"
       ],
       "expectedOutput": "Understanding of project history and changes"
     },
     {
       "id": "undoing-changes",
-      "title": "Undo Changes Safely",
-      "description": "Learn safe ways to undo changes at different stages.",
+      "title": "Desfaça Alterações com Segurança",
+      "description": "Aprenda formas seguras de desfazer alterações em diferentes estágios.",
       "codeExample": "# Scenario 1: Undo changes in working directory (before staging)\necho \"Bad change\" >> src/app.js\ngit status  # Shows modified file\ngit restore src/app.js  # Undo the change\n# OR the old way: git checkout -- src/app.js\n\n# Scenario 2: Unstage files (after git add, before commit)\necho \"Some change\" >> src/app.js\ngit add src/app.js\ngit status  # Shows staged file\ngit restore --staged src/app.js  # Unstage\n# OR the old way: git reset HEAD src/app.js\n\n# Scenario 3: Amend the last commit (fix typos, add forgotten files)\ncat > docs/CHANGELOG.md << 'EOF'\n# Changelog\n\n## v1.0.0\n- Initial release\n- Add greeting functions\nEOF\n\ngit add docs/CHANGELOG.md\ngit commit -m \"Add changelog\"\n\n# Oops! Forgot to update the version in README\necho \"\\n## Version 1.0.0\" >> README.md\ngit add README.md\ngit commit --amend  # Adds to previous commit\n\n# Scenario 4: Create a new commit that undoes a previous one\ngit log --oneline\ngit revert HEAD  # Creates a new commit undoing the last one\n\n# Scenario 5: Reset to a previous commit (CAREFUL!)\n# Soft reset: Keep changes staged\ngit reset --soft HEAD~1\n\n# Mixed reset: Keep changes unstaged (default)\ngit reset HEAD~1\n# OR: git reset --mixed HEAD~1\n\n# Hard reset: DISCARD all changes (DANGEROUS!)\n# git reset --hard HEAD~1  # Use with caution!\n\n# Scenario 6: Recover lost commits (saved by reflog)\ngit reflog  # Shows all HEAD movements\n# If you accidentally reset, you can get back:\n# git reset --hard HEAD@{1}\n\n# Best Practices:\n# - Use 'restore' and 'revert' when possible (safer)\n# - Avoid 'reset --hard' on shared branches\n# - Use 'commit --amend' only on unpushed commits\n# - Check 'git reflog' if you lose commits",
       "commands": [
         "git restore src/app.js",
@@ -159,22 +159,22 @@
         "git reflog"
       ],
       "hints": [
-        "git restore is the modern way to undo changes",
-        "git revert is safer than reset for shared branches",
-        "git reflog is your safety net - commits aren't truly lost"
+        "git restore é a forma moderna de desfazer alterações",
+        "git revert é mais seguro que reset para branches compartilhadas",
+        "git reflog é sua rede de segurança - os commits não são realmente perdidos"
       ],
       "validationCriteria": [
-        "Can undo unstaged changes",
-        "Can unstage files",
-        "Can amend commits",
-        "Understand difference between revert and reset"
+        "É possível desfazer alterações não staged",
+        "É possível remover arquivos do stage (unstage)",
+        "É possível emendar (amend) commits",
+        "Entender a diferença entre revert e reset"
       ],
       "expectedOutput": "Confidence in undoing changes safely"
     },
     {
       "id": "collaboration-workflow",
-      "title": "Collaborate with Remote Repositories",
-      "description": "Learn to work with remote repositories and collaborate with others.",
+      "title": "Colabore com Repositórios Remotos",
+      "description": "Aprenda a trabalhar com repositórios remotos e colaborar com outras pessoas.",
       "codeExample": "# Set up a remote repository (using GitHub as example)\n# First, create a repo on GitHub, then:\n\ngit remote add origin https://github.com/yourusername/git-workflow-lab.git\ngit remote -v  # Verify remote is added\n\n# Push your code\ngit branch -M main  # Rename master to main if needed\ngit push -u origin main  # -u sets upstream tracking\n\n# Now you can just use:\ngit push\n\n# Fetch updates from remote\ngit fetch origin  # Downloads without merging\ngit log origin/main  # See remote commits\n\n# Pull updates (fetch + merge)\ngit pull origin main\n# OR: git pull  (if tracking is set up)\n\n# Create a feature branch for collaboration\ngit checkout -b feature/add-tests\n\n# Add some tests\ncat > src/app.test.js << 'EOF'\n// Simple test file\nconst greet = require('./app');\n\ntest('greet returns greeting', () => {\n  expect(greet('World')).toBe('Hey there, World!');\n});\nEOF\n\ngit add src/app.test.js\ngit commit -m \"Add basic tests for greet function\"\n\n# Push feature branch\ngit push -u origin feature/add-tests\n\n# Typical collaboration workflow:\n# 1. Create feature branch from main\n# 2. Make changes and commit\n# 3. Push feature branch to remote\n# 4. Create Pull Request on GitHub\n# 5. Code review and discussion\n# 6. Merge PR when approved\n# 7. Delete feature branch\n# 8. Pull latest main\n\n# After PR is merged on GitHub:\ngit checkout main\ngit pull origin main\ngit branch -d feature/add-tests  # Delete local branch\ngit push origin --delete feature/add-tests  # Delete remote branch\n\n# Working with others' changes\n# If someone else pushed to main:\ngit checkout main\ngit pull  # Get their changes\n\n# If you have unpushed commits:\ngit pull --rebase  # Rebase your commits on top of theirs\n\n# Handle merge conflicts during pull:\n# 1. Git will show conflicts\n# 2. Edit conflicted files\n# 3. git add <resolved-files>\n# 4. git commit (or git rebase --continue if rebasing)\n\n# Clone a repository\n# git clone https://github.com/someone/repo.git\n# cd repo\n# git checkout -b my-feature\n# Make changes, commit, push, create PR\n\n# Fork workflow (for open source)\n# 1. Fork repo on GitHub\n# 2. Clone YOUR fork\n# 3. Add original as upstream:\n#    git remote add upstream https://github.com/original/repo.git\n# 4. Keep your fork updated:\n#    git fetch upstream\n#    git merge upstream/main\n# 5. Create PR from your fork to original",
       "commands": [
         "git remote add origin <url>",
@@ -184,25 +184,25 @@
         "git clone <url>"
       ],
       "hints": [
-        "Always pull before pushing to avoid conflicts",
-        "Use feature branches for all changes",
-        "Write clear PR descriptions explaining changes"
+        "Sempre faça pull antes de fazer push para evitar conflitos",
+        "Use branches de feature para todas as alterações",
+        "Escreva descrições de PR claras, explicando as alterações"
       ],
       "validationCriteria": [
-        "Can add remote repository",
-        "Can push and pull changes",
-        "Understand pull request workflow"
+        "É possível adicionar um repositório remoto",
+        "É possível fazer push e pull de alterações",
+        "Entender o workflow de pull request"
       ],
       "expectedOutput": "Understanding of remote collaboration workflow"
     }
   ],
   "completionCriteria": [
-    "Repository is initialized with multiple commits",
-    "Created and merged at least 2 branches",
-    "Resolved at least one merge conflict",
-    "Can view and understand git history",
-    "Understand how to undo changes safely",
-    "Can work with remote repositories"
+    "O repositório está inicializado com múltiplos commits",
+    "Criou e fez merge de pelo menos 2 branches",
+    "Resolveu pelo menos um conflito de merge",
+    "É possível visualizar e entender o histórico do git",
+    "Entender como desfazer alterações com segurança",
+    "É possível trabalhar com repositórios remotos"
   ],
   "resources": [
     {
@@ -232,24 +232,24 @@
   ],
   "troubleshooting": [
     {
-      "issue": "Merge conflict seems too complex",
-      "solution": "Use 'git merge --abort' to cancel the merge, review the changes separately, then try again"
+      "issue": "O conflito de merge parece complexo demais",
+      "solution": "Use 'git merge --abort' para cancelar o merge, revise as alterações separadamente e tente novamente"
     },
     {
-      "issue": "Accidentally committed to main instead of a feature branch",
-      "solution": "Create a new branch: 'git branch feature/my-work', then reset main: 'git reset --hard origin/main'"
+      "issue": "Fez commit acidentalmente na main em vez de em uma branch de feature",
+      "solution": "Crie uma nova branch: 'git branch feature/my-work', depois resete a main: 'git reset --hard origin/main'"
     },
     {
-      "issue": "Push rejected because remote has changes",
-      "solution": "Pull first with 'git pull --rebase', resolve any conflicts, then push"
+      "issue": "Push rejeitado porque o remoto possui alterações",
+      "solution": "Faça pull primeiro com 'git pull --rebase', resolva os conflitos, se houver, e então faça push"
     },
     {
-      "issue": "Want to undo last commit but keep changes",
-      "solution": "Use 'git reset --soft HEAD~1' to undo commit but keep files staged"
+      "issue": "Quer desfazer o último commit, mas manter as alterações",
+      "solution": "Use 'git reset --soft HEAD~1' para desfazer o commit, mas manter os arquivos staged"
     },
     {
-      "issue": "Lost commits after a reset",
-      "solution": "Check 'git reflog' to find the commit hash, then 'git reset --hard <hash>' to restore"
+      "issue": "Perdeu commits após um reset",
+      "solution": "Verifique o 'git reflog' para encontrar o hash do commit e depois use 'git reset --hard <hash>' para restaurar"
     }
   ],
   "featured": true

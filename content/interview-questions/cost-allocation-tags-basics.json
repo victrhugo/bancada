@@ -1,10 +1,10 @@
 {
   "id": "cost-allocation-tags-basics",
   "slug": "cost-allocation-tags-basics",
-  "title": "Cost Allocation Tags Basics",
-  "question": "Can you explain what cost allocation tags are and why teams use them across AWS, GCP, and Azure?",
-  "answer": "Cost allocation tags are key-value labels you attach to cloud resources so the billing system can split the bill by team, environment, project, or customer. All three major clouds support the same idea but name it slightly differently. AWS and Azure call them tags, GCP calls them labels. Without them your bill is one giant number per service like $47,000 on RDS and nobody knows who spent it. With them you can answer 'how much did the payments team spend last month' in seconds. Common uses: chargeback (billing internal teams for their actual usage), showback (giving teams visibility so they self-correct), scoped budget alerts, forecasting per team or product, and finding orphaned resources (no owner tag usually means nobody will miss it when it gets deleted).",
-  "explanation": "This is a warm-up question to check if the candidate has actually worked with cloud billing, not just spun up a few VMs. Strong candidates mention the tags vs labels naming, explain why tags matter for FinOps, and tie it back to dollars. Weaker candidates say 'for organization' without connecting tags to money or to a business problem.",
+  "title": "Fundamentos de tags de alocação de custos",
+  "question": "Você pode explicar o que são tags de alocação de custos e por que os times as usam em AWS, GCP e Azure?",
+  "answer": "Tags de alocação de custos são etiquetas de chave-valor que você anexa aos recursos de nuvem para que o sistema de billing consiga dividir a fatura por time, ambiente, projeto ou cliente. As três grandes nuvens suportam a mesma ideia, mas com nomes ligeiramente diferentes. AWS e Azure chamam de tags, o GCP chama de labels. Sem elas, sua fatura é um número gigante por serviço, tipo $47.000 no RDS, e ninguém sabe quem gastou aquilo. Com elas, você consegue responder 'quanto o time de payments gastou no mês passado' em segundos. Usos comuns: chargeback (cobrar times internos pelo uso real deles), showback (dar visibilidade aos times para que eles se autocorrijam), alertas de orçamento com escopo definido, previsão por time ou produto, e encontrar recursos órfãos (a ausência de uma tag de owner geralmente significa que ninguém vai sentir falta quando o recurso for deletado).",
+  "explanation": "Essa é uma pergunta de aquecimento para verificar se o candidato realmente trabalhou com billing de nuvem, não só subiu algumas VMs. Candidatos fortes mencionam a diferença de nomenclatura entre tags e labels, explicam por que as tags importam para FinOps, e conectam isso a dinheiro. Candidatos mais fracos dizem 'é para organização' sem conectar as tags a dinheiro ou a um problema de negócio.",
   "category": "FinOps",
   "difficulty": "beginner",
   "tier": "junior",
@@ -20,19 +20,19 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Tag the same logical resource in each cloud",
+      "label": "Etiquetar o mesmo recurso lógico em cada nuvem",
       "code": "# AWS: tag an EC2 instance\naws ec2 create-tags \\\n  --resources i-0123456789abcdef0 \\\n  --tags Key=team,Value=payments Key=environment,Value=prod\n\n# GCP: add labels to a Compute Engine VM\ngcloud compute instances add-labels my-vm \\\n  --labels=team=payments,environment=prod \\\n  --zone=us-central1-a\n\n# Azure: tag a VM\naz resource tag \\\n  --tags team=payments environment=prod \\\n  --resource-group my-rg \\\n  --name my-vm \\\n  --resource-type Microsoft.Compute/virtualMachines"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between showback and chargeback?",
-    "Why do AWS tags and GCP labels have different character rules?",
-    "How would you find every untagged resource in an AWS account?"
+    "Qual é a diferença entre showback e chargeback?",
+    "Por que as tags da AWS e os labels do GCP têm regras de caracteres diferentes?",
+    "Como você encontraria todos os recursos não etiquetados em uma conta AWS?"
   ],
   "commonMistakes": [
-    "Saying tags are just for organization without connecting them to the bill",
-    "Confusing AWS resource tags with IAM tags or session tags",
-    "Assuming every resource type supports tags (some AWS billing items like data transfer do not)"
+    "Dizer que as tags são só para organização sem conectá-las à fatura",
+    "Confundir tags de recursos da AWS com tags de IAM ou tags de sessão",
+    "Assumir que todo tipo de recurso suporta tags (alguns itens de billing da AWS, como transferência de dados, não suportam)"
   ],
   "relatedTopics": [
     "finops",

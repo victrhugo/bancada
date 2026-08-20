@@ -1,10 +1,10 @@
 {
   "id": "compliance-governance",
   "slug": "compliance-governance",
-  "title": "Compliance and Governance in Cloud",
-  "question": "How do you implement compliance and governance controls in a cloud-native environment?",
-  "answer": "Cloud compliance involves policies, automation, and audit capabilities. Key components: 1) Policy-as-code (OPA/Gatekeeper, AWS SCPs) to enforce rules automatically. 2) Tagging standards for resource ownership/cost tracking. 3) Centralized logging and audit trails. 4) Network segmentation and least-privilege IAM. 5) Encryption at rest and in transit. 6) Regular compliance scanning (Prowler, ScoutSuite). 7) Change management processes. Frameworks to consider: SOC2, HIPAA, PCI-DSS, GDPR depending on industry. Shift compliance left - catch violations before deployment.",
-  "explanation": "Compliance isn't just checkbox exercises - it's about building secure, auditable systems. Cloud makes compliance both easier (APIs for everything) and harder (velocity of change). Modern approaches embed compliance into CI/CD: policy checks in pipelines, infrastructure scanning, and continuous monitoring. The goal is making compliant the default, not an afterthought.",
+  "title": "Compliance e governança na nuvem",
+  "question": "Como você implementa controles de compliance e governança em um ambiente cloud-native?",
+  "answer": "Compliance na nuvem envolve políticas, automação e capacidades de auditoria. Componentes principais: 1) Policy-as-code (OPA/Gatekeeper, AWS SCPs) para aplicar regras automaticamente. 2) Padrões de etiquetagem para rastreamento de ownership e custo dos recursos. 3) Logging centralizado e trilhas de auditoria. 4) Segmentação de rede e IAM com privilégio mínimo. 5) Criptografia em repouso e em trânsito. 6) Varreduras regulares de compliance (Prowler, ScoutSuite). 7) Processos de gestão de mudanças. Frameworks a considerar: SOC2, HIPAA, PCI-DSS, GDPR, dependendo do setor. Traga o compliance para o início do processo - detecte violações antes do deploy.",
+  "explanation": "Compliance não é só uma checklist a cumprir - é sobre construir sistemas seguros e auditáveis. A nuvem torna o compliance tanto mais fácil (APIs para tudo) quanto mais difícil (velocidade das mudanças). As abordagens modernas incorporam compliance ao CI/CD: checagens de política nos pipelines, varredura de infraestrutura e monitoramento contínuo. O objetivo é fazer do compliance o padrão, não uma reflexão tardia.",
   "category": "Security",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "OPA Gatekeeper policy",
+      "label": "Política do OPA Gatekeeper",
       "code": "apiVersion: constraints.gatekeeper.sh/v1beta1\nkind: K8sRequiredLabels\nmetadata:\n  name: require-team-label\nspec:\n  match:\n    kinds:\n    - apiGroups: [\"\"]\n      kinds: [\"Namespace\"]\n  parameters:\n    labels:\n    - key: team\n    - key: environment\n    - key: cost-center\n    message: \"All namespaces must have team, environment, and cost-center labels\""
     },
     {
       "language": "hcl",
-      "label": "AWS Service Control Policy",
+      "label": "Service Control Policy da AWS",
       "code": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"DenyNonApprovedRegions\",\n      \"Effect\": \"Deny\",\n      \"NotAction\": [\n        \"iam:*\",\n        \"organizations:*\",\n        \"support:*\"\n      ],\n      \"Resource\": \"*\",\n      \"Condition\": {\n        \"StringNotEquals\": {\n          \"aws:RequestedRegion\": [\n            \"us-east-1\",\n            \"eu-west-1\"\n          ]\n        }\n      }\n    },\n    {\n      \"Sid\": \"RequireEncryption\",\n      \"Effect\": \"Deny\",\n      \"Action\": \"s3:PutObject\",\n      \"Resource\": \"*\",\n      \"Condition\": {\n        \"Null\": {\n          \"s3:x-amz-server-side-encryption\": \"true\"\n        }\n      }\n    }\n  ]\n}"
     }
   ],
   "followUpQuestions": [
-    "How do you handle compliance in a rapidly changing environment with frequent deployments?",
-    "What is the difference between preventive and detective controls?",
-    "How do you prepare for and conduct compliance audits?"
+    "Como você lida com compliance em um ambiente que muda rapidamente, com deploys frequentes?",
+    "Qual é a diferença entre controles preventivos e controles detectivos?",
+    "Como você se prepara e conduz auditorias de compliance?"
   ],
   "commonMistakes": [
-    "Treating compliance as a one-time project instead of continuous process",
-    "Relying solely on manual reviews that can't scale",
-    "Not documenting exceptions and their justifications"
+    "Tratar compliance como um projeto pontual em vez de um processo contínuo",
+    "Depender exclusivamente de revisões manuais que não escalam",
+    "Não documentar exceções e suas justificativas"
   ],
   "relatedTopics": [
     "policy-as-code",

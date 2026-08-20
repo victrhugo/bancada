@@ -1,10 +1,10 @@
 {
   "id": "chaos-engineering",
   "slug": "chaos-engineering",
-  "title": "Chaos Engineering Practices",
-  "question": "What is chaos engineering and how would you implement it safely in a production environment?",
-  "answer": "Chaos engineering is the practice of intentionally injecting failures to test system resilience. Implementation: start with hypothesis about system behavior, define minimal blast radius, begin in staging, use tools like Chaos Monkey or Litmus, inject failures (pod terminations, network latency, resource exhaustion), monitor golden signals, automate rollback on unexpected impact, gradually expand to production during low-traffic periods with team monitoring.",
-  "explanation": "Chaos engineering's goal is finding weaknesses before they find you. It builds confidence in system resilience and uncovers hidden dependencies. The key is controlled, observable experiments with safety measures - not random destruction. Netflix pioneered this with Chaos Monkey, and it's now standard practice at large-scale organizations.",
+  "title": "Práticas de chaos engineering",
+  "question": "O que é chaos engineering e como você a implementaria com segurança em um ambiente de produção?",
+  "answer": "Chaos engineering é a prática de injetar falhas intencionalmente para testar a resiliência do sistema. Implementação: comece com uma hipótese sobre o comportamento do sistema, defina um raio de impacto mínimo, comece em staging, use ferramentas como Chaos Monkey ou Litmus, injete falhas (finalização de pods, latência de rede, esgotamento de recursos), monitore os golden signals, automatize o rollback em caso de impacto inesperado e expanda gradualmente para produção durante períodos de baixo tráfego com o time monitorando.",
+  "explanation": "O objetivo do chaos engineering é encontrar as fraquezas antes que elas te encontrem. Isso constrói confiança na resiliência do sistema e revela dependências ocultas. O ponto-chave são experimentos controlados e observáveis, com medidas de segurança - não destruição aleatória. A Netflix foi pioneira nessa prática com o Chaos Monkey, e hoje é prática padrão em organizações de grande escala.",
   "category": "SRE",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Litmus ChaosEngine example",
+      "label": "Exemplo de ChaosEngine do Litmus",
       "code": "apiVersion: litmuschaos.io/v1alpha1\nkind: ChaosEngine\nmetadata:\n  name: nginx-chaos\nspec:\n  appinfo:\n    appns: default\n    applabel: 'app=nginx'\n    appkind: deployment\n  chaosServiceAccount: litmus-admin\n  experiments:\n  - name: pod-delete\n    spec:\n      components:\n        env:\n        - name: TOTAL_CHAOS_DURATION\n          value: '30'\n        - name: CHAOS_INTERVAL\n          value: '10'\n        - name: FORCE\n          value: 'false'"
     },
     {
       "language": "bash",
-      "label": "Manual chaos injection",
+      "label": "Injeção manual de caos",
       "code": "# Network latency injection\ntc qdisc add dev eth0 root netem delay 100ms 20ms\n\n# CPU stress\nstress-ng --cpu 4 --timeout 60s\n\n# Kill random pod in deployment\nkubectl delete pod $(kubectl get pods -l app=myapp -o name | shuf -n 1)\n\n# Network partition simulation\niptables -A INPUT -s 10.0.0.0/8 -j DROP"
     }
   ],
   "followUpQuestions": [
-    "How do you define and control the blast radius of chaos experiments?",
-    "What metrics should you monitor during chaos experiments?",
-    "How do you convince leadership that intentionally breaking production is valuable?"
+    "Como você define e controla o raio de impacto dos experimentos de caos?",
+    "Quais métricas você deveria monitorar durante experimentos de caos?",
+    "Como você convence a liderança de que quebrar produção intencionalmente tem valor?"
   ],
   "commonMistakes": [
-    "Running chaos experiments without proper monitoring in place",
-    "Starting with production before validating in staging",
-    "No automated rollback mechanism when experiments go wrong"
+    "Rodar experimentos de caos sem monitoramento adequado implantado",
+    "Começar por produção antes de validar em staging",
+    "Não ter mecanismo de rollback automatizado quando os experimentos dão errado"
   ],
   "relatedTopics": [
     "game-days",

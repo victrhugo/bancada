@@ -1,10 +1,10 @@
 {
   "id": "bash-scripting-basics",
   "slug": "bash-scripting-basics",
-  "title": "Bash Scripting Basics",
-  "question": "What is the shebang line and how do you write a basic bash script?",
-  "answer": "The shebang (#!) tells the OS which interpreter to use. #!/bin/bash specifies bash. Basic script structure: shebang, variables (VAR=value), conditionals (if/then/fi), loops (for/while), and functions. Make scripts executable with chmod +x. Use set -e to exit on errors and set -x for debugging.",
-  "explanation": "Bash scripting is essential for automating repetitive tasks, deployment scripts, system administration, and CI/CD pipelines. Even with modern tools like Ansible or Terraform, bash scripts remain valuable for quick automation and glue code.",
+  "title": "Fundamentos de scripting em Bash",
+  "question": "O que é a linha shebang e como se escreve um script bash básico?",
+  "answer": "O shebang (#!) diz ao sistema operacional qual interpretador usar. #!/bin/bash especifica o bash. Estrutura básica de um script: shebang, variáveis (VAR=valor), condicionais (if/then/fi), laços (for/while) e funções. Torne os scripts executáveis com chmod +x. Use set -e para sair em caso de erro e set -x para depuração.",
+  "explanation": "Scripting em bash é essencial para automatizar tarefas repetitivas, scripts de deploy, administração de sistemas e pipelines de CI/CD. Mesmo com ferramentas modernas como Ansible ou Terraform, os scripts bash continuam valiosos para automações rápidas e código de integração (glue code).",
   "category": "Linux",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Basic script structure",
+      "label": "Estrutura básica de script",
       "code": "#!/bin/bash\nset -e  # Exit on error\n\n# Variables\nAPP_NAME=\"myapp\"\nENV=${1:-\"dev\"}  # Default to 'dev' if no argument\n\n# Function\ndeploy() {\n  echo \"Deploying $APP_NAME to $ENV...\"\n}\n\n# Conditional\nif [ \"$ENV\" = \"prod\" ]; then\n  echo \"Production deployment - extra caution!\"\nfi\n\ndeploy"
     },
     {
       "language": "bash",
-      "label": "Loops and input handling",
+      "label": "Laços e tratamento de entrada",
       "code": "#!/bin/bash\n\n# For loop\nfor server in web1 web2 web3; do\n  echo \"Checking $server...\"\n  ssh $server 'uptime'\ndone\n\n# While loop reading file\nwhile read -r line; do\n  echo \"Processing: $line\"\ndone < servers.txt\n\n# Check if command succeeded\nif docker ps > /dev/null 2>&1; then\n  echo \"Docker is running\"\nelse\n  echo \"Docker is not running\"\n  exit 1\nfi"
     }
   ],
   "followUpQuestions": [
-    "What's the difference between $* and $@ for script arguments?",
-    "How do you handle errors gracefully in bash scripts?",
-    "When would you choose bash over Python for automation?"
+    "Qual é a diferença entre $* e $@ para argumentos de script?",
+    "Como você trata erros de forma elegante em scripts bash?",
+    "Quando você escolheria bash em vez de Python para automação?"
   ],
   "commonMistakes": [
-    "Forgetting to quote variables (causes issues with spaces)",
-    "Using == instead of = in [ ] conditionals",
-    "Not handling script failures (use set -e or check $?)"
+    "Esquecer de colocar variáveis entre aspas (causa problemas com espaços)",
+    "Usar == em vez de = em condicionais [ ]",
+    "Não tratar falhas do script (usar set -e ou verificar $?)"
   ],
   "relatedTopics": [
     "shellcheck",

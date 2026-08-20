@@ -1,10 +1,10 @@
 {
   "id": "cicd-blue-green-deployment",
   "slug": "cicd-blue-green-deployment",
-  "title": "Blue-Green Deployment Strategy",
-  "question": "What is a blue-green deployment, and what are its advantages and disadvantages compared to other deployment strategies?",
-  "answer": "Blue-green deployment maintains two identical production environments (blue and green). One serves live traffic while the other receives the new version. After testing, traffic switches to the updated environment. Advantages: instant rollback, zero downtime, and safe testing. Disadvantages: requires double resources and can be complex with databases.",
-  "explanation": "Blue-green deployments provide a safety net for releases by keeping the previous version running until the new one is verified. This strategy is particularly valuable for critical applications where downtime or failed deployments have significant business impact.",
+  "title": "Estratégia de deployment blue-green",
+  "question": "O que é um deployment blue-green, e quais são suas vantagens e desvantagens em comparação com outras estratégias de deployment?",
+  "answer": "O deployment blue-green mantém dois ambientes de produção idênticos (blue e green). Um recebe o tráfego ao vivo enquanto o outro recebe a nova versão. Depois dos testes, o tráfego é trocado para o ambiente atualizado. Vantagens: rollback instantâneo, zero downtime e testes seguros. Desvantagens: exige o dobro de recursos e pode ser complexo com bancos de dados.",
+  "explanation": "Deployments blue-green oferecem uma rede de segurança para releases, mantendo a versão anterior rodando até que a nova seja verificada. Essa estratégia é especialmente valiosa para aplicações críticas onde downtime ou deployments falhos têm impacto significativo no negócio.",
   "category": "CI/CD",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Kubernetes blue-green with services",
+      "label": "Blue-green no Kubernetes com Services",
       "code": "# Blue deployment (current production)\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: app-blue\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: myapp\n      version: blue\n  template:\n    metadata:\n      labels:\n        app: myapp\n        version: blue\n---\n# Service pointing to blue\napiVersion: v1\nkind: Service\nmetadata:\n  name: app-service\nspec:\n  selector:\n    app: myapp\n    version: blue  # Switch to 'green' after verification\n  ports:\n  - port: 80"
     },
     {
       "language": "bash",
-      "label": "Switch traffic to green",
+      "label": "Trocar o tráfego para o green",
       "code": "# Update service selector to point to green\nkubectl patch service app-service \\\n  -p '{\"spec\":{\"selector\":{\"version\":\"green\"}}}'\n\n# Rollback to blue if needed\nkubectl patch service app-service \\\n  -p '{\"spec\":{\"selector\":{\"version\":\"blue\"}}}'"
     }
   ],
   "followUpQuestions": [
-    "How do you handle database migrations in a blue-green deployment?",
-    "What is the difference between blue-green and canary deployments?",
-    "How would you implement blue-green deployments with AWS or other cloud providers?"
+    "Como você lida com migrações de banco de dados em um deployment blue-green?",
+    "Qual é a diferença entre deployments blue-green e canary?",
+    "Como você implementaria deployments blue-green na AWS ou em outros provedores de nuvem?"
   ],
   "commonMistakes": [
-    "Not accounting for database schema changes that may break the old version",
-    "Forgetting to warm up the new environment before switching traffic",
-    "Not having proper health checks to verify the green environment before cutover"
+    "Não considerar mudanças de schema no banco de dados que podem quebrar a versão antiga",
+    "Esquecer de aquecer o novo ambiente antes de trocar o tráfego",
+    "Não ter health checks adequados para verificar o ambiente green antes da virada"
   ],
   "relatedTopics": [
     "canary-deployment",

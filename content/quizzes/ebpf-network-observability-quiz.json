@@ -1,7 +1,7 @@
 {
   "id": "ebpf-network-observability-quiz",
-  "title": "eBPF for Network Observability and Security Quiz",
-  "description": "Test your understanding of eBPF with real scenarios covering the verifier, maps, XDP and tc hooks, CO-RE portability, kube-proxy replacement, runtime security, and debugging programs that won't load.",
+  "title": "Quiz de eBPF para Observabilidade e Segurança de Rede",
+  "description": "Teste seu conhecimento de eBPF com cenários reais cobrindo o verifier, maps, hooks XDP e tc, portabilidade CO-RE, substituição do kube-proxy, segurança em runtime e debugging de programas que não carregam.",
   "category": "Networking",
   "icon": "Network",
   "totalPoints": 197,
@@ -11,7 +11,7 @@
     "gradientTo": "to-blue-600"
   },
   "metadata": {
-    "estimatedTime": "16-22 minutes",
+    "estimatedTime": "16-22 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 7,
@@ -23,237 +23,237 @@
   "questions": [
     {
       "id": "why-ebpf-not-kernel-module",
-      "title": "Why not just write a kernel module?",
-      "description": "You need per-connection network stats from every production host. Ops refuses to load custom kernel modules because one bad module can panic the box. What makes eBPF a safer fit?",
-      "situation": "You're standing up fleet-wide network visibility on a few thousand hosts. A custom .ko kernel module would give you the data, but the platform team has a hard rule: nothing that can take down the kernel at runtime. You reach for eBPF instead and have to justify why it's different.",
+      "title": "Por que não escrever logo um kernel module?",
+      "description": "Você precisa de estatísticas de rede por conexão em todos os hosts de produção. O time de Ops se recusa a carregar kernel modules customizados porque um módulo ruim pode derrubar a máquina inteira. O que torna o eBPF uma opção mais segura?",
+      "situation": "Você está implantando visibilidade de rede em toda a frota, em alguns milhares de hosts. Um kernel module .ko customizado te daria os dados, mas o time de plataforma tem uma regra rígida: nada que possa derrubar o kernel em runtime. Você recorre ao eBPF, mas precisa justificar por que ele é diferente.",
       "codeExample": "# Loading a custom kernel module: one bug = kernel panic\n$ sudo insmod mynetstats.ko\n# a null deref in here can crash the whole host\n\n# Loading an eBPF program: rejected at load time if unsafe\n$ sudo bpftool prog load netstats.o /sys/fs/bpf/netstats\nlibbpf: prog 'count_bytes': BPF program load failed: Permission denied\n# the kernel verifier refused it; the host stays up",
       "options": [
-        "eBPF programs run entirely in userspace, so they physically cannot touch kernel data structures",
-        "Every eBPF program is checked by an in-kernel verifier and runs in a restricted sandbox, so an unsafe program is rejected at load time instead of crashing the kernel",
-        "eBPF programs are compiled into the kernel image at boot, so they are reviewed before the system starts",
-        "eBPF disables the part of the kernel that can panic, trading safety for a small performance hit"
+        "Programas eBPF rodam inteiramente em userspace, então fisicamente não conseguem tocar em estruturas de dados do kernel",
+        "Todo programa eBPF é checado por um verifier dentro do kernel e roda em um sandbox restrito, então um programa inseguro é rejeitado no momento do carregamento em vez de derrubar o kernel",
+        "Programas eBPF são compilados dentro da imagem do kernel no boot, então são revisados antes do sistema iniciar",
+        "O eBPF desativa a parte do kernel que pode entrar em pânico, trocando segurança por uma pequena perda de performance"
       ],
       "correctAnswer": 1,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "eBPF programs run inside the kernel, but before the kernel accepts one, the verifier walks every possible path and proves the program terminates, never reads out-of-bounds memory, and only touches data it's allowed to. If it can't prove safety, the load fails (often with a cryptic -EPERM or -EINVAL) and nothing runs. That's the key difference from a kernel module: a module trusts you completely and a single bug panics the host, while an eBPF program is checked first. It does not run in userspace, it is not baked into the boot image, and it does not switch off kernel safety features.",
-      "hint": "Something inspects the program before the kernel agrees to run it. What happens when that check fails?"
+      "explanation": "Programas eBPF rodam dentro do kernel, mas antes de aceitar um deles, o verifier percorre todos os caminhos possíveis e prova que o programa termina, nunca lê memória fora dos limites e só toca em dados que está autorizado a tocar. Se não conseguir provar que é seguro, o carregamento falha (muitas vezes com um -EPERM ou -EINVAL críptico) e nada roda. Essa é a diferença chave em relação a um kernel module: um módulo confia totalmente em você e um único bug derruba o host, enquanto um programa eBPF é checado antes. Ele não roda em userspace, não é embutido na imagem de boot e não desliga recursos de segurança do kernel.",
+      "hint": "Algo inspeciona o programa antes do kernel concordar em rodá-lo. O que acontece quando essa checagem falha?"
     },
     {
       "id": "ebpf-maps-userspace-channel",
-      "title": "Getting counts out to a dashboard",
-      "description": "Your XDP program increments a counter every time it drops a packet. That code runs in the kernel. How does your userspace agent read those counts to ship them to a dashboard?",
-      "situation": "The drop counter lives inside the kernel-side program. Your Go agent runs in userspace and needs to scrape the current value every few seconds. There's no return value to catch, the program just runs per packet and exits.",
+      "title": "Levando as contagens até um dashboard",
+      "description": "Seu programa XDP incrementa um contador toda vez que descarta um pacote. Esse código roda no kernel. Como seu agente em userspace lê essas contagens para enviá-las a um dashboard?",
+      "situation": "O contador de descartes vive dentro do programa do lado do kernel. Seu agente em Go roda em userspace e precisa coletar o valor atual a cada poucos segundos. Não há valor de retorno para capturar, o programa simplesmente roda por pacote e termina.",
       "codeExample": "// kernel side\nstruct {\n    __uint(type, BPF_MAP_TYPE_ARRAY);\n    __uint(max_entries, 1);\n    __type(key, __u32);\n    __type(value, __u64);\n} drop_count SEC(\".maps\");\n\n// inside the XDP program, on each dropped packet:\n__u32 key = 0;\n__u64 *val = bpf_map_lookup_elem(&drop_count, &key);\nif (val) __sync_fetch_and_add(val, 1);",
       "options": [
-        "A map: a shared key/value structure that both the kernel program and userspace can read and write, looked up by name or file descriptor",
-        "The program returns the counter as its exit code, and userspace reads it from the return value",
-        "The kernel writes the value to a log file with bpf_printk, and userspace tails the file",
-        "A shared environment variable that the kernel updates and userspace reads with getenv"
+        "Um map: uma estrutura chave/valor compartilhada que tanto o programa do kernel quanto o userspace conseguem ler e escrever, acessada por nome ou file descriptor",
+        "O programa retorna o contador como seu código de saída, e o userspace lê a partir do valor de retorno",
+        "O kernel escreve o valor em um arquivo de log com bpf_printk, e o userspace acompanha o arquivo",
+        "Uma variável de ambiente compartilhada que o kernel atualiza e o userspace lê com getenv"
       ],
       "correctAnswer": 0,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "Maps are how eBPF programs and userspace exchange data. They're kernel-resident key/value stores (arrays, hashes, per-CPU variants, ring buffers, and more) that the program updates from inside the kernel and that userspace reads through a file descriptor, often pinned under /sys/fs/bpf so multiple processes can share it. The program's actual return value is a verdict for the hook (like XDP_PASS or XDP_DROP), not a place to stash data. bpf_printk exists but it's a debugging aid that writes to the trace pipe, not a metrics channel, and there's no shared environment variable between kernel and userspace.",
-      "hint": "The program's return value is reserved for telling the hook what to do with the packet. You need a separate place to keep state."
+      "explanation": "Maps são a forma como programas eBPF e userspace trocam dados. São armazenamentos chave/valor residentes no kernel (arrays, hashes, variantes per-CPU, ring buffers e outros) que o programa atualiza de dentro do kernel e que o userspace lê por meio de um file descriptor, muitas vezes fixado (pinned) em /sys/fs/bpf para que vários processos possam compartilhá-lo. O valor de retorno real do programa é um veredito para o hook (como XDP_PASS ou XDP_DROP), não um lugar para guardar dados. O bpf_printk existe, mas é um recurso de debugging que escreve no trace pipe, não um canal de métricas, e não existe variável de ambiente compartilhada entre kernel e userspace.",
+      "hint": "O valor de retorno do programa é reservado para dizer ao hook o que fazer com o pacote. Você precisa de um lugar separado para guardar estado."
     },
     {
       "id": "xdp-earliest-hook",
-      "title": "Where XDP sits in the stack",
-      "description": "Your team is choosing a hook point for a high-volume packet filter. Someone proposes XDP because it's 'the fastest.' Where does an XDP program actually run, and why is that fast?",
-      "situation": "You're filtering unwanted traffic at the edge of each node and want to spend as few CPU cycles as possible per dropped packet. A colleague suggests XDP but isn't sure why it's cheaper than filtering higher up the stack.",
+      "title": "Onde o XDP fica na pilha de rede",
+      "description": "Seu time está escolhendo um ponto de hook para um filtro de pacotes de alto volume. Alguém propõe o XDP porque ele é 'o mais rápido'. Onde um programa XDP realmente roda, e por que isso o torna rápido?",
+      "situation": "Você está filtrando tráfego indesejado na borda de cada nó e quer gastar o mínimo de ciclos de CPU possível por pacote descartado. Um colega sugere o XDP, mas não tem certeza do porquê ele é mais barato do que filtrar mais acima na pilha.",
       "codeExample": "# Rough path of an incoming packet:\nNIC -> [XDP hook] -> sk_buff allocation -> tc ingress -> netfilter -> socket\n\n# An XDP program returns a verdict before most of that happens:\nSEC(\"xdp\")\nint drop_bad(struct xdp_md *ctx) {\n    // ... inspect raw packet bytes ...\n    return XDP_DROP;   // or XDP_PASS, XDP_TX, XDP_REDIRECT\n}",
       "options": [
-        "Inside each application socket, so it sees fully reassembled application-layer data",
-        "In netfilter, replacing iptables rules with a faster equivalent",
-        "At the earliest point in the receive path, in the NIC driver before the kernel builds an sk_buff, working on raw packet bytes",
-        "In userspace next to your agent, which is why it avoids kernel overhead"
+        "Dentro de cada socket de aplicação, então ele enxerga dados de camada de aplicação já remontados",
+        "No netfilter, substituindo regras do iptables por um equivalente mais rápido",
+        "No ponto mais cedo possível do caminho de recebimento, no driver da NIC, antes do kernel construir um sk_buff, trabalhando sobre os bytes brutos do pacote",
+        "Em userspace, ao lado do seu agente, e é por isso que evita o overhead do kernel"
       ],
       "correctAnswer": 2,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "XDP (eXpress Data Path) attaches at the very start of the receive path, in the NIC driver, before the kernel allocates an sk_buff (the heavyweight per-packet metadata structure). Because that allocation is one of the more expensive steps, dropping or redirecting a packet at XDP avoids almost all per-packet cost, which is what makes it ideal for line-rate filtering and DDoS mitigation. It works on raw bytes, so it sees Ethernet and IP headers, not reassembled application data. It's not inside sockets, not part of netfilter, and not in userspace, it runs in the kernel driver context.",
-      "hint": "The expensive part of receiving a packet is building the kernel's per-packet metadata. XDP runs before that happens."
+      "explanation": "O XDP (eXpress Data Path) se conecta bem no início do caminho de recebimento, no driver da NIC, antes do kernel alocar um sk_buff (a estrutura de metadados por pacote, que é pesada). Como essa alocação é uma das etapas mais caras, descartar ou redirecionar um pacote no XDP evita quase todo o custo por pacote, o que o torna ideal para filtragem em line-rate e mitigação de DDoS. Ele trabalha sobre bytes brutos, então enxerga cabeçalhos Ethernet e IP, não dados de aplicação já remontados. Não fica dentro de sockets, não faz parte do netfilter e não roda em userspace, ele roda no contexto do driver dentro do kernel.",
+      "hint": "A parte cara de receber um pacote é construir os metadados por pacote do kernel. O XDP roda antes disso acontecer."
     },
     {
       "id": "xdp-vs-tc-egress",
-      "title": "Filtering happens, but only inbound",
-      "description": "You wrote an XDP program to enforce a policy on both inbound and outbound traffic. Inbound works. Outbound traffic sails right through. Why?",
-      "situation": "Your policy needs to block certain outbound connections from a node, not just inbound ones. You attached your filter as XDP and tested it: connections from outside are blocked correctly, but the node still happily sends traffic out to blocked destinations.",
+      "title": "A filtragem funciona, mas só de entrada",
+      "description": "Você escreveu um programa XDP para aplicar uma política tanto no tráfego de entrada quanto no de saída. A entrada funciona. O tráfego de saída passa direto. Por quê?",
+      "situation": "Sua política precisa bloquear certas conexões de saída de um nó, não só as de entrada. Você conectou seu filtro como XDP e testou: conexões vindas de fora são bloqueadas corretamente, mas o nó continua mandando tráfego de saída para destinos bloqueados sem problema.",
       "codeExample": "$ sudo bpftool net attach xdp name policy dev eth0\n$ # inbound: blocked correctly\n$ # outbound from this host: still goes through\n\n$ sudo bpftool net\nxdp:\neth0(2) driver id 41\n# nothing on the egress path...",
       "options": [
-        "XDP needs XDP_TX to handle egress; add it as a second return code in the same program",
-        "XDP only runs on the receive path (ingress); to act on egress traffic you need a tc BPF program attached to the egress hook, which operates on the sk_buff",
-        "Outbound traffic skips XDP because it's encrypted; disable TLS offload on the NIC",
-        "The program is fine, but bpftool can't display egress XDP; the policy is actually being enforced"
+        "O XDP precisa do XDP_TX para lidar com egress; adicione isso como um segundo código de retorno no mesmo programa",
+        "O XDP só roda no caminho de recebimento (ingress); para agir sobre tráfego de saída você precisa de um programa tc BPF conectado no hook de egress, que opera sobre o sk_buff",
+        "O tráfego de saída pula o XDP porque está criptografado; desative o TLS offload na NIC",
+        "O programa está correto, mas o bpftool não consegue exibir o XDP de egress; a política está sendo aplicada normalmente"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "XDP is an ingress-only hook. It lives in the driver's receive path, so by design it never sees packets the host is sending out. For egress (and for ingress when you want sk_buff context), you use tc BPF programs attached via the clsact qdisc, which has both an ingress and an egress hook. tc runs slightly later than XDP because the sk_buff already exists, but that's the trade for being able to act in both directions. XDP_TX bounces a received packet back out the same interface, it does not give you a hook on locally generated egress traffic, and this has nothing to do with TLS.",
-      "hint": "Think about which direction the driver's receive path can possibly see. Egress needs a different attach point entirely."
+      "explanation": "O XDP é um hook exclusivo de ingress. Ele vive no caminho de recebimento do driver, então por design nunca vê pacotes que o host está enviando. Para egress (e para ingress quando você precisa de contexto de sk_buff), você usa programas tc BPF conectados via qdisc clsact, que tem hooks tanto de ingress quanto de egress. O tc roda um pouco mais tarde que o XDP porque o sk_buff já existe, mas essa é a troca para conseguir agir nas duas direções. O XDP_TX reenvia um pacote recebido de volta pela mesma interface, não te dá um hook sobre tráfego de egress gerado localmente, e isso não tem nada a ver com TLS.",
+      "hint": "Pense em qual direção o caminho de recebimento do driver consegue enxergar. Egress precisa de um ponto de conexão totalmente diferente."
     },
     {
       "id": "xdp-drop-ddos",
-      "title": "Dropping a SYN flood cheaply",
-      "description": "A SYN flood is hammering a node at millions of packets per second. iptables is dropping them, but the box is pinned at 100% softirq CPU. Where should you drop these packets to spend the least CPU?",
-      "situation": "During the flood, perf top shows the kernel burning most of its time allocating and freeing sk_buffs for packets that iptables drops a moment later. You want those packets gone before the kernel does any of that work.",
+      "title": "Descartando uma inundação de SYN de forma barata",
+      "description": "Uma inundação de SYN está martelando um nó a milhões de pacotes por segundo. O iptables está descartando eles, mas a máquina está travada em 100% de CPU em softirq. Onde você deveria descartar esses pacotes para gastar o mínimo de CPU?",
+      "situation": "Durante a inundação, o perf top mostra o kernel gastando a maior parte do tempo alocando e liberando sk_buffs para pacotes que o iptables descarta um instante depois. Você quer que esses pacotes sumam antes do kernel fazer qualquer parte desse trabalho.",
       "codeExample": "$ perf top\n  18.4%  [kernel]  __alloc_skb\n  12.1%  [kernel]  kfree_skb\n   9.7%  [kernel]  nf_hook_slow\n   ...\n\n# iptables rule currently doing the drop:\n-A INPUT -p tcp --syn -m limit --limit 1/s -j DROP",
       "options": [
-        "Move the rule earlier in the iptables INPUT chain so it matches before other rules",
-        "Switch to nftables, which drops packets before the sk_buff is allocated",
-        "Add more conntrack buckets so the firewall can track and drop the flood faster",
-        "Drop the packets at XDP with XDP_DROP, before the sk_buff is ever allocated, so each dropped packet costs almost nothing"
+        "Mover a regra para mais cedo na chain INPUT do iptables para que ela case antes das outras regras",
+        "Trocar para nftables, que descarta pacotes antes do sk_buff ser alocado",
+        "Adicionar mais buckets de conntrack para que o firewall consiga rastrear e descartar a inundação mais rápido",
+        "Descartar os pacotes no XDP com XDP_DROP, antes do sk_buff sequer ser alocado, para que cada pacote descartado custe quase nada"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "The CPU is being spent on __alloc_skb and kfree_skb, the sk_buff lifecycle. iptables and nftables both run after the sk_buff exists, so they can't avoid that cost, no matter where you put the rule. An XDP program returning XDP_DROP runs in the driver before the sk_buff is allocated, so a dropped packet costs little more than the inspection itself. This is exactly why XDP is the standard tool for volumetric DDoS mitigation (Cloudflare and Facebook both built XDP-based packet filters for this). Adding conntrack capacity makes it worse, since you'd track attack packets you intend to discard.",
-      "hint": "perf is telling you exactly which work is expensive. The fix is to drop the packet before that work ever starts."
+      "explanation": "A CPU está sendo gasta em __alloc_skb e kfree_skb, o ciclo de vida do sk_buff. iptables e nftables rodam depois que o sk_buff já existe, então nenhum dos dois consegue evitar esse custo, não importa onde você coloque a regra. Um programa XDP retornando XDP_DROP roda no driver antes do sk_buff ser alocado, então um pacote descartado custa pouco mais do que a própria inspeção. É exatamente por isso que o XDP é a ferramenta padrão para mitigação volumétrica de DDoS (Cloudflare e Facebook construíram filtros de pacotes baseados em XDP para isso). Aumentar a capacidade do conntrack piora a situação, já que você passaria a rastrear pacotes de ataque que pretende descartar.",
+      "hint": "O perf está te mostrando exatamente qual trabalho é caro. A solução é descartar o pacote antes desse trabalho sequer começar."
     },
     {
       "id": "cilium-replace-kube-proxy",
-      "title": "kube-proxy and the iptables wall",
-      "description": "A cluster with thousands of Services has slow service updates and high latency on the first packet of new connections. kube-proxy in iptables mode is generating enormous rule chains. What does an eBPF-based dataplane change?",
-      "situation": "Your platform team runs a large cluster. kube-proxy in iptables mode writes a rule chain per Service and endpoint, and `iptables-save` now dumps hundreds of thousands of lines. Adding or removing a Service causes a noticeable stall while the chains are rewritten.",
+      "title": "kube-proxy e o muro de iptables",
+      "description": "Um cluster com milhares de Services tem atualizações lentas de service e alta latência no primeiro pacote de novas conexões. O kube-proxy em modo iptables está gerando cadeias de regras enormes. O que um dataplane baseado em eBPF muda?",
+      "situation": "Seu time de plataforma opera um cluster grande. O kube-proxy em modo iptables escreve uma cadeia de regras por Service e endpoint, e o `iptables-save` agora despeja centenas de milhares de linhas. Adicionar ou remover um Service causa uma pausa perceptível enquanto as chains são reescritas.",
       "codeExample": "$ iptables-save | wc -l\n284119\n\n$ # every Service adds KUBE-SVC-* and KUBE-SEP-* chains\n-A KUBE-SERVICES -d 10.96.0.10/32 -p tcp --dport 53 -j KUBE-SVC-TCOU7...\n-A KUBE-SVC-TCOU7... -j KUBE-SEP-AAAA...\n-A KUBE-SVC-TCOU7... -j KUBE-SEP-BBBB...\n# ... matched roughly linearly per packet",
       "options": [
-        "It rewrites the same iptables rules faster by batching them, cutting the update stall",
-        "It moves the iptables rules into a kernel module so they're compiled instead of interpreted",
-        "It replaces the linear iptables chains with eBPF programs that do service lookups and load balancing through hash-map lookups, so cost stays roughly constant as Services grow",
-        "It caches DNS responses in eBPF so Service resolution no longer hits iptables"
+        "Ele reescreve as mesmas regras de iptables mais rápido agrupando-as em lote, reduzindo a pausa na atualização",
+        "Ele move as regras de iptables para dentro de um kernel module para que sejam compiladas em vez de interpretadas",
+        "Ele substitui as chains lineares de iptables por programas eBPF que fazem lookup de service e balanceamento de carga por meio de lookups em hash-map, então o custo permanece praticamente constante à medida que os Services crescem",
+        "Ele armazena em cache as respostas de DNS em eBPF para que a resolução de Service não passe mais pelo iptables"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "kube-proxy's iptables mode encodes every Service and endpoint as rules, and packet matching plus rule rewrites scale poorly as the cluster grows. An eBPF dataplane like Cilium's kube-proxy replacement does service ClusterIP-to-backend translation and load balancing using eBPF maps: a hash lookup keyed by service and a backend table. Lookups are roughly O(1) instead of walking chains, and updating a Service is a map write rather than regenerating a giant ruleset. It does not just batch iptables faster, it doesn't 'compile' iptables into a module, and it isn't a DNS cache. IPVS mode helps somewhat but still isn't map-based the way eBPF is.",
-      "hint": "The problem is that work grows with the number of Services. What data structure makes a lookup independent of how many entries it holds?"
+      "explanation": "O modo iptables do kube-proxy codifica cada Service e endpoint como regras, e tanto o casamento de pacotes quanto a reescrita de regras escalam mal conforme o cluster cresce. Um dataplane eBPF como a substituição do kube-proxy do Cilium faz a tradução de ClusterIP para backend e o balanceamento de carga usando maps eBPF: um lookup em hash indexado por service e uma tabela de backends. Os lookups são praticamente O(1) em vez de percorrer chains, e atualizar um Service vira uma escrita em map em vez de regenerar um conjunto gigante de regras. Ele não apenas agrupa o iptables em lote mais rápido, não 'compila' o iptables em um módulo, e não é um cache de DNS. O modo IPVS ajuda um pouco, mas ainda não é baseado em maps como o eBPF é.",
+      "hint": "O problema é que o trabalho cresce junto com o número de Services. Que estrutura de dados torna um lookup independente de quantas entradas ela contém?"
     },
     {
       "id": "co-re-btf-portability",
-      "title": "Compiled here, won't load there",
-      "description": "Your eBPF object loads fine on your 5.15 dev kernel but fails to load on a 5.4 production node, reading a struct field at the wrong offset. You don't want to ship kernel headers and a compiler to every host. What fixes this?",
-      "situation": "Your tracing program reads a field out of a kernel struct. It works on your laptop. On older production kernels the same compiled .o either fails verification or reads garbage, because that struct's layout shifted between kernel versions. Recompiling on each target with BCC is the old way and you'd rather not.",
+      "title": "Compilado aqui, não carrega ali",
+      "description": "Seu objeto eBPF carrega sem problemas no seu kernel de desenvolvimento 5.15, mas falha ao carregar em um nó de produção 5.4, lendo um campo de struct no offset errado. Você não quer distribuir headers de kernel e um compilador para cada host. O que resolve isso?",
+      "situation": "Seu programa de tracing lê um campo de uma struct do kernel. Funciona no seu notebook. Em kernels de produção mais antigos, o mesmo .o compilado ou falha na verificação ou lê lixo, porque o layout dessa struct mudou entre versões do kernel. Recompilar em cada alvo com o BCC é o jeito antigo e você prefere evitar.",
       "codeExample": "// reading a kernel struct field directly bakes in an offset:\nstruct task_struct *task = (void *)bpf_get_current_task();\npid_t ppid = task->real_parent->tgid;   // offset differs per kernel\n\n// CO-RE way: let the loader fix the offset at load time\npid_t ppid = BPF_CORE_READ(task, real_parent, tgid);",
       "options": [
-        "Pin the program to a single kernel version and maintain a separate build per kernel you run",
-        "Use CO-RE (Compile Once, Run Everywhere): build against BTF type info and emit relocations so the loader patches struct offsets to match the running kernel",
-        "Statically link the kernel headers into the eBPF object so offsets travel with it",
-        "Disable the verifier's type checks on the older kernel so the mismatched offset is accepted"
+        "Prender o programa a uma única versão de kernel e manter um build separado para cada kernel que você roda",
+        "Usar CO-RE (Compile Once, Run Everywhere): compilar contra informações de tipo BTF e emitir relocations para que o loader ajuste os offsets das structs conforme o kernel em execução",
+        "Fazer link estático dos headers do kernel dentro do objeto eBPF para que os offsets viajem junto com ele",
+        "Desativar as checagens de tipo do verifier no kernel mais antigo para que o offset incompatível seja aceito"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "The root problem is that kernel struct layouts change between versions, so a hard-coded field offset compiled on one kernel is wrong on another. CO-RE solves this with BTF (BPF Type Format): the compiler records which field you wanted, the object carries relocations, and at load time libbpf reads the running kernel's BTF (from /sys/kernel/btf/vmlinux) and patches each access to the correct offset. One object file then runs across many kernels without shipping headers or a compiler. Maintaining a build per kernel is the pain CO-RE removes, you can't statically embed offsets that match every kernel, and you never want to disable the verifier's safety checks.",
-      "hint": "The offset is wrong because it was frozen at compile time. What if the loader could fix offsets using the target kernel's own type information?"
+      "explanation": "O problema raiz é que os layouts de struct do kernel mudam entre versões, então um offset de campo fixado em um kernel fica errado em outro. O CO-RE resolve isso com BTF (BPF Type Format): o compilador registra qual campo você queria, o objeto carrega relocations, e no momento do carregamento a libbpf lê o BTF do kernel em execução (em /sys/kernel/btf/vmlinux) e ajusta cada acesso para o offset correto. Assim, um único arquivo objeto roda em vários kernels sem precisar distribuir headers ou compilador. Manter um build por kernel é exatamente a dor que o CO-RE elimina, você não consegue embutir estaticamente offsets que casem com todos os kernels, e nunca é uma boa ideia desativar as checagens de segurança do verifier.",
+      "hint": "O offset está errado porque foi congelado no momento da compilação. E se o loader pudesse corrigir os offsets usando as próprias informações de tipo do kernel alvo?"
     },
     {
       "id": "trace-tcp-retransmits",
-      "title": "Finding which connections retransmit",
-      "description": "An app sees intermittent tail latency. You suspect TCP retransmissions but don't want to run tcpdump continuously on a busy host. How do you attribute retransmits to specific connections with low overhead?",
-      "situation": "p99 latency spikes a few times an hour with no obvious cause. You think packets are being lost and retransmitted, but a full packet capture on a 10 Gbps host is too heavy to leave running, and it won't cleanly tell you which flows retransmit.",
+      "title": "Descobrindo quais conexões estão retransmitindo",
+      "description": "Uma aplicação apresenta picos intermitentes de latência de cauda. Você suspeita de retransmissões de TCP, mas não quer rodar tcpdump continuamente em um host com alto tráfego. Como atribuir retransmissões a conexões específicas com baixo overhead?",
+      "situation": "A latência p99 dispara algumas vezes por hora sem causa óbvia. Você acha que pacotes estão sendo perdidos e retransmitidos, mas uma captura de pacotes completa em um host de 10 Gbps é pesada demais para deixar rodando, e não te diria de forma clara quais fluxos retransmitem.",
       "codeExample": "# attach to the kernel's retransmit path and emit one event per retransmit\n$ sudo /usr/share/bcc/tools/tcpretrans\nTIME     PID    IP LADDR:LPORT          T> RADDR:RPORT          STATE\n01:55:05 0      4  10.0.0.7:443         R> 10.0.2.31:51234     ESTABLISHED\n01:55:05 0      4  10.0.0.7:443         R> 10.0.2.44:48820     ESTABLISHED\n# near-zero overhead: fires only when a retransmit actually happens",
       "options": [
-        "Attach an eBPF program to the kernel's retransmit function or tracepoint, so an event fires only when a retransmit occurs, carrying the connection's addresses and ports",
-        "Lower the host's TCP retransmission timeout so retransmits show up sooner in tcpdump",
-        "Poll /proc/net/snmp every second and diff the global TCP retransmit counter",
-        "Mirror all traffic to a second NIC and run tcpdump there to avoid load on the primary"
+        "Conectar um programa eBPF à função ou tracepoint de retransmissão do kernel, para que um evento dispare apenas quando uma retransmissão ocorre, carregando os endereços e portas da conexão",
+        "Diminuir o timeout de retransmissão TCP do host para que as retransmissões apareçam mais cedo no tcpdump",
+        "Fazer polling em /proc/net/snmp a cada segundo e comparar o contador global de retransmissões TCP",
+        "Espelhar todo o tráfego para uma segunda NIC e rodar o tcpdump lá para evitar carga na interface principal"
       ],
       "correctAnswer": 0,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "eBPF lets you attach to a specific kernel event, here the retransmit path (a kprobe on tcp_retransmit_skb or the matching tracepoint), so your program runs only when a retransmit actually happens and can read the socket's source/destination addresses and ports right there. That's near-zero overhead because there's no per-packet work and no copying full packets to userspace, which is why bcc's tcpretrans and bpftrace one-liners are the go-to here. Polling /proc/net/snmp gives you a single global counter with no per-connection attribution, lowering the RTO changes behavior rather than observing it, and port-mirroring just moves the capture cost around.",
-      "hint": "You don't need every packet. You need a signal exactly when one specific kernel event happens, with the connection details attached."
+      "explanation": "O eBPF permite conectar a um evento específico do kernel, aqui o caminho de retransmissão (um kprobe em tcp_retransmit_skb ou o tracepoint correspondente), de modo que seu programa só roda quando uma retransmissão realmente acontece e pode ler ali mesmo os endereços e portas de origem/destino do socket. Isso é overhead praticamente zero porque não há trabalho por pacote nem cópia de pacotes inteiros para o userspace, o que explica por que o tcpretrans do bcc e os one-liners de bpftrace são a referência aqui. Fazer polling em /proc/net/snmp te dá apenas um contador global único sem atribuição por conexão, diminuir o RTO muda o comportamento em vez de observá-lo, e espelhar a porta só desloca o custo da captura para outro lugar.",
+      "hint": "Você não precisa de todos os pacotes. Precisa de um sinal exatamente quando um evento específico do kernel acontece, com os detalhes da conexão anexados."
     },
     {
       "id": "percpu-map-counter-contention",
-      "title": "Counters that don't add up under load",
-      "description": "A shared hash map counter is updated on every packet across all CPUs. Under heavy load the numbers look low and the update path shows up hot in profiles. What map change fixes the contention?",
-      "situation": "Your eBPF program bumps a per-key byte counter in a BPF_MAP_TYPE_HASH on every packet. At a few hundred thousand packets per second across 16 cores, the counter update becomes a hotspot and totals come in lower than reality because of contention on the shared entry.",
+      "title": "Contadores que não batem sob carga",
+      "description": "Um contador em um hash map compartilhado é atualizado a cada pacote em todas as CPUs. Sob carga pesada os números aparecem baixos e o caminho de atualização aparece como ponto quente nos profiles. Que mudança de map resolve a contenção?",
+      "situation": "Seu programa eBPF incrementa um contador de bytes por chave em um BPF_MAP_TYPE_HASH a cada pacote. Com algumas centenas de milhares de pacotes por segundo em 16 núcleos, a atualização do contador vira um hotspot e os totais chegam mais baixos que a realidade por causa da contenção na mesma entrada.",
       "codeExample": "// current: one shared value, every CPU races on it\nstruct {\n    __uint(type, BPF_MAP_TYPE_HASH);\n    __type(key, __u32);\n    __type(value, __u64);\n} bytes SEC(\".maps\");\n\n// hot path, all CPUs hitting the same entry:\n__sync_fetch_and_add(val, pkt_len);",
       "options": [
-        "Wrap each update in a bpf_spin_lock so concurrent writes are serialized correctly",
-        "Switch to a per-CPU map (BPF_MAP_TYPE_PERCPU_HASH): each CPU updates its own copy with no cross-CPU contention, and userspace sums the per-CPU values when it reads",
-        "Increase max_entries so there are more buckets and less hashing collision",
-        "Move the counter into a BPF_MAP_TYPE_ARRAY, which is lock-free for writes"
+        "Envolver cada atualização em um bpf_spin_lock para que as escritas concorrentes sejam serializadas corretamente",
+        "Trocar para um map per-CPU (BPF_MAP_TYPE_PERCPU_HASH): cada CPU atualiza sua própria cópia sem contenção entre CPUs, e o userspace soma os valores por CPU ao ler",
+        "Aumentar o max_entries para haver mais buckets e menos colisão de hashing",
+        "Mover o contador para um BPF_MAP_TYPE_ARRAY, que é livre de locks para escrita"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "When every CPU hammers the same map entry, you get cache-line bouncing and contention, and atomics on a single shared value become the bottleneck. A per-CPU map gives each CPU its own private copy of the value, so updates on the hot path never coordinate across cores. When userspace reads the map it gets one value per CPU and sums them, trading a slightly more complex read for a contention-free write path. That's the standard pattern for high-frequency counters and stats. A spin lock makes serialization explicit but keeps the contention you're trying to remove, more buckets doesn't help when the collisions are on the same key, and a plain ARRAY is still a single shared value per index.",
-      "hint": "The contention comes from many cores touching one value. What if each core had its own copy and you only combined them at read time?"
+      "explanation": "Quando todas as CPUs martelam a mesma entrada do map, você tem cache-line bouncing e contenção, e as operações atômicas sobre um único valor compartilhado viram o gargalo. Um map per-CPU dá a cada CPU sua própria cópia privada do valor, então as atualizações no caminho quente nunca precisam coordenar entre núcleos. Quando o userspace lê o map, ele recebe um valor por CPU e soma tudo, trocando uma leitura um pouco mais complexa por um caminho de escrita livre de contenção. Esse é o padrão consagrado para contadores e estatísticas de alta frequência. Um spin lock torna a serialização explícita mas mantém a contenção que você está tentando eliminar, mais buckets não ajuda quando as colisões são na mesma chave, e um ARRAY simples continua sendo um único valor compartilhado por índice.",
+      "hint": "A contenção vem de vários núcleos tocando em um único valor. E se cada núcleo tivesse sua própria cópia e você só combinasse tudo no momento da leitura?"
     },
     {
       "id": "ebpf-lsm-runtime-enforcement",
-      "title": "Blocking an action in the kernel, not just logging it",
-      "description": "Security wants to actually prevent certain processes from opening a sensitive file, and to do it in the kernel so it can't be raced. You're choosing between classic seccomp and an eBPF LSM program. Which fits?",
-      "situation": "You already log suspicious file opens with a tracing program, but logging is after the fact. The ask now is enforcement: when a process that shouldn't touch /etc/shadow tries to open it, the open must fail, decided in-kernel rather than by a userspace watcher that could be too slow.",
+      "title": "Bloqueando uma ação no kernel, não só registrando",
+      "description": "O time de segurança quer de fato impedir que certos processos abram um arquivo sensível, e fazer isso no kernel para que não dê para burlar com uma corrida (race). Você está escolhendo entre o seccomp clássico e um programa eBPF LSM. Qual se encaixa?",
+      "situation": "Você já registra tentativas suspeitas de abertura de arquivo com um programa de tracing, mas o log acontece depois do fato. O pedido agora é enforcement: quando um processo que não deveria tocar em /etc/shadow tentar abri-lo, a abertura precisa falhar, decidido dentro do kernel em vez de por um observador em userspace que poderia ser lento demais.",
       "codeExample": "// eBPF LSM program attached to the file_open hook\nSEC(\"lsm/file_open\")\nint BPF_PROG(block_shadow, struct file *file) {\n    // ... match the path and the calling process ...\n    if (is_blocked_path(file))\n        return -EPERM;   // non-zero return DENIES the operation\n    return 0;            // allow\n}",
       "options": [
-        "Use seccomp-bpf: attach a filter to the open syscall that denies it for the whole process tree",
-        "Use a tracing kprobe on the open path and have userspace kill the process when it sees a match",
-        "Attach an eBPF LSM program to the file_open hook and return a non-zero value to deny the operation in-kernel at the security decision point",
-        "Add a Linux capability rule so the process loses permission to read the file"
+        "Usar seccomp-bpf: conectar um filtro à syscall open que a nega para toda a árvore de processos",
+        "Usar um kprobe de tracing no caminho de abertura e fazer o userspace matar o processo quando detectar um match",
+        "Conectar um programa eBPF LSM ao hook file_open e retornar um valor diferente de zero para negar a operação dentro do kernel, no próprio ponto de decisão de segurança",
+        "Adicionar uma regra de capability do Linux para que o processo perca permissão de ler o arquivo"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "eBPF LSM programs (BPF_PROG_TYPE_LSM, available since kernel 5.7) attach to the same Linux Security Module hooks that SELinux and AppArmor use. Returning a non-zero value from the hook makes the kernel deny the operation right at the security decision point, with full context like the file and the calling task, so there's no race with a userspace watcher. seccomp-bpf filters syscalls by number and argument values but works on raw syscall arguments (it can't safely dereference a path pointer to match the file), so it's the wrong tool for path-based file policy. A tracing kprobe plus userspace kill is reactive and racy, and a capability rule is too coarse for a single path. Tetragon builds on these eBPF enforcement hooks.",
-      "hint": "You want the kernel itself to say no at the moment it decides whether to allow the action, with the file in hand. Which hook family is that?"
+      "explanation": "Programas eBPF LSM (BPF_PROG_TYPE_LSM, disponíveis desde o kernel 5.7) se conectam aos mesmos hooks de Linux Security Module que SELinux e AppArmor usam. Retornar um valor diferente de zero do hook faz o kernel negar a operação bem no ponto de decisão de segurança, com contexto completo como o arquivo e a tarefa chamadora, então não há corrida com um observador em userspace. Filtros seccomp-bpf filtram syscalls por número e valores de argumento, mas trabalham sobre argumentos brutos da syscall (não conseguem dereferenciar com segurança um ponteiro de caminho para casar com o arquivo), então é a ferramenta errada para política baseada em caminho de arquivo. Um kprobe de tracing mais kill em userspace é reativo e sujeito a corrida, e uma regra de capability é grosseira demais para um único caminho. O Tetragon é construído sobre esses hooks de enforcement em eBPF.",
+      "hint": "Você quer que o próprio kernel diga não no momento em que decide se permite a ação, com o arquivo em mãos. Qual família de hooks é essa?"
     },
     {
       "id": "verifier-packet-bounds",
-      "title": "Decoding a verifier rejection",
-      "description": "Your XDP program reads the Ethernet header and the verifier rejects it with 'invalid access to packet'. The C looks correct. What is the verifier insisting on?",
-      "situation": "You're parsing packet headers in XDP. The code compiles cleanly, but bpftool refuses to load it with a packet-access error pointing at the line where you dereference the Ethernet header. You stare at it and the logic seems fine.",
+      "title": "Decifrando uma rejeição do verifier",
+      "description": "Seu programa XDP lê o cabeçalho Ethernet e o verifier rejeita com 'invalid access to packet'. O código C parece correto. O que o verifier está exigindo?",
+      "situation": "Você está fazendo parsing de cabeçalhos de pacote no XDP. O código compila sem problemas, mas o bpftool se recusa a carregá-lo com um erro de acesso a pacote apontando para a linha onde você dereferencia o cabeçalho Ethernet. Você olha e a lógica parece correta.",
       "codeExample": "SEC(\"xdp\")\nint parse(struct xdp_md *ctx) {\n    void *data     = (void *)(long)ctx->data;\n    void *data_end = (void *)(long)ctx->data_end;\n    struct ethhdr *eth = data;\n\n    // verifier: invalid access to packet, off=0 size=14 ...\n    if (eth->h_proto == bpf_htons(ETH_P_IP))\n        return XDP_PASS;\n    return XDP_DROP;\n}",
       "options": [
-        "The program must be compiled with a newer Clang; older Clang emits packet accesses the verifier can't follow",
-        "You have to copy the packet into a stack buffer with bpf_xdp_load_bytes before reading any field",
-        "ctx->data and ctx->data_end must be read with bpf_probe_read because they are kernel pointers",
-        "You must bounds-check the access against data_end before dereferencing: prove `data + sizeof(*eth) <= data_end`, or the verifier assumes the read could run past the packet"
+        "O programa precisa ser compilado com um Clang mais novo; versões antigas do Clang emitem acessos a pacote que o verifier não consegue acompanhar",
+        "Você precisa copiar o pacote para um buffer na stack com bpf_xdp_load_bytes antes de ler qualquer campo",
+        "ctx->data e ctx->data_end precisam ser lidos com bpf_probe_read porque são ponteiros de kernel",
+        "Você precisa validar os limites do acesso contra data_end antes de dereferenciar: provar que `data + sizeof(*eth) <= data_end`, ou o verifier assume que a leitura pode ultrapassar o pacote"
       ],
       "correctAnswer": 3,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "The verifier cannot assume the packet is long enough to hold the header you're about to read. It tracks data and data_end as a range and requires you to prove, with an explicit comparison, that the bytes you dereference fall inside that range. Adding `if ((void *)(eth + 1) > data_end) return XDP_DROP;` before touching eth->h_proto satisfies it: now every path that dereferences eth has first established the bytes exist. This is the single most common XDP verifier error. It isn't about Clang version, you don't need to copy the packet to the stack for a simple header read, and ctx->data/data_end are special direct-packet-access pointers, not kernel pointers you'd read with bpf_probe_read.",
-      "hint": "The verifier can't know the packet is big enough. What must you do right before the dereference to convince it the bytes are really there?"
+      "explanation": "O verifier não pode assumir que o pacote é grande o suficiente para conter o cabeçalho que você está prestes a ler. Ele rastreia data e data_end como um intervalo e exige que você prove, com uma comparação explícita, que os bytes que você dereferencia estão dentro desse intervalo. Adicionar `if ((void *)(eth + 1) > data_end) return XDP_DROP;` antes de tocar em eth->h_proto satisfaz essa exigência: agora todo caminho que dereferencia eth já estabeleceu antes que os bytes existem. Esse é o erro de verifier mais comum no XDP, de longe. Não tem relação com a versão do Clang, você não precisa copiar o pacote para a stack para uma leitura simples de cabeçalho, e ctx->data/data_end são ponteiros especiais de acesso direto ao pacote, não ponteiros de kernel que você leria com bpf_probe_read.",
+      "hint": "O verifier não tem como saber que o pacote é grande o suficiente. O que você precisa fazer bem antes da dereferência para convencê-lo de que os bytes realmente estão lá?"
     },
     {
       "id": "xdp-native-vs-generic-mode",
-      "title": "Line-rate program, fraction of the throughput",
-      "description": "You attached an XDP drop program expecting near line-rate, but throughput is a fraction of that and CPU is high. bpftool shows the program attached. What likely happened at attach time?",
-      "situation": "You benchmarked the same XDP program on a NIC with native support and got line-rate drops. On this host it's slow and softirq CPU is high, even though the attach succeeded with no error. The driver on this box is older.",
+      "title": "Programa pensado para line-rate, mas uma fração do throughput",
+      "description": "Você conectou um programa de descarte em XDP esperando quase line-rate, mas o throughput é uma fração disso e a CPU está alta. O bpftool mostra o programa conectado. O que provavelmente aconteceu no momento da conexão?",
+      "situation": "Você testou o mesmo programa XDP em uma NIC com suporte nativo e obteve descartes em line-rate. Neste host está lento e a CPU em softirq está alta, mesmo com a conexão tendo sido bem-sucedida sem erro. O driver desta máquina é mais antigo.",
       "codeExample": "$ sudo bpftool net\nxdp:\neth0(2) generic id 57\n        ^^^^^^^\n# compare to the fast host:\nxdp:\neth0(2) driver id 57\n        ^^^^^^",
       "options": [
-        "It loaded in generic (SKB) mode because the driver lacks native XDP, so the program runs after the sk_buff is built, losing most of XDP's advantage",
-        "The program JIT-compilation was disabled, so it's running interpreted; enable the JIT to fix it",
-        "Generic mode means the program is offloaded to the NIC and the CPU number is misreported",
-        "The map got too large and spilled to swap, slowing every packet"
+        "Ele carregou em modo generic (SKB) porque o driver não tem suporte a XDP nativo, então o programa roda depois do sk_buff já construído, perdendo a maior parte da vantagem do XDP",
+        "A compilação JIT do programa foi desativada, então ele está rodando interpretado; ative o JIT para corrigir",
+        "Modo generic significa que o programa foi descarregado (offload) para a NIC e o número da CPU está sendo reportado errado",
+        "O map ficou grande demais e transbordou para swap, deixando cada pacote mais lento"
       ],
       "correctAnswer": 0,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "XDP has three attach modes. Native (driver) mode runs in the driver before the sk_buff exists, which is where the big win comes from. Offload mode runs on a capable SmartNIC. Generic (SKB) mode is the kernel's fallback when the driver has no native XDP support: it runs the program after the stack has already allocated the sk_buff, so you pay almost all the per-packet cost XDP is meant to skip. The attach succeeds, which is why it's easy to miss, but `bpftool net` showing 'generic' instead of 'driver' is the tell. The fix is a NIC/driver with native XDP support (or to force native mode and confirm the driver supports it). It's not a JIT toggle, generic is not offload, and maps don't swap.",
-      "hint": "The attach didn't fail, but bpftool labels the hook with a mode. Compare that label to the fast host and ask where the program is really running."
+      "explanation": "O XDP tem três modos de conexão. O modo native (driver) roda no driver antes do sk_buff existir, e é daí que vem o grande ganho. O modo offload roda em uma SmartNIC capaz disso. O modo generic (SKB) é o fallback do kernel para quando o driver não tem suporte nativo a XDP: ele roda o programa depois que a stack já alocou o sk_buff, então você paga quase todo o custo por pacote que o XDP deveria evitar. A conexão é bem-sucedida, por isso é fácil passar despercebido, mas o `bpftool net` mostrando 'generic' em vez de 'driver' é o sinal. A solução é uma NIC/driver com suporte nativo a XDP (ou forçar o modo native e confirmar que o driver suporta). Não é um toggle de JIT, generic não é offload, e maps não vão para swap.",
+      "hint": "A conexão não falhou, mas o bpftool rotula o hook com um modo. Compare esse rótulo com o do host rápido e pergunte onde o programa está realmente rodando."
     },
     {
       "id": "ringbuf-vs-perfbuf-events",
-      "title": "Streaming events without losing them",
-      "description": "Your security program emits an event per process exec to userspace through a perf buffer. Under bursts you see lost events and your userspace consumer struggles to order them across CPUs. What's the better primitive on modern kernels?",
-      "situation": "You ship per-event records (exec, connect, file open) from the kernel to a userspace agent. You're using a perf event array (one ring per CPU). During spikes some CPUs overflow and drop records, and stitching a global ordering from per-CPU streams is awkward and memory-hungry.",
+      "title": "Transmitindo eventos sem perdê-los",
+      "description": "Seu programa de segurança emite um evento por execução de processo para o userspace através de um perf buffer. Sob picos você vê eventos perdidos e seu consumidor em userspace tem dificuldade para ordená-los entre CPUs. Qual é a primitiva melhor em kernels modernos?",
+      "situation": "Você envia registros por evento (exec, connect, file open) do kernel para um agente em userspace. Você está usando um perf event array (um anel por CPU). Durante picos, algumas CPUs transbordam e perdem registros, e reconstruir uma ordenação global a partir de streams por CPU é desajeitado e consome muita memória.",
       "codeExample": "// current: per-CPU perf buffer, can drop per CPU and reorder globally\nstruct {\n    __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);\n} events SEC(\".maps\");\nbpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &e, sizeof(e));\n\n// candidate: single shared ring buffer\nstruct {\n    __uint(type, BPF_MAP_TYPE_RINGBUF);\n    __uint(max_entries, 256 * 1024);\n} rb SEC(\".maps\");\nbpf_ringbuf_output(&rb, &e, sizeof(e), 0);",
       "options": [
-        "Keep the perf buffer but raise each CPU's buffer to the largest size allowed, which removes drops entirely",
-        "Switch event delivery to a map the userspace agent polls on a timer instead of a streaming buffer",
-        "Use the BPF ring buffer (BPF_MAP_TYPE_RINGBUF): one shared MPSC buffer that preserves submission order across CPUs and uses memory more efficiently than per-CPU perf buffers",
-        "Write events into a per-CPU hash map and reconstruct ordering from timestamps in userspace"
+        "Manter o perf buffer, mas aumentar o buffer de cada CPU para o maior tamanho permitido, o que elimina as perdas por completo",
+        "Trocar a entrega de eventos para um map que o agente em userspace consulta por polling em um timer, em vez de um buffer de streaming",
+        "Usar o BPF ring buffer (BPF_MAP_TYPE_RINGBUF): um único buffer compartilhado MPSC que preserva a ordem de submissão entre CPUs e usa memória de forma mais eficiente que perf buffers por CPU",
+        "Escrever os eventos em um hash map per-CPU e reconstruir a ordenação a partir de timestamps no userspace"
       ],
       "correctAnswer": 2,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "The perf event array is per-CPU: you size a ring for every CPU, a busy CPU can overflow and drop while others sit idle, and because records leave on separate per-CPU streams there's no global ordering. The BPF ring buffer (kernel 5.8+) is a single buffer shared across CPUs with multi-producer support. It preserves the order in which events were submitted, wastes far less memory than over-provisioning N per-CPU rings, and supports a reserve/commit API that avoids an extra copy. That's why it's the recommended primitive for streaming variable-size events to userspace today. Just growing per-CPU buffers delays drops without fixing the per-CPU imbalance or the ordering problem, polling adds latency, and rebuilding order from timestamps is fragile.",
-      "hint": "The pain comes from having one buffer per CPU. What newer primitive gives you a single shared buffer with ordering and better memory use?"
+      "explanation": "O perf event array é por CPU: você dimensiona um anel para cada CPU, uma CPU ocupada pode transbordar e perder eventos enquanto outras ficam ociosas, e como os registros saem em streams separados por CPU não há ordenação global. O BPF ring buffer (kernel 5.8+) é um único buffer compartilhado entre CPUs com suporte a múltiplos produtores. Ele preserva a ordem em que os eventos foram submetidos, desperdiça muito menos memória do que superdimensionar N anéis por CPU, e suporta uma API de reserve/commit que evita uma cópia extra. É por isso que ele é a primitiva recomendada hoje para transmitir eventos de tamanho variável para o userspace. Apenas aumentar os buffers por CPU adia as perdas sem corrigir o desequilíbrio entre CPUs nem o problema de ordenação, o polling adiciona latência, e reconstruir a ordem a partir de timestamps é frágil.",
+      "hint": "A dor vem de ter um buffer por CPU. Que primitiva mais nova te dá um único buffer compartilhado com ordenação e melhor uso de memória?"
     }
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "cicd-pipeline-stages",
   "slug": "cicd-pipeline-stages",
-  "title": "CI/CD Pipeline Stages",
-  "question": "What are the typical stages of a CI/CD pipeline and why is each stage important?",
-  "answer": "A typical CI/CD pipeline has four main stages: Build (compile code, install dependencies), Test (run unit, integration, and security tests), Deploy (release to staging/production), and Monitor (track application health). Each stage must pass before proceeding. Failed tests block deployment, preventing bugs from reaching production.",
-  "explanation": "CI/CD pipelines automate the path from code commit to production. Each stage serves as a quality gate - if any step fails, the pipeline stops, ensuring only validated code reaches users. This automation reduces manual errors and enables faster, safer releases.",
+  "title": "Estágios de um pipeline de CI/CD",
+  "question": "Quais são os estágios típicos de um pipeline de CI/CD e por que cada estágio é importante?",
+  "answer": "Um pipeline de CI/CD típico tem quatro estágios principais: Build (compilar o código, instalar dependências), Test (executar testes unitários, de integração e de segurança), Deploy (liberar para staging/produção) e Monitor (acompanhar a saúde da aplicação). Cada estágio precisa passar antes de seguir para o próximo. Testes que falham bloqueiam o deploy, impedindo que bugs cheguem à produção.",
+  "explanation": "Pipelines de CI/CD automatizam o caminho do commit de código até a produção. Cada estágio funciona como um portão de qualidade - se qualquer etapa falhar, o pipeline para, garantindo que só código validado chegue aos usuários. Essa automação reduz erros manuais e permite releases mais rápidos e seguros.",
   "category": "CI/CD",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "GitHub Actions pipeline",
+      "label": "Pipeline com GitHub Actions",
       "code": "name: CI/CD Pipeline\non: [push]\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Install dependencies\n        run: npm ci\n      - name: Build\n        run: npm run build\n\n  test:\n    needs: build\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci\n      - run: npm test\n\n  deploy:\n    needs: test\n    runs-on: ubuntu-latest\n    steps:\n      - name: Deploy to production\n        run: ./deploy.sh"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between continuous integration and continuous deployment?",
-    "How do you handle database migrations in a CI/CD pipeline?",
-    "What testing should be automated vs manual in a pipeline?"
+    "Qual é a diferença entre continuous integration e continuous deployment?",
+    "Como você lida com migrações de banco de dados em um pipeline de CI/CD?",
+    "Quais testes deveriam ser automatizados versus manuais em um pipeline?"
   ],
   "commonMistakes": [
-    "Skipping tests to deploy faster (technical debt)",
-    "Not having proper staging environments for pre-production testing",
-    "Missing rollback procedures when deployments fail"
+    "Pular testes para fazer deploy mais rápido (dívida técnica)",
+    "Não ter ambientes de staging adequados para testes pré-produção",
+    "Não ter procedimentos de rollback quando os deploys falham"
   ],
   "relatedTopics": [
     "github-actions",

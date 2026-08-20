@@ -1,7 +1,7 @@
 {
   "id": "cloud-cost-allocation-tags-quiz",
-  "title": "Cloud Cost Allocation Tags Quiz",
-  "description": "Debug tagging gaps, fix broken cost reports, and set up consistent allocation tags across AWS, GCP, and Azure for accurate chargeback and showback",
+  "title": "Quiz de Tags de Alocação de Custos na Nuvem",
+  "description": "Depure lacunas de tagging, corrija relatórios de custo quebrados e configure tags de alocação consistentes entre AWS, GCP e Azure para chargeback e showback precisos",
   "category": "FinOps",
   "icon": "Tags",
   "totalPoints": 193,
@@ -11,7 +11,7 @@
     "gradientTo": "to-teal-600"
   },
   "metadata": {
-    "estimatedTime": "18-22 minutes",
+    "estimatedTime": "18-22 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 7,
@@ -22,237 +22,237 @@
   "questions": [
     {
       "id": "untagged-resources-cost-report",
-      "title": "The Mystery Untagged Spend",
-      "description": "Your cost report shows 40% of spend as 'untagged'. Where do you start?",
-      "situation": "Your finance team asks why 40% of the AWS bill shows up as 'Other' in the cost allocation report. You open AWS Cost Explorer and filter by the 'team' tag. A huge chunk of resources have no tag at all. Your CTO wants this fixed by end of week.",
+      "title": "O Mistério dos Gastos Sem Tag",
+      "description": "Seu relatório de custo mostra 40% dos gastos como 'sem tag'. Por onde você começa?",
+      "situation": "Seu time financeiro pergunta por que 40% da fatura da AWS aparece como 'Other' no relatório de alocação de custos. Você abre o AWS Cost Explorer e filtra pela tag 'team'. Uma parte enorme dos recursos não tem tag nenhuma. Seu CTO quer isso resolvido até o fim da semana.",
       "codeExample": "AWS Cost Explorer output:\n\nGroup by: Tag - team\n  team=platform    $12,400/mo\n  team=data        $8,200/mo\n  team=frontend    $3,100/mo\n  Not tagged       $15,800/mo  ← 40% of total!\n\nTop untagged resources:\n  - 23 EC2 instances\n  - 14 RDS instances\n  - 180+ S3 buckets\n  - 45 Lambda functions",
       "options": [
-        "Use AWS Tag Editor to bulk-find and tag untagged resources, then set up an SCP to require tags on new resources",
-        "Manually tag all 262 resources in the AWS Console one by one",
-        "Delete all untagged resources since nobody claimed them",
-        "Create a new tag called 'untagged' and assign all those resources to it"
+        "Usar o AWS Tag Editor para encontrar e marcar em massa os recursos sem tag, e depois configurar uma SCP para exigir tags em novos recursos",
+        "Marcar manualmente todos os 262 recursos no Console da AWS, um por um",
+        "Apagar todos os recursos sem tag, já que ninguém os reivindicou",
+        "Criar uma nova tag chamada 'untagged' e atribuí-la a todos esses recursos"
       ],
       "correctAnswer": 0,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "AWS Tag Editor lets you search for resources by region and type, filter by missing tags, and bulk-apply tags in one shot. But fixing existing resources is only half the battle. You also need to prevent future untagged resources by using Service Control Policies (SCPs) or tag policies that block resource creation without required tags. Manual tagging doesn't scale, deleting resources is reckless, and a generic 'untagged' label defeats the purpose of cost allocation.",
-      "hint": "Think about two things: how to fix the current mess efficiently, and how to stop it from happening again."
+      "explanation": "O AWS Tag Editor permite buscar recursos por região e tipo, filtrar por tags ausentes, e aplicar tags em massa de uma só vez. Mas corrigir os recursos existentes é só metade do trabalho. Você também precisa prevenir novos recursos sem tag usando Service Control Policies (SCPs) ou tag policies que bloqueiem a criação de recursos sem as tags obrigatórias. Marcar manualmente não escala, apagar recursos é arriscado, e uma tag genérica 'untagged' anula o propósito da alocação de custos.",
+      "hint": "Pense em duas coisas: como corrigir a bagunça atual de forma eficiente, e como impedir que isso aconteça de novo."
     },
     {
       "id": "aws-cost-allocation-tag-activation",
-      "title": "Tags Exist But Cost Explorer Is Empty",
-      "description": "You tagged everything but Cost Explorer still shows no tag data.",
-      "situation": "Your team spent two days tagging every AWS resource with 'team', 'project', and 'environment' tags. But when you open Cost Explorer and try to group by these tags, they don't appear in the dropdown. The tags show up fine in the EC2 console.",
+      "title": "As Tags Existem, Mas o Cost Explorer Está Vazio",
+      "description": "Você marcou tudo, mas o Cost Explorer ainda não mostra nenhum dado de tag.",
+      "situation": "Seu time passou dois dias marcando todos os recursos da AWS com as tags 'team', 'project' e 'environment'. Mas quando você abre o Cost Explorer e tenta agrupar por essas tags, elas não aparecem no menu suspenso. As tags aparecem normalmente no console do EC2.",
       "codeExample": "# Tags visible on EC2 instance:\n$ aws ec2 describe-tags --filters \"Name=resource-id,Values=i-0abc123\"\n{\n  \"Tags\": [\n    {\"Key\": \"team\", \"Value\": \"platform\"},\n    {\"Key\": \"project\", \"Value\": \"api-gateway\"},\n    {\"Key\": \"environment\", \"Value\": \"production\"}\n  ]\n}\n\n# But in Cost Explorer → Group by → Tag:\n# Only 'aws:createdBy' appears\n# No custom tags visible",
       "options": [
-        "Wait 24-48 hours for Cost Explorer to sync with the resource tags",
-        "Activate the tags as cost allocation tags in the Billing console first",
-        "Switch to AWS Organizations consolidated billing to see the tags",
-        "Re-create the tags using the 'aws:' prefix so Cost Explorer recognizes them"
+        "Esperar 24-48 horas para o Cost Explorer sincronizar com as tags dos recursos",
+        "Ativar primeiro as tags como cost allocation tags no console de Billing",
+        "Mudar para o consolidated billing do AWS Organizations para ver as tags",
+        "Recriar as tags usando o prefixo 'aws:' para que o Cost Explorer as reconheça"
       ],
       "correctAnswer": 1,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "AWS has a separate step most people miss: you must activate user-defined tags as cost allocation tags in the Billing and Cost Management console (Billing > Cost allocation tags > Activate). Resource tags and cost allocation tags are different things. Tags on resources are metadata for management. Cost allocation tags are the subset you've explicitly told AWS to track in billing data. After activation, it takes about 24 hours for data to appear. You can't use the 'aws:' prefix for custom tags either, that's reserved for AWS-generated tags.",
-      "hint": "Resource tags and billing tags aren't the same thing in AWS. There's an extra step in the Billing console."
+      "explanation": "A AWS tem uma etapa separada que a maioria das pessoas esquece: você precisa ativar as tags definidas pelo usuário como cost allocation tags no console de Billing and Cost Management (Billing > Cost allocation tags > Activate). Tags de recursos e cost allocation tags são coisas diferentes. As tags nos recursos são metadados para gerenciamento. As cost allocation tags são o subconjunto que você disse explicitamente à AWS para rastrear nos dados de faturamento. Depois da ativação, leva cerca de 24 horas para os dados aparecerem. Você também não pode usar o prefixo 'aws:' para tags customizadas, isso é reservado para tags geradas pela AWS.",
+      "hint": "Tags de recursos e tags de faturamento não são a mesma coisa na AWS. Há uma etapa extra no console de Billing."
     },
     {
       "id": "gcp-label-vs-aws-tag",
-      "title": "Multi-Cloud Tagging Mismatch",
-      "description": "Your tagging standard works on AWS but breaks on GCP. What went wrong?",
-      "situation": "You defined a company-wide tagging standard and applied it across AWS and GCP. The AWS side works fine, but on GCP, several labels are being rejected or silently dropped. Your Terraform apply keeps failing on the GCP resources.",
+      "title": "Incompatibilidade de Tagging Multi-Cloud",
+      "description": "Seu padrão de tagging funciona na AWS, mas quebra no GCP. O que deu errado?",
+      "situation": "Você definiu um padrão de tagging para toda a empresa e o aplicou na AWS e no GCP. O lado da AWS funciona bem, mas no GCP, vários labels estão sendo rejeitados ou descartados silenciosamente. Seu terraform apply continua falhando nos recursos do GCP.",
       "codeExample": "# Your company tagging standard:\nrequired_tags = {\n  \"Team\"        = \"Platform\"\n  \"Environment\" = \"Production\"\n  \"Cost-Center\" = \"CC-4400\"\n  \"Project\"     = \"API_Gateway\"\n}\n\n# Terraform error on GCP:\n│ Error: googleapi: Error 400: Invalid value for field\n│ 'resource.labels': 'Team'. Label keys must start\n│ with a lowercase letter and contain only lowercase\n│ letters, numeric characters, underscores, and dashes.\n│ Label keys must be between 1 and 63 characters long.",
       "options": [
-        "Use Terraform's lower() function to convert tag keys to lowercase before applying to GCP",
-        "Switch GCP to use tags instead of labels since tags support uppercase",
-        "Create separate tagging standards for each cloud provider",
-        "Use a Terraform local block to normalize keys: lowercase, replace uppercase and special chars to match each provider's rules"
+        "Usar a função lower() do Terraform para converter as chaves das tags para minúsculas antes de aplicar no GCP",
+        "Mudar o GCP para usar tags em vez de labels, já que tags suportam maiúsculas",
+        "Criar padrões de tagging separados para cada provedor de nuvem",
+        "Usar um bloco local do Terraform para normalizar as chaves: minúsculas, substituindo maiúsculas e caracteres especiais para respeitar as regras de cada provedor"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "AWS tags allow uppercase letters, hyphens, and many special characters in keys. GCP labels only allow lowercase letters, numbers, underscores, and hyphens, and keys must start with a lowercase letter. The fix is to define one canonical tagging standard and use Terraform locals to normalize the keys per provider. Just using lower() won't handle the underscore vs hyphen issue or the 'CC-4400' value format. Creating separate standards per cloud defeats the purpose of unified cost reporting. GCP 'tags' are network-level firewall constructs, not cost labels.",
-      "hint": "GCP labels have strict rules about character casing and allowed characters. You need a translation layer, not separate standards."
+      "explanation": "As tags da AWS permitem letras maiúsculas, hífens e muitos caracteres especiais nas chaves. Os labels do GCP só permitem letras minúsculas, números, underscores e hífens, e as chaves precisam começar com uma letra minúscula. A solução é definir um padrão de tagging canônico e usar locals do Terraform para normalizar as chaves por provedor. Só usar lower() não resolve o problema de underscore vs hífen nem o formato do valor 'CC-4400'. Criar padrões separados por nuvem anula o propósito de um relatório de custo unificado. As 'tags' do GCP são construções de firewall no nível de rede, não labels de custo.",
+      "hint": "Os labels do GCP têm regras rígidas sobre maiúsculas/minúsculas e caracteres permitidos. Você precisa de uma camada de tradução, não de padrões separados."
     },
     {
       "id": "terraform-default-tags-drift",
-      "title": "Terraform Tags Keep Disappearing",
-      "description": "You set default_tags in the AWS provider but some resources lose their tags after manual console edits.",
-      "situation": "You configured default_tags in your Terraform AWS provider so every resource gets tagged automatically. It worked great for months. Now your team reports that some EC2 instances are missing the 'team' and 'environment' tags. You check and find someone edited tags in the console.",
+      "title": "As Tags do Terraform Continuam Sumindo",
+      "description": "Você configurou default_tags no provider da AWS, mas alguns recursos perdem as tags depois de edições manuais no console.",
+      "situation": "Você configurou default_tags no seu provider AWS do Terraform para que todo recurso seja marcado automaticamente. Funcionou muito bem por meses. Agora seu time relata que algumas instâncias EC2 estão sem as tags 'team' e 'environment'. Você verifica e descobre que alguém editou as tags pelo console.",
       "codeExample": "# terraform provider config:\nprovider \"aws\" {\n  region = \"us-east-1\"\n  default_tags {\n    tags = {\n      environment = \"production\"\n      team        = \"platform\"\n      managed_by  = \"terraform\"\n    }\n  }\n}\n\n# terraform plan output:\n  # aws_instance.api_server will be updated in-place\n  ~ resource \"aws_instance\" \"api_server\" {\n      ~ tags = {\n          + \"environment\" = \"production\"\n          + \"team\"        = \"platform\"\n          - \"owner\"       = \"john\" -> null\n        }\n    }",
       "options": [
-        "Run terraform apply to restore the tags and tell the team to never edit in the console",
-        "Add lifecycle ignore_changes for tags so Terraform stops overwriting manual changes",
-        "Set up an AWS Config rule to detect tag drift and a Lambda to auto-remediate, while also enforcing tags via SCP for new resources",
-        "Remove default_tags and define tags on each resource individually"
+        "Rodar terraform apply para restaurar as tags e avisar o time para nunca editar pelo console",
+        "Adicionar lifecycle ignore_changes para as tags, para que o Terraform pare de sobrescrever mudanças manuais",
+        "Configurar uma regra do AWS Config para detectar drift nas tags e uma Lambda para corrigir automaticamente, além de aplicar tags via SCP para novos recursos",
+        "Remover o default_tags e definir as tags em cada recurso individualmente"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Just running terraform apply fixes it temporarily, but the same thing will happen again next week. Ignoring tag changes means Terraform stops managing tags at all, which is worse. The real fix is defense in depth: use AWS Config rules (like 'required-tags') to detect when resources drift from your tagging policy, trigger a Lambda function to re-apply the correct tags automatically, and add an SCP that prevents creating resources without required tags. This handles both console edits and resources created outside of Terraform.",
-      "hint": "Fixing it once isn't enough. How do you detect drift AND prevent it from happening again, even outside Terraform?"
+      "explanation": "Só rodar terraform apply resolve temporariamente, mas a mesma coisa vai acontecer de novo na semana seguinte. Ignorar as mudanças de tag significa que o Terraform para de gerenciar as tags completamente, o que é ainda pior. A solução real é defesa em profundidade: usar regras do AWS Config (como 'required-tags') para detectar quando os recursos saem do padrão de tagging, disparar uma função Lambda para reaplicar automaticamente as tags corretas, e adicionar uma SCP que impeça a criação de recursos sem as tags obrigatórias. Isso cobre tanto as edições pelo console quanto os recursos criados fora do Terraform.",
+      "hint": "Corrigir uma vez não é suficiente. Como detectar o drift E impedir que aconteça de novo, mesmo fora do Terraform?"
     },
     {
       "id": "azure-tag-inheritance",
-      "title": "Azure Resource Group Tags Not Inherited",
-      "description": "You tagged the resource group but the resources inside have no tags.",
-      "situation": "Your Azure cost report shows that only resource groups are properly tagged. The VMs, storage accounts, and databases inside them show no tags. Your team assumed resource group tags would flow down to child resources automatically.",
+      "title": "Tags do Resource Group do Azure Não São Herdadas",
+      "description": "Você marcou o resource group, mas os recursos dentro dele não têm tags.",
+      "situation": "Seu relatório de custo do Azure mostra que só os resource groups estão corretamente marcados. As VMs, storage accounts e bancos de dados dentro deles não têm tags. Seu time presumiu que as tags do resource group seriam propagadas automaticamente para os recursos filhos.",
       "codeExample": "# Resource Group tags:\n$ az group show -n rg-platform-prod --query tags\n{\n  \"team\": \"platform\",\n  \"environment\": \"production\",\n  \"cost-center\": \"CC-4400\"\n}\n\n# VM inside that resource group:\n$ az vm show -g rg-platform-prod -n vm-api-01 --query tags\n{}\n\n# Cost report shows:\n# Resource Group level: properly categorized\n# Resource level: 85% untagged",
       "options": [
-        "Azure resource groups automatically inherit tags to child resources after 24 hours",
-        "Use Azure Cost Management tag inheritance feature and skip tagging individual resources",
-        "Move all resources to new resource groups since the tags will apply on creation",
-        "Use Azure Policy with a 'modify' effect to automatically apply resource group tags to child resources"
+        "Os resource groups do Azure propagam automaticamente as tags para os recursos filhos após 24 horas",
+        "Usar o recurso de herança de tags do Azure Cost Management e pular a marcação individual dos recursos",
+        "Mover todos os recursos para novos resource groups, já que as tags serão aplicadas na criação",
+        "Usar o Azure Policy com um efeito 'modify' para aplicar automaticamente as tags do resource group aos recursos filhos"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Azure does NOT automatically inherit resource group tags to child resources. This is one of the most common Azure tagging mistakes. You need Azure Policy with a 'modify' effect (like the built-in policy 'Inherit a tag from the resource group') to copy tags from the resource group down to resources. Moving resources won't help because Azure never auto-inherits tags. Azure Cost Management does have a tag inheritance feature for billing, but it only works in cost reports, not on the actual resources. Using Azure Policy applies the tags to the actual resources, which is better for operations and governance.",
-      "hint": "Azure doesn't do what most people assume. Tags on a resource group are just for the group itself. You need a policy to push them down."
+      "explanation": "O Azure NÃO propaga automaticamente as tags do resource group para os recursos filhos. Esse é um dos erros de tagging mais comuns no Azure. Você precisa do Azure Policy com um efeito 'modify' (como a política integrada 'Inherit a tag from the resource group') para copiar as tags do resource group para os recursos. Mover os recursos não ajuda, porque o Azure nunca herda tags automaticamente. O Azure Cost Management tem, sim, um recurso de herança de tags para faturamento, mas ele só funciona nos relatórios de custo, não nos recursos reais. Usar o Azure Policy aplica as tags nos recursos de fato, o que é melhor para operações e governança.",
+      "hint": "O Azure não faz o que a maioria das pessoas presume. As tags de um resource group valem só para o próprio grupo. Você precisa de uma policy para propagá-las para baixo."
     },
     {
       "id": "tag-key-naming-chaos",
-      "title": "The env vs Env vs Environment Nightmare",
-      "description": "Three teams use different tag keys for the same thing. Your cost report is a mess.",
-      "situation": "You're building a cost allocation dashboard. You notice that different teams tagged resources with different key names for the same concept. Filtering by any single tag misses two-thirds of your resources.",
+      "title": "O Pesadelo do env vs Env vs Environment",
+      "description": "Três times usam chaves de tag diferentes para a mesma coisa. Seu relatório de custo é uma bagunça.",
+      "situation": "Você está construindo um dashboard de alocação de custos. Você percebe que times diferentes marcaram recursos com nomes de chave diferentes para o mesmo conceito. Filtrar por uma única tag deixa de fora dois terços dos seus recursos.",
       "codeExample": "Tag key variations found across 500+ resources:\n\nFor environment:\n  - 'environment' (142 resources)\n  - 'Environment' (98 resources)\n  - 'env' (87 resources)\n  - 'Env' (45 resources)\n  - 'ENV' (12 resources)\n\nFor team/owner:\n  - 'team' (120 resources)\n  - 'Team' (85 resources)\n  - 'owner' (67 resources)\n  - 'Owner' (54 resources)\n  - 'dept' (33 resources)\n\nFor cost center:\n  - 'cost-center' (89 resources)\n  - 'CostCenter' (76 resources)\n  - 'cost_center' (44 resources)\n  - 'costcenter' (31 resources)",
       "options": [
-        "Define a tag policy in AWS Organizations to enforce allowed keys and values, then use Tag Editor to fix existing resources",
-        "Pick one standard and manually rename all 500+ tag keys in the console",
-        "Write a script to normalize all tag keys to lowercase-hyphenated and accept the 24-hour billing delay",
-        "Use Cost Explorer's tag grouping to merge different tag keys into one view"
+        "Definir uma tag policy no AWS Organizations para impor as chaves e valores permitidos, e depois usar o Tag Editor para corrigir os recursos existentes",
+        "Escolher um padrão e renomear manualmente todas as mais de 500 chaves de tag no console",
+        "Escrever um script para normalizar todas as chaves de tag para minúsculas com hífen, e aceitar o atraso de 24 horas no faturamento",
+        "Usar o agrupamento de tags do Cost Explorer para mesclar chaves de tag diferentes em uma única visão"
       ],
       "correctAnswer": 0,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "AWS Organizations tag policies let you define the canonical tag key name and which values are allowed. For example, you set 'environment' as the approved key and 'production', 'staging', 'development' as allowed values. The tag policy prevents new non-compliant tags. Then use AWS Tag Editor to bulk-fix the 500+ existing resources. A script works for cleanup but doesn't prevent recurrence. Cost Explorer can't merge different tag keys. Manual work doesn't scale.",
-      "hint": "You need to fix the existing mess AND prevent teams from creating new variations. AWS Organizations has a feature for exactly this."
+      "explanation": "As tag policies do AWS Organizations permitem definir o nome canônico da chave de tag e quais valores são permitidos. Por exemplo, você define 'environment' como a chave aprovada e 'production', 'staging', 'development' como valores permitidos. A tag policy impede novas tags fora do padrão. Depois, use o AWS Tag Editor para corrigir em massa os mais de 500 recursos existentes. Um script funciona para a limpeza, mas não evita que o problema volte a acontecer. O Cost Explorer não consegue mesclar chaves de tag diferentes. O trabalho manual não escala.",
+      "hint": "Você precisa corrigir a bagunça existente E impedir que os times criem novas variações. O AWS Organizations tem um recurso feito exatamente para isso."
     },
     {
       "id": "cross-cloud-cost-report",
-      "title": "Unified Multi-Cloud Cost Dashboard",
-      "description": "Your CFO wants one report showing costs by team across AWS, GCP, and Azure. Tags don't match.",
-      "situation": "Each cloud has different tag/label formats. AWS uses 'team', GCP uses 'team' (lowercase only), Azure uses 'Team'. Your FinOps tool needs to merge these into a single 'team' dimension for cross-cloud reporting.",
+      "title": "Dashboard de Custo Unificado Multi-Cloud",
+      "description": "Seu CFO quer um único relatório mostrando os custos por time entre AWS, GCP e Azure. As tags não batem.",
+      "situation": "Cada nuvem tem um formato diferente de tag/label. A AWS usa 'team', o GCP usa 'team' (só minúsculas), o Azure usa 'Team'. Sua ferramenta de FinOps precisa mesclar tudo isso em uma única dimensão 'team' para relatórios entre nuvens.",
       "codeExample": "# AWS Cost Export (CUR):\nresource_id,team,cost\ni-0abc123,platform,$4200\ni-0def456,data-eng,$3100\n\n# GCP BigQuery Billing Export:\nresource_name,labels.team,cost\ngce-vm-1,platform,3800\ngce-vm-2,data_eng,2900\n\n# Azure Cost Export:\nResourceId,Tag_Team,Cost\n/subscriptions/.../vm1,Platform,$2100\n/subscriptions/.../vm2,Data Engineering,$1800\n\n# Problem: 'data-eng' vs 'data_eng' vs 'Data Engineering'",
       "options": [
-        "Force all three clouds to use identical tag values by standardizing before deployment",
-        "Build a mapping table in your FinOps tool that normalizes tag values across providers into canonical team names",
-        "Use each cloud's native cost tool separately and combine the reports in a spreadsheet",
-        "Switch to a single cloud provider to avoid the mapping problem"
+        "Forçar as três nuvens a usar valores de tag idênticos, padronizando antes do deployment",
+        "Construir uma tabela de mapeamento na sua ferramenta de FinOps que normaliza os valores de tag entre provedores para nomes de time canônicos",
+        "Usar a ferramenta de custo nativa de cada nuvem separadamente e combinar os relatórios em uma planilha",
+        "Mudar para um único provedor de nuvem para evitar o problema de mapeamento"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "In practice, you'll never get perfect tag consistency across clouds because each provider has different rules (GCP: lowercase only, no uppercase; Azure: case-insensitive but preserves case; AWS: case-sensitive). The right approach is to define a canonical mapping table: 'data-eng' = 'data_eng' = 'Data Engineering' all map to the canonical 'Data Engineering' team. Tools like Kubecost, CloudHealth, or even a simple ETL pipeline can apply this mapping during data ingestion. Standardizing before deployment helps going forward but doesn't fix historical data. Spreadsheets don't scale.",
-      "hint": "Each cloud has its own rules about casing and characters. You need a translation layer in your reporting pipeline."
+      "explanation": "Na prática, você nunca vai conseguir uma consistência perfeita de tags entre nuvens, porque cada provedor tem regras diferentes (GCP: só minúsculas, sem maiúsculas; Azure: não diferencia maiúsculas/minúsculas, mas preserva a caixa; AWS: diferencia maiúsculas/minúsculas). A abordagem correta é definir uma tabela de mapeamento canônica: 'data-eng' = 'data_eng' = 'Data Engineering' todos mapeiam para o time canônico 'Data Engineering'. Ferramentas como Kubecost, CloudHealth, ou até um pipeline ETL simples podem aplicar esse mapeamento durante a ingestão dos dados. Padronizar antes do deployment ajuda daqui para frente, mas não corrige os dados históricos. Planilhas não escalam.",
+      "hint": "Cada nuvem tem suas próprias regras sobre maiúsculas/minúsculas e caracteres. Você precisa de uma camada de tradução no seu pipeline de relatórios."
     },
     {
       "id": "tagging-enforcement-scp",
-      "title": "Blocking Untagged Resource Creation",
-      "description": "Developers keep creating EC2 instances without required tags. How do you enforce it?",
-      "situation": "Despite sending three company-wide emails about tagging policy, developers still launch EC2 instances without the required 'team', 'environment', and 'cost-center' tags. Last month, $8,000 in untagged resources appeared. Your manager wants a hard block.",
+      "title": "Bloqueando a Criação de Recursos Sem Tag",
+      "description": "Os desenvolvedores continuam criando instâncias EC2 sem as tags obrigatórias. Como aplicar essa exigência?",
+      "situation": "Apesar de enviar três e-mails para toda a empresa sobre a política de tagging, os desenvolvedores continuam iniciando instâncias EC2 sem as tags obrigatórias 'team', 'environment' e 'cost-center'. No mês passado, apareceram $8.000 em recursos sem tag. Seu gestor quer um bloqueio definitivo.",
       "codeExample": "# Proposed SCP:\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"RequireTagsOnEC2\",\n      \"Effect\": \"Deny\",\n      \"Action\": \"ec2:RunInstances\",\n      \"Resource\": \"arn:aws:ec2:*:*:instance/*\",\n      \"Condition\": {\n        \"Null\": {\n          \"aws:RequestTag/team\": \"true\",\n          \"aws:RequestTag/environment\": \"true\",\n          \"aws:RequestTag/cost-center\": \"true\"\n        }\n      }\n    }\n  ]\n}",
       "options": [
-        "This SCP will only block launches missing ALL three tags because Null conditions use AND logic",
-        "This SCP will block any EC2 launch missing ANY of the three tags",
-        "This SCP won't work because SCPs can't check tag conditions",
-        "This SCP will block all EC2 launches including those with tags, because the Deny is too broad"
+        "Essa SCP só vai bloquear os lançamentos que estiverem sem TODAS as três tags, porque as condições Null usam lógica AND",
+        "Essa SCP vai bloquear qualquer lançamento de EC2 que esteja faltando QUALQUER uma das três tags",
+        "Essa SCP não vai funcionar porque SCPs não conseguem verificar condições de tag",
+        "Essa SCP vai bloquear todos os lançamentos de EC2, incluindo os que têm tags, porque o Deny é abrangente demais"
       ],
       "correctAnswer": 0,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "This is a common SCP gotcha. When you put multiple conditions under the same 'Null' block, they use AND logic. The Deny only triggers when ALL conditions are true (all three tags are missing). If a developer provides just the 'team' tag but skips 'environment' and 'cost-center', the instance launches successfully. To require ALL tags, you need separate Statement blocks for each tag, or use separate Condition keys. Each tag check should be its own Deny statement so any single missing tag blocks the action.",
-      "hint": "Look at how the Null conditions are structured. In IAM policy evaluation, multiple keys under the same condition operator are ANDed together."
+      "explanation": "Essa é uma pegadinha comum de SCP. Quando você coloca várias condições sob o mesmo bloco 'Null', elas usam lógica AND. O Deny só é disparado quando TODAS as condições são verdadeiras (as três tags estão faltando). Se um desenvolvedor fornecer só a tag 'team' mas pular 'environment' e 'cost-center', a instância é lançada com sucesso. Para exigir TODAS as tags, você precisa de blocos Statement separados para cada tag, ou usar chaves de Condition separadas. Cada verificação de tag deveria ser um Deny próprio, para que a falta de qualquer uma das tags bloqueie a ação.",
+      "hint": "Observe como as condições Null estão estruturadas. Na avaliação de políticas do IAM, múltiplas chaves sob o mesmo operador de condição são combinadas com AND."
     },
     {
       "id": "gcp-project-labels-billing",
-      "title": "GCP Project Labels vs Resource Labels",
-      "description": "Your GCP billing export shows project-level labels but resource-level labels are missing from cost data.",
-      "situation": "You set labels on individual GCP Compute Engine VMs, but when you query the billing export in BigQuery, the labels column only shows project-level labels. The per-resource labels you carefully applied are nowhere in the billing data.",
+      "title": "Labels de Projeto vs Labels de Recurso no GCP",
+      "description": "Sua exportação de faturamento do GCP mostra labels no nível de projeto, mas os labels no nível de recurso estão ausentes dos dados de custo.",
+      "situation": "Você definiu labels em VMs individuais do GCP Compute Engine, mas quando consulta a exportação de faturamento no BigQuery, a coluna de labels só mostra os labels no nível de projeto. Os labels por recurso que você aplicou cuidadosamente não aparecem em lugar nenhum nos dados de faturamento.",
       "codeExample": "# Labels on VM:\n$ gcloud compute instances describe my-vm \\\n    --format='get(labels)'\nteam=platform;service=api;env=prod\n\n# BigQuery billing export query:\nSELECT\n  project.labels,\n  resource.labels,\n  cost\nFROM `billing_dataset.gcp_billing_export_v1_XXXXX`\nWHERE service.description = 'Compute Engine'\n\n# Result:\n# project.labels: [{key: 'team', value: 'platform'}]\n# resource.labels: []  ← empty!\n# cost: 842.50",
       "options": [
-        "Resource labels need 24-48 hours to sync to the billing export",
-        "You need to enable 'Detailed usage cost' export in the billing account settings to get resource-level labels",
-        "GCP billing only supports project labels, not resource labels",
-        "Re-apply the labels using the billing API instead of the compute API"
+        "Os labels de recurso levam 24-48 horas para sincronizar com a exportação de faturamento",
+        "Você precisa habilitar a exportação 'Detailed usage cost' nas configurações da conta de faturamento para obter labels no nível de recurso",
+        "O faturamento do GCP só suporta labels de projeto, não labels de recurso",
+        "Reaplicar os labels usando a billing API em vez da compute API"
       ],
       "correctAnswer": 1,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "GCP has two billing export modes: standard and detailed usage cost. The standard export only includes project-level labels. To get resource-level labels in BigQuery, you must enable 'Detailed usage cost' export in Cloud Billing > Billing export. This creates a separate table (gcp_billing_export_resource_v1_XXXXX) that includes resource.labels. The detailed export is larger and costs more to query, but it's the only way to get per-resource label data in your billing pipeline. GCP absolutely supports resource labels in billing, you just need to turn on the detailed export.",
-      "hint": "GCP has more than one billing export format. The basic one leaves some data out."
+      "explanation": "O GCP tem dois modos de exportação de faturamento: standard e detailed usage cost. A exportação standard só inclui labels no nível de projeto. Para obter labels no nível de recurso no BigQuery, você precisa habilitar a exportação 'Detailed usage cost' em Cloud Billing > Billing export. Isso cria uma tabela separada (gcp_billing_export_resource_v1_XXXXX) que inclui resource.labels. A exportação detalhada é maior e custa mais para consultar, mas é a única forma de obter dados de label por recurso no seu pipeline de faturamento. O GCP suporta sim labels de recurso no faturamento, você só precisa ativar a exportação detalhada.",
+      "hint": "O GCP tem mais de um formato de exportação de faturamento. O básico deixa alguns dados de fora."
     },
     {
       "id": "inherited-tags-cost-accuracy",
-      "title": "Shared Resource Tag Attribution",
-      "description": "A shared RDS database serves three teams but can only have one 'team' tag. How do you split the cost?",
-      "situation": "Your shared PostgreSQL RDS instance costs $2,400/month and is used by the platform, data, and frontend teams. You can only assign one 'team' tag value to it. Finance wants accurate per-team cost allocation, not just dumping the full cost on one team.",
+      "title": "Atribuição de Tag em Recurso Compartilhado",
+      "description": "Um banco de dados RDS compartilhado atende três times, mas só pode ter uma tag 'team'. Como dividir o custo?",
+      "situation": "Sua instância RDS PostgreSQL compartilhada custa $2.400/mês e é usada pelos times de platform, data e frontend. Você só pode atribuir um valor de tag 'team' a ela. O financeiro quer uma alocação de custo precisa por time, não simplesmente jogar o custo total em cima de um único time.",
       "codeExample": "# Current state:\nResource: arn:aws:rds:us-east-1:123456:db/shared-postgres\nTags:\n  team: platform  (but data and frontend also use it)\n  environment: production\n  cost-center: CC-4400\n\nActual usage (from pg_stat_statements):\n  platform queries:  45% of total CPU time\n  data-eng queries:  35% of total CPU time\n  frontend queries:  20% of total CPU time\n\nMonthly cost: $2,400",
       "options": [
-        "Tag it as 'team=shared' and split the cost evenly three ways ($800 each)",
-        "Keep it tagged as 'team=platform' since they use it the most",
-        "Tag it as 'team=shared', then use your FinOps tool's custom allocation rules to split by actual usage percentages",
-        "Create three separate RDS instances so each team gets their own bill"
+        "Marcar como 'team=shared' e dividir o custo igualmente entre os três ($800 cada)",
+        "Manter a tag 'team=platform', já que eles usam mais",
+        "Marcar como 'team=shared', e depois usar as regras de alocação customizadas da sua ferramenta de FinOps para dividir pelos percentuais reais de uso",
+        "Criar três instâncias RDS separadas para que cada time tenha sua própria fatura"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Shared resources are the hardest part of cost allocation. Tagging as 'shared' is the right first step because it's honest and visible. Then use your FinOps tool (AWS Cost Categories, Kubecost, CloudHealth, etc.) to define custom split rules: platform gets 45% ($1,080), data-eng gets 35% ($840), frontend gets 20% ($480). Splitting evenly ignores actual usage and creates resentment. Keeping it on one team's books hides the true cost to other teams. Splitting into separate instances may cost more and adds operational overhead.",
-      "hint": "Tags can only hold one value, but your cost allocation tool can split a single resource's cost across multiple teams."
+      "explanation": "Recursos compartilhados são a parte mais difícil da alocação de custos. Marcar como 'shared' é o primeiro passo certo, porque é honesto e visível. Depois, use sua ferramenta de FinOps (AWS Cost Categories, Kubecost, CloudHealth, etc.) para definir regras de divisão customizadas: platform fica com 45% ($1.080), data-eng fica com 35% ($840), frontend fica com 20% ($480). Dividir igualmente ignora o uso real e gera ressentimento. Manter tudo na conta de um único time esconde o custo real dos outros times. Dividir em instâncias separadas pode custar mais e adiciona sobrecarga operacional.",
+      "hint": "Tags só podem ter um valor, mas sua ferramenta de alocação de custo pode dividir o custo de um único recurso entre vários times."
     },
     {
       "id": "tag-compliance-monitoring",
-      "title": "Building a Tag Compliance Dashboard",
-      "description": "You need to track tagging compliance across accounts and alert when it drops below 90%.",
-      "situation": "Your company has 12 AWS accounts. You've defined a tagging policy but have no way to measure compliance. Last quarter, an audit revealed that only 62% of resources were properly tagged. Leadership wants a dashboard showing compliance per account with alerts.",
+      "title": "Construindo um Dashboard de Compliance de Tags",
+      "description": "Você precisa acompanhar a compliance de tagging entre contas e alertar quando cair abaixo de 90%.",
+      "situation": "Sua empresa tem 12 contas AWS. Você definiu uma política de tagging, mas não tem como medir a compliance. No trimestre passado, uma auditoria revelou que só 62% dos recursos estavam corretamente marcados. A liderança quer um dashboard mostrando a compliance por conta, com alertas.",
       "codeExample": "# AWS Resource Groups Tagging API:\n$ aws resourcegroupstaggingapi get-resources \\\n    --tag-filters Key=team,Values= \\\n    --region us-east-1 | jq '.ResourceTagMappingList | length'\n0\n\n# AWS Config query (not yet set up):\nSELECT\n  resourceId,\n  resourceType,\n  tags\nWHERE\n  tags.tag_key != 'team'\n  AND resourceType IN ('AWS::EC2::Instance', 'AWS::RDS::DBInstance')\n\n# Current compliance: unknown (no measurement in place)",
       "options": [
-        "Write a Lambda that runs weekly, calls the Tagging API per account, and posts results to Slack",
-        "Have each team self-report their tagging compliance in a shared spreadsheet",
-        "Use AWS Trusted Advisor tag checks and review the report monthly",
-        "Deploy AWS Config rules for required-tags across all accounts via AWS Organizations, aggregate results in a delegated Config account, and set up CloudWatch alarms"
+        "Escrever uma Lambda que roda semanalmente, chama a Tagging API por conta e posta os resultados no Slack",
+        "Fazer com que cada time reporte por conta própria sua compliance de tagging em uma planilha compartilhada",
+        "Usar as verificações de tag do AWS Trusted Advisor e revisar o relatório mensalmente",
+        "Implantar regras do AWS Config para required-tags em todas as contas via AWS Organizations, agregar os resultados em uma conta delegada do Config, e configurar alarmes do CloudWatch"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "AWS Config's 'required-tags' managed rule checks every resource for required tags and reports non-compliant resources. Deploy it across all 12 accounts using AWS Organizations with a conformance pack or CloudFormation StackSets. Aggregate results in a delegated administrator account. CloudWatch alarms can trigger when compliance drops below your threshold. A Lambda script works but you're reinventing what AWS Config already does. Trusted Advisor has limited tag checks and no real-time alerting. Self-reporting doesn't scale and isn't trustworthy.",
-      "hint": "AWS has a service designed specifically for checking resource compliance against rules. It works across multiple accounts via Organizations."
+      "explanation": "A regra gerenciada 'required-tags' do AWS Config verifica todo recurso em busca das tags obrigatórias e reporta os recursos não conformes. Implante essa regra nas 12 contas usando o AWS Organizations com um conformance pack ou CloudFormation StackSets. Agregue os resultados em uma conta de administrador delegado. Alarmes do CloudWatch podem disparar quando a compliance cair abaixo do seu limite. Um script Lambda funciona, mas você estaria reinventando o que o AWS Config já faz. O Trusted Advisor tem verificações de tag limitadas e sem alertas em tempo real. O autorreporte não escala e não é confiável.",
+      "hint": "A AWS tem um serviço desenhado especificamente para verificar a compliance de recursos contra regras. Ele funciona em múltiplas contas via Organizations."
     },
     {
       "id": "terraform-multi-cloud-tagging-module",
-      "title": "DRY Multi-Cloud Tagging in Terraform",
-      "description": "Your Terraform code duplicates tagging logic across AWS, GCP, and Azure modules. How do you centralize it?",
-      "situation": "You manage infrastructure across three clouds with Terraform. Each cloud module defines its own tags/labels, and they keep drifting apart. A developer added a new 'data-classification' tag to AWS but forgot GCP and Azure. You want one source of truth.",
+      "title": "Tagging Multi-Cloud DRY no Terraform",
+      "description": "Seu código Terraform duplica a lógica de tagging entre os módulos de AWS, GCP e Azure. Como centralizar isso?",
+      "situation": "Você gerencia infraestrutura em três nuvens com o Terraform. Cada módulo de nuvem define suas próprias tags/labels, e elas ficam cada vez mais desalinhadas. Um desenvolvedor adicionou uma nova tag 'data-classification' na AWS, mas esqueceu do GCP e do Azure. Você quer uma única fonte de verdade.",
       "codeExample": "# Current state - tags defined separately:\n\n# modules/aws/main.tf\nresource \"aws_instance\" \"web\" {\n  tags = {\n    team        = var.team\n    environment = var.environment\n    cost-center = var.cost_center\n  }\n}\n\n# modules/gcp/main.tf\nresource \"google_compute_instance\" \"web\" {\n  labels = {\n    team        = lower(var.team)\n    environment = lower(var.environment)\n    cost_center = lower(var.cost_center)\n  }\n}\n\n# modules/azure/main.tf\nresource \"azurerm_virtual_machine\" \"web\" {\n  tags = {\n    Team        = var.team\n    Environment = var.environment\n    CostCenter  = var.cost_center\n  }\n}",
       "options": [
-        "Use a Terraform data source to fetch the canonical tags from a central API",
-        "Define tags as workspace variables in Terraform Cloud and reference them in each module",
-        "Create a shared tagging module that takes canonical inputs and outputs provider-specific formatted tags/labels",
-        "Use Terragrunt to inject common tags across all modules"
+        "Usar um data source do Terraform para buscar as tags canônicas em uma API central",
+        "Definir as tags como workspace variables no Terraform Cloud e referenciá-las em cada módulo",
+        "Criar um módulo de tagging compartilhado que recebe entradas canônicas e gera tags/labels formatadas de acordo com cada provedor",
+        "Usar o Terragrunt para injetar tags comuns em todos os módulos"
       ],
       "correctAnswer": 2,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "A shared Terraform module (e.g., modules/tags) takes canonical tag inputs and outputs three maps: aws_tags, gcp_labels, and azure_tags, each formatted per that provider's rules. GCP output lowercases everything and replaces hyphens with underscores. Azure output preserves PascalCase. AWS passes through as-is. Each cloud module calls this tags module and uses the right output. This gives you one place to add new tags, and each provider gets properly formatted values. Workspace variables don't handle per-provider formatting. Terragrunt works but adds a dependency you might not want.",
-      "hint": "Terraform modules can output multiple values. One module could produce formatted tags for each cloud from a single set of inputs."
+      "explanation": "Um módulo Terraform compartilhado (por exemplo, modules/tags) recebe entradas canônicas de tags e gera três mapas: aws_tags, gcp_labels e azure_tags, cada um formatado conforme as regras daquele provedor. A saída do GCP coloca tudo em minúsculas e troca hífens por underscores. A saída do Azure preserva o PascalCase. A AWS passa os valores como estão. Cada módulo de nuvem chama esse módulo de tags e usa a saída correta. Isso te dá um único lugar para adicionar novas tags, e cada provedor recebe valores formatados corretamente. Workspace variables não lidam com formatação por provedor. O Terragrunt funciona, mas adiciona uma dependência que você pode não querer.",
+      "hint": "Módulos do Terraform podem gerar múltiplas saídas. Um único módulo poderia produzir tags formatadas para cada nuvem a partir de um único conjunto de entradas."
     },
     {
       "id": "cost-allocation-delayed-tags",
-      "title": "Retroactive Tagging and Billing Gaps",
-      "description": "You tagged resources today but your cost report for the past 3 months still shows them as untagged.",
-      "situation": "After a big tagging cleanup, you tagged 200 previously untagged resources. Your CFO asks for a corrected cost report for Q1. But the historical billing data still shows those resources as untagged for January through March.",
+      "title": "Tagging Retroativo e Lacunas de Faturamento",
+      "description": "Você marcou os recursos hoje, mas seu relatório de custo dos últimos 3 meses ainda os mostra sem tag.",
+      "situation": "Depois de uma grande limpeza de tagging, você marcou 200 recursos que antes não tinham tag. Seu CFO pede um relatório de custo corrigido para o Q1. Mas os dados históricos de faturamento ainda mostram esses recursos como sem tag de janeiro a março.",
       "codeExample": "# Today (April 7): Tags applied\n$ aws ec2 create-tags --resources i-0abc123 \\\n    --tags Key=team,Value=platform\n\n# Cost Explorer - March 2026:\nGroup by Tag: team\n  team=platform    $12,400\n  Not tagged       $15,800  ← still includes i-0abc123\n\n# Cost Explorer - April 2026 (so far):\nGroup by Tag: team\n  team=platform    $14,200  ← now includes i-0abc123\n  Not tagged       $2,100   ← much smaller\n\n# CFO wants Q1 report corrected retroactively",
       "options": [
-        "AWS automatically backfills tag data for up to 12 months when you add cost allocation tags",
-        "Export the CUR data to S3, build a mapping of resource IDs to new tags, and reprocess the historical data in your own reporting tool",
-        "Re-activate the cost allocation tags to trigger a historical recalculation",
-        "Ask AWS Support to backfill the tag data in Cost Explorer"
+        "A AWS preenche automaticamente os dados de tag retroativamente por até 12 meses quando você adiciona cost allocation tags",
+        "Exportar os dados do CUR para o S3, construir um mapeamento de IDs de recursos para as novas tags, e reprocessar os dados históricos na sua própria ferramenta de relatórios",
+        "Reativar as cost allocation tags para disparar um recálculo histórico",
+        "Pedir ao AWS Support para preencher retroativamente os dados de tag no Cost Explorer"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "AWS cost allocation tags are NOT retroactive. When you tag a resource today, the tag only appears in billing data from today forward. Historical CUR (Cost and Usage Report) data keeps the tags (or lack of tags) as they were at the time. To fix historical reports, export CUR data to S3, build a lookup table mapping resource IDs to their current tags, and join the data in Athena or your BI tool. This is manual work but it's the only way. AWS Support cannot backfill tags. There's no re-activation trick. This is why tagging early matters so much.",
-      "hint": "Cloud billing data is a snapshot in time. Tags applied today don't rewrite yesterday's records."
+      "explanation": "As cost allocation tags da AWS NÃO são retroativas. Quando você marca um recurso hoje, a tag só aparece nos dados de faturamento a partir de hoje em diante. Os dados históricos do CUR (Cost and Usage Report) mantêm as tags (ou a ausência delas) como estavam na época. Para corrigir relatórios históricos, exporte os dados do CUR para o S3, construa uma tabela de referência mapeando os IDs de recursos para suas tags atuais, e junte os dados no Athena ou na sua ferramenta de BI. É trabalho manual, mas é o único jeito. O AWS Support não consegue preencher tags retroativamente. Não existe truque de reativação. É por isso que marcar cedo importa tanto.",
+      "hint": "Os dados de faturamento na nuvem são um instantâneo no tempo. Tags aplicadas hoje não reescrevem os registros de ontem."
     }
   ]
 }

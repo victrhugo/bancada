@@ -1,13 +1,13 @@
 {
   "id": "infrastructure-security-vault-sops",
-  "title": "Infrastructure Security with Vault and SOPS",
-  "description": "Implement enterprise-grade secret management using HashiCorp Vault and SOPS for encrypted GitOps workflows.",
+  "title": "Segurança de Infraestrutura com Vault e SOPS",
+  "description": "Implemente gerenciamento de segredos de nível empresarial usando o HashiCorp Vault e o SOPS para workflows de GitOps criptografados.",
   "category": {
     "name": "DevOps",
     "slug": "devops"
   },
   "difficulty": "advanced",
-  "estimatedTime": "100 minutes",
+  "estimatedTime": "100 minutos",
   "technologies": [
     "HashiCorp Vault",
     "SOPS",
@@ -16,23 +16,23 @@
     "KMS"
   ],
   "prerequisites": [
-    "Kubernetes cluster",
-    "Basic cryptography knowledge",
-    "Git and kubectl configured"
+    "Cluster Kubernetes",
+    "Conhecimento básico de criptografia",
+    "Git e kubectl configurados"
   ],
   "learningObjectives": [
-    "Deploy and configure HashiCorp Vault",
-    "Implement secret management workflows",
-    "Use SOPS for encrypted configuration files",
-    "Integrate Vault with Kubernetes",
-    "Set up automated secret rotation",
-    "Implement security best practices"
+    "Implantar e configurar o HashiCorp Vault",
+    "Implementar workflows de gerenciamento de segredos",
+    "Usar o SOPS para arquivos de configuração criptografados",
+    "Integrar o Vault com o Kubernetes",
+    "Configurar a rotação automatizada de segredos",
+    "Implementar boas práticas de segurança"
   ],
   "environment": "local",
   "icon": "Shield",
   "publishedAt": "2024-12-01T18:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": [
@@ -45,8 +45,8 @@
   "steps": [
     {
       "id": "vault-deployment",
-      "title": "Deploy HashiCorp Vault to Kubernetes",
-      "description": "Install and configure Vault in development mode, then transition to a production-ready setup.",
+      "title": "Implante o HashiCorp Vault no Kubernetes",
+      "description": "Instale e configure o Vault em modo de desenvolvimento e, em seguida, faça a transição para uma configuração pronta para produção.",
       "codeExample": "# Add HashiCorp Helm repository\nhelm repo add hashicorp https://helm.releases.hashicorp.com\nhelm repo update\n\n# Create namespace\nkubectl create namespace vault\n\n# Install Vault in dev mode (for learning)\nhelm install vault hashicorp/vault \\\n  --namespace vault \\\n  --set \"server.dev.enabled=true\" \\\n  --set \"server.dev.devRootToken=myroot\" \\\n  --set \"injector.enabled=false\"\n\n# Wait for Vault to be ready\nkubectl wait --for=condition=ready pod -l app.kubernetes.io/name=vault -n vault --timeout=300s\n\n# Port forward to access Vault UI\nkubectl port-forward -n vault svc/vault 8200:8200 &\n\n# Install Vault CLI\nwget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg\necho \"deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/hashicorp.list\nsudo apt update && sudo apt install vault\n\n# Configure Vault CLI\nexport VAULT_ADDR='http://127.0.0.1:8200'\nexport VAULT_TOKEN='myroot'\n\n# Verify Vault is working\nvault status\nvault auth list",
       "commands": [
         "helm repo add hashicorp https://helm.releases.hashicorp.com",
@@ -57,21 +57,21 @@
         "vault status"
       ],
       "validationCriteria": [
-        "Vault pod is running in development mode",
-        "Vault UI is accessible on port 8200",
-        "Vault CLI can authenticate and show status",
-        "Initial root token works for authentication"
+        "O pod do Vault está em execução em modo de desenvolvimento",
+        "A UI do Vault está acessível na porta 8200",
+        "A CLI do Vault consegue autenticar e mostrar o status",
+        "O token root inicial funciona para autenticação"
       ],
       "hints": [
-        "Development mode stores data in memory only",
-        "Production setup requires persistent storage",
-        "Save the root token securely for initial setup"
+        "O modo de desenvolvimento armazena dados apenas em memória",
+        "A configuração de produção requer armazenamento persistente",
+        "Guarde o token root com segurança para a configuração inicial"
       ]
     },
     {
       "id": "vault-engines-auth",
-      "title": "Configure Secret Engines and Authentication",
-      "description": "Set up various secret engines and authentication methods for different use cases.",
+      "title": "Configure Secret Engines e Autenticação",
+      "description": "Configure diversos secret engines e métodos de autenticação para diferentes casos de uso.",
       "codeExample": "# Enable KV v2 secrets engine\nvault secrets enable -path=secret kv-v2\n\n# Enable database secrets engine\nvault secrets enable database\n\n# Enable Kubernetes authentication\nvault auth enable kubernetes\n\n# Configure Kubernetes auth\nvault write auth/kubernetes/config \\\n    token_reviewer_jwt=\"$(kubectl get secret vault-token -n vault -o jsonpath='{.data.token}' | base64 --decode)\" \\\n    kubernetes_host=\"https://kubernetes.default.svc:443\" \\\n    kubernetes_ca_cert=\"$(kubectl config view --raw --minify --flatten -o jsonpath='{.clusters[].cluster.certificate-authority-data}' | base64 --decode)\"\n\n# Create policies for different roles\n# Application policy\nvault policy write app-policy - <<EOF\npath \"secret/data/app/*\" {\n  capabilities = [\"read\"]\n}\npath \"database/creds/app-role\" {\n  capabilities = [\"read\"]\n}\nEOF\n\n# Admin policy\nvault policy write admin-policy - <<EOF\npath \"secret/*\" {\n  capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]\n}\npath \"database/*\" {\n  capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]\n}\npath \"auth/*\" {\n  capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]\n}\nEOF\n\n# Create Kubernetes roles\nvault write auth/kubernetes/role/app-role \\\n    bound_service_account_names=app-service-account \\\n    bound_service_account_namespaces=default \\\n    policies=app-policy \\\n    ttl=24h\n\nvault write auth/kubernetes/role/admin-role \\\n    bound_service_account_names=vault-admin \\\n    bound_service_account_namespaces=vault \\\n    policies=admin-policy \\\n    ttl=1h\n\n# Store some initial secrets\nvault kv put secret/app/database \\\n    username=\"appuser\" \\\n    password=\"supersecret123\" \\\n    host=\"postgres.example.com\" \\\n    database=\"myapp\"\n\nvault kv put secret/app/api-keys \\\n    stripe_key=\"sk_test_abc123\" \\\n    sendgrid_key=\"SG.xyz789\" \\\n    jwt_secret=\"my-jwt-secret-key\"\n\n# Verify secrets are stored\nvault kv get secret/app/database\nvault kv list secret/app/",
       "commands": [
         "vault secrets enable -path=secret kv-v2",
@@ -82,18 +82,18 @@
         "vault auth list"
       ],
       "validationCriteria": [
-        "KV v2 secrets engine is enabled",
-        "Kubernetes authentication is configured",
-        "Policies are created for different access levels",
-        "Sample secrets are stored and retrievable",
-        "Kubernetes roles are properly bound"
+        "O secrets engine KV v2 está habilitado",
+        "A autenticação Kubernetes está configurada",
+        "As policies são criadas para diferentes níveis de acesso",
+        "Os segredos de exemplo estão armazenados e recuperáveis",
+        "Os roles do Kubernetes estão devidamente vinculados"
       ],
       "expectedOutput": "Vault configured with multiple secret engines and authentication methods"
     },
     {
       "id": "sops-setup",
-      "title": "Install and Configure SOPS for File Encryption",
-      "description": "Set up SOPS (Secrets OPerationS) for encrypting configuration files with multiple key backends.",
+      "title": "Instale e Configure o SOPS para Criptografia de Arquivos",
+      "description": "Configure o SOPS (Secrets OPerationS) para criptografar arquivos de configuração com múltiplos backends de chave.",
       "codeExample": "# Install SOPS\nwget https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64\nsudo mv sops-v3.7.3.linux.amd64 /usr/local/bin/sops\nsudo chmod +x /usr/local/bin/sops\n\n# Install age (modern encryption tool)\nwget https://github.com/FiloSottile/age/releases/download/v1.1.1/age-v1.1.1-linux-amd64.tar.gz\ntar xzf age-v1.1.1-linux-amd64.tar.gz\nsudo mv age/age /usr/local/bin/\nsudo mv age/age-keygen /usr/local/bin/\n\n# Generate age key pair\nage-keygen -o key.txt\necho \"Age public key: $(grep 'public key:' key.txt | cut -d' ' -f4)\"\n\n# Create GPG key for demo (alternative to age)\ngpg --batch --full-generate-key <<EOF\nKey-Type: RSA\nKey-Length: 4096\nSubkey-Type: RSA\nSubkey-Length: 4096\nName-Real: DevOps Demo\nName-Email: devops@example.com\nExpire-Date: 1y\nPassphrase: \n%commit\nEOF\n\n# Get GPG key fingerprint\nGPG_KEY=$(gpg --list-secret-keys --keyid-format LONG | grep sec | cut -d'/' -f2 | cut -d' ' -f1)\necho \"GPG Key ID: $GPG_KEY\"\n\n# Create SOPS configuration\ncat > .sops.yaml <<EOF\ncreation_rules:\n  - path_regex: \\.dev\\.yaml$\n    age: age1example... # Replace with your age public key\n    encrypted_regex: '^(data|stringData)$'\n  - path_regex: \\.prod\\.yaml$\n    pgp: '$GPG_KEY'\n    encrypted_regex: '^(data|stringData|password|secret)$'\n  - path_regex: secrets/.*\\.yaml$\n    age: age1example... # Replace with your age public key\n    pgp: '$GPG_KEY'\nEOF\n\n# Create sample secret files\nmkdir -p secrets\n\n# Development secrets\ncat > secrets/app-config.dev.yaml <<EOF\napiVersion: v1\nkind: Secret\nmetadata:\n  name: app-config\n  namespace: development\ntype: Opaque\ndata:\n  database_url: cG9zdGdyZXM6Ly91c2VyOnBhc3NAZGItZGV2OjU0MzIvYXBwZGI=\n  api_key: ZGV2LWFwaS1rZXktMTIz\n  redis_url: cmVkaXM6Ly9yZWRpcy1kZXY6NjM3OS8w\nEOF\n\n# Production secrets\ncat > secrets/app-config.prod.yaml <<EOF\napiVersion: v1\nkind: Secret\nmetadata:\n  name: app-config\n  namespace: production\ntype: Opaque\ndata:\n  database_url: cG9zdGdyZXM6Ly91c2VyOnNlY3VyZXBhc3NAZGItcHJvZDo1NDMyL2FwcGRi\n  api_key: cHJvZC1hcGkta2V5LXh5ejc4OQ==\n  redis_url: cmVkaXM6Ly9yZWRpcy1wcm9kOjYzNzkvMA==\n  stripe_webhook_secret: d2hzZWNfc3VwZXJzZWNyZXRrZXk=\nEOF",
       "commands": [
         "sops --version",
@@ -103,21 +103,21 @@
         "ls -la secrets/"
       ],
       "validationCriteria": [
-        "SOPS and age are installed and accessible",
-        "GPG key pair is generated",
-        "SOPS configuration file is created",
-        "Sample secret files are ready for encryption"
+        "SOPS e age estão instalados e acessíveis",
+        "O par de chaves GPG é gerado",
+        "O arquivo de configuração do SOPS é criado",
+        "Os arquivos de segredo de exemplo estão prontos para criptografia"
       ],
       "hints": [
-        "Keep age private key secure - it's needed for decryption",
-        "SOPS config supports multiple encryption backends",
-        "Use different keys for different environments"
+        "Mantenha a chave privada do age segura - ela é necessária para a descriptografia",
+        "A configuração do SOPS suporta múltiplos backends de criptografia",
+        "Use chaves diferentes para ambientes diferentes"
       ]
     },
     {
       "id": "encrypt-secrets",
-      "title": "Encrypt and Manage Secrets with SOPS",
-      "description": "Encrypt secret files using SOPS and demonstrate secure GitOps workflows with encrypted configurations.",
+      "title": "Criptografe e Gerencie Segredos com o SOPS",
+      "description": "Criptografe arquivos de segredo usando o SOPS e demonstre workflows de GitOps seguros com configurações criptografadas.",
       "codeExample": "# Encrypt the development secrets (using age)\nsops --encrypt --in-place secrets/app-config.dev.yaml\n\n# Encrypt the production secrets (using GPG)\nsops --encrypt --in-place secrets/app-config.prod.yaml\n\n# View encrypted file content\ncat secrets/app-config.dev.yaml\n\n# Decrypt and view (without modifying file)\nsops --decrypt secrets/app-config.dev.yaml\n\n# Edit encrypted file\nsops secrets/app-config.dev.yaml\n\n# Create encrypted environment file\ncat > secrets/env-vars.dev.yaml <<EOF\ndatabase:\n  host: db-dev.example.com\n  port: 5432\n  username: appuser\n  password: dev-password-123\napi:\n  stripe_key: sk_test_dev_key_123\n  sendgrid_key: SG.dev_key_456\n  jwt_secret: dev-jwt-secret-789\nredis:\n  url: redis://redis-dev:6379/0\n  password: dev-redis-pass\nEOF\n\n# Encrypt the environment file\nsops --encrypt --in-place secrets/env-vars.dev.yaml\n\n# Create a script to deploy encrypted secrets\ncat > deploy-secrets.sh <<'EOF'\n#!/bin/bash\nset -e\n\nENVIRONMENT=${1:-dev}\nNAMESPACE=${2:-default}\n\necho \"Deploying secrets for environment: $ENVIRONMENT\"\n\n# Decrypt and apply Kubernetes secrets\nif [[ -f \"secrets/app-config.$ENVIRONMENT.yaml\" ]]; then\n    echo \"Applying app-config secret...\"\n    sops --decrypt secrets/app-config.$ENVIRONMENT.yaml | kubectl apply -n $NAMESPACE -f -\nfi\n\n# Convert environment variables to Kubernetes secret\nif [[ -f \"secrets/env-vars.$ENVIRONMENT.yaml\" ]]; then\n    echo \"Creating environment variables secret...\"\n    sops --decrypt secrets/env-vars.$ENVIRONMENT.yaml | \\\n    yq eval '.database.password, .api.stripe_key, .api.sendgrid_key, .api.jwt_secret, .redis.password' | \\\n    kubectl create secret generic app-env-vars \\\n        --from-literal=DB_PASSWORD=\"$(sops --decrypt secrets/env-vars.$ENVIRONMENT.yaml | yq eval '.database.password' -)\" \\\n        --from-literal=STRIPE_KEY=\"$(sops --decrypt secrets/env-vars.$ENVIRONMENT.yaml | yq eval '.api.stripe_key' -)\" \\\n        --from-literal=JWT_SECRET=\"$(sops --decrypt secrets/env-vars.$ENVIRONMENT.yaml | yq eval '.api.jwt_secret' -)\" \\\n        --namespace $NAMESPACE \\\n        --dry-run=client -o yaml | kubectl apply -f -\nfi\n\necho \"Secrets deployed successfully!\"\nEOF\n\nchmod +x deploy-secrets.sh\n\n# Test the deployment script\n./deploy-secrets.sh dev default\n\n# Verify secrets were created\nkubectl get secrets\nkubectl describe secret app-config\nkubectl describe secret app-env-vars",
       "commands": [
         "sops --encrypt --in-place secrets/app-config.dev.yaml",
@@ -128,18 +128,18 @@
         "sops --decrypt secrets/env-vars.dev.yaml"
       ],
       "validationCriteria": [
-        "Secret files are encrypted with SOPS",
-        "Encrypted files can be decrypted successfully",
-        "Deployment script creates Kubernetes secrets",
-        "Secrets are accessible in the cluster",
-        "GitOps workflow supports encrypted files"
+        "Os arquivos de segredo são criptografados com o SOPS",
+        "Os arquivos criptografados podem ser descriptografados com sucesso",
+        "O script de deployment cria secrets do Kubernetes",
+        "Os segredos estão acessíveis no cluster",
+        "O workflow de GitOps suporta arquivos criptografados"
       ],
       "expectedOutput": "Encrypted secret files deployed to Kubernetes using SOPS workflow"
     },
     {
       "id": "vault-kubernetes-integration",
-      "title": "Integrate Vault with Kubernetes Applications",
-      "description": "Deploy applications that dynamically fetch secrets from Vault using the Vault Agent Injector.",
+      "title": "Integre o Vault com Aplicações Kubernetes",
+      "description": "Implante aplicações que buscam segredos dinamicamente no Vault usando o Vault Agent Injector.",
       "codeExample": "# Enable and configure Vault Injector\nhelm upgrade vault hashicorp/vault \\\n  --namespace vault \\\n  --set \"injector.enabled=true\" \\\n  --set \"server.dev.enabled=true\" \\\n  --set \"server.dev.devRootToken=myroot\"\n\n# Create service account for the application\nkubectl create serviceaccount app-service-account\n\n# Create sample application that uses Vault secrets\ncat > vault-app-deployment.yaml <<EOF\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: vault-app\n  labels:\n    app: vault-app\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: vault-app\n  template:\n    metadata:\n      labels:\n        app: vault-app\n      annotations:\n        vault.hashicorp.com/agent-inject: 'true'\n        vault.hashicorp.com/role: 'app-role'\n        vault.hashicorp.com/agent-inject-secret-database-config: 'secret/data/app/database'\n        vault.hashicorp.com/agent-inject-template-database-config: |\n          {{- with secret \"secret/data/app/database\" -}}\n          DATABASE_URL=\"postgresql://{{ .Data.data.username }}:{{ .Data.data.password }}@{{ .Data.data.host }}/{{ .Data.data.database }}\"\n          DATABASE_HOST=\"{{ .Data.data.host }}\"\n          DATABASE_USER=\"{{ .Data.data.username }}\"\n          DATABASE_PASSWORD=\"{{ .Data.data.password }}\"\n          DATABASE_NAME=\"{{ .Data.data.database }}\"\n          {{- end }}\n        vault.hashicorp.com/agent-inject-secret-api-keys: 'secret/data/app/api-keys'\n        vault.hashicorp.com/agent-inject-template-api-keys: |\n          {{- with secret \"secret/data/app/api-keys\" -}}\n          STRIPE_API_KEY=\"{{ .Data.data.stripe_key }}\"\n          SENDGRID_API_KEY=\"{{ .Data.data.sendgrid_key }}\"\n          JWT_SECRET=\"{{ .Data.data.jwt_secret }}\"\n          {{- end }}\n    spec:\n      serviceAccountName: app-service-account\n      containers:\n      - name: app\n        image: nginx:alpine\n        command: ['/bin/sh']\n        args: ['-c', 'while true; do echo \"App running with Vault secrets\"; sleep 30; done']\n        volumeMounts:\n        - name: vault-secrets\n          mountPath: /vault/secrets\n          readOnly: true\n      volumes:\n      - name: vault-secrets\n        emptyDir: {}\nEOF\n\n# Deploy the application\nkubectl apply -f vault-app-deployment.yaml\n\n# Wait for deployment\nkubectl wait --for=condition=available deployment/vault-app --timeout=300s\n\n# Check that Vault Agent injected secrets\nkubectl exec deployment/vault-app -- ls -la /vault/secrets/\nkubectl exec deployment/vault-app -- cat /vault/secrets/database-config\nkubectl exec deployment/vault-app -- cat /vault/secrets/api-keys\n\n# Create a more complex example with secret rotation\ncat > vault-rotation-job.yaml <<EOF\napiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: secret-rotation\nspec:\n  schedule: \"0 2 * * 0\"  # Weekly at 2 AM Sunday\n  jobTemplate:\n    spec:\n      template:\n        metadata:\n          annotations:\n            vault.hashicorp.com/agent-inject: 'true'\n            vault.hashicorp.com/role: 'admin-role'\n            vault.hashicorp.com/agent-inject-secret-rotate: 'secret/data/app/database'\n            vault.hashicorp.com/agent-inject-template-rotate: |\n              #!/bin/sh\n              # Generate new password\n              NEW_PASSWORD=$(openssl rand -base64 32)\n              # Update Vault with new password\n              vault kv put secret/app/database password=\"$NEW_PASSWORD\"\n              # Here you would also update the actual database user\n              echo \"Password rotated successfully\"\n        spec:\n          serviceAccountName: vault-admin\n          restartPolicy: OnFailure\n          containers:\n          - name: rotator\n            image: vault:latest\n            command: ['/bin/sh', '/vault/secrets/rotate']\nEOF\n\nkubectl apply -f vault-rotation-job.yaml",
       "commands": [
         "kubectl create serviceaccount app-service-account",
@@ -150,22 +150,22 @@
         "kubectl logs deployment/vault-app -c vault-agent"
       ],
       "validationCriteria": [
-        "Vault Agent Injector is enabled and running",
-        "Application pod shows vault-agent sidecar",
-        "Secret files are created in /vault/secrets/",
-        "Application can read Vault secrets",
-        "Secret rotation job is configured"
+        "O Vault Agent Injector está habilitado e em execução",
+        "O pod da aplicação mostra o sidecar vault-agent",
+        "Os arquivos de segredo são criados em /vault/secrets/",
+        "A aplicação consegue ler os segredos do Vault",
+        "O job de rotação de segredos está configurado"
       ],
       "hints": [
-        "Vault Agent automatically renews tokens",
-        "Templates allow custom secret formatting",
-        "Check vault-agent logs for debugging"
+        "O Vault Agent renova os tokens automaticamente",
+        "Os templates permitem formatação personalizada dos segredos",
+        "Verifique os logs do vault-agent para depuração"
       ]
     },
     {
       "id": "security-best-practices",
-      "title": "Implement Security Best Practices and Auditing",
-      "description": "Configure audit logging, secret rotation, and security policies for production-grade secret management.",
+      "title": "Implemente Boas Práticas de Segurança e Auditoria",
+      "description": "Configure logs de auditoria, rotação de segredos e políticas de segurança para o gerenciamento de segredos em nível de produção.",
       "codeExample": "# Enable audit logging in Vault\nvault audit enable file file_path=/vault/logs/audit.log\n\n# Create transit encryption engine for application-level encryption\nvault secrets enable transit\nvault write -f transit/keys/app-encryption\n\n# Create policy for transit encryption\nvault policy write transit-policy - <<EOF\npath \"transit/encrypt/app-encryption\" {\n  capabilities = [\"update\"]\n}\npath \"transit/decrypt/app-encryption\" {\n  capabilities = [\"update\"]\n}\nEOF\n\n# Configure secret rotation for database credentials\nvault secrets enable -path=database database\n\n# Configure PostgreSQL database connection\nvault write database/config/postgresql \\\n    plugin_name=postgresql-database-plugin \\\n    connection_url=\"postgresql://{{username}}:{{password}}@postgres:5432/myapp?sslmode=disable\" \\\n    allowed_roles=\"app-role\" \\\n    username=\"vault\" \\\n    password=\"vaultpass\"\n\n# Create database role with rotation\nvault write database/roles/app-role \\\n    db_name=postgresql \\\n    creation_statements=\"CREATE ROLE \\\"{{name}}\\\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \\\"{{name}}\\\";\" \\\n    default_ttl=\"1h\" \\\n    max_ttl=\"24h\"\n\n# Create comprehensive security monitoring\ncat > security-monitoring.yaml <<EOF\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: vault-monitoring\ndata:\n  check-vault-health.sh: |\n    #!/bin/bash\n    # Check Vault seal status\n    if vault status | grep -q \"Sealed.*false\"; then\n        echo \"✓ Vault is unsealed\"\n    else\n        echo \"✗ Vault is sealed\" >&2\n        exit 1\n    fi\n    \n    # Check audit log\n    if [[ -f /vault/logs/audit.log ]]; then\n        RECENT_EVENTS=$(tail -100 /vault/logs/audit.log | jq -r '.time' | wc -l)\n        echo \"✓ Audit log has $RECENT_EVENTS recent events\"\n    fi\n    \n    # Check for failed authentication attempts\n    FAILED_AUTHS=$(tail -100 /vault/logs/audit.log | jq -r 'select(.type==\"response\" and .error != null) | .error' | wc -l)\n    if [[ $FAILED_AUTHS -gt 10 ]]; then\n        echo \"⚠ Warning: $FAILED_AUTHS failed authentication attempts detected\"\n    fi\n  \n  rotate-secrets.sh: |\n    #!/bin/bash\n    echo \"Starting secret rotation...\"\n    \n    # Rotate database credentials\n    vault read database/creds/app-role\n    \n    # Update application secrets\n    NEW_JWT_SECRET=$(openssl rand -base64 64)\n    vault kv put secret/app/api-keys \\\n        stripe_key=\"$(vault kv get -field=stripe_key secret/app/api-keys)\" \\\n        sendgrid_key=\"$(vault kv get -field=sendgrid_key secret/app/api-keys)\" \\\n        jwt_secret=\"$NEW_JWT_SECRET\"\n    \n    echo \"Secret rotation completed\"\n---\napiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: vault-health-check\nspec:\n  schedule: \"*/5 * * * *\"  # Every 5 minutes\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          serviceAccountName: vault-admin\n          restartPolicy: OnFailure\n          containers:\n          - name: health-checker\n            image: vault:latest\n            env:\n            - name: VAULT_ADDR\n              value: \"http://vault:8200\"\n            - name: VAULT_TOKEN\n              valueFrom:\n                secretKeyRef:\n                  name: vault-token\n                  key: token\n            command: [\"/bin/sh\", \"/scripts/check-vault-health.sh\"]\n            volumeMounts:\n            - name: scripts\n              mountPath: /scripts\n          volumes:\n          - name: scripts\n            configMap:\n              name: vault-monitoring\n              defaultMode: 0755\nEOF\n\nkubectl apply -f security-monitoring.yaml\n\n# Create alerting rules for Prometheus (if available)\ncat > vault-alerts.yaml <<EOF\napiVersion: monitoring.coreos.com/v1\nkind: PrometheusRule\nmetadata:\n  name: vault-alerts\nspec:\n  groups:\n  - name: vault.rules\n    rules:\n    - alert: VaultSealed\n      expr: vault_core_unsealed == 0\n      for: 0m\n      labels:\n        severity: critical\n      annotations:\n        summary: \"Vault is sealed\"\n        description: \"Vault instance {{ $labels.instance }} is sealed\"\n    \n    - alert: VaultHighFailedLogins\n      expr: increase(vault_audit_log_request_failure_total[5m]) > 10\n      for: 2m\n      labels:\n        severity: warning\n      annotations:\n        summary: \"High number of failed Vault login attempts\"\n        description: \"More than 10 failed login attempts in the last 5 minutes\"\nEOF\n\n# Test encryption/decryption\necho \"Testing Vault transit encryption...\"\nvault write transit/encrypt/app-encryption plaintext=$(base64 <<< \"sensitive data\")\nvault write transit/decrypt/app-encryption ciphertext=\"vault:v1:example-ciphertext\"\n\n# Show audit logs\necho \"Recent audit events:\"\nvault audit list\nkubectl exec -n vault vault-0 -- tail -5 /vault/logs/audit.log | jq .",
       "commands": [
         "vault audit enable file file_path=/vault/logs/audit.log",
@@ -176,27 +176,27 @@
         "kubectl get cronjobs"
       ],
       "validationCriteria": [
-        "Audit logging is enabled and working",
-        "Transit encryption engine is functional",
-        "Database secret rotation is configured",
-        "Security monitoring jobs are running",
-        "Alert rules are in place for critical events"
+        "O log de auditoria está habilitado e funcionando",
+        "O engine de criptografia transit está funcional",
+        "A rotação de segredos do banco de dados está configurada",
+        "Os jobs de monitoramento de segurança estão em execução",
+        "As regras de alerta estão em vigor para eventos críticos"
       ],
       "expectedOutput": "Production-ready security setup with comprehensive monitoring and auditing",
       "hints": [
-        "Audit logs can become large - implement log rotation",
-        "Test secret rotation in dev environment first",
-        "Monitor Vault performance metrics"
+        "Os logs de auditoria podem ficar grandes - implemente rotação de logs",
+        "Teste a rotação de segredos primeiro no ambiente de dev",
+        "Monitore as métricas de performance do Vault"
       ]
     }
   ],
   "completionCriteria": [
-    "HashiCorp Vault is deployed and configured",
-    "SOPS is set up with multiple encryption backends",
-    "Secrets are encrypted and managed securely",
-    "Vault integrates with Kubernetes applications",
-    "Security monitoring and auditing are functional",
-    "Secret rotation workflows are implemented"
+    "O HashiCorp Vault está implantado e configurado",
+    "O SOPS está configurado com múltiplos backends de criptografia",
+    "Os segredos são criptografados e gerenciados com segurança",
+    "O Vault se integra com aplicações Kubernetes",
+    "O monitoramento e a auditoria de segurança estão funcionais",
+    "Os workflows de rotação de segredos estão implementados"
   ],
   "resources": [
     {
@@ -214,16 +214,16 @@
   ],
   "troubleshooting": [
     {
-      "issue": "Vault Agent injection fails",
-      "solution": "Check service account permissions, verify Vault authentication configuration, and ensure network connectivity"
+      "issue": "A injeção do Vault Agent falha",
+      "solution": "Verifique as permissões da service account, confirme a configuração de autenticação do Vault e garanta a conectividade de rede"
     },
     {
-      "issue": "SOPS decryption fails",
-      "solution": "Verify age/GPG keys are available, check SOPS configuration file, and ensure proper file permissions"
+      "issue": "A descriptografia do SOPS falha",
+      "solution": "Verifique se as chaves age/GPG estão disponíveis, confira o arquivo de configuração do SOPS e garanta as permissões corretas de arquivo"
     },
     {
-      "issue": "Secret rotation doesn't work",
-      "solution": "Check database connection configuration, verify rotation role permissions, and test manually first"
+      "issue": "A rotação de segredos não funciona",
+      "solution": "Verifique a configuração de conexão do banco de dados, confirme as permissões do role de rotação e teste manualmente primeiro"
     }
   ],
   "featured": false

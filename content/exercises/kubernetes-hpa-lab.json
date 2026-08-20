@@ -1,38 +1,38 @@
 {
   "id": "kubernetes-hpa-lab",
-  "title": "Kubernetes Horizontal Pod Autoscaler",
-  "description": "Configure and test Horizontal Pod Autoscaler to automatically scale applications based on CPU and memory usage.",
+  "title": "Horizontal Pod Autoscaler do Kubernetes",
+  "description": "Configure e teste o Horizontal Pod Autoscaler para escalar aplicações automaticamente com base no uso de CPU e memória.",
   "category": {
     "name": "Kubernetes",
     "slug": "kubernetes"
   },
   "difficulty": "advanced",
-  "estimatedTime": "90 minutes",
+  "estimatedTime": "90 minutos",
   "technologies": ["Kubernetes", "Metrics Server", "kubectl", "YAML"],
   "prerequisites": [
-    "Kubernetes cluster access",
-    "kubectl configured",
-    "Basic Kubernetes knowledge"
+    "Acesso a um cluster Kubernetes",
+    "kubectl configurado",
+    "Conhecimento básico de Kubernetes"
   ],
   "learningObjectives": [
-    "Configure Horizontal Pod Autoscaler",
-    "Understand autoscaling metrics",
-    "Implement load testing",
-    "Monitor scaling behavior"
+    "Configurar o Horizontal Pod Autoscaler",
+    "Entender as métricas de autoscaling",
+    "Implementar testes de carga",
+    "Monitorar o comportamento de escalonamento"
   ],
   "environment": "cloud",
   "icon": "Layers",
   "publishedAt": "2024-11-28T14:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["Kubernetes", "Autoscaling", "Performance", "Monitoring"],
   "steps": [
     {
       "id": "cluster-setup",
-      "title": "Verify Cluster Setup and Metrics Server",
-      "description": "Ensure your Kubernetes cluster is ready and deploy the metrics server for HPA functionality.",
+      "title": "Verifique a Configuração do Cluster e o Metrics Server",
+      "description": "Garanta que seu cluster Kubernetes está pronto e implante o metrics server para a funcionalidade do HPA.",
       "commands": [
         "kubectl cluster-info",
         "kubectl get nodes -o wide",
@@ -42,19 +42,19 @@
       ],
       "expectedOutput": "Metrics server deployment should be available and running",
       "hints": [
-        "If using minikube, enable metrics-server addon: minikube addons enable metrics-server",
-        "Wait for metrics server to be fully ready before proceeding"
+        "Se estiver usando o minikube, habilite o addon metrics-server: minikube addons enable metrics-server",
+        "Espere o metrics server ficar totalmente pronto antes de continuar"
       ],
       "validationCriteria": [
-        "Cluster is accessible and nodes are ready",
-        "Metrics server is deployed and running",
-        "kubectl top nodes returns resource usage data"
+        "O cluster está acessível e os nodes estão prontos",
+        "O metrics server está implantado e em execução",
+        "kubectl top nodes retorna dados de uso de recursos"
       ]
     },
     {
       "id": "sample-app",
-      "title": "Deploy Sample Application with Resource Limits",
-      "description": "Create a resource-defined deployment that will be used for autoscaling demonstration.",
+      "title": "Implante uma Aplicação de Exemplo com Limites de Recursos",
+      "description": "Crie um deployment com recursos definidos que será usado para demonstrar o autoscaling.",
       "codeExample": "# hpa-demo-app.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: php-apache\n  labels:\n    app: php-apache\nspec:\n  selector:\n    matchLabels:\n      run: php-apache\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        run: php-apache\n    spec:\n      containers:\n      - name: php-apache\n        image: registry.k8s.io/hpa-example\n        ports:\n        - containerPort: 80\n        resources:\n          limits:\n            cpu: 500m\n            memory: 256Mi\n          requests:\n            cpu: 200m\n            memory: 128Mi\n        env:\n        - name: TARGET_CPU_UTILIZATION_PERCENTAGE\n          value: \"50\"\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: php-apache\n  labels:\n    run: php-apache\nspec:\n  ports:\n  - port: 80\n    targetPort: 80\n  selector:\n    run: php-apache\n  type: ClusterIP",
       "commands": [
         "kubectl apply -f hpa-demo-app.yaml",
@@ -64,16 +64,16 @@
       ],
       "expectedOutput": "Deployment should be running with 1 replica, service should be created",
       "validationCriteria": [
-        "Deployment is running successfully",
-        "Pod is in Running status",
-        "Service is accessible within cluster",
-        "Resource requests and limits are properly set"
+        "O deployment está em execução com sucesso",
+        "O pod está em status Running",
+        "O service está acessível dentro do cluster",
+        "Os requests e limits de recursos estão configurados corretamente"
       ]
     },
     {
       "id": "create-hpa",
-      "title": "Configure Horizontal Pod Autoscaler",
-      "description": "Create HPA configuration to automatically scale based on CPU utilization.",
+      "title": "Configure o Horizontal Pod Autoscaler",
+      "description": "Crie a configuração do HPA para escalar automaticamente com base na utilização de CPU.",
       "codeExample": "# hpa-config.yaml\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: php-apache-hpa\nspec:\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: php-apache\n  minReplicas: 1\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 50\n  - type: Resource\n    resource:\n      name: memory\n      target:\n        type: Utilization\n        averageUtilization: 70\n  behavior:\n    scaleDown:\n      stabilizationWindowSeconds: 300\n      policies:\n      - type: Percent\n        value: 10\n        periodSeconds: 60\n    scaleUp:\n      stabilizationWindowSeconds: 0\n      policies:\n      - type: Percent\n        value: 100\n        periodSeconds: 15\n      - type: Pods\n        value: 4\n        periodSeconds: 15\n      selectPolicy: Max",
       "commands": [
         "kubectl apply -f hpa-config.yaml",
@@ -82,19 +82,19 @@
       ],
       "expectedOutput": "HPA should be created and show current metrics",
       "hints": [
-        "Wait a few minutes for HPA to gather initial metrics",
-        "Check that metrics server is providing data to HPA"
+        "Espere alguns minutos para o HPA coletar as métricas iniciais",
+        "Verifique se o metrics server está fornecendo dados ao HPA"
       ],
       "validationCriteria": [
-        "HPA is created successfully",
-        "HPA shows current CPU and memory utilization",
-        "Target reference is correctly set to php-apache deployment"
+        "O HPA é criado com sucesso",
+        "O HPA mostra a utilização atual de CPU e memória",
+        "A referência de destino está corretamente configurada para o deployment php-apache"
       ]
     },
     {
       "id": "load-testing",
-      "title": "Generate Load and Test Autoscaling",
-      "description": "Create load on the application to trigger horizontal pod autoscaling.",
+      "title": "Gere Carga e Teste o Autoscaling",
+      "description": "Gere carga na aplicação para disparar o horizontal pod autoscaling.",
       "codeExample": "# load-generator.yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: load-generator\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: load-generator\n  template:\n    metadata:\n      labels:\n        app: load-generator\n    spec:\n      containers:\n      - name: load-generator\n        image: busybox\n        command:\n        - /bin/sh\n        - -c\n        - |\n          while true; do\n            for i in $(seq 1 100); do\n              wget -q -O- http://php-apache.default.svc.cluster.local/ &\n            done\n            sleep 0.1\n          done\n        resources:\n          requests:\n            cpu: 100m\n            memory: 64Mi",
       "commands": [
         "kubectl apply -f load-generator.yaml",
@@ -106,21 +106,21 @@
       ],
       "expectedOutput": "CPU utilization should increase and HPA should start scaling up pods",
       "hints": [
-        "Monitor HPA status with: kubectl get hpa -w",
-        "It may take 2-3 minutes for autoscaling to trigger",
-        "Check pod CPU usage with kubectl top pods"
+        "Monitore o status do HPA com: kubectl get hpa -w",
+        "Pode levar de 2 a 3 minutos para o autoscaling disparar",
+        "Verifique o uso de CPU dos pods com kubectl top pods"
       ],
       "validationCriteria": [
-        "Load generator is running",
-        "CPU utilization on php-apache pods increases",
-        "HPA triggers scale-up event",
-        "Number of php-apache replicas increases"
+        "O gerador de carga está em execução",
+        "A utilização de CPU nos pods php-apache aumenta",
+        "O HPA dispara um evento de scale-up",
+        "O número de réplicas do php-apache aumenta"
       ]
     },
     {
       "id": "monitor-scaling",
-      "title": "Monitor and Analyze Scaling Behavior",
-      "description": "Observe the autoscaling behavior and analyze the scaling events.",
+      "title": "Monitore e Analise o Comportamento de Escalonamento",
+      "description": "Observe o comportamento de autoscaling e analise os eventos de escalonamento.",
       "commands": [
         "kubectl get hpa php-apache-hpa -w &",
         "watch 'kubectl get pods -l run=php-apache'",
@@ -129,21 +129,21 @@
       ],
       "expectedOutput": "Multiple php-apache pods should be running, HPA events should show scaling decisions",
       "hints": [
-        "Watch the REPLICAS column in HPA output",
-        "Check events for scaling decisions",
-        "Use 'kubectl top pods' to see resource usage"
+        "Observe a coluna REPLICAS na saída do HPA",
+        "Verifique os eventos para ver as decisões de escalonamento",
+        "Use 'kubectl top pods' para ver o uso de recursos"
       ],
       "validationCriteria": [
-        "HPA successfully scales up to multiple replicas",
-        "Scaling events are visible in cluster events",
-        "Load is distributed across multiple pods",
-        "CPU utilization stabilizes around target percentage"
+        "O HPA escala com sucesso para múltiplas réplicas",
+        "Os eventos de escalonamento estão visíveis nos eventos do cluster",
+        "A carga é distribuída entre múltiplos pods",
+        "A utilização de CPU se estabiliza próximo ao percentual alvo"
       ]
     },
     {
       "id": "scale-down-test",
-      "title": "Test Scale-Down Behavior",
-      "description": "Remove load and observe how HPA scales down the application.",
+      "title": "Teste o Comportamento de Scale-Down",
+      "description": "Remova a carga e observe como o HPA reduz a escala da aplicação.",
       "commands": [
         "kubectl delete deployment load-generator",
         "echo 'Load removed, waiting for scale-down...'",
@@ -154,23 +154,23 @@
       ],
       "expectedOutput": "HPA should gradually scale down pods as CPU utilization decreases",
       "hints": [
-        "Scale-down takes longer than scale-up (default 5 minutes)",
-        "Monitor with: kubectl get hpa -w",
-        "Check stabilization window settings in HPA config"
+        "O scale-down leva mais tempo que o scale-up (padrão de 5 minutos)",
+        "Monitore com: kubectl get hpa -w",
+        "Verifique as configurações de stabilization window na config do HPA"
       ],
       "validationCriteria": [
-        "Load generator is removed",
-        "CPU utilization decreases below target",
-        "HPA triggers scale-down events",
-        "Pod count returns to minimum replicas"
+        "O gerador de carga é removido",
+        "A utilização de CPU cai abaixo do alvo",
+        "O HPA dispara eventos de scale-down",
+        "A contagem de pods retorna ao número mínimo de réplicas"
       ]
     }
   ],
   "completionCriteria": [
-    "HPA successfully scales pods up under load",
-    "HPA scales pods down when load decreases",
-    "Metrics are properly collected and displayed",
-    "Load testing demonstrates autoscaling behavior"
+    "O HPA escala os pods com sucesso sob carga",
+    "O HPA reduz a escala dos pods quando a carga diminui",
+    "As métricas são coletadas e exibidas corretamente",
+    "O teste de carga demonstra o comportamento de autoscaling"
   ],
   "resources": [
     {

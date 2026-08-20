@@ -1,11 +1,11 @@
 {
   "id": "istio-traffic-management",
   "slug": "istio-traffic-management",
-  "title": "Istio Traffic Management Checklist: Routing, Retries, and Circuit Breaking",
-  "description": "How to configure traffic management policies in Istio so your services can do canary releases, retry transient failures, and shed load when a downstream service goes bad. Covers VirtualService, DestinationRule, retries, timeouts, circuit breakers, and outlier detection.",
+  "title": "Checklist de gerenciamento de tráfego no Istio: roteamento, retries e circuit breaking",
+  "description": "Como configurar políticas de gerenciamento de tráfego no Istio para que seus serviços possam fazer canary releases, repetir falhas transitórias e descartar carga quando um serviço downstream apresenta problemas. Cobre VirtualService, DestinationRule, retries, timeouts, circuit breakers e outlier detection.",
   "category": "Service Mesh",
   "difficulty": "intermediate",
-  "estimatedTime": "60-90 minutes",
+  "estimatedTime": "60-90 minutos",
   "tags": [
     "istio",
     "service-mesh",
@@ -16,214 +16,214 @@
   "items": [
     {
       "id": "install-istio-with-right-profile",
-      "title": "Install Istio with a profile that fits your cluster",
-      "description": "Do not run istioctl install with no flags. The demo profile turns on tracing, telemetry add-ons, and an ingress gateway you may not want in prod. Pick the minimal profile and add components on purpose. This keeps your control plane small and your blast radius predictable.",
+      "title": "Instale o Istio com um perfil adequado ao seu cluster",
+      "description": "Não execute istioctl install sem flags. O perfil demo ativa tracing, add-ons de telemetria e um ingress gateway que você talvez não queira em produção. Escolha o perfil minimal e adicione componentes de propósito. Isso mantém seu control plane enxuto e seu raio de impacto previsível.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Install with the minimal profile",
+          "label": "Instale com o perfil minimal",
           "code": "# Inspect what each profile gives you before installing\nistioctl profile list\nistioctl profile dump minimal\n\n# Install minimal: just istiod, no gateways, no addons\nistioctl install --set profile=minimal -y\n\n# Verify the control plane is healthy before doing anything else\nistioctl verify-install\nkubectl get pods -n istio-system\n# NAME                      READY   STATUS    RESTARTS   AGE\n# istiod-7c8d9f4b9c-xk2p4   1/1     Running   0          45s"
         }
       ]
     },
     {
       "id": "enable-sidecar-injection",
-      "title": "Label namespaces for sidecar injection, never the whole cluster",
-      "description": "Auto-injection at the namespace level keeps you in control of which workloads get a proxy. Inject everywhere by default and you will end up with sidecars in kube-system or in CronJobs that run for 200ms and then sit waiting for the proxy to drain. Opt in per namespace.",
+      "title": "Marque namespaces para injeção de sidecar, nunca o cluster inteiro",
+      "description": "A auto-injeção no nível do namespace mantém você no controle de quais workloads recebem um proxy. Injetar em todo lugar por padrão vai fazer você acabar com sidecars no kube-system ou em CronJobs que rodam por 200ms e depois ficam esperando o proxy drenar. Opte por ativar por namespace.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Enable injection on a namespace",
+          "label": "Ative a injeção em um namespace",
           "code": "# Label the namespace\nkubectl label namespace payments istio-injection=enabled\n\n# Restart existing pods so they get the sidecar\nkubectl rollout restart deployment -n payments\n\n# Confirm: every pod should now show 2/2 containers\nkubectl get pods -n payments\n# NAME                       READY   STATUS\n# checkout-7d8f9c5b4-jx2pk   2/2     Running\n# orders-9f4d8c7b6-mn3qr     2/2     Running\n\n# For a single pod that should NOT get a sidecar (e.g. a Job)\nkubectl annotate pod my-job sidecar.istio.io/inject=false"
         }
       ]
     },
     {
       "id": "define-destinationrule-subsets",
-      "title": "Define DestinationRule subsets before any routing rules",
-      "description": "VirtualService rules reference subsets by name. If the DestinationRule with those subsets is not in place first, traffic falls back to round-robin across all pods and your canary plan dies on the runway. Always create the DestinationRule first, then the VirtualService.",
+      "title": "Defina subsets do DestinationRule antes de qualquer regra de roteamento",
+      "description": "As regras do VirtualService referenciam subsets pelo nome. Se o DestinationRule com esses subsets não estiver em vigor primeiro, o tráfego cai de volta para round-robin entre todos os pods e seu plano de canary morre antes de decolar. Sempre crie o DestinationRule primeiro e depois o VirtualService.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "DestinationRule with version subsets",
+          "label": "DestinationRule com subsets de versão",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: DestinationRule\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  host: checkout.payments.svc.cluster.local\n  subsets:\n    - name: v1\n      labels:\n        version: v1\n    - name: v2\n      labels:\n        version: v2\n  trafficPolicy:\n    loadBalancer:\n      simple: LEAST_REQUEST"
         },
         {
           "language": "bash",
-          "label": "Verify subsets resolve to real pods",
+          "label": "Verifique se os subsets resolvem para pods reais",
           "code": "kubectl apply -f checkout-destinationrule.yaml\n\n# Each subset must match labels on actual pods\nkubectl get pods -n payments -l app=checkout --show-labels\n# checkout-v1-7d8f9c5b4-jx2pk   ... version=v1\n# checkout-v2-9f4d8c7b6-mn3qr   ... version=v2\n\n# Ask Envoy what it sees\nistioctl proxy-config cluster $(kubectl get pod -n payments -l app=client -o jsonpath='{.items[0].metadata.name}') \\\n  -n payments --fqdn checkout.payments.svc.cluster.local"
         }
       ]
     },
     {
       "id": "set-explicit-timeouts",
-      "title": "Set an explicit timeout on every VirtualService route",
-      "description": "Envoy's default request timeout is 15 seconds. That is too long for most APIs and not long enough for some. Without an explicit timeout, a slow downstream will hold connections open and drain your client thread pool. Set a number that matches the SLO of the call, and add it to every route.",
+      "title": "Defina um timeout explícito em cada rota do VirtualService",
+      "description": "O timeout padrão de requisição do Envoy é 15 segundos. Isso é longo demais para a maioria das APIs e curto demais para outras. Sem um timeout explícito, um downstream lento vai manter conexões abertas e esgotar o pool de threads do seu cliente. Defina um número que corresponda ao SLO da chamada, e adicione-o a cada rota.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "VirtualService with timeout",
+          "label": "VirtualService com timeout",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  hosts:\n    - checkout.payments.svc.cluster.local\n  http:\n    - route:\n        - destination:\n            host: checkout.payments.svc.cluster.local\n            subset: v1\n      timeout: 2s   # request budget for this hop"
         }
       ]
     },
     {
       "id": "configure-retries",
-      "title": "Configure retries with retryOn, attempts, and perTryTimeout",
-      "description": "A bare retries block retries on 5xx by default with no per-try timeout, which can amplify outages. Pin retryOn to conditions you actually want to retry (gateway-error, connect-failure, refused-stream), set perTryTimeout below your overall timeout, and cap attempts at 2 or 3. Never retry POST writes unless they are idempotent.",
+      "title": "Configure retries com retryOn, attempts e perTryTimeout",
+      "description": "Um bloco de retries sem configuração tenta novamente em 5xx por padrão, sem timeout por tentativa, o que pode amplificar indisponibilidades. Fixe o retryOn nas condições que você realmente quer repetir (gateway-error, connect-failure, refused-stream), defina o perTryTimeout abaixo do seu timeout geral e limite as tentativas a 2 ou 3. Nunca repita escritas POST, a menos que sejam idempotentes.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "Safe retry policy",
+          "label": "Política de retry segura",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  hosts:\n    - checkout.payments.svc.cluster.local\n  http:\n    - route:\n        - destination:\n            host: checkout.payments.svc.cluster.local\n            subset: v1\n      timeout: 2s\n      retries:\n        attempts: 3\n        perTryTimeout: 500ms\n        retryOn: gateway-error,connect-failure,refused-stream\n        retryRemoteLocalities: false   # do not retry to a different zone unless you mean to"
         },
         {
           "language": "yaml",
-          "label": "Different retry policy for writes",
+          "label": "Política de retry diferente para escritas",
           "code": "# Reads can retry. Writes should only retry on connection-level failures.\nspec:\n  http:\n    - match:\n        - method:\n            exact: GET\n      route:\n        - destination:\n            host: orders\n      retries:\n        attempts: 3\n        perTryTimeout: 1s\n        retryOn: 5xx,reset,connect-failure\n\n    - match:\n        - method:\n            exact: POST\n      route:\n        - destination:\n            host: orders\n      retries:\n        attempts: 1\n        perTryTimeout: 2s\n        retryOn: connect-failure   # never retry on 5xx for non-idempotent writes"
         }
       ]
     },
     {
       "id": "circuit-breaker-connection-pool",
-      "title": "Set connection pool limits as your circuit breaker",
-      "description": "In Istio, the circuit breaker is the connectionPool block on the DestinationRule. When concurrent requests or pending connections exceed the limit, Envoy fast-fails new requests with 503 instead of piling up on a struggling pod. Pick numbers from your load tests, not from a tutorial.",
+      "title": "Defina limites de pool de conexões como seu circuit breaker",
+      "description": "No Istio, o circuit breaker é o bloco connectionPool no DestinationRule. Quando as requisições concorrentes ou conexões pendentes excedem o limite, o Envoy falha rapidamente novas requisições com 503 em vez de acumulá-las em um pod sobrecarregado. Escolha os números a partir dos seus testes de carga, não de um tutorial.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "DestinationRule with connection pool limits",
+          "label": "DestinationRule com limites de pool de conexões",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: DestinationRule\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  host: checkout.payments.svc.cluster.local\n  trafficPolicy:\n    connectionPool:\n      tcp:\n        maxConnections: 100      # per pod\n        connectTimeout: 250ms\n        tcpKeepalive:\n          time: 7200s\n          interval: 75s\n      http:\n        http1MaxPendingRequests: 50    # queue depth before fast-fail\n        http2MaxRequests: 200\n        maxRequestsPerConnection: 100\n        maxRetries: 3                  # cap concurrent retries\n        idleTimeout: 30s"
         },
         {
           "language": "bash",
-          "label": "Watch the breaker trip",
+          "label": "Observe o breaker disparar",
           "code": "# Generate load and watch the upstream_rq_pending_overflow counter climb\nkubectl exec -n payments deploy/loadgen -c loadgen -- \\\n  fortio load -c 200 -qps 0 -t 30s http://checkout/api/cart\n\n# Pull stats from the client sidecar\nkubectl exec -n payments deploy/loadgen -c istio-proxy -- \\\n  pilot-agent request GET stats | grep -E 'checkout.*upstream_rq_pending_overflow'\n# cluster.outbound|80||checkout.payments.svc.cluster.local.upstream_rq_pending_overflow: 412\n# Each overflow is a request Envoy rejected to protect the upstream"
         }
       ]
     },
     {
       "id": "outlier-detection",
-      "title": "Enable outlier detection to evict bad pods automatically",
-      "description": "Outlier detection is the other half of the circuit breaker. It tracks errors per upstream pod and ejects pods that misbehave for a cooldown period. Without it, a single bad pod (OOM, slow disk, stuck GC) keeps receiving traffic and drags your error rate. Tune consecutive5xxErrors and interval to match your traffic volume.",
+      "title": "Ative outlier detection para expulsar pods problemáticos automaticamente",
+      "description": "O outlier detection é a outra metade do circuit breaker. Ele rastreia erros por pod upstream e ejeta pods que se comportam mal por um período de cooldown. Sem ele, um único pod ruim (OOM, disco lento, GC travado) continua recebendo tráfego e arrasta sua taxa de erro. Ajuste consecutive5xxErrors e interval para corresponder ao seu volume de tráfego.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "Outlier detection block",
+          "label": "Bloco de outlier detection",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: DestinationRule\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  host: checkout.payments.svc.cluster.local\n  trafficPolicy:\n    outlierDetection:\n      consecutive5xxErrors: 5      # eject after 5 consecutive 5xx\n      interval: 10s                # how often Envoy scans error stats\n      baseEjectionTime: 30s        # how long to keep the pod out\n      maxEjectionPercent: 50       # never eject more than half\n      minHealthPercent: 50         # below this, stop ejecting (avoid death spiral)"
         },
         {
           "language": "bash",
-          "label": "Confirm ejections are happening",
+          "label": "Confirme que as ejeções estão acontecendo",
           "code": "# Pull host-level stats from a client sidecar\nkubectl exec -n payments deploy/loadgen -c istio-proxy -- \\\n  pilot-agent request GET clusters | grep -E 'checkout.*(ejected|health_flags)'\n# checkout::10.244.1.42:8080::health_flags::/failed_outlier_check\n# checkout::10.244.1.42:8080::ejected::true"
         }
       ]
     },
     {
       "id": "weighted-canary-routing",
-      "title": "Roll out new versions with weighted routing",
-      "description": "Sending 100 percent of traffic to a fresh build is how you discover bugs in production with everyone watching. Start at 5 to 10 percent on the new subset, watch error rate and p99 latency for a few minutes, then ramp. Weighted routing in a VirtualService is the simplest way to do this without an extra controller.",
+      "title": "Faça rollout de novas versões com roteamento ponderado",
+      "description": "Enviar 100 por cento do tráfego para um build novo é a forma de descobrir bugs em produção com todo mundo assistindo. Comece com 5 a 10 por cento no novo subset, observe a taxa de erro e a latência p99 por alguns minutos e depois aumente aos poucos. O roteamento ponderado em um VirtualService é a forma mais simples de fazer isso sem um controller extra.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "90/10 canary split",
+          "label": "Divisão de canary 90/10",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  hosts:\n    - checkout.payments.svc.cluster.local\n  http:\n    - route:\n        - destination:\n            host: checkout.payments.svc.cluster.local\n            subset: v1\n          weight: 90\n        - destination:\n            host: checkout.payments.svc.cluster.local\n            subset: v2\n          weight: 10\n      timeout: 2s"
         },
         {
           "language": "bash",
-          "label": "Ramp the canary in steps",
+          "label": "Aumente o canary em etapas",
           "code": "# Check error rate on v2 before each step\nkubectl exec -n payments deploy/checkout-v2 -c istio-proxy -- \\\n  pilot-agent request GET stats | grep 'http.inbound.*5xx'\n\n# Bump from 10 to 25\nkubectl patch virtualservice checkout -n payments --type=merge -p '{\n  \"spec\":{\"http\":[{\"route\":[\n    {\"destination\":{\"host\":\"checkout\",\"subset\":\"v1\"},\"weight\":75},\n    {\"destination\":{\"host\":\"checkout\",\"subset\":\"v2\"},\"weight\":25}\n  ]}]}\n}'\n\n# If something looks bad, snap back to 100/0 in one command\nkubectl patch virtualservice checkout -n payments --type=merge -p '{\n  \"spec\":{\"http\":[{\"route\":[\n    {\"destination\":{\"host\":\"checkout\",\"subset\":\"v1\"},\"weight\":100}\n  ]}]}\n}'"
         }
       ]
     },
     {
       "id": "header-based-routing",
-      "title": "Use header-based routing to test in prod safely",
-      "description": "Before you give 10 percent of real users to a new version, give it 100 percent of one user: yourself. Match on a header your client sets and route those requests to v2 while everyone else stays on v1. This is the cheapest way to validate a release with production data.",
+      "title": "Use roteamento baseado em header para testar em produção com segurança",
+      "description": "Antes de dar 10 por cento dos usuários reais para uma nova versão, dê 100 por cento de um único usuário: você mesmo. Faça o match em um header que o seu cliente define e roteie essas requisições para a v2 enquanto todo mundo permanece na v1. Essa é a forma mais barata de validar um release com dados de produção.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "Route on a custom header",
+          "label": "Roteie com base em um header personalizado",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  hosts:\n    - checkout.payments.svc.cluster.local\n  http:\n    - match:\n        - headers:\n            x-canary-user:\n              exact: 'true'\n      route:\n        - destination:\n            host: checkout.payments.svc.cluster.local\n            subset: v2\n      timeout: 2s\n\n    - route:\n        - destination:\n            host: checkout.payments.svc.cluster.local\n            subset: v1\n      timeout: 2s"
         },
         {
           "language": "bash",
-          "label": "Test the route",
+          "label": "Teste a rota",
           "code": "# Without the header: hits v1\ncurl -s http://checkout.payments/api/version\n# {\"version\":\"v1\"}\n\n# With the header: hits v2\ncurl -s -H 'x-canary-user: true' http://checkout.payments/api/version\n# {\"version\":\"v2\"}"
         }
       ]
     },
     {
       "id": "traffic-mirroring",
-      "title": "Mirror traffic to validate v2 without serving its responses",
-      "description": "Mirroring sends a copy of every live request to a second destination and throws away the response. The user only ever sees the primary's answer, so you can hammer v2 with real shapes of real traffic and check its logs for errors before sending any user to it. Pair with a percentage so you do not double your downstream load.",
+      "title": "Espelhe o tráfego para validar a v2 sem servir suas respostas",
+      "description": "O espelhamento envia uma cópia de cada requisição ao vivo para um segundo destino e descarta a resposta. O usuário só vê a resposta da versão primária, então você pode bombardear a v2 com formatos reais de tráfego real e verificar seus logs em busca de erros antes de enviar qualquer usuário para ela. Combine com uma porcentagem para não dobrar sua carga downstream.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "Mirror 25 percent of traffic to v2",
+          "label": "Espelhe 25 por cento do tráfego para a v2",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: checkout\n  namespace: payments\nspec:\n  hosts:\n    - checkout.payments.svc.cluster.local\n  http:\n    - route:\n        - destination:\n            host: checkout.payments.svc.cluster.local\n            subset: v1\n          weight: 100\n      mirror:\n        host: checkout.payments.svc.cluster.local\n        subset: v2\n      mirrorPercentage:\n        value: 25.0"
         }
       ]
     },
     {
       "id": "fault-injection-tests",
-      "title": "Inject faults to test that retries and breakers actually work",
-      "description": "You wrote a retry policy and a circuit breaker. Now prove they work before the next outage proves they do not. Istio can inject HTTP errors and delays at the proxy with no code change. Run these in a non-prod namespace and watch your client's behavior.",
+      "title": "Injete falhas para testar se os retries e breakers realmente funcionam",
+      "description": "Você escreveu uma política de retry e um circuit breaker. Agora prove que eles funcionam antes que a próxima indisponibilidade prove que não. O Istio pode injetar erros HTTP e atrasos no proxy sem nenhuma mudança de código. Rode isso em um namespace fora de produção e observe o comportamento do seu cliente.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "yaml",
-          "label": "Inject 50 percent 503 errors",
+          "label": "Injete 50 por cento de erros 503",
           "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: checkout-fault-test\n  namespace: payments-staging\nspec:\n  hosts:\n    - checkout\n  http:\n    - fault:\n        abort:\n          percentage:\n            value: 50.0\n          httpStatus: 503\n      route:\n        - destination:\n            host: checkout\n            subset: v1"
         },
         {
           "language": "yaml",
-          "label": "Inject a 5 second delay",
+          "label": "Injete um atraso de 5 segundos",
           "code": "spec:\n  http:\n    - fault:\n        delay:\n          percentage:\n            value: 100.0\n          fixedDelay: 5s\n      route:\n        - destination:\n            host: checkout\n            subset: v1\n# Run your client. With a 2s timeout and 3 retries you should see\n# fast-failure, not 5s hangs."
         }
       ]
     },
     {
       "id": "validate-before-apply",
-      "title": "Run istioctl analyze before applying any config",
-      "description": "VirtualService and DestinationRule errors do not always show up at apply time. A typo in a subset name, a host that resolves to nothing, a missing namespace prefix: kubectl will accept all of these. istioctl analyze catches them and tells you what is broken in plain English. Wire it into CI so bad config never reaches the cluster.",
+      "title": "Execute istioctl analyze antes de aplicar qualquer configuração",
+      "description": "Erros de VirtualService e DestinationRule nem sempre aparecem no momento do apply. Um erro de digitação em um nome de subset, um host que não resolve para nada, um prefixo de namespace ausente: o kubectl vai aceitar tudo isso. O istioctl analyze detecta esses problemas e diz exatamente o que está quebrado. Integre-o ao CI para que uma configuração ruim nunca chegue ao cluster.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Analyze a single namespace",
+          "label": "Analise um único namespace",
           "code": "# Catch issues across the live config plus a file you are about to apply\nistioctl analyze -n payments checkout-virtualservice.yaml\n\n# Example output:\n# Error [IST0101] (VirtualService payments/checkout)\n#   Referenced host+subset in destinationrule not found:\n#   \"checkout+v3\"\n# Error: Analyzers found issues when analyzing namespace: payments\n\n# Run across all namespaces in CI\nistioctl analyze --all-namespaces --suppress 'IST0118=*'"
         },
         {
           "language": "yaml",
-          "label": "Pre-merge CI check",
+          "label": "Verificação de CI antes do merge",
           "code": "# .github/workflows/istio-validate.yaml\nname: istio-validate\non: [pull_request]\njobs:\n  analyze:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Install istioctl\n        run: |\n          curl -L https://istio.io/downloadIstio | sh -\n          sudo mv istio-*/bin/istioctl /usr/local/bin/\n      - name: Analyze changed manifests\n        run: |\n          istioctl analyze --recursive ./manifests/istio/ \\\n            --failure-threshold Warning"
         }
       ]
     },
     {
       "id": "monitor-traffic-policies",
-      "title": "Watch the right metrics so you know when policies fire",
-      "description": "If you cannot see your retries, timeouts, and ejections in a dashboard, you cannot tune them. Pull Envoy stats into Prometheus and put four signals in front of yourself: request rate per subset, p99 latency, 5xx ratio, and pending-request overflow. Add Kiali for the topology view when you need to debug routes by hand.",
+      "title": "Observe as métricas certas para saber quando as políticas disparam",
+      "description": "Se você não consegue ver seus retries, timeouts e ejeções em um dashboard, não consegue ajustá-los. Traga as estatísticas do Envoy para o Prometheus e coloque quatro sinais diante de você: taxa de requisições por subset, latência p99, proporção de 5xx e overflow de requisições pendentes. Adicione o Kiali para a visão de topologia quando precisar depurar rotas manualmente.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "promql",
-          "label": "PromQL for the four signals",
+          "label": "PromQL para os quatro sinais",
           "code": "# Request rate per destination subset\nsum by (destination_workload, destination_version) (\n  rate(istio_requests_total{reporter=\"source\"}[1m])\n)\n\n# 5xx ratio per destination\nsum by (destination_workload) (\n  rate(istio_requests_total{response_code=~\"5..\"}[5m])\n) /\nsum by (destination_workload) (\n  rate(istio_requests_total[5m])\n)\n\n# p99 latency per destination\nhistogram_quantile(0.99,\n  sum by (destination_workload, le) (\n    rate(istio_request_duration_milliseconds_bucket[5m])\n  )\n)\n\n# Circuit breaker fast-fails (pending overflow)\nsum by (cluster_name) (\n  rate(envoy_cluster_upstream_rq_pending_overflow[5m])\n)"
         },
         {
           "language": "bash",
-          "label": "Quick visual debugging with Kiali",
+          "label": "Depuração visual rápida com o Kiali",
           "code": "# Port-forward Kiali and look at the traffic graph\nkubectl port-forward -n istio-system svc/kiali 20001:20001\n\n# Open http://localhost:20001\n# Versioned graph + edge labels show:\n#   - actual percentage going to each subset\n#   - which routes are returning 5xx\n#   - whether your VirtualService matches what you intended"
         }
       ]

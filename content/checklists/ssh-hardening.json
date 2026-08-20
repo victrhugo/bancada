@@ -1,11 +1,11 @@
 {
   "id": "ssh-hardening",
   "slug": "ssh-hardening",
-  "title": "SSH Hardening Checklist",
-  "description": "Comprehensive guide to harden your SSH server configuration and improve security.",
+  "title": "Checklist de Hardening de SSH",
+  "description": "Guia abrangente para reforçar a configuração do seu servidor SSH e melhorar a segurança.",
   "category": "Security",
   "difficulty": "intermediate",
-  "estimatedTime": "30-45 minutes",
+  "estimatedTime": "30-45 minutos",
   "tags": [
     "ssh",
     "security",
@@ -16,241 +16,241 @@
   "items": [
     {
       "id": "disable-root-login",
-      "title": "Disable root login",
-      "description": "Preventing direct root login adds an essential security layer. This forces users to login with their own accounts first, then use sudo for administrative tasks, creating a clear audit trail.",
+      "title": "Desabilite o login root",
+      "description": "Impedir o login direto como root adiciona uma camada essencial de segurança. Isso obriga os usuários a fazer login com suas próprias contas primeiro e depois usar sudo para tarefas administrativas, criando um rastro de auditoria claro.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Edit SSH config",
+          "label": "Edite a configuração do SSH",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Set this line:\nPermitRootLogin no"
         },
         {
           "language": "bash",
-          "label": "Restart SSH service",
+          "label": "Reinicie o serviço SSH",
           "code": "# For systemd systems:\nsudo systemctl restart sshd\n\n# For SysV init systems:\nsudo service ssh restart"
         }
       ]
     },
     {
       "id": "change-ssh-port",
-      "title": "Change default SSH port",
-      "description": "Moving SSH from the default port 22 reduces automated attack attempts. Choose a port above 1024 to avoid conflicts with well-known services.",
+      "title": "Altere a porta padrão do SSH",
+      "description": "Mudar o SSH da porta padrão 22 reduz tentativas de ataque automatizadas. Escolha uma porta acima de 1024 para evitar conflitos com serviços conhecidos.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Change SSH port",
+          "label": "Altere a porta do SSH",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Change this line:\nPort 2222"
         },
         {
           "language": "bash",
-          "label": "Update firewall and restart",
+          "label": "Atualize o firewall e reinicie",
           "code": "# Allow new port in firewall:\nsudo ufw allow 2222/tcp\n\n# Restart SSH:\nsudo systemctl restart sshd\n\n# Test the new port:\nssh -p 2222 user@server"
         }
       ]
     },
     {
       "id": "enable-key-auth",
-      "title": "Enable key-based authentication",
-      "description": "SSH keys are far more secure than passwords and resist brute-force attacks. Generate a key pair on your local machine, copy the public key to the server, and set proper permissions.",
+      "title": "Habilite autenticação baseada em chaves",
+      "description": "Chaves SSH são muito mais seguras que senhas e resistem a ataques de força bruta. Gere um par de chaves na sua máquina local, copie a chave pública para o servidor e configure as permissões corretas.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Generate SSH key pair (local machine)",
+          "label": "Gere o par de chaves SSH (máquina local)",
           "code": "# Ed25519 (recommended):\nssh-keygen -t ed25519 -C \"your_email@example.com\"\n\n# Or RSA 4096-bit if ed25519 isn't supported:\nssh-keygen -t rsa -b 4096 -C \"your_email@example.com\""
         },
         {
           "language": "bash",
-          "label": "Copy key to server",
+          "label": "Copie a chave para o servidor",
           "code": "ssh-copy-id user@server"
         },
         {
           "language": "bash",
-          "label": "Set correct permissions (on server)",
+          "label": "Configure as permissões corretas (no servidor)",
           "code": "chmod 700 ~/.ssh\nchmod 600 ~/.ssh/authorized_keys"
         }
       ]
     },
     {
       "id": "disable-password-auth",
-      "title": "Disable password authentication",
-      "description": "Once key-based authentication is working, disable passwords entirely to prevent brute-force attacks. IMPORTANT: Test SSH key login first to avoid lockout.",
+      "title": "Desabilite a autenticação por senha",
+      "description": "Depois que a autenticação por chave estiver funcionando, desabilite as senhas completamente para prevenir ataques de força bruta. IMPORTANTE: Teste o login com chave SSH primeiro para evitar ficar trancado para fora.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Disable password authentication",
+          "label": "Desabilite a autenticação por senha",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Set these lines:\nPasswordAuthentication no\nChallengeResponseAuthentication no"
         },
         {
           "language": "bash",
-          "label": "Restart SSH service",
+          "label": "Reinicie o serviço SSH",
           "code": "sudo systemctl restart sshd"
         }
       ]
     },
     {
       "id": "configure-firewall",
-      "title": "Configure firewall rules",
-      "description": "Restrict SSH access to known IP addresses or ranges. Test firewall rules carefully to avoid lockout.",
+      "title": "Configure regras de firewall",
+      "description": "Restrinja o acesso SSH a endereços ou faixas de IP conhecidos. Teste as regras de firewall com cuidado para evitar ficar trancado para fora.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "UFW firewall",
+          "label": "Firewall UFW",
           "code": "# Allow specific IP/subnet:\nsudo ufw allow from 203.0.113.0/24 to any port 22\nsudo ufw enable"
         },
         {
           "language": "bash",
-          "label": "iptables firewall",
+          "label": "Firewall iptables",
           "code": "# Allow specific IP/subnet:\nsudo iptables -A INPUT -p tcp -s 203.0.113.0/24 --dport 22 -j ACCEPT\n\n# Drop all other SSH connections:\nsudo iptables -A INPUT -p tcp --dport 22 -j DROP\n\n# Save rules:\nsudo iptables-save > /etc/iptables/rules.v4"
         }
       ]
     },
     {
       "id": "setup-fail2ban",
-      "title": "Set up fail2ban",
-      "description": "Fail2ban automatically blocks IPs after repeated failed login attempts. Configure it to protect against brute-force attacks.",
+      "title": "Configure o fail2ban",
+      "description": "O fail2ban bloqueia automaticamente IPs após tentativas repetidas de login malsucedidas. Configure-o para proteger contra ataques de força bruta.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Install fail2ban",
+          "label": "Instale o fail2ban",
           "code": "# Debian/Ubuntu:\nsudo apt-get install fail2ban\n\n# RHEL/CentOS:\nsudo yum install fail2ban"
         },
         {
           "language": "bash",
-          "label": "Configure fail2ban",
+          "label": "Configure o fail2ban",
           "code": "# Create local config:\nsudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local\n\n# Edit configuration:\nsudo nano /etc/fail2ban/jail.local"
         },
         {
           "language": "ini",
-          "label": "jail.local settings",
+          "label": "Configurações do jail.local",
           "code": "[sshd]\nenabled = true\nmaxretry = 3\nbantime = 3600\nfindtime = 600"
         },
         {
           "language": "bash",
-          "label": "Start and monitor fail2ban",
+          "label": "Inicie e monitore o fail2ban",
           "code": "sudo systemctl start fail2ban\nsudo systemctl enable fail2ban\n\n# Check status:\nsudo fail2ban-client status sshd"
         }
       ]
     },
     {
       "id": "enable-2fa",
-      "title": "Enable two-factor authentication",
-      "description": "Add two-factor authentication for extra security. Users will need both their SSH key AND a time-based one-time password (TOTP) to login.",
+      "title": "Habilite a autenticação de dois fatores",
+      "description": "Adicione autenticação de dois fatores para segurança extra. Os usuários vão precisar da chave SSH E de uma senha de uso único baseada em tempo (TOTP) para fazer login.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Install Google Authenticator",
+          "label": "Instale o Google Authenticator",
           "code": "sudo apt-get install libpam-google-authenticator"
         },
         {
           "language": "bash",
-          "label": "Setup for each user",
+          "label": "Configure para cada usuário",
           "code": "# Run as the user:\ngoogle-authenticator\n\n# Scan QR code with authenticator app (Google Authenticator, Authy, etc.)\n# Save emergency codes in a safe place"
         },
         {
           "language": "bash",
-          "label": "Configure PAM",
+          "label": "Configure o PAM",
           "code": "sudo nano /etc/pam.d/sshd\n\n# Add at the top:\nauth required pam_google_authenticator.so"
         },
         {
           "language": "bash",
-          "label": "Update SSH config",
+          "label": "Atualize a configuração do SSH",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Set these:\nChallengeResponseAuthentication yes\nUsePAM yes\nAuthenticationMethods publickey,keyboard-interactive\n\n# Restart:\nsudo systemctl restart sshd"
         }
       ]
     },
     {
       "id": "configure-key-permissions",
-      "title": "Configure SSH key permissions",
-      "description": "Incorrect permissions on SSH files will cause SSH to reject key authentication. Ensure proper ownership and permissions on all SSH-related files.",
+      "title": "Configure as permiss\u00f5es das chaves SSH",
+      "description": "Permiss\u00f5es incorretas nos arquivos SSH far\u00e3o o SSH rejeitar a autentica\u00e7\u00e3o por chave. Garanta a propriedade e as permiss\u00f5es corretas em todos os arquivos relacionados ao SSH.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Set correct permissions",
+          "label": "Configure as permiss\u00f5es corretas",
           "code": "# SSH directory:\nchmod 700 ~/.ssh\n\n# Authorized keys:\nchmod 600 ~/.ssh/authorized_keys\n\n# Private keys (if stored on server):\nchmod 600 ~/.ssh/id_ed25519\nchmod 600 ~/.ssh/id_rsa\n\n# Home directory:\nchmod 755 ~"
         },
         {
           "language": "bash",
-          "label": "Verify permissions",
+          "label": "Verifique as permiss\u00f5es",
           "code": "ls -la ~/.ssh\n\n# Output should show:\n# drwx------ for .ssh/\n# -rw------- for keys and authorized_keys"
         }
       ]
     },
     {
       "id": "ssh-timeouts",
-      "title": "Set up SSH session timeouts",
-      "description": "Idle SSH sessions are security risks. Configure automatic disconnection after a period of inactivity.",
+      "title": "Configure timeouts de sess\u00e3o SSH",
+      "description": "Sess\u00f5es SSH ociosas s\u00e3o riscos de seguran\u00e7a. Configure a desconex\u00e3o autom\u00e1tica ap\u00f3s um per\u00edodo de inatividade.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Configure session timeouts",
+          "label": "Configure os timeouts de sess\u00e3o",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Add these lines:\nClientAliveInterval 300\nClientAliveCountMax 2\n\n# This disconnects after ~10 minutes (300s \u00d7 2)"
         },
         {
           "language": "bash",
-          "label": "Restart SSH",
+          "label": "Reinicie o SSH",
           "code": "sudo systemctl restart sshd"
         }
       ]
     },
     {
       "id": "disable-empty-passwords",
-      "title": "Disable empty passwords",
-      "description": "Accounts with empty passwords are critical security vulnerabilities. Ensure empty passwords are disabled and audit for any accounts without passwords.",
+      "title": "Desabilite senhas vazias",
+      "description": "Contas com senhas vazias s\u00e3o vulnerabilidades de seguran\u00e7a cr\u00edticas. Garanta que senhas vazias estejam desabilitadas e audite se existem contas sem senha.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Disable empty passwords",
+          "label": "Desabilite senhas vazias",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Ensure this is set:\nPermitEmptyPasswords no"
         },
         {
           "language": "bash",
-          "label": "Audit for empty passwords",
+          "label": "Audite contas com senhas vazias",
           "code": "# Find accounts with empty passwords:\nsudo awk -F: '($2 == \"\") {print $1}' /etc/shadow\n\n# Lock accounts with empty passwords:\nsudo passwd -l username"
         }
       ]
     },
     {
       "id": "use-protocol-v2",
-      "title": "Use SSH protocol version 2",
-      "description": "SSH Protocol 1 has known vulnerabilities. Ensure only Protocol 2 is enabled (this is default on modern systems).",
+      "title": "Use a vers\u00e3o 2 do protocolo SSH",
+      "description": "O Protocolo SSH 1 tem vulnerabilidades conhecidas. Garanta que apenas o Protocolo 2 esteja habilitado (isso j\u00e1 \u00e9 o padr\u00e3o em sistemas modernos).",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Force Protocol 2",
+          "label": "Force o Protocolo 2",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Add or verify:\nProtocol 2\n\n# Restart:\nsudo systemctl restart sshd"
         },
         {
           "language": "bash",
-          "label": "Verify protocol version",
+          "label": "Verifique a vers\u00e3o do protocolo",
           "code": "ssh -v user@server 2>&1 | grep \"protocol\"\n\n# Should show: Remote protocol version 2.0"
         }
       ]
     },
     {
       "id": "configure-allowed-users",
-      "title": "Configure allowed users/groups",
-      "description": "Explicitly whitelist who can SSH into the server. Only specified users or groups will be permitted to login via SSH.",
+      "title": "Configure usu\u00e1rios/grupos permitidos",
+      "description": "Coloque explicitamente em lista de permiss\u00e3o quem pode acessar o servidor via SSH. Apenas os usu\u00e1rios ou grupos especificados ter\u00e3o permiss\u00e3o para fazer login via SSH.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Allow specific users",
+          "label": "Permita usu\u00e1rios espec\u00edficos",
           "code": "sudo nano /etc/ssh/sshd_config\n\n# Allow specific users:\nAllowUsers alice bob charlie\n\n# Or allow from specific IPs:\nAllowUsers alice@192.168.1.* bob@10.0.0.0/8"
         },
         {
           "language": "bash",
-          "label": "Allow specific groups",
+          "label": "Permita grupos espec\u00edficos",
           "code": "# Create SSH users group:\nsudo groupadd sshusers\n\n# Add users to group:\nsudo usermod -aG sshusers alice\nsudo usermod -aG sshusers bob\n\n# Configure SSH:\nsudo nano /etc/ssh/sshd_config\nAllowGroups sshusers\n\n# Restart:\nsudo systemctl restart sshd"
         }
       ]

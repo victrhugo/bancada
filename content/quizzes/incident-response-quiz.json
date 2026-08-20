@@ -1,7 +1,7 @@
 {
   "id": "incident-response-quiz",
-  "title": "Production Incident Response Quiz",
-  "description": "Test your skills handling real production outages, performance issues, and system failures under pressure",
+  "title": "Quiz de Resposta a Incidentes em Produção",
+  "description": "Teste suas habilidades lidando com quedas reais de produção, problemas de performance e falhas de sistema sob pressão",
   "category": "Incident Response",
   "icon": "AlertTriangle",
   "totalPoints": 150,
@@ -11,7 +11,7 @@
     "gradientTo": "to-orange-600"
   },
   "metadata": {
-    "estimatedTime": "18-22 minutes",
+    "estimatedTime": "18-22 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 4,
@@ -22,181 +22,181 @@
   "questions": [
     {
       "id": "database-connection-crisis",
-      "title": "Database Connection Pool Exhausted",
-      "description": "Your e-commerce site is down during Black Friday sales. Users can't check out.",
-      "situation": "It's 2 PM on Black Friday, traffic is 10x normal, and your application is throwing database connection errors. Customers are abandoning carts and revenue is dropping fast.",
+      "title": "Pool de Conexões do Banco de Dados Esgotado",
+      "description": "Seu site de e-commerce está fora do ar durante as vendas da Black Friday. Usuários não conseguem finalizar a compra.",
+      "situation": "São 14h na Black Friday, o tráfego está 10x acima do normal, e sua aplicação está lançando erros de conexão com o banco de dados. Clientes estão abandonando carrinhos e a receita está caindo rápido.",
       "codeExample": "ERROR logs:\n[ERROR] HikariPool-1 - Connection is not available, request timed out after 30000ms\n[ERROR] Could not obtain connection from pool within 30 seconds\n[ERROR] Database connection pool exhausted\n\nMonitoring shows:\n- CPU: 25% (normal)\n- Memory: 60% (normal) \n- Active DB connections: 100/100 (maxed out)\n- Response time: 15+ seconds",
       "options": [
-        "Restart the database server immediately",
-        "Scale up the database instance to a larger size",
-        "Increase connection pool size, add read replicas, and implement connection timeout tuning",
-        "Enable database query caching and hope it helps"
+        "Reiniciar o servidor de banco de dados imediatamente",
+        "Escalar o banco de dados para uma instância maior",
+        "Aumentar o tamanho do pool de conexões, adicionar réplicas de leitura e ajustar os timeouts de conexão",
+        "Ativar cache de queries no banco de dados e torcer para que ajude"
       ],
       "correctAnswer": 2,
-      "explanation": "Connection pool exhaustion during traffic spikes requires immediate pool tuning and load distribution. Increasing pool size provides immediate relief, read replicas distribute load, and proper timeouts prevent connection leaks.",
-      "hint": "Think about immediate relief for the connection bottleneck and load distribution strategies.",
+      "explanation": "O esgotamento do pool de conexões durante picos de tráfego exige ajuste imediato do pool e distribuição de carga. Aumentar o tamanho do pool oferece alívio imediato, réplicas de leitura distribuem a carga, e timeouts adequados evitam vazamento de conexões.",
+      "hint": "Pense no alívio imediato para o gargalo de conexões e em estratégias de distribuição de carga.",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "memory-leak-investigation",
-      "title": "Application Memory Leak",
-      "description": "Your Node.js API server memory usage keeps growing until it crashes.",
-      "situation": "Every 6 hours, your API servers run out of memory and restart. This started after yesterday's deployment. Memory usage grows from 500MB to 8GB over time.",
+      "title": "Vazamento de Memória na Aplicação",
+      "description": "O uso de memória do seu servidor de API em Node.js só cresce até travar.",
+      "situation": "A cada 6 horas, seus servidores de API ficam sem memória e reiniciam. Isso começou depois do deploy de ontem. O uso de memória cresce de 500MB para 8GB ao longo do tempo.",
       "codeExample": "Symptoms:\n- Memory usage: 500MB → 2GB → 4GB → 8GB → OOM kill\n- Heap dump shows growing object references\n- Restart cycle: Every 6 hours\n- Started after: v2.3.1 deployment yesterday\n\nMonitoring data:\n- Request rate: Normal (1000 req/min)\n- CPU: Normal (30%)\n- Memory: Growing continuously\n- GC frequency: Increasing",
       "options": [
-        "Rollback to previous version, analyze heap dumps, and identify the memory leak in recent code changes",
-        "Add more memory to the servers",
-        "Restart servers every 4 hours with a cron job",
-        "Scale horizontally by adding more server instances"
+        "Reverter para a versão anterior, analisar heap dumps e identificar o vazamento de memória nas mudanças recentes de código",
+        "Adicionar mais memória aos servidores",
+        "Reiniciar os servidores a cada 4 horas com um cron job",
+        "Escalar horizontalmente adicionando mais instâncias de servidor"
       ],
       "correctAnswer": 0,
-      "explanation": "Memory leaks require root cause analysis. Rollback provides immediate relief for users, heap dump analysis identifies the leak source, and reviewing recent changes helps pinpoint the problematic code.",
-      "hint": "The leak started with a recent deployment. What's the fastest way to restore service while investigating?",
+      "explanation": "Vazamentos de memória exigem análise de causa raiz. O rollback oferece alívio imediato para os usuários, a análise de heap dump identifica a origem do vazamento, e revisar as mudanças recentes ajuda a apontar o código problemático.",
+      "hint": "O vazamento começou junto com um deploy recente. Qual é a forma mais rápida de restaurar o serviço enquanto você investiga?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "load-balancer-failure",
-      "title": "Load Balancer Health Check Failures",
-      "description": "Your load balancer is marking healthy servers as unhealthy, causing cascading failures.",
-      "situation": "Servers are being removed from the load balancer pool one by one. The remaining servers are getting overloaded and also failing health checks, creating a death spiral.",
+      "title": "Falhas de Health Check no Load Balancer",
+      "description": "Seu load balancer está marcando servidores saudáveis como não saudáveis, causando falhas em cascata.",
+      "situation": "Servidores estão sendo removidos do pool do load balancer um a um. Os servidores restantes estão sobrecarregando e também começam a falhar nos health checks, criando uma espiral da morte.",
       "codeExample": "Load Balancer Status:\n- Server 1: UNHEALTHY (removed from pool)\n- Server 2: UNHEALTHY (removed from pool)  \n- Server 3: WARNING (high CPU due to increased load)\n- Server 4: WARNING (high CPU due to increased load)\n\nHealth Check: GET /health\n- Timeout: 5 seconds\n- Expected: HTTP 200\n- Current response time: 8-12 seconds",
       "options": [
-        "Disable health checks temporarily until servers recover",
-        "Manually add servers back to the pool via load balancer admin",
-        "Increase health check timeout, investigate why /health endpoint is slow, and scale up remaining servers",
-        "Deploy new servers and replace the failing ones"
+        "Desativar os health checks temporariamente até os servidores se recuperarem",
+        "Adicionar manualmente os servidores de volta ao pool pelo painel de administração do load balancer",
+        "Aumentar o timeout do health check, investigar por que o endpoint /health está lento e escalar os servidores restantes",
+        "Fazer deploy de novos servidores e substituir os que estão falhando"
       ],
       "correctAnswer": 2,
-      "explanation": "Health check failures during load spikes often indicate timeout issues rather than actual server problems. Increasing timeout prevents false negatives, investigating the health endpoint addresses root cause, and scaling provides immediate relief.",
-      "hint": "The servers aren't actually unhealthy - they're just slow to respond. How do you fix the health check logic?",
+      "explanation": "Falhas de health check durante picos de carga costumam indicar problemas de timeout, não problemas reais nos servidores. Aumentar o timeout evita falsos negativos, investigar o endpoint de health resolve a causa raiz, e escalar oferece alívio imediato.",
+      "hint": "Os servidores não estão realmente não saudáveis, eles só estão lentos para responder. Como você corrige a lógica do health check?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "dns-propagation-disaster",
-      "title": "DNS Resolution Failure",
-      "description": "After a DNS change, some users can't reach your site while others can.",
-      "situation": "You updated DNS records 2 hours ago to point to new servers. About 30% of users report the site is unreachable, while others see it fine. Support tickets are flooding in.",
+      "title": "Falha de Resolução de DNS",
+      "description": "Depois de uma mudança de DNS, alguns usuários não conseguem acessar seu site enquanto outros conseguem.",
+      "situation": "Você atualizou os registros DNS há 2 horas para apontar para novos servidores. Cerca de 30% dos usuários relatam que o site está inacessível, enquanto outros o veem funcionando normalmente. Os chamados de suporte estão se acumulando.",
       "codeExample": "DNS Change Made:\nmyapp.com A record: 1.2.3.4 → 5.6.7.8 (TTL: 300 seconds)\n\nUser Reports:\n- \"Site not loading\" (30% of users)\n- \"Works fine for me\" (70% of users)\n- Geographic pattern: Issues mostly in Asia/Europe\n\nDig results:\n$ dig myapp.com @8.8.8.8\n;; ANSWER SECTION:\nmyapp.com. 300 IN A 5.6.7.8\n\n$ dig myapp.com @1.1.1.1  \n;; ANSWER SECTION:\nmyapp.com. 300 IN A 1.2.3.4",
       "options": [
-        "Wait for DNS propagation to complete (up to 48 hours)",
-        "Revert DNS changes immediately and investigate the new servers",
-        "Clear DNS cache on all ISPs globally",
-        "Keep both old and new servers running, ensure new servers are healthy, and wait for TTL expiration"
+        "Esperar a propagação do DNS terminar (até 48 horas)",
+        "Reverter as mudanças de DNS imediatamente e investigar os novos servidores",
+        "Limpar o cache de DNS em todos os provedores globalmente",
+        "Manter os servidores antigos e novos rodando, garantir que os novos servidores estejam saudáveis e esperar o TTL expirar"
       ],
       "correctAnswer": 3,
-      "explanation": "During DNS transitions, keep old infrastructure running until propagation completes. Verify new servers are actually working correctly, and let TTL naturally expire rather than forcing changes that could make things worse.",
-      "hint": "Users are split between old and new servers. How do you ensure everyone can access the site during the transition?",
+      "explanation": "Durante transições de DNS, mantenha a infraestrutura antiga rodando até a propagação terminar. Verifique se os novos servidores estão realmente funcionando corretamente, e deixe o TTL expirar naturalmente em vez de forçar mudanças que podem piorar a situação.",
+      "hint": "Os usuários estão divididos entre servidores antigos e novos. Como você garante que todos consigam acessar o site durante a transição?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "ssl-certificate-expiration",
-      "title": "SSL Certificate Expired at Midnight",
-      "description": "Your SSL certificate expired overnight and users are getting security warnings.",
-      "situation": "It's 6 AM and you're getting reports that users see 'Your connection is not secure' warnings. The SSL certificate expired at midnight, but your monitoring didn't alert you.",
+      "title": "Certificado SSL Expirou à Meia-Noite",
+      "description": "Seu certificado SSL expirou durante a madrugada e os usuários estão recebendo avisos de segurança.",
+      "situation": "São 6h da manhã e você está recebendo relatos de que os usuários veem avisos de 'Sua conexão não é segura'. O certificado SSL expirou à meia-noite, mas seu monitoramento não te alertou.",
       "codeExample": "Browser Error:\n\"Your connection is not secure\"\n\"NET::ERR_CERT_DATE_INVALID\"\n\nCertificate Info:\n- Domain: api.myapp.com\n- Expired: Today at 00:00:00 UTC\n- Issuer: Let's Encrypt\n- Valid from: 3 months ago\n\nCurrent Status:\n- Website: Inaccessible (security warnings)\n- API: Failing (SSL handshake errors)\n- Mobile app: Can't connect to backend",
       "options": [
-        "Disable SSL temporarily and use HTTP until new certificate is ready",
-        "Renew SSL certificate immediately, update server configuration, and implement certificate monitoring",
-        "Ask users to ignore the security warning and continue",
-        "Switch to a different domain name that has a valid certificate"
+        "Desativar o SSL temporariamente e usar HTTP até o novo certificado ficar pronto",
+        "Renovar o certificado SSL imediatamente, atualizar a configuração do servidor e implementar monitoramento de certificados",
+        "Pedir para os usuários ignorarem o aviso de segurança e continuarem",
+        "Trocar para um domínio diferente que tenha um certificado válido"
       ],
       "correctAnswer": 1,
-      "explanation": "SSL certificate renewal is critical for security and user trust. Renew immediately using automated tools like certbot, update server configs, and implement monitoring to prevent future expirations.",
-      "hint": "Security can't be compromised, but service needs to be restored quickly. What's the proper way to handle expired certificates?",
+      "explanation": "A renovação do certificado SSL é crítica para a segurança e a confiança do usuário. Renove imediatamente usando ferramentas automatizadas como o certbot, atualize as configurações do servidor e implemente monitoramento para prevenir expirações futuras.",
+      "hint": "A segurança não pode ser comprometida, mas o serviço precisa ser restaurado rapidamente. Qual é a forma correta de lidar com certificados expirados?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "disk-space-emergency",
-      "title": "Production Server Running Out of Disk Space",
-      "description": "Your main application server is at 98% disk usage and applications are starting to fail.",
-      "situation": "Log files have grown to fill the disk, new deployments are failing, and the database can't write transaction logs. You need to free space immediately without losing important data.",
+      "title": "Servidor de Produção Ficando Sem Espaço em Disco",
+      "description": "Seu servidor de aplicação principal está com 98% de uso de disco e as aplicações começam a falhar.",
+      "situation": "Arquivos de log cresceram até preencher o disco, novos deploys estão falhando, e o banco de dados não consegue escrever logs de transação. Você precisa liberar espaço imediatamente sem perder dados importantes.",
       "codeExample": "Disk Usage:\n$ df -h\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        50G   49G  500M  98% /\n\nLargest directories:\n$ du -sh /* | sort -hr | head -5\n25G    /var/log\n15G    /opt/app/uploads\n5G     /tmp\n2G     /var/cache\n1G     /home\n\nCritical Errors:\n- \"No space left on device\" in application logs\n- Database: \"Cannot write to transaction log\"\n- Deployment: \"Failed to extract package\"",
       "options": [
-        "Delete everything in /tmp and /var/cache immediately",
-        "Add more disk space to the server",
-        "Restart the server to clear temporary files",
-        "Compress and archive old logs, clean temporary files, move uploads to external storage, and set up log rotation"
+        "Apagar tudo em /tmp e /var/cache imediatamente",
+        "Adicionar mais espaço em disco ao servidor",
+        "Reiniciar o servidor para limpar arquivos temporários",
+        "Compactar e arquivar logs antigos, limpar arquivos temporários, mover uploads para armazenamento externo e configurar rotação de logs"
       ],
       "correctAnswer": 3,
-      "explanation": "Systematic cleanup preserves important data while freeing space. Compress/archive logs for potential debugging, clean safe temporary files, move uploads to scalable storage, and implement rotation to prevent recurrence.",
-      "hint": "You need immediate space but can't lose important data. Which approach safely frees the most space while preserving what you might need?",
+      "explanation": "Uma limpeza sistemática preserva dados importantes enquanto libera espaço. Compactar/arquivar logs para eventual debugging, limpar arquivos temporários seguros, mover uploads para armazenamento escalável e implementar rotação para evitar recorrência.",
+      "hint": "Você precisa de espaço imediato, mas não pode perder dados importantes. Qual abordagem libera com segurança o máximo de espaço preservando o que você pode precisar?",
       "difficulty": "intermediate",
       "points": 14
     },
     {
       "id": "kubernetes-pod-crashloop",
-      "title": "Kubernetes Pods in CrashLoopBackOff",
-      "description": "After a deployment, all your application pods are crashing and restarting continuously.",
-      "situation": "You deployed a new version 30 minutes ago. Pods start, run for 10 seconds, then crash. Kubernetes keeps restarting them but they never become ready.",
+      "title": "Pods do Kubernetes em CrashLoopBackOff",
+      "description": "Depois de um deploy, todos os pods da sua aplicação estão travando e reiniciando continuamente.",
+      "situation": "Você fez deploy de uma nova versão há 30 minutos. Os pods iniciam, rodam por 10 segundos, e travam. O Kubernetes continua reiniciando eles, mas nunca ficam prontos.",
       "codeExample": "kubectl get pods:\nNAME                    READY   STATUS             RESTARTS   AGE\napi-deployment-abc123   0/1     CrashLoopBackOff   8          30m\napi-deployment-def456   0/1     CrashLoopBackOff   8          30m\napi-deployment-ghi789   0/1     CrashLoopBackOff   8          30m\n\nkubectl logs api-deployment-abc123:\nStarting application...\nConnecting to database...\nFatal error: Environment variable DB_PASSWORD not found\nExiting with code 1",
       "options": [
-        "Rollback deployment, verify ConfigMap/Secret configuration, and redeploy with correct environment variables",
-        "Increase pod memory and CPU limits",
-        "Scale the deployment to more replicas",
-        "Restart the Kubernetes cluster"
+        "Reverter o deploy, verificar a configuração do ConfigMap/Secret e fazer novo deploy com as variáveis de ambiente corretas",
+        "Aumentar os limites de memória e CPU dos pods",
+        "Escalar o deployment para mais réplicas",
+        "Reiniciar o cluster Kubernetes"
       ],
       "correctAnswer": 0,
-      "explanation": "CrashLoopBackOff usually indicates configuration issues. Rollback provides immediate service restoration, then investigate missing environment variables, ConfigMaps, or Secrets before attempting redeploy.",
-      "hint": "The error message shows a missing environment variable. What's the fastest way to restore service while fixing the configuration?",
+      "explanation": "CrashLoopBackOff geralmente indica problemas de configuração. O rollback restaura o serviço imediatamente, e então você investiga variáveis de ambiente, ConfigMaps ou Secrets ausentes antes de tentar um novo deploy.",
+      "hint": "A mensagem de erro mostra uma variável de ambiente ausente. Qual é a forma mais rápida de restaurar o serviço enquanto você corrige a configuração?",
       "difficulty": "intermediate",
       "points": 16
     },
     {
       "id": "network-partition-chaos",
-      "title": "Network Partition Between Services",
-      "description": "Your microservices can't communicate with each other due to network issues.",
-      "situation": "The frontend can't reach the user service, the user service can't reach the database, but everything appears to be running. Network timeouts are occurring between different subnets.",
+      "title": "Partição de Rede Entre Serviços",
+      "description": "Seus microsserviços não conseguem se comunicar entre si por causa de problemas de rede.",
+      "situation": "O frontend não consegue alcançar o serviço de usuários, o serviço de usuários não consegue alcançar o banco de dados, mas tudo parece estar rodando. Timeouts de rede estão ocorrendo entre subnets diferentes.",
       "codeExample": "Service Status:\n✅ Frontend pods: Running\n✅ User service pods: Running  \n✅ Database: Running\n✅ Load balancers: Healthy\n\nErrors:\n- Frontend → User Service: \"Connection timeout after 30s\"\n- User Service → Database: \"Connection refused\"\n- Ping between subnets: 100% packet loss\n\nInfrastructure:\n- Frontend: Subnet A (10.0.1.0/24)\n- User Service: Subnet B (10.0.2.0/24)\n- Database: Subnet C (10.0.3.0/24)",
       "options": [
-        "Restart all the services to reset network connections",
-        "Check security groups, NACLs, route tables, and firewall rules between subnets",
-        "Increase network timeouts in application configuration",
-        "Deploy all services to the same subnet"
+        "Reiniciar todos os serviços para resetar as conexões de rede",
+        "Verificar security groups, NACLs, tabelas de rotas e regras de firewall entre as subnets",
+        "Aumentar os timeouts de rede na configuração da aplicação",
+        "Colocar todos os serviços na mesma subnet"
       ],
       "correctAnswer": 1,
-      "explanation": "Network partitions are usually caused by infrastructure changes to security groups, NACLs, route tables, or firewalls. Systematic checking of network policies between subnets will identify the blocking rule.",
-      "hint": "Services are running but can't talk to each other across subnets. What controls traffic between network segments?",
+      "explanation": "Partições de rede geralmente são causadas por mudanças de infraestrutura em security groups, NACLs, tabelas de rotas ou firewalls. Verificar sistematicamente as políticas de rede entre subnets vai identificar a regra que está bloqueando.",
+      "hint": "Os serviços estão rodando, mas não conseguem conversar entre si através das subnets. O que controla o tráfego entre segmentos de rede?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "cascading-failure-storm",
-      "title": "Cascading Service Failures",
-      "description": "One service failure is triggering a domino effect across your entire system.",
-      "situation": "The payment service went down, but now your entire platform is experiencing failures. Services that don't even use payments are timing out and becoming unresponsive.",
+      "title": "Falhas em Cascata nos Serviços",
+      "description": "A falha de um serviço está disparando um efeito dominó em todo o seu sistema.",
+      "situation": "O serviço de pagamentos caiu, mas agora toda a plataforma está enfrentando falhas. Serviços que nem sequer usam pagamentos estão dando timeout e ficando indisponíveis.",
       "codeExample": "Failure Timeline:\n14:30 - Payment service: High error rate\n14:32 - Order service: Timeouts calling payments\n14:35 - User service: High CPU (retry storms)\n14:37 - Frontend: 500 errors\n14:40 - Database: Connection pool exhausted\n14:42 - Load balancer: All backends unhealthy\n\nCurrent State:\n- Payment service: DOWN\n- Order service: Degraded (retry loops)\n- User service: Overloaded \n- Database: Unresponsive\n- Frontend: Completely down",
       "options": [
-        "Implement circuit breakers, isolate the payment service, enable graceful degradation, and restore services in dependency order",
-        "Restart all services simultaneously to reset the system state",
-        "Fix the payment service first, then wait for other services to recover",
-        "Scale up all services to handle the increased load"
+        "Implementar circuit breakers, isolar o serviço de pagamentos, ativar degradação graciosa e restaurar os serviços na ordem de dependência",
+        "Reiniciar todos os serviços simultaneamente para resetar o estado do sistema",
+        "Corrigir primeiro o serviço de pagamentos e esperar os outros serviços se recuperarem",
+        "Escalar todos os serviços para lidar com o aumento de carga"
       ],
       "correctAnswer": 0,
-      "explanation": "Cascading failures require immediate isolation of the root cause and systematic recovery. Circuit breakers prevent retry storms, graceful degradation maintains partial functionality, and dependency-order recovery prevents re-triggering the cascade.",
-      "hint": "One failing service shouldn't bring down everything. How do you stop the domino effect and recover systematically?",
+      "explanation": "Falhas em cascata exigem isolamento imediato da causa raiz e recuperação sistemática. Circuit breakers evitam tempestades de retry, a degradação graciosa mantém funcionalidade parcial, e a recuperação na ordem de dependência evita disparar a cascata novamente.",
+      "hint": "Um serviço falhando não deveria derrubar tudo. Como você para o efeito dominó e se recupera de forma sistemática?",
       "difficulty": "advanced",
       "points": 22
     },
     {
       "id": "data-corruption-incident",
-      "title": "Database Corruption During Peak Hours",
-      "description": "Your primary database is reporting data corruption errors during the busiest time of day.",
-      "situation": "It's peak shopping hours and the database is throwing corruption errors. Some user orders are being lost, payment data is inconsistent, and you need to maintain data integrity while keeping the service running.",
+      "title": "Corrupção de Banco de Dados no Horário de Pico",
+      "description": "Seu banco de dados primário está reportando erros de corrupção de dados durante o horário mais movimentado do dia.",
+      "situation": "É o horário de pico das compras e o banco de dados está lançando erros de corrupção. Alguns pedidos de usuários estão sendo perdidos, os dados de pagamento estão inconsistentes, e você precisa manter a integridade dos dados enquanto mantém o serviço no ar.",
       "codeExample": "Database Errors:\n[ERROR] Table 'orders' is marked as crashed and should be repaired\n[ERROR] Incorrect key file for table 'users'; try to repair it\n[ERROR] Got error 127 from storage engine\n\nImpact:\n- Lost orders: ~50 in the last hour\n- Payment mismatches: $15,000 in pending transactions\n- User complaints: Cannot access order history\n- Business impact: $2,000/minute revenue loss\n\nSystem Status:\n- Primary DB: Partial corruption\n- Read replicas: 15 minutes behind\n- Application: Degraded performance",
       "options": [
-        "Take the database offline immediately and run full repair",
-        "Continue running and fix corruption during maintenance window",
-        "Failover to read replica, promote it to primary, run repair on original primary in background",
-        "Restore from last night's backup and lose recent data"
+        "Tirar o banco de dados do ar imediatamente e rodar reparo completo",
+        "Continuar rodando e corrigir a corrupção durante a janela de manutenção",
+        "Fazer failover para a réplica de leitura, promovê-la a primária, e rodar o reparo na primária original em segundo plano",
+        "Restaurar a partir do backup da noite anterior e perder os dados recentes"
       ],
       "correctAnswer": 2,
-      "explanation": "Data corruption during peak hours requires immediate failover to preserve business continuity. Promoting a read replica minimizes data loss, allows continued operations, and provides time to properly repair the corrupted primary database offline.",
-      "hint": "You need to maintain service while ensuring data integrity. What allows you to keep serving customers while fixing the corruption?",
+      "explanation": "Corrupção de dados no horário de pico exige failover imediato para preservar a continuidade do negócio. Promover uma réplica de leitura minimiza a perda de dados, permite continuar as operações, e dá tempo para reparar adequadamente o banco primário corrompido offline.",
+      "hint": "Você precisa manter o serviço no ar garantindo a integridade dos dados. O que permite continuar atendendo clientes enquanto conserta a corrupção?",
       "difficulty": "advanced",
       "points": 20
     }

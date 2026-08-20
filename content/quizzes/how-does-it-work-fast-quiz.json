@@ -1,7 +1,7 @@
 {
   "id": "how-does-it-work-fast-quiz",
-  "title": "How Does It Work So Fast? - System Design Speed Tricks",
-  "description": "Test your knowledge of the clever algorithms and infrastructure patterns that make everyday features feel instant. Covers credit card validation, bloom filters, tries, URL shorteners, typing indicators, CDNs, DNS caching, and load balancer health checks.",
+  "title": "Como Isso Funciona Tão Rápido? - Truques de Velocidade em System Design",
+  "description": "Teste seu conhecimento sobre os algoritmos inteligentes e padrões de infraestrutura que fazem funcionalidades do dia a dia parecerem instantâneas. Cobre validação de cartão de crédito, bloom filters, tries, encurtadores de URL, indicadores de digitação, CDNs, cache de DNS e health checks de load balancer.",
   "category": "System Design",
   "icon": "Zap",
   "totalPoints": 195,
@@ -11,7 +11,7 @@
     "gradientTo": "to-cyan-600"
   },
   "metadata": {
-    "estimatedTime": "18-22 minutes",
+    "estimatedTime": "18-22 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 7,
@@ -23,237 +23,237 @@
   "questions": [
     {
       "id": "luhn-algorithm-basics",
-      "title": "Instant Credit Card Validation",
-      "description": "You need to understand how e-commerce checkout forms can validate a credit card number before sending anything to the payment processor.",
-      "situation": "You are building a checkout page for an online store. Users keep getting frustrated because they submit their card number, wait 3 seconds for the payment API to respond, and then learn they mistyped a digit. Your product manager asks you to catch obvious typos instantly, right in the browser, before the form is submitted. A colleague mentions that credit card numbers have a built-in checksum.",
+      "title": "Validação Instantânea de Cartão de Crédito",
+      "description": "Você precisa entender como formulários de checkout de e-commerce conseguem validar um número de cartão de crédito antes de enviar qualquer coisa para o processador de pagamento.",
+      "situation": "Você está construindo uma página de checkout para uma loja online. Os usuários estão ficando frustrados porque enviam o número do cartão, esperam 3 segundos pela resposta da API de pagamento, e só então descobrem que digitaram um dígito errado. Seu gerente de produto pede para você capturar erros de digitação óbvios instantaneamente, direto no navegador, antes do formulário ser enviado. Um colega menciona que números de cartão de crédito têm um checksum embutido.",
       "codeExample": "# The Luhn Algorithm (Mod 10 check):\n# Card number: 4539 1488 0343 6467\n#\n# Step 1: Starting from the rightmost digit, double every second digit:\n#   4  5  3  9  1  4  8  8  0  3  4  3  6  4  6  7\n#   8  5  6  9  2  4  16 8  0  3  8  3  12 4  12 7\n#\n# Step 2: If doubling produces a number > 9, subtract 9:\n#   8  5  6  9  2  4  7  8  0  3  8  3  3  4  3  7\n#\n# Step 3: Sum all digits:\n#   8+5+6+9+2+4+7+8+0+3+8+3+3+4+3+7 = 80\n#\n# Step 4: If total mod 10 == 0, the number is valid\n#   80 % 10 == 0 -> Valid!",
       "options": [
-        "The Luhn algorithm, which uses a checksum built into the card number to detect single-digit typos without any network call",
-        "A local database of valid card number prefixes that the browser checks against to verify the issuing bank",
-        "A lightweight HEAD request to the payment processor that validates the number faster than a full charge request",
-        "A regex pattern that matches the format rules for Visa, Mastercard, and Amex card numbers"
+        "O algoritmo de Luhn, que usa um checksum embutido no número do cartão para detectar erros de digitação de um único dígito sem nenhuma chamada de rede",
+        "Um banco de dados local de prefixos de cartão válidos que o navegador consulta para verificar o banco emissor",
+        "Uma requisição HEAD leve ao processador de pagamento que valida o número mais rápido do que uma requisição de cobrança completa",
+        "Um padrão regex que casa com as regras de formato dos números de cartão Visa, Mastercard e Amex"
       ],
       "correctAnswer": 0,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "The Luhn algorithm is a checksum formula that catches the vast majority of accidental typos in credit card numbers. It works entirely client-side with no network call. The last digit of every card number is a check digit calculated so that the Luhn formula produces a total divisible by 10. If you mistype a single digit, the checksum fails instantly. It catches about 95% of random single-digit errors and all single transposition errors. Regex can check format (length, prefix) but cannot verify the checksum. A network call defeats the purpose of instant validation. Bank prefix databases exist (BIN tables) but they verify the issuer, not whether the full number is correctly typed.",
-      "hint": "Think about what you can verify using only the digits themselves, with no external data or network access."
+      "explanation": "O algoritmo de Luhn é uma fórmula de checksum que captura a grande maioria dos erros de digitação acidentais em números de cartão de crédito. Ele funciona inteiramente no lado do cliente, sem nenhuma chamada de rede. O último dígito de todo número de cartão é um dígito de verificação calculado para que a fórmula de Luhn produza um total divisível por 10. Se você digitar errado um único dígito, o checksum falha instantaneamente. Ele captura cerca de 95% dos erros aleatórios de um dígito e todos os erros de transposição de um único par. Regex consegue checar o formato (tamanho, prefixo), mas não consegue verificar o checksum. Uma chamada de rede anula o propósito da validação instantânea. Bancos de dados de prefixo de banco (tabelas BIN) existem, mas verificam o emissor, não se o número completo foi digitado corretamente.",
+      "hint": "Pense no que você consegue verificar usando apenas os próprios dígitos, sem dados externos ou acesso à rede."
     },
     {
       "id": "bloom-filter-concept",
-      "title": "Username Availability at Scale",
-      "description": "You need to check if a username is already taken across hundreds of millions of accounts without hitting the database for every keystroke.",
-      "situation": "You work on the signup flow for a social platform with 400 million registered usernames. As users type a desired username, you want to show a green check or red X in real time. Querying the database on every keystroke would generate tens of thousands of queries per second during peak registration hours. The team needs a data structure that can answer 'is this username taken?' in constant time and fits entirely in memory.",
+      "title": "Disponibilidade de Username em Larga Escala",
+      "description": "Você precisa checar se um username já está em uso entre centenas de milhões de contas sem consultar o banco de dados a cada tecla digitada.",
+      "situation": "Você trabalha no fluxo de cadastro de uma plataforma social com 400 milhões de usernames registrados. Enquanto o usuário digita o username desejado, você quer mostrar um check verde ou um X vermelho em tempo real. Consultar o banco de dados a cada tecla geraria dezenas de milhares de queries por segundo nos horários de pico de cadastro. O time precisa de uma estrutura de dados que consiga responder 'esse username está em uso?' em tempo constante e caiba inteiramente em memória.",
       "codeExample": "# Bloom Filter for username lookup:\n# Size: ~500 MB for 400M usernames at 1% false positive rate\n#\n# Insert 'alice_dev':\n#   hash1('alice_dev') -> bit 14209\n#   hash2('alice_dev') -> bit 87432\n#   hash3('alice_dev') -> bit 203847\n#   Set bits 14209, 87432, 203847 to 1\n#\n# Check 'bob_codes':\n#   hash1('bob_codes') -> bit 55123  (is it 1? yes)\n#   hash2('bob_codes') -> bit 87432  (is it 1? yes)\n#   hash3('bob_codes') -> bit 99201  (is it 1? no)\n#   -> At least one bit is 0 -> DEFINITELY NOT in the set\n#\n# Key property:\n#   'Possibly taken' -> confirm with DB query\n#   'Definitely available' -> no DB query needed",
       "options": [
-        "A bloom filter - a probabilistic data structure that can definitively say 'not taken' but may have false positives for 'taken'",
-        "A hash table of all usernames loaded into memory, using consistent hashing to distribute across multiple app servers",
-        "A Redis sorted set with all usernames, using binary search to check availability in O(log n) time",
-        "A pre-computed trie of all username prefixes that returns availability predictions as the user types"
+        "Um bloom filter - uma estrutura de dados probabilística que consegue afirmar com certeza 'não está em uso', mas pode ter falsos positivos para 'em uso'",
+        "Uma hash table com todos os usernames carregada em memória, usando consistent hashing para distribuir entre vários servidores de aplicação",
+        "Um sorted set do Redis com todos os usernames, usando busca binária para checar disponibilidade em tempo O(log n)",
+        "Uma trie pré-computada de todos os prefixos de username que retorna previsões de disponibilidade conforme o usuário digita"
       ],
       "correctAnswer": 0,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "A bloom filter is the go-to data structure for this problem. It uses a bit array and multiple hash functions to test set membership. The critical property: if any hash position is 0, the item is definitely not in the set (username is available, no DB query needed). If all positions are 1, the item might be in the set (possible false positive), so you fall back to a DB query. For 400 million usernames with a 1% false positive rate, the bloom filter needs roughly 500 MB of RAM, which is very manageable. A full hash table of 400M usernames would need tens of gigabytes. Redis sorted sets still require a network round-trip per check. A trie would use even more memory than a hash table for this many entries.",
-      "hint": "You need a data structure that trades a small chance of false positives for massive memory savings and O(1) lookups."
+      "explanation": "Um bloom filter é a estrutura de dados de referência para esse problema. Ele usa um array de bits e várias funções de hash para testar pertencimento a um conjunto. A propriedade crítica: se qualquer posição de hash for 0, o item definitivamente não está no conjunto (o username está disponível, sem necessidade de consultar o banco). Se todas as posições forem 1, o item pode estar no conjunto (possível falso positivo), então você recorre a uma consulta ao banco. Para 400 milhões de usernames com taxa de falso positivo de 1%, o bloom filter precisa de aproximadamente 500 MB de RAM, o que é bem administrável. Uma hash table completa com 400 milhões de usernames precisaria de dezenas de gigabytes. Sorted sets do Redis ainda exigem uma ida e volta de rede por checagem. Uma trie usaria ainda mais memória do que uma hash table para essa quantidade de entradas.",
+      "hint": "Você precisa de uma estrutura de dados que troque uma pequena chance de falsos positivos por uma economia enorme de memória e lookups O(1)."
     },
     {
       "id": "trie-autocomplete",
-      "title": "Autocomplete Search Suggestions",
-      "description": "You need to understand which data structure powers the instant dropdown suggestions that appear as you type in a search bar.",
-      "situation": "You are building an autocomplete feature for a search bar on a documentation site with 50,000 page titles. When the user types 'kub', the dropdown should instantly show 'Kubernetes', 'Kubernetes Pods', 'Kubelet Configuration', etc. The suggestions must appear within 10ms. A naive approach of scanning all 50,000 titles with a string prefix match takes too long when the prefix is short (like 'k'), returning thousands of candidates.",
+      "title": "Sugestões de Autocompletar na Busca",
+      "description": "Você precisa entender qual estrutura de dados alimenta o dropdown instantâneo de sugestões que aparece enquanto você digita em uma barra de busca.",
+      "situation": "Você está construindo uma funcionalidade de autocompletar para uma barra de busca em um site de documentação com 50.000 títulos de página. Quando o usuário digita 'kub', o dropdown deve mostrar instantaneamente 'Kubernetes', 'Kubernetes Pods', 'Kubelet Configuration', etc. As sugestões precisam aparecer em até 10ms. Uma abordagem ingênua de varrer todos os 50.000 títulos com um match de prefixo de string demora demais quando o prefixo é curto (como 'k'), retornando milhares de candidatos.",
       "codeExample": "# Trie structure for autocomplete:\n#\n#           (root)\n#          /     \\\n#        k        d\n#        |         \\\n#        u          n\n#        |           \\\n#        b            s\n#       / \\\n#      e    l\n#      |    |\n#   rnetes  et  <- 'kubelet'\n#      |\n# 'kubernetes'\n#\n# Lookup 'kub':\n#   1. Walk: root -> k -> u -> b  (3 steps)\n#   2. Collect all leaf nodes below 'b'\n#   3. Return ranked results\n#   Time: O(prefix_length + results)",
       "options": [
-        "A trie (prefix tree) that organizes strings by shared prefixes, allowing you to find all matches by walking the tree to the prefix node",
-        "An inverted index that maps every possible substring to a list of matching documents",
-        "A hash map with every possible prefix as a key and pre-computed result lists as values",
-        "A B-tree index on the titles column, using a SQL LIKE query with a prefix wildcard"
+        "Uma trie (árvore de prefixos) que organiza strings por prefixos compartilhados, permitindo encontrar todos os matches percorrendo a árvore até o nó do prefixo",
+        "Um índice invertido que mapeia toda substring possível para uma lista de documentos correspondentes",
+        "Um hash map com todo prefixo possível como chave e listas de resultados pré-computadas como valores",
+        "Um índice B-tree na coluna de títulos, usando uma query SQL LIKE com um wildcard de prefixo"
       ],
       "correctAnswer": 0,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "A trie (also called a prefix tree) is the classic data structure for autocomplete. Each node represents a character, and paths from root to leaf spell out complete strings. To find all completions for 'kub', you walk the tree in 3 steps to reach the 'b' node, then collect all descendants. The time complexity is O(prefix_length + number_of_results), which is independent of the total dataset size. An inverted index of all substrings would use enormous memory (every substring of every title). Pre-computing all prefix results in a hash map works but uses a lot of memory and is hard to update. SQL LIKE queries with short prefixes are slow because they scan too many rows, even with a B-tree index.",
-      "hint": "Think about a tree structure where characters form the edges, and shared prefixes share the same path from the root."
+      "explanation": "Uma trie (também chamada de árvore de prefixos) é a estrutura de dados clássica para autocompletar. Cada nó representa um caractere, e os caminhos da raiz até a folha formam strings completas. Para encontrar todas as complementações de 'kub', você percorre a árvore em 3 passos até chegar ao nó 'b', e então coleta todos os descendentes. A complexidade de tempo é O(comprimento_do_prefixo + número_de_resultados), independente do tamanho total do conjunto de dados. Um índice invertido de todas as substrings usaria uma quantidade enorme de memória (toda substring de todo título). Pré-computar todos os resultados de prefixo em um hash map funciona, mas usa muita memória e é difícil de atualizar. Queries SQL LIKE com prefixos curtos são lentas porque varrem muitas linhas, mesmo com um índice B-tree.",
+      "hint": "Pense em uma estrutura de árvore onde os caracteres formam as arestas, e prefixos compartilhados compartilham o mesmo caminho a partir da raiz."
     },
     {
       "id": "url-shortener-design",
-      "title": "URL Shortener Redirect Speed",
-      "description": "You need to design a URL shortener that redirects users in under 5ms, even with billions of stored URLs.",
-      "situation": "Your company runs a link shortener handling 50,000 redirects per second. Each short URL (like sho.rt/a3Bf9x) must resolve to the original long URL as fast as possible. The database has 8 billion URL mappings. Reading from the database takes 5-15ms, but most redirects go to a small set of popular links (the top 1% of links account for 80% of traffic). You need to bring the p99 redirect latency under 5ms.",
+      "title": "Velocidade de Redirecionamento de Encurtador de URL",
+      "description": "Você precisa projetar um encurtador de URL que redirecione usuários em menos de 5ms, mesmo com bilhões de URLs armazenadas.",
+      "situation": "Sua empresa opera um encurtador de links que lida com 50.000 redirecionamentos por segundo. Cada URL curta (como sho.rt/a3Bf9x) precisa resolver para a URL longa original o mais rápido possível. O banco de dados tem 8 bilhões de mapeamentos de URL. Ler do banco de dados leva de 5 a 15ms, mas a maioria dos redirecionamentos vai para um conjunto pequeno de links populares (o 1% mais popular dos links responde por 80% do tráfego). Você precisa trazer a latência p99 de redirecionamento para abaixo de 5ms.",
       "codeExample": "# Base62 encoding for short URL generation:\n# Characters: [0-9a-zA-Z] = 62 chars\n# 6 chars = 62^6 = 56.8 billion combinations\n#\n# ID: 1234567890\n# Base62: 1234567890 -> '1LY7VK'\n#\n# Redirect flow:\n#   GET /a3Bf9x\n#   1. Check in-memory cache (LRU, ~10M entries)\n#      -> HIT: return 301 redirect (~0.5ms)\n#      -> MISS: continue\n#   2. Check Redis cache\n#      -> HIT: return 301, promote to memory cache (~2ms)\n#      -> MISS: continue\n#   3. Query database\n#      -> Return 301, populate both caches (~10ms)\n#\n# Cache hit rate: ~99.2% (memory + Redis combined)",
       "options": [
-        "Use a hash table with consistent hashing to distribute all 8 billion URLs across application servers, keeping everything in memory",
-        "Use Base62 encoding to generate short codes from sequential IDs, combined with a multi-layer cache (in-memory LRU + Redis) in front of the database",
-        "Store all mappings in a distributed key-value store like DynamoDB with global tables for sub-5ms reads from any region",
-        "Pre-compute redirects as static files served by a CDN, regenerating the files hourly"
+        "Usar uma hash table com consistent hashing para distribuir todas as 8 bilhões de URLs entre servidores de aplicação, mantendo tudo em memória",
+        "Usar codificação Base62 para gerar códigos curtos a partir de IDs sequenciais, combinada com um cache em múltiplas camadas (LRU em memória + Redis) na frente do banco de dados",
+        "Armazenar todos os mapeamentos em um key-value store distribuído como o DynamoDB com global tables para leituras abaixo de 5ms de qualquer região",
+        "Pré-computar os redirecionamentos como arquivos estáticos servidos por uma CDN, regenerando os arquivos a cada hora"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "The standard URL shortener design uses Base62 encoding to convert a numeric ID into a compact alphanumeric string (6 characters give you 56.8 billion possible URLs). The speed comes from multi-layer caching. An in-memory LRU cache on each app server handles the hottest links in sub-millisecond time. Redis serves as a shared second-layer cache for warm links. The database is only hit for cold links that nobody has accessed recently. With the 80/20 distribution described, the combined cache hit rate exceeds 99%, meaning fewer than 1% of requests ever touch the database. Keeping all 8 billion URLs in memory would require terabytes of RAM. DynamoDB global tables add complexity and still have higher latency than local memory. Static CDN files cannot work for billions of dynamic URLs that are created continuously.",
-      "hint": "When a small percentage of links gets most of the traffic, what strategy lets you serve those fast while still handling the long tail?"
+      "explanation": "O design padrão de encurtador de URL usa codificação Base62 para converter um ID numérico em uma string alfanumérica compacta (6 caracteres dão 56,8 bilhões de URLs possíveis). A velocidade vem do cache em múltiplas camadas. Um cache LRU em memória em cada servidor de aplicação atende os links mais quentes em tempo abaixo de um milissegundo. O Redis funciona como uma segunda camada de cache compartilhada para links mornos. O banco de dados só é acionado para links frios que ninguém acessou recentemente. Com a distribuição 80/20 descrita, a taxa combinada de acerto de cache passa de 99%, o que significa que menos de 1% das requisições chegam a tocar no banco de dados. Manter todas as 8 bilhões de URLs em memória exigiria terabytes de RAM. Global tables do DynamoDB adicionam complexidade e ainda têm latência maior do que memória local. Arquivos estáticos em CDN não funcionam para bilhões de URLs dinâmicas criadas continuamente.",
+      "hint": "Quando uma pequena porcentagem dos links recebe a maior parte do tráfego, que estratégia permite atender esses rapidamente e ainda lidar com a cauda longa?"
     },
     {
       "id": "websocket-typing-indicator",
-      "title": "Real-Time Typing Indicators",
-      "description": "You need to understand how messaging apps show 'User is typing...' with near-zero latency.",
-      "situation": "You are building a team chat application. When someone starts typing in a channel, other members should see a 'typing...' indicator within 200ms. The app currently uses REST API polling every 2 seconds to check for new messages, but a 2-second delay on typing indicators feels sluggish. The team needs a protocol that pushes typing events to connected clients instantly without polling.",
+      "title": "Indicadores de Digitação em Tempo Real",
+      "description": "Você precisa entender como aplicativos de mensagens mostram 'Usuário está digitando...' com latência praticamente zero.",
+      "situation": "Você está construindo um aplicativo de chat para times. Quando alguém começa a digitar em um canal, os outros membros devem ver um indicador de 'digitando...' em até 200ms. O app atualmente usa polling de API REST a cada 2 segundos para checar novas mensagens, mas um atraso de 2 segundos no indicador de digitação parece lento. O time precisa de um protocolo que envie eventos de digitação para os clientes conectados instantaneamente, sem polling.",
       "codeExample": "# WebSocket typing indicator flow:\n#\n# 1. Client A opens WebSocket connection (persistent TCP):\n#    ws://chat.example.com/ws?channel=engineering\n#\n# 2. Client A starts typing:\n#    Client A -> Server: {\"type\": \"typing\", \"user\": \"alice\"}\n#\n# 3. Server broadcasts to channel subscribers:\n#    Server -> Client B: {\"type\": \"typing\", \"user\": \"alice\"}\n#    Server -> Client C: {\"type\": \"typing\", \"user\": \"alice\"}\n#\n# 4. Client A stops typing (3-second timeout):\n#    Server -> Client B: {\"type\": \"stop_typing\", \"user\": \"alice\"}\n#\n# Latency: ~50ms (no HTTP overhead, no polling delay)\n# Connection: persistent, full-duplex",
       "options": [
-        "Server-Sent Events (SSE) with a dedicated endpoint that streams typing events to each client as they occur",
-        "WebSocket connections that maintain a persistent full-duplex channel, allowing the server to push typing events to subscribers instantly",
-        "HTTP long polling where the client holds an open request and the server responds only when a typing event occurs",
-        "gRPC bidirectional streaming over HTTP/2, using protocol buffers for efficient typing event serialization"
+        "Server-Sent Events (SSE) com um endpoint dedicado que transmite eventos de digitação para cada cliente conforme ocorrem",
+        "Conexões WebSocket que mantêm um canal persistente full-duplex, permitindo que o servidor envie eventos de digitação instantaneamente para os assinantes",
+        "HTTP long polling, onde o cliente mantém uma requisição aberta e o servidor responde apenas quando um evento de digitação ocorre",
+        "Streaming bidirecional gRPC sobre HTTP/2, usando protocol buffers para serializar os eventos de digitação de forma eficiente"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "WebSockets are the standard choice for typing indicators in chat apps. They provide a persistent, full-duplex TCP connection between client and server. Once established, either side can send messages at any time with minimal overhead (just a 2-byte frame header vs. hundreds of bytes for HTTP headers). When Alice types, her client sends a small JSON frame to the server, which broadcasts it to all channel members over their existing WebSocket connections. The total latency is typically under 50ms. SSE is one-directional (server to client only), so the typing event from the client would still need a separate HTTP request. Long polling has higher latency because each event requires a new HTTP response/request cycle. gRPC streaming works but is uncommon in browser-based chat apps due to limited browser support for gRPC.",
-      "hint": "You need data flowing in both directions - from the typist to the server and from the server to the viewers - on a single persistent connection."
+      "explanation": "WebSockets são a escolha padrão para indicadores de digitação em apps de chat. Eles fornecem uma conexão TCP persistente e full-duplex entre cliente e servidor. Uma vez estabelecida, qualquer um dos lados pode enviar mensagens a qualquer momento com overhead mínimo (apenas um cabeçalho de frame de 2 bytes, contra centenas de bytes de cabeçalhos HTTP). Quando Alice digita, o cliente dela envia um pequeno frame JSON para o servidor, que faz o broadcast para todos os membros do canal usando as conexões WebSocket já estabelecidas. A latência total costuma ficar abaixo de 50ms. O SSE é unidirecional (só do servidor para o cliente), então o evento de digitação do cliente ainda precisaria de uma requisição HTTP separada. O long polling tem latência maior porque cada evento exige um novo ciclo de requisição/resposta HTTP. O streaming gRPC funciona, mas é incomum em apps de chat baseados em navegador devido ao suporte limitado de gRPC nos navegadores.",
+      "hint": "Você precisa de dados fluindo nas duas direções - de quem digita para o servidor e do servidor para quem está vendo - em uma única conexão persistente."
     },
     {
       "id": "cdn-anycast-routing",
-      "title": "CDN Edge Server Selection",
-      "description": "You need to understand how a CDN routes a user's request to the nearest edge server without a centralized routing service.",
-      "situation": "Your company serves static assets (images, CSS, JS) through a CDN with 300 edge locations worldwide. A user in Tokyo requests an image. Without any special routing, the DNS for your CDN domain resolves to a single IP address pointing to your origin server in Virginia, adding 200ms of round-trip latency. You need every user to automatically reach the closest edge server. The networking team mentions anycast as the solution.",
+      "title": "Seleção de Servidor de Borda da CDN",
+      "description": "Você precisa entender como uma CDN direciona a requisição de um usuário para o servidor de borda mais próximo sem um serviço de roteamento centralizado.",
+      "situation": "Sua empresa serve assets estáticos (imagens, CSS, JS) por meio de uma CDN com 300 localizações de borda ao redor do mundo. Um usuário em Tóquio requisita uma imagem. Sem nenhum roteamento especial, o DNS do seu domínio de CDN resolve para um único endereço IP apontando para o servidor de origem na Virgínia, adicionando 200ms de latência de ida e volta. Você precisa que todo usuário chegue automaticamente ao servidor de borda mais próximo. O time de redes menciona anycast como solução.",
       "codeExample": "# Anycast routing for CDN:\n#\n# Traditional unicast: 1 IP = 1 server\n#   cdn.example.com -> 203.0.113.50 (Virginia)\n#   User in Tokyo -> 200ms RTT to Virginia\n#\n# Anycast: 1 IP = 300 servers\n#   cdn.example.com -> 198.51.100.1 (same IP, all 300 PoPs)\n#   BGP routing sends packets to the nearest PoP\n#\n#   User in Tokyo -> Tokyo PoP (5ms RTT)\n#   User in London -> London PoP (3ms RTT)\n#   User in Sao Paulo -> Sao Paulo PoP (8ms RTT)\n#\n# How it works:\n#   1. All 300 edge servers announce the SAME IP prefix via BGP\n#   2. Internet routers pick the shortest AS path\n#   3. User traffic naturally flows to the closest PoP\n#   4. If a PoP goes down, BGP withdraws the route\n#      -> traffic shifts to next-closest PoP automatically",
       "options": [
-        "GeoDNS resolves the CDN domain to different IP addresses based on the client's geographic location derived from their DNS resolver IP",
-        "Anycast routing where all edge servers announce the same IP address via BGP, and internet routing protocols deliver packets to the topologically nearest server",
-        "A centralized load balancer that inspects the client's source IP, determines their region, and proxies the request to the nearest edge server",
-        "HTTP redirect chains where the origin server responds with a 302 redirect to the nearest edge URL based on the client's IP geolocation"
+        "O GeoDNS resolve o domínio da CDN para endereços IP diferentes com base na localização geográfica do cliente, derivada do IP do resolvedor DNS dele",
+        "Roteamento anycast, onde todos os servidores de borda anunciam o mesmo endereço IP via BGP, e os protocolos de roteamento da internet entregam os pacotes ao servidor topologicamente mais próximo",
+        "Um load balancer centralizado que inspeciona o IP de origem do cliente, determina sua região, e encaminha a requisição para o servidor de borda mais próximo",
+        "Cadeias de redirecionamento HTTP, onde o servidor de origem responde com um redirect 302 para a URL de borda mais próxima com base na geolocalização do IP do cliente"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Anycast is the primary routing mechanism used by major CDNs (Cloudflare, AWS CloudFront, Fastly). Every edge server in the network advertises the same IP address prefix via BGP. When a user sends a packet to that IP, the internet's BGP routing tables direct it to the topologically closest server, which is typically also the geographically closest. This happens at the network layer with zero application involvement. If an edge server fails, it stops announcing the BGP route, and traffic automatically shifts to the next closest location within seconds. GeoDNS is a complementary technique but is less precise because it relies on the DNS resolver's location, not the client's. A centralized load balancer would be a single point of failure and add latency. HTTP redirects add an extra round trip before the user gets their content.",
-      "hint": "Think about how routing works at the network layer. What if multiple servers could share the same IP address and let the network decide which one receives each packet?"
+      "explanation": "O anycast é o mecanismo de roteamento primário usado pelas principais CDNs (Cloudflare, AWS CloudFront, Fastly). Todo servidor de borda da rede anuncia o mesmo prefixo de IP via BGP. Quando um usuário envia um pacote para esse IP, as tabelas de roteamento BGP da internet o direcionam para o servidor topologicamente mais próximo, que costuma ser também o geograficamente mais próximo. Isso acontece na camada de rede, sem nenhum envolvimento da aplicação. Se um servidor de borda falha, ele para de anunciar a rota BGP, e o tráfego automaticamente migra para a próxima localização mais próxima em questão de segundos. O GeoDNS é uma técnica complementar, mas é menos preciso porque depende da localização do resolvedor DNS, não da do cliente. Um load balancer centralizado seria um ponto único de falha e adicionaria latência. Redirecionamentos HTTP adicionam uma ida e volta extra antes do usuário receber o conteúdo.",
+      "hint": "Pense em como o roteamento funciona na camada de rede. E se vários servidores pudessem compartilhar o mesmo endereço IP e deixar a rede decidir qual deles recebe cada pacote?"
     },
     {
       "id": "cdn-edge-caching",
-      "title": "Edge Cache Hit Optimization",
-      "description": "You need to maximize the cache hit rate at CDN edge servers for a media-heavy website.",
-      "situation": "Your news website serves 2 million unique images. After enabling a CDN, you expected a big performance boost, but your cache hit rate is only 35%. Investigation reveals that each edge PoP has limited storage and your images have low individual popularity - most images are viewed only a few times before being evicted from the edge cache. The CDN provider suggests a tiered caching architecture to improve hit rates without increasing edge storage.",
+      "title": "Otimização de Acerto de Cache na Borda",
+      "description": "Você precisa maximizar a taxa de acerto de cache nos servidores de borda da CDN para um site com muita mídia.",
+      "situation": "Seu site de notícias serve 2 milhões de imagens únicas. Depois de ativar uma CDN, você esperava um grande ganho de performance, mas sua taxa de acerto de cache é de apenas 35%. A investigação revela que cada PoP de borda tem armazenamento limitado e suas imagens têm baixa popularidade individual - a maioria das imagens é vista apenas algumas vezes antes de ser removida do cache de borda. O provedor da CDN sugere uma arquitetura de cache em camadas para melhorar as taxas de acerto sem aumentar o armazenamento de borda.",
       "codeExample": "# Two-tier CDN caching:\n#\n# Without tiered caching:\n#   User -> Edge PoP (MISS) -> Origin (slow)\n#   Each of 300 PoPs maintains its own cache\n#   Same image fetched from origin 300 times\n#\n# With tiered caching (shield / mid-tier):\n#   User -> Edge PoP (MISS) -> Regional Shield (HIT) -> done\n#   User -> Edge PoP (MISS) -> Regional Shield (MISS) -> Origin\n#\n#   300 edge PoPs -> 8 regional shields -> 1 origin\n#   Image fetched from origin at most 8 times (once per region)\n#\n# Cache-Control header strategy:\n#   Images:     Cache-Control: public, max-age=86400\n#   HTML:       Cache-Control: public, max-age=60, s-maxage=300\n#   API:        Cache-Control: private, no-store\n#              (s-maxage = CDN cache time, separate from browser)",
       "options": [
-        "Increase the TTL on all assets to 30 days so images stay cached longer at each edge PoP",
-        "Use origin shield (tiered caching) to add a regional mid-tier cache between edge PoPs and the origin, reducing origin fetches and improving aggregate hit rates",
-        "Pre-warm all 2 million images to every edge PoP using a background job that requests each URL from each location",
-        "Switch to a pull-through cache architecture where edge servers proxy directly to the origin with no caching, relying on HTTP keep-alive for speed"
+        "Aumentar o TTL de todos os assets para 30 dias para que as imagens fiquem em cache por mais tempo em cada PoP de borda",
+        "Usar origin shield (cache em camadas) para adicionar um cache regional intermediário entre os PoPs de borda e a origem, reduzindo as buscas na origem e melhorando as taxas de acerto agregadas",
+        "Pré-aquecer as 2 milhões de imagens em todos os PoPs de borda usando um job em segundo plano que requisita cada URL a partir de cada localização",
+        "Trocar para uma arquitetura de cache pull-through, onde os servidores de borda fazem proxy direto para a origem sem cache algum, contando com HTTP keep-alive para velocidade"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Origin shield (also called tiered caching or mid-tier caching) adds a caching layer between the edge PoPs and your origin server. Instead of 300 edge PoPs each independently fetching images from the origin, requests from a region funnel through a single regional shield node. That shield has a much larger effective cache because it aggregates traffic from dozens of edge PoPs. If an image is popular in Asia, the Tokyo shield caches it once and serves all Asian edge PoPs. This collapses cache misses dramatically. Increasing TTL helps but does not solve the problem of low per-PoP popularity - the images are evicted due to limited storage, not expired TTLs. Pre-warming 2 million images to 300 PoPs means 600 million requests, which is impractical and wasteful. Disabling caching entirely defeats the purpose of a CDN.",
-      "hint": "If 300 edge servers each independently miss on the same image, is there a way to reduce that to a smaller number of origin fetches?"
+      "explanation": "O origin shield (também chamado de cache em camadas ou cache intermediário) adiciona uma camada de cache entre os PoPs de borda e seu servidor de origem. Em vez de 300 PoPs de borda cada um buscando imagens independentemente na origem, as requisições de uma região passam por um único nó de shield regional. Esse shield tem um cache efetivo muito maior porque agrega o tráfego de dezenas de PoPs de borda. Se uma imagem é popular na Ásia, o shield de Tóquio a armazena em cache uma vez e atende todos os PoPs de borda asiáticos. Isso reduz drasticamente os misses de cache. Aumentar o TTL ajuda, mas não resolve o problema de baixa popularidade por PoP - as imagens são removidas por falta de armazenamento, não por TTL expirado. Pré-aquecer 2 milhões de imagens em 300 PoPs significa 600 milhões de requisições, o que é impraticável e desperdiçador. Desativar o cache por completo anula o propósito de uma CDN.",
+      "hint": "Se 300 servidores de borda cada um erra independentemente na mesma imagem, existe uma forma de reduzir isso a um número menor de buscas na origem?"
     },
     {
       "id": "dns-caching-layers",
-      "title": "DNS Resolution Speed",
-      "description": "You need to understand why most DNS lookups resolve in under 1ms despite the hierarchical nature of the DNS system.",
-      "situation": "A junior engineer on your team is confused about DNS performance. She points out that resolving example.com requires contacting the root nameserver, then the .com TLD server, then the authoritative nameserver - at least three network round trips. Yet when she runs dig example.com, the response comes back in 0.3ms. She asks you to explain where the caching happens and why DNS feels instant for most requests.",
+      "title": "Velocidade de Resolução de DNS",
+      "description": "Você precisa entender por que a maioria das buscas de DNS resolve em menos de 1ms apesar da natureza hierárquica do sistema DNS.",
+      "situation": "Uma engenheira júnior do seu time está confusa sobre a performance do DNS. Ela aponta que resolver example.com exige contatar o nameserver raiz, depois o servidor TLD .com, e depois o nameserver autoritativo - pelo menos três idas e voltas de rede. Mas quando ela roda dig example.com, a resposta volta em 0,3ms. Ela pede para você explicar onde acontece o cache e por que o DNS parece instantâneo na maioria das requisições.",
       "codeExample": "# DNS caching layers (from fastest to slowest):\n#\n# Layer 1: Browser cache\n#   Chrome caches DNS for up to 60 seconds\n#   Lookup time: ~0ms (in-process memory)\n#\n# Layer 2: OS resolver cache\n#   Linux: systemd-resolved, nscd\n#   macOS: mDNSResponder\n#   Windows: DNS Client service\n#   Lookup time: ~0.1ms (local IPC)\n#\n# Layer 3: Router / home gateway cache\n#   Most home routers run a caching DNS forwarder\n#   Lookup time: ~1ms (LAN hop)\n#\n# Layer 4: ISP recursive resolver\n#   Or public resolver: 8.8.8.8, 1.1.1.1\n#   Caches responses for thousands of users\n#   Lookup time: ~5-20ms (network hop)\n#\n# Layer 5: Full recursive resolution\n#   Root -> TLD -> Authoritative\n#   Only happens on cold cache across all layers\n#   Lookup time: ~50-200ms (3+ network hops)\n#\n# Typical TTL: 300s (5 min) to 86400s (24 hours)\n# Cache hit rate at ISP resolver: ~90%+",
       "options": [
-        "DNS is fast because modern resolvers use UDP instead of TCP, and UDP packets are processed faster by network hardware",
-        "Multiple caching layers - browser, OS, router, and ISP resolver - mean that full recursive lookups rarely happen, and most queries are answered from a nearby cache",
-        "DNS uses anycast so the root and TLD nameservers are always located within a few milliseconds of any user",
-        "Modern DNS resolvers prefetch records before they expire, so there is never a cache miss during normal browsing"
+        "O DNS é rápido porque resolvedores modernos usam UDP em vez de TCP, e pacotes UDP são processados mais rápido pelo hardware de rede",
+        "Múltiplas camadas de cache - navegador, sistema operacional, roteador e resolvedor do provedor de internet - fazem com que buscas recursivas completas raramente aconteçam, e a maioria das consultas seja respondida por um cache próximo",
+        "O DNS usa anycast, então os nameservers raiz e TLD estão sempre a poucos milissegundos de qualquer usuário",
+        "Resolvedores DNS modernos pré-buscam registros antes de expirarem, então nunca há um cache miss durante a navegação normal"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "DNS performance comes from aggressive caching at every layer of the resolution path. The browser caches recent lookups for 60 seconds or more. The OS maintains its own resolver cache. Home routers typically cache DNS responses for all devices on the network. The ISP's recursive resolver caches results shared across thousands of subscribers, giving it a very high hit rate. By the time a query reaches the ISP resolver, the chance of needing a full recursive lookup (root -> TLD -> authoritative) is small. When it does happen, it takes 50-200ms, but the result is cached for the duration of the TTL (often 5 minutes to 24 hours). UDP helps with speed, but the primary reason DNS feels instant is caching, not protocol choice. Anycast is used by root servers but does not eliminate the multi-hop resolution process. Prefetching exists in some resolvers but is not the main reason for fast lookups.",
-      "hint": "Count how many places between your browser and the authoritative nameserver could already have the answer stored."
+      "explanation": "A performance do DNS vem de cache agressivo em cada camada do caminho de resolução. O navegador armazena buscas recentes em cache por 60 segundos ou mais. O sistema operacional mantém seu próprio cache de resolvedor. Roteadores domésticos costumam armazenar em cache as respostas de DNS para todos os dispositivos da rede. O resolvedor recursivo do provedor de internet armazena resultados compartilhados entre milhares de assinantes, dando a ele uma taxa de acerto bem alta. No momento em que uma consulta chega ao resolvedor do provedor, a chance de precisar de uma busca recursiva completa (raiz -> TLD -> autoritativo) é pequena. Quando isso acontece, leva de 50 a 200ms, mas o resultado fica em cache pela duração do TTL (geralmente de 5 minutos a 24 horas). O UDP ajuda na velocidade, mas o principal motivo do DNS parecer instantâneo é o cache, não a escolha de protocolo. O anycast é usado pelos servidores raiz, mas não elimina o processo de resolução em múltiplos saltos. O pré-carregamento existe em alguns resolvedores, mas não é o principal motivo das buscas rápidas.",
+      "hint": "Conte quantos lugares entre seu navegador e o nameserver autoritativo já poderiam ter a resposta armazenada."
     },
     {
       "id": "load-balancer-health-checks",
-      "title": "Load Balancer Health Check Design",
-      "description": "You need to configure health checks that remove unhealthy backends quickly without causing false positives.",
-      "situation": "Your application runs behind an Nginx load balancer with 10 backend servers. Last night, one backend's database connection pool was exhausted, causing it to return 500 errors. The load balancer kept sending traffic to it for 5 minutes because health checks were only pinging the / endpoint, which returned 200 even though the app could not process real requests. You need to design health checks that detect this kind of failure.",
+      "title": "Design de Health Check do Load Balancer",
+      "description": "Você precisa configurar health checks que removam backends não saudáveis rapidamente sem causar falsos positivos.",
+      "situation": "Sua aplicação roda atrás de um load balancer Nginx com 10 servidores backend. Na noite passada, o pool de conexões do banco de dados de um backend se esgotou, fazendo com que ele retornasse erros 500. O load balancer continuou enviando tráfego para ele por 5 minutos porque os health checks só faziam ping no endpoint /, que retornava 200 mesmo com a aplicação incapaz de processar requisições reais. Você precisa projetar health checks que detectem esse tipo de falha.",
       "codeExample": "# Shallow health check (what you have now):\nGET /healthz -> 200 OK  # just checks if the process is alive\n\n# Deep health check (what you need):\nGET /health/ready -> checks:\n  - Database connection: SELECT 1\n  - Redis connection: PING\n  - Disk space: > 500MB free\n  - Memory: < 90% used\n  Response: 200 if ALL pass, 503 if ANY fail\n\n# Nginx upstream health check config:\nupstream backend {\n    server 10.0.1.1:8080;\n    server 10.0.1.2:8080;\n    # ...\n}\n\n# Check every 5 seconds, mark unhealthy after 3 failures,\n# mark healthy again after 2 successes\n# interval=5s fails=3 passes=2",
       "options": [
-        "Use TCP-level health checks that verify the port is open, since they have lower overhead than HTTP checks",
-        "Implement a deep health check endpoint that verifies database, cache, and resource availability - not just process liveness - and configure the load balancer to check it with a failure threshold",
-        "Monitor error rates from real user traffic and remove backends that exceed a 5% error threshold",
-        "Run a separate monitoring agent on each backend that kills the process if dependencies are unreachable, relying on process restarts"
+        "Usar health checks no nível de TCP que verificam se a porta está aberta, já que têm overhead menor do que checks HTTP",
+        "Implementar um endpoint de health check profundo que verifica banco de dados, cache e disponibilidade de recursos - não só se o processo está vivo - e configurar o load balancer para checá-lo com um limite de falhas",
+        "Monitorar taxas de erro do tráfego real de usuários e remover backends que ultrapassem um limite de 5% de erro",
+        "Rodar um agente de monitoramento separado em cada backend que mata o processo se as dependências estiverem inacessíveis, contando com reinícios de processo"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "A deep health check (also called a readiness check) verifies that the application can actually serve requests, not just that the process is running. It tests critical dependencies like the database connection pool, cache connectivity, and system resources. The load balancer sends this check at a regular interval (e.g., every 5 seconds) and removes a backend after a configurable number of consecutive failures (e.g., 3 failures = 15 seconds to detect). The passes threshold prevents flapping when a backend recovers. TCP checks only confirm the port is open, which would have missed the database pool exhaustion scenario. Real-traffic error monitoring works but reacts slower because you need enough requests to calculate a reliable error rate. Killing the process is heavy-handed and causes connection drops for in-flight requests.",
-      "hint": "The problem was that the health check did not test what actually broke. What should the check verify to catch dependency failures?"
+      "explanation": "Um health check profundo (também chamado de readiness check) verifica se a aplicação consegue de fato atender requisições, não apenas se o processo está rodando. Ele testa dependências críticas como o pool de conexões do banco de dados, a conectividade com o cache e os recursos do sistema. O load balancer envia esse check em um intervalo regular (por exemplo, a cada 5 segundos) e remove um backend depois de um número configurável de falhas consecutivas (por exemplo, 3 falhas = 15 segundos para detectar). O limite de sucessos evita oscilação (flapping) quando um backend se recupera. Checks TCP só confirmam que a porta está aberta, o que teria deixado passar o cenário de esgotamento do pool de banco de dados. O monitoramento de erro em tráfego real funciona, mas reage mais devagar porque você precisa de requisições suficientes para calcular uma taxa de erro confiável. Matar o processo é uma medida drástica e causa quedas de conexão para requisições em andamento.",
+      "hint": "O problema foi que o health check não testava o que realmente quebrou. O que o check deveria verificar para capturar falhas de dependência?"
     },
     {
       "id": "bloom-filter-false-positives",
-      "title": "Bloom Filter Tuning Trade-offs",
-      "description": "You need to configure a bloom filter's parameters to balance memory usage against false positive rates for a production system.",
-      "situation": "Your team deployed the bloom filter for username checks, but the false positive rate is 8%, meaning 8% of available usernames are incorrectly flagged as 'possibly taken,' triggering unnecessary database queries. The product team complains that users see brief loading spinners too often when typing available names. You need to reduce the false positive rate to under 1% while keeping the bloom filter in memory on a server with 4 GB of RAM available for this purpose.",
+      "title": "Trade-offs de Ajuste de Bloom Filter",
+      "description": "Você precisa configurar os parâmetros de um bloom filter para equilibrar uso de memória contra taxas de falso positivo em um sistema de produção.",
+      "situation": "Seu time colocou em produção o bloom filter para checagem de username, mas a taxa de falso positivo é de 8%, o que significa que 8% dos usernames disponíveis são incorretamente marcados como 'possivelmente em uso', disparando consultas desnecessárias ao banco de dados. O time de produto reclama que os usuários veem spinners de carregamento com frequência demais enquanto digitam nomes disponíveis. Você precisa reduzir a taxa de falso positivo para abaixo de 1% mantendo o bloom filter em memória em um servidor com 4 GB de RAM disponíveis para esse fim.",
       "codeExample": "# Bloom filter math:\n#\n# n = number of items (400 million usernames)\n# m = number of bits in the filter\n# k = number of hash functions\n# p = false positive probability\n#\n# Formula: m = -(n * ln(p)) / (ln(2))^2\n#\n# Current config (p = 8%, too high):\n#   m = -(400M * ln(0.08)) / (ln(2))^2\n#   m = ~1.2 billion bits = ~150 MB\n#   k = (m/n) * ln(2) = ~3 hash functions\n#\n# Target config (p = 1%):\n#   m = -(400M * ln(0.01)) / (ln(2))^2\n#   m = ~3.83 billion bits = ~478 MB\n#   k = (m/n) * ln(2) = ~7 hash functions\n#\n# Target config (p = 0.1%):\n#   m = -(400M * ln(0.001)) / (ln(2))^2\n#   m = ~5.75 billion bits = ~718 MB\n#   k = ~10 hash functions",
       "options": [
-        "Double the number of hash functions from 3 to 6 while keeping the bit array the same size, since more hashes reduce false positives",
-        "Increase the bit array from 1.2 billion to 3.83 billion bits (~478 MB) and use 7 hash functions to achieve a 1% false positive rate",
-        "Replace the bloom filter with a cuckoo filter, which eliminates false positives entirely while using the same amount of memory",
-        "Partition the bloom filter by first character of the username so each partition has fewer items and a lower false positive rate"
+        "Dobrar o número de funções de hash de 3 para 6 mantendo o array de bits do mesmo tamanho, já que mais hashes reduzem falsos positivos",
+        "Aumentar o array de bits de 1,2 bilhão para 3,83 bilhões de bits (~478 MB) e usar 7 funções de hash para alcançar uma taxa de falso positivo de 1%",
+        "Substituir o bloom filter por um cuckoo filter, que elimina falsos positivos completamente usando a mesma quantidade de memória",
+        "Particionar o bloom filter pela primeira letra do username para que cada partição tenha menos itens e uma taxa de falso positivo menor"
       ],
       "correctAnswer": 1,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "The false positive rate of a bloom filter depends on both the bit array size (m) and the number of hash functions (k), relative to the number of items (n). Simply adding more hash functions without increasing the bit array actually makes things worse - more bits get set to 1, increasing collisions. The correct approach is to increase the bit array size. For 400 million items at a 1% false positive rate, you need approximately 3.83 billion bits (478 MB), well within the 4 GB budget. The optimal number of hash functions is k = (m/n) * ln(2), which works out to about 7. Cuckoo filters do support deletion (which bloom filters do not) and can be more space-efficient, but they do not eliminate false positives. Partitioning by first character does not change the overall false positive rate because the formula depends on the ratio m/n, not the absolute values.",
-      "hint": "The false positive rate depends on how full the bit array is. If too many bits are set to 1, everything looks like a match."
+      "explanation": "A taxa de falso positivo de um bloom filter depende tanto do tamanho do array de bits (m) quanto do número de funções de hash (k), em relação ao número de itens (n). Simplesmente adicionar mais funções de hash sem aumentar o array de bits na verdade piora as coisas - mais bits são setados para 1, aumentando as colisões. A abordagem correta é aumentar o tamanho do array de bits. Para 400 milhões de itens com taxa de falso positivo de 1%, você precisa de aproximadamente 3,83 bilhões de bits (478 MB), bem dentro do orçamento de 4 GB. O número ótimo de funções de hash é k = (m/n) * ln(2), o que dá aproximadamente 7. Cuckoo filters de fato suportam remoção (o que bloom filters não fazem) e podem ser mais eficientes em espaço, mas não eliminam falsos positivos. Particionar pela primeira letra não muda a taxa geral de falso positivo porque a fórmula depende da razão m/n, não dos valores absolutos.",
+      "hint": "A taxa de falso positivo depende de quão cheio está o array de bits. Se bits demais estiverem setados para 1, tudo parece um match."
     },
     {
       "id": "websocket-presence-scaling",
-      "title": "Scaling WebSocket Presence Across Servers",
-      "description": "You need to design a system where typing indicators work correctly when channel members are connected to different WebSocket servers.",
-      "situation": "Your chat app has grown to 500,000 concurrent WebSocket connections. A single server can handle about 50,000 connections, so you now run 12 WebSocket servers behind a load balancer. The problem: when Alice is connected to Server 3 and starts typing, only users on Server 3 see the typing indicator. Users on Servers 1, 2, and 4-12 see nothing because the broadcast is local to Server 3. You need cross-server event delivery.",
+      "title": "Escalando Presença WebSocket Entre Servidores",
+      "description": "Você precisa projetar um sistema onde os indicadores de digitação funcionem corretamente quando os membros do canal estão conectados a servidores WebSocket diferentes.",
+      "situation": "Seu app de chat cresceu para 500.000 conexões WebSocket simultâneas. Um único servidor consegue lidar com cerca de 50.000 conexões, então agora você roda 12 servidores WebSocket atrás de um load balancer. O problema: quando Alice está conectada ao Servidor 3 e começa a digitar, apenas os usuários no Servidor 3 veem o indicador de digitação. Usuários nos Servidores 1, 2 e 4-12 não veem nada porque o broadcast é local ao Servidor 3. Você precisa de entrega de eventos entre servidores.",
       "codeExample": "# Problem: local broadcast only reaches one server\n#\n# Server 3 (Alice's connection):\n#   Alice types -> broadcast to Server 3 clients -> OK\n#\n# Server 7 (Bob's connection):\n#   Bob is in the same channel but sees nothing\n#\n# Solution: pub/sub backbone\n#\n# Redis Pub/Sub:\n#   Server 3: Alice types\n#   Server 3: PUBLISH channel:engineering:typing '{\"user\":\"alice\"}'\n#   Server 7: SUBSCRIBE channel:engineering:typing\n#   Server 7: receives event -> broadcasts to local clients\n#\n# All 12 servers subscribe to channels they have members in\n# Redis handles fan-out between servers\n# Each server handles fan-out to its own clients",
       "options": [
-        "Use sticky sessions to ensure all members of a channel are routed to the same WebSocket server",
-        "Store typing state in a shared database and have each server poll every 200ms for changes",
-        "Use a pub/sub system like Redis Pub/Sub as a message backbone where all servers subscribe to channel events and broadcast locally",
-        "Use WebSocket server-to-server direct connections where each server maintains TCP connections to all other servers"
+        "Usar sticky sessions para garantir que todos os membros de um canal sejam roteados para o mesmo servidor WebSocket",
+        "Armazenar o estado de digitação em um banco de dados compartilhado e fazer cada servidor fazer polling a cada 200ms por mudanças",
+        "Usar um sistema pub/sub como o Redis Pub/Sub como espinha dorsal de mensagens, onde todos os servidores assinam eventos de canal e fazem broadcast localmente",
+        "Usar conexões diretas servidor-a-servidor WebSocket, onde cada servidor mantém conexões TCP com todos os outros servidores"
       ],
       "correctAnswer": 2,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "Redis Pub/Sub (or similar systems like NATS or Kafka) is the standard solution for cross-server WebSocket event delivery. Each WebSocket server subscribes to Redis channels corresponding to the chat channels it has active members in. When Alice types on Server 3, that server publishes the event to Redis, which fans it out to all subscribing servers. Each server then broadcasts locally to its connected clients. This decouples servers cleanly. Sticky sessions by channel do not work because a single user might be in dozens of channels, and channels have members scattered across servers. Database polling at 200ms intervals introduces unacceptable latency and database load. Direct server-to-server mesh connections create O(n^2) connections and become unmanageable as you scale beyond a handful of servers.",
-      "hint": "You need a message broker that sits between all WebSocket servers and delivers events from any server to every other server interested in that channel."
+      "explanation": "O Redis Pub/Sub (ou sistemas similares como NATS ou Kafka) é a solução padrão para entrega de eventos WebSocket entre servidores. Cada servidor WebSocket assina os canais Redis correspondentes aos canais de chat em que tem membros ativos. Quando Alice digita no Servidor 3, esse servidor publica o evento no Redis, que o distribui para todos os servidores assinantes. Cada servidor então faz o broadcast localmente para seus clientes conectados. Isso desacopla os servidores de forma limpa. Sticky sessions por canal não funcionam porque um único usuário pode estar em dezenas de canais, e os canais têm membros espalhados entre servidores. Polling no banco de dados a cada 200ms introduz latência e carga de banco inaceitáveis. Conexões diretas em malha servidor-a-servidor criam O(n^2) conexões e ficam inviáveis de gerenciar conforme você escala além de um punhado de servidores.",
+      "hint": "Você precisa de um message broker que fique entre todos os servidores WebSocket e entregue eventos de qualquer servidor para todos os outros interessados naquele canal."
     },
     {
       "id": "lb-algorithm-selection",
-      "title": "Load Balancer Algorithm for Mixed Workloads",
-      "description": "You need to select the right load balancing algorithm for a service with highly variable request processing times.",
-      "situation": "Your API gateway load-balances across 6 backend servers. Most requests (image metadata lookups) complete in 5ms, but about 10% of requests (image processing jobs) take 2-3 seconds. With round-robin balancing, you notice that some servers accumulate slow requests and their response times spike while other servers sit idle. During peak traffic last Tuesday, one server had 15 in-flight image processing requests while another had zero, causing timeout errors for users routed to the overloaded server.",
+      "title": "Algoritmo de Load Balancer para Cargas de Trabalho Mistas",
+      "description": "Você precisa selecionar o algoritmo de balanceamento de carga certo para um serviço com tempos de processamento de requisição altamente variáveis.",
+      "situation": "Seu API gateway balanceia carga entre 6 servidores backend. A maioria das requisições (consultas de metadados de imagem) termina em 5ms, mas cerca de 10% das requisições (jobs de processamento de imagem) levam de 2 a 3 segundos. Com balanceamento round-robin, você percebe que alguns servidores acumulam requisições lentas e seus tempos de resposta disparam enquanto outros servidores ficam ociosos. Durante o pico de tráfego da terça-feira passada, um servidor tinha 15 requisições de processamento de imagem em andamento enquanto outro tinha zero, causando erros de timeout para os usuários direcionados ao servidor sobrecarregado.",
       "codeExample": "# Round-robin problem with mixed workloads:\n#\n# Time 0: All servers at 0 active requests\n# Server 1: gets 3 slow (image processing) requests\n# Server 2: gets 3 fast (metadata) requests\n# Server 3: gets 2 slow + 1 fast request\n#\n# After 100ms:\n# Server 1: 3 active (all still processing)\n# Server 2: 0 active (all completed)\n# Server 3: 2 active (slow ones still running)\n#\n# Round-robin sends next request to Server 1 (worst choice!)\n#\n# Least-connections approach:\n# Server 1: 3 active -> skip\n# Server 2: 0 active -> PICK THIS ONE\n# Server 3: 2 active -> skip\n#\n# Nginx config:\n# upstream api_backend {\n#     least_conn;\n#     server 10.0.1.1:8080;\n#     server 10.0.1.2:8080;\n#     server 10.0.1.3:8080;\n# }",
       "options": [
-        "Weighted round-robin with higher weights assigned to servers with more CPU cores",
-        "Random selection, which statistically distributes load evenly across all servers",
-        "Least-connections algorithm, which routes each new request to the server with the fewest active in-flight requests",
-        "IP hash, which ensures the same client always reaches the same server for connection affinity"
+        "Round-robin ponderado com pesos maiores atribuídos aos servidores com mais núcleos de CPU",
+        "Seleção aleatória, que distribui a carga estatisticamente de forma uniforme entre todos os servidores",
+        "Algoritmo least-connections, que roteia cada nova requisição para o servidor com menos requisições ativas em andamento",
+        "IP hash, que garante que o mesmo cliente sempre chegue ao mesmo servidor para afinidade de conexão"
       ],
       "correctAnswer": 2,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "Least-connections is the right algorithm when request durations vary significantly. It tracks the number of active (in-flight) requests per backend server and routes new requests to the server currently handling the fewest. This naturally avoids piling up slow requests on one server. When Server 1 has 3 active slow requests, new traffic goes to Server 2 (which has 0 active). This self-balances regardless of whether requests take 5ms or 3 seconds. Round-robin (even weighted) ignores current server load and can overload servers that happen to receive a batch of slow requests. Random selection has the same problem. IP hash provides session affinity but does nothing for load distribution across mixed workloads. Some advanced load balancers also support 'least latency' or 'peak EWMA' algorithms that consider response time in addition to connection count.",
-      "hint": "Round-robin treats all requests as equal. You need an algorithm that accounts for the fact that some requests hold onto server resources much longer than others."
+      "explanation": "Least-connections é o algoritmo certo quando a duração das requisições varia bastante. Ele rastreia o número de requisições ativas (em andamento) por servidor backend e roteia novas requisições para o servidor que atualmente lida com o menor número. Isso naturalmente evita empilhar requisições lentas em um único servidor. Quando o Servidor 1 tem 3 requisições lentas ativas, o novo tráfego vai para o Servidor 2 (que tem 0 ativas). Isso se autoequilibra independente das requisições levarem 5ms ou 3 segundos. Round-robin (mesmo ponderado) ignora a carga atual do servidor e pode sobrecarregar servidores que por acaso recebem um lote de requisições lentas. A seleção aleatória tem o mesmo problema. IP hash oferece afinidade de sessão, mas não faz nada pela distribuição de carga entre cargas de trabalho mistas. Alguns load balancers mais avançados também suportam algoritmos de 'menor latência' ou 'peak EWMA' que consideram o tempo de resposta além da contagem de conexões.",
+      "hint": "Round-robin trata todas as requisições como iguais. Você precisa de um algoritmo que leve em conta que algumas requisições retêm recursos do servidor por muito mais tempo do que outras."
     },
     {
       "id": "dns-ttl-migration",
-      "title": "DNS TTL Strategy for Zero-Downtime Migration",
-      "description": "You need to plan a DNS change for a server migration without causing downtime due to stale cached records.",
-      "situation": "Your team is migrating the production API from an on-premise data center (IP 10.20.30.40) to AWS (IP 54.200.100.50). The current DNS record for api.example.com has a TTL of 86400 seconds (24 hours). If you update the DNS record right when the migration happens, some clients will still resolve the old IP for up to 24 hours because their resolvers cached the previous answer. The old servers will be decommissioned 2 hours after migration. You need a plan to minimize the window where clients hit a dead IP.",
+      "title": "Estratégia de TTL de DNS para Migração Sem Downtime",
+      "description": "Você precisa planejar uma mudança de DNS para uma migração de servidor sem causar downtime devido a registros em cache desatualizados.",
+      "situation": "Seu time está migrando a API de produção de um data center on-premise (IP 10.20.30.40) para a AWS (IP 54.200.100.50). O registro DNS atual de api.example.com tem um TTL de 86400 segundos (24 horas). Se você atualizar o registro DNS bem na hora da migração, alguns clientes ainda vão resolver o IP antigo por até 24 horas porque seus resolvedores fizeram cache da resposta anterior. Os servidores antigos serão desativados 2 horas depois da migração. Você precisa de um plano para minimizar a janela em que clientes acessam um IP morto.",
       "codeExample": "# DNS migration timeline:\n#\n# Current state:\n#   api.example.com  A  10.20.30.40  TTL=86400 (24h)\n#\n# Phase 1: Lower TTL (48 hours before migration)\n#   api.example.com  A  10.20.30.40  TTL=60 (1 min)\n#   Wait 24h+ for old cached records to expire\n#\n# Phase 2: Update the record (migration day)\n#   api.example.com  A  54.200.100.50  TTL=60\n#   All resolvers pick up new IP within ~60 seconds\n#\n# Phase 3: Raise TTL back (after confirming success)\n#   api.example.com  A  54.200.100.50  TTL=3600 (1h)\n#\n# $ dig +short api.example.com\n# 54.200.100.50",
       "options": [
-        "Update the DNS record and the old server simultaneously, relying on clients to retry failed connections to the new IP automatically",
-        "Lower the DNS TTL to 60 seconds at least 24 hours before the migration, then update the A record on migration day so all caches refresh within a minute",
-        "Add the new IP as a second A record so clients can reach either server, then remove the old record after migration",
-        "Use a CNAME record pointing to a load balancer hostname so you only need to update the load balancer target, not the DNS"
+        "Atualizar o registro DNS e o servidor antigo simultaneamente, contando com os clientes para tentar novamente automaticamente as conexões que falharem no novo IP",
+        "Baixar o TTL do DNS para 60 segundos pelo menos 24 horas antes da migração, e então atualizar o registro A no dia da migração para que todos os caches se atualizem em até um minuto",
+        "Adicionar o novo IP como um segundo registro A para que os clientes possam alcançar qualquer um dos servidores, e remover o registro antigo depois da migração",
+        "Usar um registro CNAME apontando para um hostname de load balancer, para só precisar atualizar o destino do load balancer, não o DNS"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "The standard approach for DNS migrations is the TTL step-down pattern. You lower the TTL well in advance (at least as long as the current TTL, so all existing cached entries expire under the old TTL). By the time you change the IP, all resolvers are caching with the short TTL and will pick up the new address within 60 seconds. After confirming the migration is successful, you raise the TTL back to a reasonable value to reduce DNS query volume. Simply updating the record without lowering TTL first means some clients cache the old IP for up to 24 hours. Adding dual A records causes split traffic, which is unpredictable and hard to monitor. A CNAME to a load balancer is a good long-term architecture, but it does not solve the immediate problem because the CNAME itself has a TTL that must be managed the same way.",
-      "hint": "You cannot force remote DNS resolvers to refresh their cache. But you can control how long they are allowed to cache your records before the change happens."
+      "explanation": "A abordagem padrão para migrações de DNS é o padrão de redução escalonada de TTL. Você baixa o TTL com bastante antecedência (pelo menos o tempo do TTL atual, para que todas as entradas já em cache expirem sob o TTL antigo). No momento em que você troca o IP, todos os resolvedores já estão com cache no TTL curto e vão pegar o novo endereço em até 60 segundos. Depois de confirmar que a migração deu certo, você volta o TTL para um valor razoável para reduzir o volume de consultas DNS. Simplesmente atualizar o registro sem baixar o TTL antes significa que alguns clientes ficam com o IP antigo em cache por até 24 horas. Adicionar registros A duplos causa divisão de tráfego, o que é imprevisível e difícil de monitorar. Um CNAME para um load balancer é uma boa arquitetura de longo prazo, mas não resolve o problema imediato porque o próprio CNAME tem um TTL que precisa ser gerenciado da mesma forma.",
+      "hint": "Você não consegue forçar resolvedores DNS remotos a atualizar o cache deles. Mas você pode controlar por quanto tempo eles têm permissão para armazenar seus registros em cache antes da mudança acontecer."
     }
   ]
 }

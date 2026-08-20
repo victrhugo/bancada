@@ -1,10 +1,10 @@
 {
   "id": "capacity-planning",
   "slug": "capacity-planning",
-  "title": "Capacity Planning and Scaling",
-  "question": "How do you approach capacity planning for a growing production system? What metrics and strategies do you use?",
-  "answer": "Capacity planning ensures systems can handle current and future load. Process: 1) Establish baselines - current CPU, memory, disk, network utilization and request rates. 2) Understand growth patterns - historical trends, seasonality, planned campaigns. 3) Define headroom - typically 30-40% buffer for unexpected spikes. 4) Model scenarios - what happens at 2x, 5x, 10x traffic? 5) Identify bottlenecks - database connections, API rate limits, stateful components. 6) Plan scaling strategy - vertical vs horizontal, auto-scaling policies. 7) Load test regularly. Review capacity quarterly.",
-  "explanation": "Capacity planning is both art and science. Too much capacity wastes money; too little causes outages. Cloud auto-scaling helps but doesn't solve everything - databases, third-party APIs, and stateful services often can't scale horizontally. Senior engineers must think about bottlenecks that aren't obvious and plan for Black Friday scenarios before they happen.",
+  "title": "Planejamento de capacidade e escalabilidade",
+  "question": "Como você aborda o planejamento de capacidade para um sistema de produção em crescimento? Quais métricas e estratégias você usa?",
+  "answer": "O planejamento de capacidade garante que os sistemas consigam lidar com a carga atual e futura. O processo: 1) Estabelecer baselines - utilização atual de CPU, memória, disco, rede e taxas de requisição. 2) Entender os padrões de crescimento - tendências históricas, sazonalidade, campanhas planejadas. 3) Definir margem de segurança - normalmente um buffer de 30-40% para picos inesperados. 4) Modelar cenários - o que acontece com 2x, 5x, 10x de tráfego? 5) Identificar gargalos - conexões de banco de dados, rate limits de API, componentes stateful. 6) Planejar a estratégia de escalabilidade - vertical versus horizontal, políticas de auto-scaling. 7) Fazer testes de carga regularmente. Revisar a capacidade a cada trimestre.",
+  "explanation": "Planejamento de capacidade é tanto arte quanto ciência. Capacidade demais desperdiça dinheiro; de menos causa indisponibilidade. O auto-scaling na nuvem ajuda, mas não resolve tudo - bancos de dados, APIs de terceiros e serviços stateful geralmente não conseguem escalar horizontalmente. Engenheiros seniores precisam pensar em gargalos que não são óbvios e se planejar para cenários de Black Friday antes que eles aconteçam.",
   "category": "SRE",
   "difficulty": "advanced",
   "tier": "senior",
@@ -23,19 +23,19 @@
     },
     {
       "language": "bash",
-      "label": "Capacity analysis queries",
+      "label": "Consultas de análise de capacidade",
       "code": "# PromQL: CPU headroom percentage\n100 - (\n  avg(rate(container_cpu_usage_seconds_total{pod=~\"api-.*\"}[5m]))\n  /\n  avg(kube_pod_container_resource_limits{resource=\"cpu\"})\n) * 100\n\n# Current vs limit memory usage\nsum(container_memory_working_set_bytes{pod=~\"api-.*\"})\n/\nsum(kube_pod_container_resource_limits{resource=\"memory\"})\n\n# Request rate trend (7-day growth)\npredict_linear(rate(http_requests_total[1h])[7d:1h], 30 * 24 * 3600)"
     }
   ],
   "followUpQuestions": [
-    "How do you handle capacity planning for stateful services like databases?",
-    "What is the difference between scaling up and scaling out?",
-    "How do you account for third-party API rate limits in capacity planning?"
+    "Como você lida com o planejamento de capacidade para serviços stateful como bancos de dados?",
+    "Qual é a diferença entre escalar verticalmente (scale up) e escalar horizontalmente (scale out)?",
+    "Como você considera os rate limits de APIs de terceiros no planejamento de capacidade?"
   ],
   "commonMistakes": [
-    "Only planning for average load, not peak load",
-    "Forgetting about dependent services that may become bottlenecks",
-    "Not accounting for the time it takes to scale (cold start, provisioning)"
+    "Planejar apenas para a carga média, não para o pico de carga",
+    "Esquecer serviços dependentes que podem se tornar gargalos",
+    "Não considerar o tempo que leva para escalar (cold start, provisionamento)"
   ],
   "relatedTopics": [
     "auto-scaling",

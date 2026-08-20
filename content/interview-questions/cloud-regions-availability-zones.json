@@ -1,10 +1,10 @@
 {
   "id": "cloud-regions-availability-zones",
   "slug": "cloud-regions-availability-zones",
-  "title": "Cloud Regions and Availability Zones",
-  "question": "What are cloud regions and availability zones? How do they affect application architecture?",
-  "answer": "A region is a geographic area containing multiple data centers (e.g., us-east-1). Availability zones (AZs) are isolated data centers within a region, connected by low-latency links. Deploy across multiple AZs for high availability - if one AZ fails, your app continues running. Choose regions based on user proximity (latency), compliance requirements, and service availability.",
-  "explanation": "Understanding regions and AZs is fundamental to designing resilient cloud applications. AWS has 30+ regions with 3-6 AZs each. Deploying across AZs provides fault tolerance with minimal latency penalty. Multi-region deployments add disaster recovery but increase complexity and cost.",
+  "title": "Regiões e zonas de disponibilidade na nuvem",
+  "question": "O que são regiões e zonas de disponibilidade na nuvem? Como elas afetam a arquitetura de uma aplicação?",
+  "answer": "Uma região é uma área geográfica que contém múltiplos data centers (por exemplo, us-east-1). Zonas de disponibilidade (AZs) são data centers isolados dentro de uma região, conectados por links de baixa latência. Faça deploy em múltiplas AZs para alta disponibilidade - se uma AZ falhar, sua aplicação continua funcionando. Escolha as regiões com base na proximidade dos usuários (latência), requisitos de conformidade e disponibilidade dos serviços.",
+  "explanation": "Entender regiões e AZs é fundamental para projetar aplicações resilientes na nuvem. A AWS tem mais de 30 regiões, com 3 a 6 AZs cada. Fazer deploy entre AZs oferece tolerância a falhas com uma penalidade de latência mínima. Deploys multi-região adicionam disaster recovery, mas aumentam a complexidade e o custo.",
   "category": "Cloud",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "AWS CLI region commands",
+      "label": "Comandos de região com a AWS CLI",
       "code": "# List all available regions\naws ec2 describe-regions --output table\n\n# List AZs in current region\naws ec2 describe-availability-zones --output table\n\n# Set default region\nexport AWS_DEFAULT_REGION=us-west-2\n\n# Run command in specific region\naws ec2 describe-instances --region eu-west-1"
     },
     {
       "language": "hcl",
-      "label": "Multi-AZ deployment in Terraform",
+      "label": "Deploy multi-AZ no Terraform",
       "code": "# Get available AZs\ndata \"aws_availability_zones\" \"available\" {\n  state = \"available\"\n}\n\n# Create subnets across AZs\nresource \"aws_subnet\" \"app\" {\n  count             = 2\n  vpc_id            = aws_vpc.main.id\n  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index)\n  availability_zone = data.aws_availability_zones.available.names[count.index]\n}"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between high availability and disaster recovery?",
-    "How do you handle data replication across availability zones?",
-    "What factors influence region selection for a new application?"
+    "Qual é a diferença entre alta disponibilidade e disaster recovery?",
+    "Como você lida com a replicação de dados entre zonas de disponibilidade?",
+    "Quais fatores influenciam a escolha de região para uma nova aplicação?"
   ],
   "commonMistakes": [
-    "Deploying everything in a single AZ, creating a single point of failure",
-    "Choosing regions only based on cost without considering user latency",
-    "Not accounting for data residency and compliance requirements"
+    "Fazer deploy de tudo em uma única AZ, criando um ponto único de falha",
+    "Escolher regiões apenas com base no custo, sem considerar a latência dos usuários",
+    "Não considerar requisitos de residência de dados e conformidade"
   ],
   "relatedTopics": [
     "high-availability",

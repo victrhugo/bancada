@@ -1,39 +1,39 @@
 {
   "id": "helm-kubernetes-packaging",
-  "title": "Helm Charts and Kubernetes Package Management",
-  "description": "Learn Kubernetes application deployment and management using Helm charts with templates, values, and lifecycle management.",
+  "title": "Helm Charts e Gerenciamento de Pacotes no Kubernetes",
+  "description": "Aprenda a implantar e gerenciar aplicações Kubernetes usando Helm charts com templates, values e gerenciamento de ciclo de vida.",
   "category": {
     "name": "Kubernetes",
     "slug": "kubernetes"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "90 minutes",
+  "estimatedTime": "90 minutos",
   "technologies": ["Helm", "Kubernetes", "YAML", "Templating"],
   "prerequisites": [
-    "Kubernetes cluster access",
-    "kubectl configured",
-    "Basic Kubernetes knowledge"
+    "Acesso a um cluster Kubernetes",
+    "kubectl configurado",
+    "Conhecimento básico de Kubernetes"
   ],
   "learningObjectives": [
-    "Create and structure Helm charts",
-    "Implement templating and values management",
-    "Deploy applications using Helm",
-    "Manage application lifecycles with Helm",
-    "Use Helm repositories and packaging"
+    "Criar e estruturar Helm charts",
+    "Implementar templating e gerenciamento de values",
+    "Implantar aplicações usando o Helm",
+    "Gerenciar o ciclo de vida de aplicações com o Helm",
+    "Usar repositórios e empacotamento do Helm"
   ],
   "environment": "local",
   "icon": "Package",
   "publishedAt": "2024-12-01T14:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["Helm", "Kubernetes", "Package Management", "Templates", "DevOps"],
   "steps": [
     {
       "id": "helm-setup",
-      "title": "Helm Installation and Repository Setup",
-      "description": "Install Helm and configure repositories for chart management.",
+      "title": "Instalação do Helm e Configuração de Repositório",
+      "description": "Instale o Helm e configure repositórios para o gerenciamento de charts.",
       "codeExample": "# Install Helm (Linux/Mac)\ncurl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash\n\n# Verify installation\nhelm version\n\n# Add official Helm repositories\nhelm repo add stable https://charts.helm.sh/stable\nhelm repo add bitnami https://charts.bitnami.com/bitnami\nhelm repo update\n\n# List available repositories\nhelm repo list\n\n# Search for charts\nhelm search repo nginx",
       "commands": [
         "helm version --short",
@@ -42,19 +42,19 @@
         "helm search repo nginx | head -5"
       ],
       "validationCriteria": [
-        "Helm is installed and accessible",
-        "Repositories are added successfully",
-        "Chart search returns results"
+        "O Helm está instalado e acessível",
+        "Os repositórios são adicionados com sucesso",
+        "A busca de charts retorna resultados"
       ],
       "hints": [
-        "Ensure kubectl is configured and working",
-        "Helm 3 doesn't require Tiller installation"
+        "Certifique-se de que o kubectl está configurado e funcionando",
+        "O Helm 3 não requer a instalação do Tiller"
       ]
     },
     {
       "id": "create-helm-chart",
-      "title": "Create and Structure Helm Chart",
-      "description": "Generate a new Helm chart and understand the directory structure and template files.",
+      "title": "Crie e Estruture um Helm Chart",
+      "description": "Gere um novo Helm chart e entenda a estrutura de diretórios e os arquivos de template.",
       "codeExample": "# Create new Helm chart\nhelm create webapp-chart\n\n# Chart directory structure:\nwebapp-chart/\n├── Chart.yaml          # Chart metadata\n├── values.yaml         # Default configuration values\n├── charts/             # Chart dependencies\n└── templates/\n    ├── deployment.yaml\n    ├── service.yaml\n    ├── ingress.yaml\n    ├── NOTES.txt\n    ├── _helpers.tpl    # Template helpers\n    └── tests/\n        └── test-connection.yaml\n\n# Chart.yaml content\napiVersion: v2\nname: webapp-chart\ndescription: A Helm chart for web application deployment\ntype: application\nversion: 0.1.0\nappVersion: \"1.0.0\"\nkeywords:\n  - webapp\n  - nginx\n  - kubernetes\nmaintainers:\n  - name: DevOps Team\n    email: devops@example.com",
       "commands": [
         "helm create webapp-chart",
@@ -63,16 +63,16 @@
         "helm template webapp-chart | head -50"
       ],
       "validationCriteria": [
-        "Chart directory structure is created",
-        "Template files are generated",
-        "Chart can be templated without errors"
+        "A estrutura de diretórios do chart é criada",
+        "Os arquivos de template são gerados",
+        "O chart pode ser processado (template) sem erros"
       ],
       "expectedOutput": "Complete Helm chart structure with default templates"
     },
     {
       "id": "customize-templates",
-      "title": "Customize Chart Templates and Values",
-      "description": "Modify templates and values to create a flexible, configurable web application chart.",
+      "title": "Personalize Templates e Values do Chart",
+      "description": "Modifique templates e values para criar um chart de aplicação web flexível e configurável.",
       "codeExample": "# values.yaml - Configuration values\nreplicaCount: 2\n\nimage:\n  repository: nginx\n  tag: \"1.21\"\n  pullPolicy: IfNotPresent\n\nservice:\n  type: ClusterIP\n  port: 80\n  targetPort: 80\n\ningress:\n  enabled: true\n  className: \"nginx\"\n  annotations:\n    kubernetes.io/ingress.class: nginx\n    cert-manager.io/cluster-issuer: \"letsencrypt-prod\"\n  hosts:\n    - host: webapp.example.com\n      paths:\n        - path: /\n          pathType: Prefix\n  tls:\n    - secretName: webapp-tls\n      hosts:\n        - webapp.example.com\n\nresources:\n  limits:\n    cpu: 500m\n    memory: 512Mi\n  requests:\n    cpu: 250m\n    memory: 256Mi\n\nautoscaling:\n  enabled: true\n  minReplicas: 2\n  maxReplicas: 10\n  targetCPUUtilizationPercentage: 80\n\nconfigMap:\n  enabled: true\n  data:\n    nginx.conf: |\n      events { worker_connections 1024; }\n      http {\n        server {\n          listen 80;\n          location / {\n            return 200 'Hello from Helm Chart!';\n            add_header Content-Type text/plain;\n          }\n        }\n      }\n\n# templates/deployment.yaml enhancement\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: {{ include \"webapp-chart.fullname\" . }}\n  labels:\n    {{- include \"webapp-chart.labels\" . | nindent 4 }}\nspec:\n  {{- if not .Values.autoscaling.enabled }}\n  replicas: {{ .Values.replicaCount }}\n  {{- end }}\n  selector:\n    matchLabels:\n      {{- include \"webapp-chart.selectorLabels\" . | nindent 6 }}\n  template:\n    metadata:\n      annotations:\n        checksum/config: {{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}\n      labels:\n        {{- include \"webapp-chart.selectorLabels\" . | nindent 8 }}\n    spec:\n      containers:\n        - name: {{ .Chart.Name }}\n          image: \"{{ .Values.image.repository }}:{{ .Values.image.tag }}\"\n          imagePullPolicy: {{ .Values.image.pullPolicy }}\n          ports:\n            - name: http\n              containerPort: {{ .Values.service.targetPort }}\n              protocol: TCP\n          {{- if .Values.configMap.enabled }}\n          volumeMounts:\n            - name: config\n              mountPath: /etc/nginx/nginx.conf\n              subPath: nginx.conf\n          {{- end }}\n          resources:\n            {{- toYaml .Values.resources | nindent 12 }}\n      {{- if .Values.configMap.enabled }}\n      volumes:\n        - name: config\n          configMap:\n            name: {{ include \"webapp-chart.fullname\" . }}-config\n      {{- end }}",
       "commands": [
         "cd webapp-chart",
@@ -81,21 +81,21 @@
         "helm template . --debug --dry-run"
       ],
       "validationCriteria": [
-        "Template generates valid Kubernetes manifests",
-        "Values are properly substituted",
-        "Chart passes linting checks",
-        "ConfigMap and volume mounts work correctly"
+        "O template gera manifests válidos do Kubernetes",
+        "Os values são substituídos corretamente",
+        "O chart passa nas verificações de lint",
+        "O ConfigMap e os volume mounts funcionam corretamente"
       ],
       "hints": [
-        "Use {{ }} for templating variables",
-        "Include helper templates for common labels",
-        "Add checksum annotations for config changes"
+        "Use {{ }} para variáveis de templating",
+        "Inclua templates auxiliares (helpers) para labels comuns",
+        "Adicione anotações de checksum para alterações de configuração"
       ]
     },
     {
       "id": "deploy-chart",
-      "title": "Deploy and Manage Application with Helm",
-      "description": "Deploy the Helm chart to Kubernetes and practice release management operations.",
+      "title": "Implante e Gerencie a Aplicação com o Helm",
+      "description": "Implante o Helm chart no Kubernetes e pratique operações de gerenciamento de releases.",
       "codeExample": "# Deploy chart to Kubernetes\nhelm install webapp-release ./webapp-chart\n\n# Check deployment status\nhelm status webapp-release\nhelm list\n\n# Verify Kubernetes resources\nkubectl get all -l app.kubernetes.io/instance=webapp-release\nkubectl get configmap -l app.kubernetes.io/instance=webapp-release\nkubectl get ingress\n\n# Upgrade with new values\nhelm upgrade webapp-release ./webapp-chart --set replicaCount=3 --set image.tag=1.22\n\n# Check revision history\nhelm history webapp-release\n\n# Rollback to previous version\nhelm rollback webapp-release 1\n\n# Test the application\nkubectl port-forward service/webapp-release-webapp-chart 8080:80\n# curl http://localhost:8080 (in another terminal)",
       "commands": [
         "helm install webapp-release ./webapp-chart --dry-run",
@@ -106,17 +106,17 @@
         "helm history webapp-release"
       ],
       "validationCriteria": [
-        "Chart deploys successfully to Kubernetes",
-        "All pods are running and healthy",
-        "Upgrade operation completes without errors",
-        "Application is accessible via service"
+        "O chart é implantado com sucesso no Kubernetes",
+        "Todos os pods estão em execução e saudáveis",
+        "A operação de upgrade é concluída sem erros",
+        "A aplicação está acessível via service"
       ],
       "expectedOutput": "Running web application deployed and managed through Helm"
     },
     {
       "id": "chart-dependencies",
-      "title": "Manage Chart Dependencies and Sub-charts",
-      "description": "Add external chart dependencies and create sub-charts for complex application architectures.",
+      "title": "Gerencie Dependências e Sub-charts",
+      "description": "Adicione dependências de charts externos e crie sub-charts para arquiteturas de aplicação complexas.",
       "codeExample": "# Chart.yaml - Add dependencies\napiVersion: v2\nname: webapp-chart\ndescription: A Helm chart for web application deployment\ntype: application\nversion: 0.2.0\nappVersion: \"1.0.0\"\ndependencies:\n  - name: redis\n    version: \"17.3.7\"\n    repository: \"https://charts.bitnami.com/bitnami\"\n    condition: redis.enabled\n  - name: postgresql\n    version: \"11.9.13\"\n    repository: \"https://charts.bitnami.com/bitnami\"\n    condition: postgresql.enabled\n\n# values.yaml - Add dependency configurations\nredis:\n  enabled: true\n  auth:\n    enabled: false\n  master:\n    persistence:\n      enabled: false\n\npostgresql:\n  enabled: true\n  auth:\n    database: webapp\n    username: webapp\n    password: webapp123\n  primary:\n    persistence:\n      enabled: false\n\n# Create subchart for API component\nmkdir -p charts/api-service\n\n# charts/api-service/Chart.yaml\napiVersion: v2\nname: api-service\ndescription: API service component\ntype: application\nversion: 0.1.0\n\n# charts/api-service/values.yaml\nimage:\n  repository: node\n  tag: \"16-alpine\"\nservice:\n  port: 3000\nenv:\n  DATABASE_URL: \"postgresql://webapp:webapp123@webapp-release-postgresql:5432/webapp\"\n  REDIS_URL: \"redis://webapp-release-redis-master:6379\"",
       "commands": [
         "helm dependency update",
@@ -126,21 +126,21 @@
         "helm upgrade webapp-release . --timeout 300s"
       ],
       "validationCriteria": [
-        "Dependencies are downloaded and available",
-        "Sub-charts are properly integrated",
-        "Database and Redis pods are running",
-        "Application connects to dependencies"
+        "As dependências são baixadas e ficam disponíveis",
+        "Os sub-charts estão devidamente integrados",
+        "Os pods do banco de dados e do Redis estão em execução",
+        "A aplicação se conecta às dependências"
       ],
       "hints": [
-        "Use helm dependency update to download charts",
-        "Sub-charts inherit parent values",
-        "Use conditions to optionally enable dependencies"
+        "Use helm dependency update para baixar os charts",
+        "Sub-charts herdam os values do chart pai",
+        "Use conditions para habilitar dependências de forma opcional"
       ]
     },
     {
       "id": "package-publish",
-      "title": "Package and Publish Chart Repository",
-      "description": "Package the Helm chart and set up a chart repository for distribution.",
+      "title": "Empacote e Publique um Repositório de Charts",
+      "description": "Empacote o Helm chart e configure um repositório de charts para distribuição.",
       "codeExample": "# Package the chart\nhelm package webapp-chart\n\n# Create chart repository index\nmkdir chart-repo\nmv webapp-chart-*.tgz chart-repo/\nhelm repo index chart-repo --url https://your-domain.com/charts\n\n# Serve repository locally for testing\ncd chart-repo\npython3 -m http.server 8080 &\n\n# Add local repository\nhelm repo add local-repo http://localhost:8080\nhelm repo update\n\n# Install from repository\nhelm repo search local-repo\nhelm install webapp-from-repo local-repo/webapp-chart\n\n# Create GitHub Pages repository (example)\n# 1. Create gh-pages branch\n# 2. Upload packaged charts and index.yaml\n# 3. Enable GitHub Pages\n# 4. Access at https://username.github.io/helm-charts\n\n# Chart.yaml versioning for releases\napiVersion: v2\nname: webapp-chart\ndescription: A Helm chart for web application deployment\ntype: application\nversion: 1.0.0  # Chart version\nappVersion: \"2.0.0\"  # Application version\n\n# Automated packaging script\n#!/bin/bash\n# release.sh\nset -e\n\nCHART_NAME=\"webapp-chart\"\nREPO_DIR=\"chart-repo\"\nREPO_URL=\"https://your-domain.com/charts\"\n\necho \"Packaging chart...\"\nhelm package $CHART_NAME\n\necho \"Moving to repository...\"\nmv ${CHART_NAME}-*.tgz $REPO_DIR/\n\necho \"Updating repository index...\"\nhelm repo index $REPO_DIR --url $REPO_URL\n\necho \"Chart packaged and repository updated!\"",
       "commands": [
         "helm package webapp-chart",
@@ -153,25 +153,25 @@
         "helm search repo local-repo"
       ],
       "validationCriteria": [
-        "Chart is packaged successfully",
-        "Repository index is created",
-        "Local repository is accessible",
-        "Chart can be installed from repository"
+        "O chart é empacotado com sucesso",
+        "O índice do repositório é criado",
+        "O repositório local está acessível",
+        "O chart pode ser instalado a partir do repositório"
       ],
       "expectedOutput": "Packaged Helm chart available in a working chart repository",
       "hints": [
-        "Use semantic versioning for chart versions",
-        "Automate packaging with CI/CD pipelines",
-        "Consider using ChartMuseum for advanced repository features"
+        "Use versionamento semântico para as versões do chart",
+        "Automatize o empacotamento com pipelines de CI/CD",
+        "Considere usar o ChartMuseum para recursos avançados de repositório"
       ]
     }
   ],
   "completionCriteria": [
-    "Helm chart is created and properly structured",
-    "Templates use values and helpers effectively",
-    "Application deploys successfully with dependencies",
-    "Chart lifecycle operations work correctly",
-    "Chart is packaged and available in repository"
+    "O Helm chart é criado e devidamente estruturado",
+    "Os templates usam values e helpers de forma eficaz",
+    "A aplicação é implantada com sucesso junto com as dependências",
+    "As operações de ciclo de vida do chart funcionam corretamente",
+    "O chart é empacotado e está disponível no repositório"
   ],
   "resources": [
     {
@@ -189,16 +189,16 @@
   ],
   "troubleshooting": [
     {
-      "issue": "Template rendering errors",
-      "solution": "Use 'helm template --debug' to identify syntax issues in templates"
+      "issue": "Erros na renderização de templates",
+      "solution": "Use 'helm template --debug' para identificar problemas de sintaxe nos templates"
     },
     {
-      "issue": "Dependency resolution fails",
-      "solution": "Ensure repository URLs are accessible and run 'helm dependency update'"
+      "issue": "A resolução de dependências falha",
+      "solution": "Garanta que as URLs dos repositórios estão acessíveis e execute 'helm dependency update'"
     },
     {
-      "issue": "Chart installation hangs",
-      "solution": "Check pod logs and events with kubectl, verify resource limits and cluster capacity"
+      "issue": "A instalação do chart trava",
+      "solution": "Verifique os logs dos pods e os eventos com kubectl, confirme os limites de recursos e a capacidade do cluster"
     }
   ],
   "featured": false

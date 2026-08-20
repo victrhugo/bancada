@@ -1,10 +1,10 @@
 {
   "id": "cloud-iam-basics",
   "slug": "cloud-iam-basics",
-  "title": "Cloud IAM Basics",
-  "question": "What is IAM in cloud computing? Explain the concepts of users, roles, and policies.",
-  "answer": "IAM (Identity and Access Management) controls who can access cloud resources and what they can do. Users are individual identities (people or services). Roles are sets of permissions that can be assumed temporarily. Policies are JSON documents that define what actions are allowed or denied on which resources. The principle of least privilege means giving only the minimum permissions needed.",
-  "explanation": "IAM is the security foundation of cloud infrastructure. Misconfigured IAM is one of the top causes of cloud breaches. DevOps engineers must understand IAM to set up secure CI/CD pipelines, manage service accounts, and follow security best practices.",
+  "title": "Fundamentos de IAM na nuvem",
+  "question": "O que é IAM em computação em nuvem? Explique os conceitos de usuários, roles e políticas.",
+  "answer": "IAM (Identity and Access Management) controla quem pode acessar os recursos de nuvem e o que essas pessoas podem fazer. Usuários são identidades individuais (pessoas ou serviços). Roles são conjuntos de permissões que podem ser assumidos temporariamente. Políticas são documentos JSON que definem quais ações são permitidas ou negadas sobre quais recursos. O princípio do menor privilégio significa conceder apenas as permissões mínimas necessárias.",
+  "explanation": "O IAM é a base de segurança da infraestrutura de nuvem. Uma configuração incorreta de IAM é uma das principais causas de violações de segurança na nuvem. Engenheiros de DevOps precisam entender IAM para configurar pipelines de CI/CD seguros, gerenciar service accounts e seguir as melhores práticas de segurança.",
   "category": "Cloud",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "json",
-      "label": "Example AWS IAM Policy",
+      "label": "Exemplo de política IAM da AWS",
       "code": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\",\n        \"s3:PutObject\"\n      ],\n      \"Resource\": \"arn:aws:s3:::my-bucket/*\"\n    }\n  ]\n}"
     },
     {
       "language": "bash",
-      "label": "AWS CLI IAM commands",
+      "label": "Comandos de IAM com a AWS CLI",
       "code": "# List IAM users\naws iam list-users\n\n# List attached policies for a user\naws iam list-attached-user-policies --user-name devops\n\n# Get current identity\naws sts get-caller-identity"
     }
   ],
   "followUpQuestions": [
-    "What is the principle of least privilege?",
-    "When would you use a role instead of a user?",
-    "What is the difference between identity-based and resource-based policies?"
+    "O que é o princípio do menor privilégio?",
+    "Quando você usaria uma role em vez de um usuário?",
+    "Qual é a diferença entre políticas baseadas em identidade e políticas baseadas em recurso?"
   ],
   "commonMistakes": [
-    "Using root account for daily operations",
-    "Granting overly permissive policies like AdministratorAccess",
-    "Hardcoding credentials instead of using roles"
+    "Usar a conta root para operações do dia a dia",
+    "Conceder políticas excessivamente permissivas como AdministratorAccess",
+    "Fixar credenciais no código (hardcode) em vez de usar roles"
   ],
   "relatedTopics": [
     "aws",

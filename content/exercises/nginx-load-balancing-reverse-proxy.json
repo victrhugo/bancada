@@ -1,13 +1,13 @@
 {
   "id": "nginx-load-balancing-reverse-proxy",
-  "title": "Nginx Load Balancing and Reverse Proxy",
-  "description": "Master load balancing and reverse proxy patterns with Nginx to build resilient, scalable infrastructure.",
+  "title": "Load Balancing e Reverse Proxy com Nginx",
+  "description": "Domine os padrões de load balancing e reverse proxy com o Nginx para construir uma infraestrutura resiliente e escalável.",
   "category": {
     "name": "Networking",
     "slug": "networking"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "75 minutes",
+  "estimatedTime": "75 minutos",
   "technologies": [
     "Nginx",
     "Docker",
@@ -15,21 +15,21 @@
     "Load Balancing"
   ],
   "prerequisites": [
-    "Basic networking knowledge",
-    "Docker fundamentals",
-    "Command line proficiency"
+    "Conhecimento básico de redes",
+    "Fundamentos de Docker",
+    "Proficiência em linha de comando"
   ],
   "learningObjectives": [
-    "Configure Nginx as a reverse proxy",
-    "Implement load balancing strategies",
-    "Set up health checks and failover",
-    "Optimize for production workloads"
+    "Configurar o Nginx como reverse proxy",
+    "Implementar estratégias de load balancing",
+    "Configurar health checks e failover",
+    "Otimizar para cargas de trabalho de produção"
   ],
   "environment": "local",
   "icon": "Server",
   "publishedAt": "2025-11-19T10:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": [
@@ -42,8 +42,8 @@
   "steps": [
     {
       "id": "setup-backend-services",
-      "title": "Create Multiple Backend Services",
-      "description": "Set up three identical backend services that will demonstrate load balancing behavior.",
+      "title": "Crie Múltiplos Serviços de Backend",
+      "description": "Configure três serviços de backend idênticos que vão demonstrar o comportamento do load balancing.",
       "commands": [
         "mkdir nginx-load-balancing-lab",
         "cd nginx-load-balancing-lab",
@@ -52,18 +52,18 @@
       ],
       "codeExample": "// server.js\nconst express = require('express');\nconst os = require('os');\nconst app = express();\nconst port = process.env.PORT || 3000;\nconst serverName = process.env.SERVER_NAME || 'unknown';\n\n// Request counter for this instance\nlet requestCount = 0;\n\napp.get('/', (req, res) => {\n  requestCount++;\n  res.json({\n    server: serverName,\n    hostname: os.hostname(),\n    port: port,\n    requests: requestCount,\n    timestamp: new Date().toISOString(),\n    message: `Hello from ${serverName}!`\n  });\n});\n\napp.get('/health', (req, res) => {\n  res.json({ status: 'healthy', server: serverName });\n});\n\napp.get('/slow', (req, res) => {\n  setTimeout(() => {\n    res.json({ server: serverName, message: 'Slow response' });\n  }, 2000);\n});\n\napp.listen(port, '0.0.0.0', () => {\n  console.log(`${serverName} running on port ${port}`);\n});",
       "hints": [
-        "Each server will identify itself by name",
-        "The request counter helps visualize load distribution"
+        "Cada servidor vai se identificar pelo nome",
+        "O contador de requisições ajuda a visualizar a distribuição de carga"
       ],
       "validationCriteria": [
-        "Node.js application is created",
-        "Server responds with identification info"
+        "A aplicação Node.js é criada",
+        "O servidor responde com informações de identificação"
       ]
     },
     {
       "id": "docker-compose-setup",
-      "title": "Containerize Backend Services",
-      "description": "Create a Docker Compose setup with three backend instances.",
+      "title": "Containerize os Serviços de Backend",
+      "description": "Crie uma configuração de Docker Compose com três instâncias de backend.",
       "codeExample": "# Dockerfile\nFROM node:18-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY server.js .\nEXPOSE 3000\nCMD [\"node\", \"server.js\"]\n\n# docker-compose.yml\nversion: '3.8'\n\nservices:\n  backend1:\n    build: .\n    environment:\n      - SERVER_NAME=backend-1\n      - PORT=3000\n    ports:\n      - \"3001:3000\"\n    networks:\n      - app-network\n\n  backend2:\n    build: .\n    environment:\n      - SERVER_NAME=backend-2\n      - PORT=3000\n    ports:\n      - \"3002:3000\"\n    networks:\n      - app-network\n\n  backend3:\n    build: .\n    environment:\n      - SERVER_NAME=backend-3\n      - PORT=3000\n    ports:\n      - \"3003:3000\"\n    networks:\n      - app-network\n\nnetworks:\n  app-network:\n    driver: bridge",
       "commands": [
         "docker-compose up -d",
@@ -74,19 +74,19 @@
       ],
       "expectedOutput": "Three backend services running on ports 3001, 3002, 3003",
       "validationCriteria": [
-        "All three containers are running",
-        "Each service responds with unique server name",
-        "Services are on the same network"
+        "Os três containers estão em execução",
+        "Cada serviço responde com um nome de servidor único",
+        "Os serviços estão na mesma rede"
       ],
       "hints": [
-        "Each service runs on the same internal port (3000)",
-        "External ports differ for testing purposes"
+        "Cada serviço roda na mesma porta interna (3000)",
+        "As portas externas diferem para fins de teste"
       ]
     },
     {
       "id": "basic-reverse-proxy",
-      "title": "Configure Basic Reverse Proxy",
-      "description": "Set up Nginx as a reverse proxy to forward requests to a single backend.",
+      "title": "Configure um Reverse Proxy Básico",
+      "description": "Configure o Nginx como reverse proxy para encaminhar requisições a um único backend.",
       "codeExample": "# nginx/nginx.conf\nevents {\n    worker_connections 1024;\n}\n\nhttp {\n    # Logging\n    access_log /var/log/nginx/access.log;\n    error_log /var/log/nginx/error.log;\n\n    # Basic reverse proxy\n    upstream backend {\n        server backend1:3000;\n    }\n\n    server {\n        listen 80;\n        server_name localhost;\n\n        location / {\n            proxy_pass http://backend;\n            proxy_set_header Host $host;\n            proxy_set_header X-Real-IP $remote_addr;\n            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n            proxy_set_header X-Forwarded-Proto $scheme;\n        }\n\n        location /health {\n            proxy_pass http://backend/health;\n        }\n    }\n}",
       "commands": [
         "mkdir nginx",
@@ -94,18 +94,18 @@
         "# Update docker-compose.yml to add nginx service"
       ],
       "hints": [
-        "The upstream block defines backend servers",
-        "proxy_set_header preserves client information"
+        "O bloco upstream define os servidores de backend",
+        "proxy_set_header preserva as informações do cliente"
       ],
       "validationCriteria": [
-        "Nginx configuration is valid",
-        "Requests to port 80 reach backend1"
+        "A configuração do Nginx é válida",
+        "As requisições na porta 80 chegam ao backend1"
       ]
     },
     {
       "id": "implement-load-balancing",
-      "title": "Implement Load Balancing",
-      "description": "Configure Nginx to distribute traffic across all three backend servers using round-robin.",
+      "title": "Implemente o Load Balancing",
+      "description": "Configure o Nginx para distribuir o tráfego entre os três servidores de backend usando round-robin.",
       "codeExample": "# nginx/nginx.conf (updated)\nevents {\n    worker_connections 1024;\n}\n\nhttp {\n    access_log /var/log/nginx/access.log;\n    error_log /var/log/nginx/error.log;\n\n    # Load balancing configuration\n    upstream backend {\n        # Round-robin load balancing (default)\n        server backend1:3000;\n        server backend2:3000;\n        server backend3:3000;\n    }\n\n    server {\n        listen 80;\n        server_name localhost;\n\n        location / {\n            proxy_pass http://backend;\n            proxy_set_header Host $host;\n            proxy_set_header X-Real-IP $remote_addr;\n            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n            proxy_set_header X-Forwarded-Proto $scheme;\n            \n            # Connection settings\n            proxy_connect_timeout 5s;\n            proxy_send_timeout 10s;\n            proxy_read_timeout 10s;\n        }\n\n        location /health {\n            proxy_pass http://backend/health;\n        }\n    }\n}\n\n# docker-compose.yml (add nginx service)\nservices:\n  # ... existing backend services ...\n\n  nginx:\n    image: nginx:alpine\n    volumes:\n      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro\n    ports:\n      - \"80:80\"\n    depends_on:\n      - backend1\n      - backend2\n      - backend3\n    networks:\n      - app-network",
       "commands": [
         "docker-compose down",

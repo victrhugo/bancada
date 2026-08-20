@@ -1,10 +1,10 @@
 {
   "id": "aws-vpc-networking",
   "slug": "aws-vpc-networking",
-  "title": "AWS VPC Networking Fundamentals",
-  "question": "Explain the difference between public and private subnets in AWS VPC. How do instances in private subnets access the internet?",
-  "answer": "Public subnets have a route to an Internet Gateway (IGW), allowing direct internet access for instances with public IPs. Private subnets route internet-bound traffic through a NAT Gateway in a public subnet, enabling outbound-only access. This architecture protects backend services while allowing them to fetch updates and reach external APIs.",
-  "explanation": "VPC subnet design is fundamental to AWS security architecture. The public/private split follows the principle of least exposure - only resources that need direct internet access (load balancers, bastion hosts) go in public subnets, while application servers and databases stay in private subnets.",
+  "title": "Fundamentos de rede em VPC na AWS",
+  "question": "Explique a diferença entre subnets públicas e privadas em uma VPC da AWS. Como instâncias em subnets privadas acessam a internet?",
+  "answer": "Subnets públicas têm uma rota para um Internet Gateway (IGW), permitindo acesso direto à internet para instâncias com IPs públicos. Subnets privadas roteiam o tráfego destinado à internet através de um NAT Gateway em uma subnet pública, permitindo apenas acesso de saída. Essa arquitetura protege os serviços de backend enquanto ainda permite que eles busquem atualizações e alcancem APIs externas.",
+  "explanation": "O design de subnets em uma VPC é fundamental para a arquitetura de segurança da AWS. A divisão entre público e privado segue o princípio da menor exposição possível: apenas os recursos que precisam de acesso direto à internet (load balancers, bastion hosts) ficam em subnets públicas, enquanto servidores de aplicação e bancos de dados permanecem em subnets privadas.",
   "category": "AWS",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "hcl",
-      "label": "Terraform VPC with public/private subnets",
+      "label": "VPC no Terraform com subnets públicas/privadas",
       "code": "resource \"aws_vpc\" \"main\" {\n  cidr_block = \"10.0.0.0/16\"\n}\n\n# Public subnet with IGW route\nresource \"aws_subnet\" \"public\" {\n  vpc_id                  = aws_vpc.main.id\n  cidr_block              = \"10.0.1.0/24\"\n  map_public_ip_on_launch = true\n}\n\n# Private subnet with NAT route\nresource \"aws_subnet\" \"private\" {\n  vpc_id     = aws_vpc.main.id\n  cidr_block = \"10.0.2.0/24\"\n}\n\n# NAT Gateway in public subnet\nresource \"aws_nat_gateway\" \"main\" {\n  allocation_id = aws_eip.nat.id\n  subnet_id     = aws_subnet.public.id\n}"
     },
     {
       "language": "bash",
-      "label": "Verify subnet routing",
+      "label": "Verificar o roteamento da subnet",
       "code": "# List route tables\naws ec2 describe-route-tables \\\n  --filters \"Name=vpc-id,Values=vpc-xxx\" \\\n  --query 'RouteTables[*].{ID:RouteTableId,Routes:Routes}'\n\n# Check NAT Gateway status\naws ec2 describe-nat-gateways \\\n  --filter \"Name=vpc-id,Values=vpc-xxx\""
     }
   ],
   "followUpQuestions": [
-    "What is the cost implication of using NAT Gateways vs NAT Instances?",
-    "How do VPC Endpoints reduce the need for NAT Gateway traffic?",
-    "What is the difference between a Security Group and a Network ACL?"
+    "Qual é a implicação de custo de usar NAT Gateways versus NAT Instances?",
+    "Como os VPC Endpoints reduzem a necessidade de tráfego pelo NAT Gateway?",
+    "Qual é a diferença entre um Security Group e uma Network ACL?"
   ],
   "commonMistakes": [
-    "Placing databases in public subnets for convenience",
-    "Forgetting to create a NAT Gateway, leaving private instances without internet access",
-    "Not using multiple availability zones for NAT Gateway redundancy"
+    "Colocar bancos de dados em subnets públicas por conveniência",
+    "Esquecer de criar um NAT Gateway, deixando as instâncias privadas sem acesso à internet",
+    "Não usar múltiplas availability zones para redundância do NAT Gateway"
   ],
   "relatedTopics": [
     "security-groups",

@@ -1,34 +1,34 @@
 {
   "id": "linux-performance-troubleshooting",
-  "title": "Linux Performance Tuning and Troubleshooting",
-  "description": "Master essential Linux performance analysis and optimization techniques to diagnose and resolve system bottlenecks.",
+  "title": "Ajuste de Performance e Troubleshooting no Linux",
+  "description": "Domine as técnicas essenciais de análise de performance e otimização do Linux para diagnosticar e resolver gargalos do sistema.",
   "category": {
     "name": "Linux",
     "slug": "linux"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "80 minutes",
+  "estimatedTime": "80 minutos",
   "technologies": ["Linux", "bash", "systemd", "performance tools"],
-  "prerequisites": ["Linux command line basics", "Understanding of system processes", "Basic shell scripting"],
+  "prerequisites": ["Noções básicas de linha de comando do Linux", "Entendimento de processos do sistema", "Shell scripting básico"],
   "learningObjectives": [
-    "Identify CPU, memory, and I/O bottlenecks",
-    "Use performance monitoring tools effectively",
-    "Optimize system resource allocation",
-    "Debug slow applications and services"
+    "Identificar gargalos de CPU, memória e I/O",
+    "Usar ferramentas de monitoramento de performance com eficácia",
+    "Otimizar a alocação de recursos do sistema",
+    "Depurar aplicações e serviços lentos"
   ],
   "environment": "local",
   "icon": "Terminal",
   "publishedAt": "2025-11-19T10:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["Linux", "Performance", "Troubleshooting", "System Administration", "Debugging"],
   "steps": [
     {
       "id": "setup-environment",
-      "title": "Setup Test Environment",
-      "description": "Create a Docker container with performance monitoring tools and simulate various workloads.",
+      "title": "Configure o Ambiente de Teste",
+      "description": "Crie um container Docker com ferramentas de monitoramento de performance e simule diversas cargas de trabalho.",
       "commands": [
         "docker run -it --name perf-lab ubuntu:22.04 bash",
         "# In the container:",
@@ -37,19 +37,19 @@
       ],
       "codeExample": "# Dockerfile for performance lab\nFROM ubuntu:22.04\n\nRUN apt-get update && apt-get install -y \\\n    htop \\\n    iotop \\\n    sysstat \\\n    strace \\\n    procps \\\n    curl \\\n    stress-ng \\\n    vim \\\n    && rm -rf /var/lib/apt/lists/*\n\n# Enable sysstat\nRUN sed -i 's/ENABLED=\"false\"/ENABLED=\"true\"/' /etc/default/sysstat\n\nWORKDIR /lab\n\nCMD [\"/bin/bash\"]",
       "hints": [
-        "Use Docker to avoid affecting your host system",
-        "Install all performance monitoring tools upfront"
+        "Use o Docker para evitar afetar seu sistema host",
+        "Instale todas as ferramentas de monitoramento de performance de uma vez"
       ],
       "validationCriteria": [
-        "Container is running",
-        "All monitoring tools are installed",
-        "sysstat is enabled"
+        "O container está em execução",
+        "Todas as ferramentas de monitoramento estão instaladas",
+        "O sysstat está habilitado"
       ]
     },
     {
       "id": "cpu-analysis",
-      "title": "CPU Performance Analysis",
-      "description": "Learn to identify and diagnose CPU bottlenecks using top, htop, and mpstat.",
+      "title": "Análise de Performance de CPU",
+      "description": "Aprenda a identificar e diagnosticar gargalos de CPU usando top, htop e mpstat.",
       "commands": [
         "# Monitor overall CPU usage",
         "top -bn1 | head -20",
@@ -65,20 +65,20 @@
       "codeExample": "# cpu-monitor.sh - Continuous CPU monitoring script\n#!/bin/bash\n\necho \"=== CPU Performance Monitor ===\"\necho \"Starting at $(date)\"\necho \"\"\n\n# Check number of CPUs\necho \"CPU Count: $(nproc)\"\necho \"Load Average: $(uptime | awk -F'load average:' '{print $2}')\"\necho \"\"\n\n# Top CPU consuming processes\necho \"Top 10 CPU-consuming processes:\"\nps aux --sort=-%cpu | head -11\necho \"\"\n\n# CPU statistics\necho \"Per-CPU utilization:\"\nmpstat -P ALL 1 1\necho \"\"\n\n# Context switches and interrupts\necho \"Context switches and interrupts:\"\nvmstat 1 5\necho \"\"\n\n# CPU wait time (I/O bottleneck indicator)\necho \"CPU I/O wait time:\"\niostat -c 1 3",
       "expectedOutput": "Identify high CPU usage processes and understand CPU metrics",
       "validationCriteria": [
-        "Can read top/htop output",
-        "Understand CPU %wa (I/O wait)",
-        "Identify CPU-bound processes"
+        "É possível ler a saída do top/htop",
+        "Entender o %wa de CPU (I/O wait)",
+        "Identificar processos limitados por CPU"
       ],
       "hints": [
-        "High %wa indicates I/O bottleneck, not CPU",
-        "Load average > CPU count suggests overload",
-        "Context switches indicate thread contention"
+        "Um %wa alto indica gargalo de I/O, não de CPU",
+        "Load average > número de CPUs sugere sobrecarga",
+        "As trocas de contexto indicam contenção de threads"
       ]
     },
     {
       "id": "memory-analysis",
-      "title": "Memory Analysis and Optimization",
-      "description": "Analyze memory usage, identify memory leaks, and understand the Linux memory management system.",
+      "title": "Análise e Otimização de Memória",
+      "description": "Analise o uso de memória, identifique vazamentos de memória e entenda o sistema de gerenciamento de memória do Linux.",
       "commands": [
         "# Check overall memory usage",
         "free -h",
@@ -96,20 +96,20 @@
       "codeExample": "# memory-analyzer.sh\n#!/bin/bash\n\necho \"=== Memory Analysis Report ===\"\necho \"Generated at: $(date)\"\necho \"\"\n\n# Memory overview\necho \"Memory Overview:\"\nfree -h\necho \"\"\n\n# Memory by process\necho \"Top 10 memory consumers:\"\nps aux --sort=-%mem | awk 'NR<=10 {printf \"%-10s %-8s %-8s %s\\n\", $1, $2, $4\"%\", $11}'\necho \"\"\n\n# Swap usage\necho \"Swap Status:\"\nswapon --show\necho \"\"\n\n# Memory pressure\necho \"Memory Pressure Indicators:\"\necho \"  Total: $(free -m | awk 'NR==2 {print $2}') MB\"\necho \"  Used: $(free -m | awk 'NR==2 {print $3}') MB\"\necho \"  Free: $(free -m | awk 'NR==2 {print $4}') MB\"\necho \"  Available: $(free -m | awk 'NR==2 {print $7}') MB\"\necho \"  Buff/Cache: $(free -m | awk 'NR==2 {print $6}') MB\"\necho \"\"\n\n# Check for OOM events\necho \"Recent OOM Killer Events:\"\ndmesg | grep -i 'killed process' | tail -5",
       "expectedOutput": "Understanding of available vs free memory and swap usage",
       "validationCriteria": [
-        "Can interpret free command output",
-        "Understand difference between used and available memory",
-        "Identify memory leaks"
+        "É possível interpretar a saída do comando free",
+        "Entender a diferença entre memória usada e disponível",
+        "Identificar vazamentos de memória"
       ],
       "hints": [
-        "Available memory is more important than free memory",
-        "Buffers/cache is reclaimable memory",
-        "Swap usage can indicate memory pressure"
+        "Memória disponível é mais importante que memória livre",
+        "Buffers/cache é memória recuperável",
+        "O uso de swap pode indicar pressão de memória"
       ]
     },
     {
       "id": "io-analysis",
-      "title": "Disk I/O Performance Analysis",
-      "description": "Identify I/O bottlenecks and optimize disk operations.",
+      "title": "Análise de Performance de I/O de Disco",
+      "description": "Identifique gargalos de I/O e otimize operações de disco.",
       "commands": [
         "# Monitor I/O statistics",
         "iostat -x 2 5",
@@ -125,20 +125,20 @@
       "codeExample": "# io-monitor.sh\n#!/bin/bash\n\necho \"=== Disk I/O Performance Monitor ===\"\necho \"Timestamp: $(date)\"\necho \"\"\n\n# Overall I/O statistics\necho \"I/O Statistics Summary:\"\niostat -x 1 3 | tail -n +4\necho \"\"\n\n# Identify I/O heavy processes\necho \"Top I/O processes (requires root):\"\nif [ \"$EUID\" -eq 0 ]; then\n    iotop -b -n 1 -o | head -15\nelse\n    echo \"Run as root to see per-process I/O\"\nfi\necho \"\"\n\n# Disk usage hotspots\necho \"Disk Usage by Directory:\"\ndu -h --max-depth=1 / 2>/dev/null | sort -hr | head -10\necho \"\"\n\n# Check for slow I/O\necho \"I/O Wait Time:\"\niostat -c 1 3 | grep -E '(avg-cpu|iowait)'\necho \"\"\n\n# Open file descriptors\necho \"Open File Descriptors:\"\necho \"Total: $(lsof 2>/dev/null | wc -l)\"",
       "expectedOutput": "Understand I/O metrics and identify I/O bottlenecks",
       "validationCriteria": [
-        "Can read iostat output",
-        "Understand await and svctm metrics",
-        "Identify I/O-bound processes"
+        "É possível ler a saída do iostat",
+        "Entender as métricas await e svctm",
+        "Identificar processos limitados por I/O"
       ],
       "hints": [
-        "High %util suggests disk saturation",
-        "await is average wait time in milliseconds",
-        "High iowait in top indicates I/O bottleneck"
+        "Um %util alto sugere saturação do disco",
+        "await é o tempo médio de espera em milissegundos",
+        "Um iowait alto no top indica gargalo de I/O"
       ]
     },
     {
       "id": "network-performance",
-      "title": "Network Performance Monitoring",
-      "description": "Monitor network throughput, connections, and identify network-related bottlenecks.",
+      "title": "Monitoramento de Performance de Rede",
+      "description": "Monitore a taxa de transferência de rede, as conexões e identifique gargalos relacionados à rede.",
       "commands": [
         "# Install network tools",
         "apt-get install -y iftop nethogs net-tools",
@@ -154,20 +154,20 @@
       "codeExample": "# network-monitor.sh\n#!/bin/bash\n\necho \"=== Network Performance Monitor ===\"\necho \"Time: $(date)\"\necho \"\"\n\n# Network interfaces and stats\necho \"Network Interfaces:\"\nip -s -h link show\necho \"\"\n\n# Active connections count\necho \"Connection Statistics:\"\necho \"  ESTABLISHED: $(ss -tan | grep ESTAB | wc -l)\"\necho \"  TIME_WAIT: $(ss -tan | grep TIME-WAIT | wc -l)\"\necho \"  LISTEN: $(ss -tln | grep LISTEN | wc -l)\"\necho \"\"\n\n# Top connections by state\necho \"Top 10 Remote Connections:\"\nss -tan state established | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -rn | head -10\necho \"\"\n\n# Network errors\necho \"Network Errors:\"\nnetstat -i | awk 'NR>2 {print $1, \"RX-ERR:\", $3, \"TX-ERR:\", $7}'\necho \"\"\n\n# Bandwidth usage snapshot\necho \"Current Bandwidth Usage:\"\ncat /proc/net/dev | awk 'NR>2 {printf \"%-10s RX: %10d bytes TX: %10d bytes\\n\", $1, $2, $10}'",
       "expectedOutput": "Understanding of network metrics and connection states",
       "validationCriteria": [
-        "Can identify number of connections",
-        "Understand TCP states",
-        "Monitor bandwidth usage"
+        "É possível identificar o número de conexões",
+        "Entender os estados TCP",
+        "Monitorar o uso de banda"
       ],
       "hints": [
-        "Too many TIME_WAIT can indicate connection churn",
-        "High retransmits suggest network issues",
-        "Use ss instead of netstat (faster)"
+        "Muitos TIME_WAIT podem indicar alta rotatividade de conexões",
+        "Retransmissões altas sugerem problemas de rede",
+        "Use ss em vez de netstat (mais rápido)"
       ]
     },
     {
       "id": "process-debugging",
-      "title": "Process-Level Debugging with strace",
-      "description": "Use strace to debug slow processes and understand system call behavior.",
+      "title": "Depuração no Nível de Processo com strace",
+      "description": "Use o strace para depurar processos lentos e entender o comportamento das chamadas de sistema.",
       "commands": [
         "# Create a slow script to debug",
         "cat > slow-app.sh << 'EOF'\n#!/bin/bash\nwhile true; do\n  sleep 0.5\n  echo \"Processing...\" >> /tmp/output.log\n  ls -la /tmp > /dev/null\ndone\nEOF",
@@ -184,20 +184,20 @@
       "codeExample": "# debug-slow-process.sh\n#!/bin/bash\n\nif [ -z \"$1\" ]; then\n    echo \"Usage: $0 <pid>\"\n    exit 1\nfi\n\nPID=$1\n\necho \"=== Debugging Process $PID ===\"\necho \"\"\n\n# Process info\necho \"Process Information:\"\nps -p $PID -o pid,ppid,cmd,%mem,%cpu,etime\necho \"\"\n\n# System call summary\necho \"System Call Summary (10 seconds):\"\necho \"Tracing... (this will take 10 seconds)\"\ntimeout 10 strace -p $PID -c 2>&1 | tail -20\necho \"\"\n\n# Open files\necho \"Open File Descriptors:\"\nlsof -p $PID | head -20\necho \"\"\n\n# Thread count\necho \"Thread Count:\"\nps -L -p $PID | wc -l\necho \"\"\n\n# Network connections\necho \"Network Connections:\"\nss -tunap | grep \"pid=$PID\"",
       "expectedOutput": "Identify slow system calls and I/O operations",
       "validationCriteria": [
-        "Can run strace on a process",
-        "Understand strace output",
-        "Identify slow operations"
+        "É possível executar o strace em um processo",
+        "Entender a saída do strace",
+        "Identificar operações lentas"
       ],
       "hints": [
-        "Look for calls with high time percentage",
-        "ENOENT errors indicate missing files",
-        "Use -e trace=file for file operations only"
+        "Procure chamadas com alto percentual de tempo",
+        "Erros ENOENT indicam arquivos ausentes",
+        "Use -e trace=file para operações apenas de arquivo"
       ]
     },
     {
       "id": "optimization-tuning",
-      "title": "System Optimization and Tuning",
-      "description": "Apply performance optimizations based on findings.",
+      "title": "Otimização e Ajuste Fino do Sistema",
+      "description": "Aplique otimizações de performance com base nas descobertas.",
       "codeExample": "# system-tuning.sh\n#!/bin/bash\n\necho \"=== System Performance Tuning ===\"\necho \"\"\n\n# Backup current settings\ncp /etc/sysctl.conf /etc/sysctl.conf.backup\n\n# Network optimizations\ncat >> /etc/sysctl.conf << 'EOF'\n\n# Network Performance Tuning\nnet.core.rmem_max = 134217728\nnet.core.wmem_max = 134217728\nnet.ipv4.tcp_rmem = 4096 87380 67108864\nnet.ipv4.tcp_wmem = 4096 65536 67108864\nnet.ipv4.tcp_congestion_control = bbr\nnet.core.default_qdisc = fq\n\n# Increase max connections\nnet.core.somaxconn = 4096\nnet.ipv4.tcp_max_syn_backlog = 8192\n\n# Fast connection recycling\nnet.ipv4.tcp_tw_reuse = 1\nnet.ipv4.tcp_fin_timeout = 15\n\n# File descriptors\nfs.file-max = 2097152\n\n# Swap behavior (reduce swap usage)\nvm.swappiness = 10\nvm.dirty_ratio = 15\nvm.dirty_background_ratio = 5\nEOF\n\necho \"Tuning parameters added to /etc/sysctl.conf\"\necho \"Apply with: sysctl -p\"\necho \"\"\n\n# Process limits\ncat >> /etc/security/limits.conf << 'EOF'\n* soft nofile 65536\n* hard nofile 65536\n* soft nproc 65536\n* hard nproc 65536\nEOF\n\necho \"Process limits updated in /etc/security/limits.conf\"\necho \"\"\n\n# Create monitoring cron job\ncat > /etc/cron.d/system-monitor << 'EOF'\n*/5 * * * * root /usr/local/bin/system-health-check.sh\nEOF\n\necho \"Monitoring cron job created\"\necho \"\"\necho \"System tuning complete!\"",
       "commands": [
         "# Apply network optimizations",
@@ -212,23 +212,23 @@
       ],
       "expectedOutput": "Optimized system parameters for better performance",
       "validationCriteria": [
-        "Kernel parameters are tuned",
-        "File descriptor limits increased",
-        "Swap behavior optimized"
+        "Os parâmetros do kernel foram ajustados",
+        "Os limites de file descriptor foram aumentados",
+        "O comportamento de swap foi otimizado"
       ],
       "hints": [
-        "Test one change at a time",
-        "Monitor impact of each tuning",
-        "Document all changes made"
+        "Teste uma alteração de cada vez",
+        "Monitore o impacto de cada ajuste",
+        "Documente todas as alterações feitas"
       ]
     }
   ],
   "completionCriteria": [
-    "Can identify CPU bottlenecks using monitoring tools",
-    "Understand memory usage and swap behavior",
-    "Successfully diagnose I/O performance issues",
-    "Use strace to debug application issues",
-    "Apply system-level performance optimizations"
+    "É possível identificar gargalos de CPU usando ferramentas de monitoramento",
+    "Entender o uso de memória e o comportamento de swap",
+    "Diagnosticar com sucesso problemas de performance de I/O",
+    "Usar o strace para depurar problemas em aplicações",
+    "Aplicar otimizações de performance em nível de sistema"
   ],
   "resources": [
     {
@@ -252,20 +252,20 @@
   ],
   "troubleshooting": [
     {
-      "issue": "Cannot run iotop or see per-process I/O",
-      "solution": "iotop requires root privileges. Run with sudo or as root user."
+      "issue": "Não é possível executar o iotop ou ver o I/O por processo",
+      "solution": "O iotop requer privilégios de root. Execute com sudo ou como usuário root."
     },
     {
-      "issue": "strace permission denied",
-      "solution": "Either run as root or set ptrace_scope: sysctl -w kernel.yama.ptrace_scope=0"
+      "issue": "strace com permissão negada",
+      "solution": "Execute como root ou ajuste o ptrace_scope: sysctl -w kernel.yama.ptrace_scope=0"
     },
     {
-      "issue": "Tools not found in container",
-      "solution": "Install missing tools: apt-get update && apt-get install -y <tool-name>"
+      "issue": "Ferramentas não encontradas no container",
+      "solution": "Instale as ferramentas ausentes: apt-get update && apt-get install -y <nome-da-ferramenta>"
     },
     {
-      "issue": "High load but low CPU usage",
-      "solution": "Check I/O wait time with iostat. High iowait indicates disk bottleneck, not CPU."
+      "issue": "Carga alta, mas uso de CPU baixo",
+      "solution": "Verifique o tempo de I/O wait com iostat. Um iowait alto indica gargalo de disco, não de CPU."
     }
   ],
   "featured": true

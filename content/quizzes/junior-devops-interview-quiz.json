@@ -1,7 +1,7 @@
 {
   "id": "junior-devops-interview-quiz",
-  "title": "Junior DevOps Engineer Interview Quiz",
-  "description": "Entry-level DevOps interview preparation covering Linux fundamentals, Git basics, Docker essentials, CI/CD concepts, cloud computing, scripting, and monitoring fundamentals",
+  "title": "Quiz de Entrevista para Engenheiro DevOps Júnior",
+  "description": "Preparação para entrevista de DevOps nível júnior cobrindo fundamentos de Linux, noções básicas de Git, essenciais de Docker, conceitos de CI/CD, computação em nuvem, scripting e fundamentos de monitoramento",
   "category": "Interview Prep",
   "icon": "GraduationCap",
   "totalPoints": 100,
@@ -11,7 +11,7 @@
     "gradientTo": "to-emerald-600"
   },
   "metadata": {
-    "estimatedTime": "15-20 minutes",
+    "estimatedTime": "15-20 minutos",
     "difficultyLevels": {
       "beginner": 14,
       "intermediate": 4
@@ -21,27 +21,27 @@
   "questions": [
     {
       "id": "junior-linux-permissions",
-      "title": "File Permissions",
-      "description": "What does the permission 'rwxr-xr--' mean in Linux?",
-      "situation": "You're troubleshooting why a user can't execute a script, and you run 'ls -l' to check file permissions.",
+      "title": "Permissões de Arquivo",
+      "description": "O que a permissão 'rwxr-xr--' significa no Linux?",
+      "situation": "Você está investigando por que um usuário não consegue executar um script, e roda 'ls -l' para checar as permissões do arquivo.",
       "codeExample": "$ ls -l deploy.sh\n-rwxr-xr-- 1 devops team 1234 Dec 1 10:00 deploy.sh",
       "options": [
-        "Owner can read/write, group can read/execute, others can read/write",
-        "Everyone can read/write/execute",
-        "Owner can read/write/execute, group can read/execute, others can only read",
-        "Only owner can read the file"
+        "O dono pode ler/escrever, o grupo pode ler/executar, outros podem ler/escrever",
+        "Todo mundo pode ler/escrever/executar",
+        "O dono pode ler/escrever/executar, o grupo pode ler/executar, outros só podem ler",
+        "Só o dono pode ler o arquivo"
       ],
       "correctAnswer": 2,
-      "explanation": "rwx (owner) = read, write, execute permissions; r-x (group) = read and execute only; r-- (others) = read only. The owner (devops) has full control, the group (team) can read and run it, and others can only view it.",
-      "hint": "Break down the permission string into three groups: owner, group, and others.",
+      "explanation": "rwx (dono) = permissões de leitura, escrita e execução; r-x (grupo) = apenas leitura e execução; r-- (outros) = apenas leitura. O dono (devops) tem controle total, o grupo (team) pode ler e rodar o arquivo, e outros só podem visualizá-lo.",
+      "hint": "Divida a string de permissão em três grupos: dono, grupo e outros.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-linux-commands",
-      "title": "Process Management",
-      "description": "Which command shows real-time system resource usage and running processes?",
-      "situation": "Your application server is running slow. You need to identify which process is consuming the most CPU and memory.",
+      "title": "Gerenciamento de Processos",
+      "description": "Qual comando mostra o uso de recursos do sistema e os processos em execução em tempo real?",
+      "situation": "Seu servidor de aplicação está rodando devagar. Você precisa identificar qual processo está consumindo mais CPU e memória.",
       "options": [
         "ls -la",
         "top",
@@ -49,16 +49,16 @@
         "df -h"
       ],
       "correctAnswer": 1,
-      "explanation": "The 'top' command provides a real-time, interactive view of running processes, CPU usage, memory consumption, and system load. 'ps aux' shows a snapshot of processes, 'ls -la' lists files, and 'df -h' shows disk space usage.",
-      "hint": "Think about which command updates continuously to show live system activity.",
+      "explanation": "O comando 'top' fornece uma visão interativa e em tempo real dos processos em execução, uso de CPU, consumo de memória e carga do sistema. 'ps aux' mostra uma foto instantânea dos processos, 'ls -la' lista arquivos, e 'df -h' mostra o uso de espaço em disco.",
+      "hint": "Pense em qual comando atualiza continuamente para mostrar a atividade do sistema ao vivo.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-linux-logs",
-      "title": "System Logs",
-      "description": "Where are system logs typically stored in Linux?",
-      "situation": "An application crashed overnight. You need to check system logs to find error messages.",
+      "title": "Logs do Sistema",
+      "description": "Onde os logs do sistema costumam ficar armazenados no Linux?",
+      "situation": "Uma aplicação travou durante a madrugada. Você precisa checar os logs do sistema para encontrar mensagens de erro.",
       "options": [
         "/usr/logs",
         "/home/logs",
@@ -66,16 +66,16 @@
         "/var/log"
       ],
       "correctAnswer": 3,
-      "explanation": "/var/log is the standard directory for system and application logs in Linux. Common files include /var/log/syslog (general system), /var/log/auth.log (authentication), and /var/log/nginx/ (web server logs).",
-      "hint": "Think about the /var directory which contains variable data.",
+      "explanation": "/var/log é o diretório padrão para logs de sistema e de aplicação no Linux. Arquivos comuns incluem /var/log/syslog (sistema geral), /var/log/auth.log (autenticação), e /var/log/nginx/ (logs do servidor web).",
+      "hint": "Pense no diretório /var, que contém dados variáveis.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-linux-grep",
-      "title": "Text Search",
-      "description": "Which command searches for specific text patterns in files?",
-      "situation": "You need to find all occurrences of 'ERROR' in your application logs from the past week.",
+      "title": "Busca de Texto",
+      "description": "Qual comando busca por padrões de texto específicos em arquivos?",
+      "situation": "Você precisa encontrar todas as ocorrências de 'ERROR' nos logs da sua aplicação da última semana.",
       "codeExample": "You want to search for 'ERROR' in /var/log/app.log",
       "options": [
         "search ERROR /var/log/app.log",
@@ -84,16 +84,16 @@
         "grep 'ERROR' /var/log/app.log"
       ],
       "correctAnswer": 3,
-      "explanation": "'grep' (Global Regular Expression Print) searches for patterns in files. The command 'grep ERROR /var/log/app.log' will find all lines containing 'ERROR'. You can add flags like -i (case-insensitive), -n (line numbers), or -r (recursive).",
-      "hint": "This command is essential for log analysis and text searching.",
+      "explanation": "'grep' (Global Regular Expression Print) busca por padrões em arquivos. O comando 'grep ERROR /var/log/app.log' encontra todas as linhas contendo 'ERROR'. Você pode adicionar flags como -i (sem diferenciar maiúsculas/minúsculas), -n (números de linha), ou -r (recursivo).",
+      "hint": "Esse comando é essencial para análise de logs e busca de texto.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-git-staging",
-      "title": "Git Staging",
-      "description": "Which command stages all modified files for commit?",
-      "situation": "You've made changes to multiple files in your project and want to prepare them for commit.",
+      "title": "Staging no Git",
+      "description": "Qual comando coloca todos os arquivos modificados em staging para commit?",
+      "situation": "Você fez mudanças em vários arquivos do seu projeto e quer prepará-los para commit.",
       "codeExample": "$ git status\nModified: app.js\nModified: config.yaml\nModified: README.md",
       "options": [
         "git commit -a",
@@ -102,85 +102,85 @@
         "git push"
       ],
       "correctAnswer": 2,
-      "explanation": "'git add .' stages all changes in the current directory and subdirectories. This prepares files to be included in the next commit. 'git commit -a' commits tracked files but doesn't stage new files. 'git push' sends commits to remote, and 'git stage --all' is not a valid command.",
-      "hint": "Think about the two-step process: stage changes, then commit them.",
+      "explanation": "'git add .' coloca em staging todas as mudanças no diretório atual e subdiretórios. Isso prepara os arquivos para serem incluídos no próximo commit. 'git commit -a' faz commit de arquivos rastreados mas não coloca arquivos novos em staging. 'git push' envia commits para o remoto, e 'git stage --all' não é um comando válido.",
+      "hint": "Pense no processo de dois passos: colocar as mudanças em staging e depois fazer commit delas.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-git-branches",
-      "title": "Git Branching",
-      "description": "What's the purpose of creating a feature branch in Git?",
-      "situation": "Your team follows Git Flow. You're starting work on a new feature and need to explain why you're creating a separate branch.",
+      "title": "Branching no Git",
+      "description": "Qual é o propósito de criar uma feature branch no Git?",
+      "situation": "Seu time segue o Git Flow. Você está começando a trabalhar em uma nova feature e precisa explicar por que está criando uma branch separada.",
       "options": [
-        "Branches are only for fixing bugs",
-        "Branches isolate development work from the main codebase, allowing parallel development and easy rollback",
-        "Branches are required by Git and serve no practical purpose",
-        "Branches permanently split the codebase into separate projects"
+        "Branches servem só para corrigir bugs",
+        "Branches isolam o trabalho de desenvolvimento da base de código principal, permitindo desenvolvimento paralelo e rollback fácil",
+        "Branches são exigidas pelo Git e não têm propósito prático",
+        "Branches dividem permanentemente a base de código em projetos separados"
       ],
       "correctAnswer": 1,
-      "explanation": "Feature branches isolate new development from the stable main branch. This allows: 1) Multiple developers to work in parallel without conflicts, 2) Code review before merging to main, 3) Easy rollback if needed, 4) Clean commit history. Once complete, branches are merged back and can be deleted.",
-      "hint": "Consider how teams collaborate on different features simultaneously.",
+      "explanation": "Feature branches isolam o desenvolvimento novo da branch principal estável. Isso permite: 1) Múltiplos desenvolvedores trabalharem em paralelo sem conflitos, 2) Revisão de código antes de dar merge na principal, 3) Rollback fácil se necessário, 4) Histórico de commits limpo. Depois de concluídas, as branches são mescladas de volta e podem ser apagadas.",
+      "hint": "Pense em como os times colaboram em diferentes features simultaneamente.",
       "difficulty": "beginner",
       "points": 6
     },
     {
       "id": "junior-git-merge",
       "title": "Git Merge vs Rebase",
-      "description": "What's the main difference between 'git merge' and 'git rebase'?",
-      "situation": "Your feature branch is behind main. A senior developer asks whether you want to merge or rebase to get the latest changes.",
+      "description": "Qual é a principal diferença entre 'git merge' e 'git rebase'?",
+      "situation": "Sua feature branch está atrasada em relação à main. Um desenvolvedor sênior pergunta se você quer fazer merge ou rebase para pegar as mudanças mais recentes.",
       "options": [
-        "They do exactly the same thing",
-        "Merge creates a new commit combining branches, rebase rewrites history by moving commits to a new base",
-        "Rebase is faster but merge is safer",
-        "Merge deletes the branch, rebase keeps it"
+        "Eles fazem exatamente a mesma coisa",
+        "O merge cria um novo commit combinando as branches, o rebase reescreve o histórico movendo os commits para uma nova base",
+        "O rebase é mais rápido, mas o merge é mais seguro",
+        "O merge apaga a branch, o rebase a mantém"
       ],
       "correctAnswer": 1,
-      "explanation": "'git merge' creates a new merge commit that combines the changes from both branches, preserving the full history. 'git rebase' rewrites commit history by applying your commits on top of another branch, creating a linear history. Merge is safer (doesn't rewrite history), rebase creates cleaner history but should not be used on shared branches.",
-      "hint": "One creates a merge commit, the other rewrites the commit timeline.",
+      "explanation": "'git merge' cria um novo commit de merge que combina as mudanças das duas branches, preservando o histórico completo. 'git rebase' reescreve o histórico de commits aplicando seus commits em cima de outra branch, criando um histórico linear. O merge é mais seguro (não reescreve o histórico), o rebase cria um histórico mais limpo mas não deve ser usado em branches compartilhadas.",
+      "hint": "Um cria um commit de merge, o outro reescreve a linha do tempo dos commits.",
       "difficulty": "intermediate",
       "points": 7
     },
     {
       "id": "junior-git-remote",
-      "title": "Git Remote Operations",
-      "description": "What does 'git pull' do?",
-      "situation": "You start your workday and need to get the latest code that your teammates pushed yesterday.",
+      "title": "Operações Remotas no Git",
+      "description": "O que 'git pull' faz?",
+      "situation": "Você começa seu dia de trabalho e precisa pegar o código mais recente que seus colegas de time enviaram ontem.",
       "codeExample": "$ git pull origin main",
       "options": [
-        "Sends your local commits to the remote repository",
-        "Fetches remote changes and merges them into your current branch",
-        "Creates a new branch from remote",
-        "Deletes remote branches"
+        "Envia seus commits locais para o repositório remoto",
+        "Busca as mudanças remotas e as mescla na sua branch atual",
+        "Cria uma nova branch a partir do remoto",
+        "Apaga branches remotas"
       ],
       "correctAnswer": 1,
-      "explanation": "'git pull' is a combination of 'git fetch' (downloads remote changes) and 'git merge' (merges them into your current branch). It's the most common way to sync your local repository with remote updates. Equivalent to running 'git fetch' followed by 'git merge'.",
-      "hint": "This command combines two operations: fetching and merging.",
+      "explanation": "'git pull' é uma combinação de 'git fetch' (baixa as mudanças remotas) e 'git merge' (mescla elas na sua branch atual). É a forma mais comum de sincronizar seu repositório local com as atualizações remotas. Equivale a rodar 'git fetch' seguido de 'git merge'.",
+      "hint": "Esse comando combina duas operações: buscar e mesclar.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-docker-concepts",
-      "title": "Container Concepts",
-      "description": "What's the main difference between a Docker image and a container?",
-      "situation": "A junior developer asks why we 'run' an image to create a container. You need to explain the relationship.",
+      "title": "Conceitos de Container",
+      "description": "Qual é a principal diferença entre uma imagem Docker e um container?",
+      "situation": "Um desenvolvedor júnior pergunta por que 'rodamos' uma imagem para criar um container. Você precisa explicar a relação entre os dois.",
       "options": [
-        "Containers are templates, images are running processes",
-        "There is no difference, the terms are interchangeable",
-        "Images are stored templates, containers are running instances of those images",
-        "Images can be modified, containers cannot"
+        "Containers são templates, imagens são processos em execução",
+        "Não há diferença, os termos são intercambiáveis",
+        "Imagens são templates armazenados, containers são instâncias em execução dessas imagens",
+        "Imagens podem ser modificadas, containers não"
       ],
       "correctAnswer": 2,
-      "explanation": "Docker images are read-only templates that contain application code, runtime, libraries, and dependencies. Containers are running instances created from images. Think of images as classes and containers as objects in programming. You can run multiple containers from a single image, each isolated from the others.",
-      "hint": "Think about the relationship between a recipe and a dish cooked from it.",
+      "explanation": "Imagens Docker são templates somente leitura que contêm código da aplicação, runtime, bibliotecas e dependências. Containers são instâncias em execução criadas a partir de imagens. Pense nas imagens como classes e nos containers como objetos na programação. Você pode rodar múltiplos containers a partir de uma única imagem, cada um isolado dos outros.",
+      "hint": "Pense na relação entre uma receita e um prato cozinhado a partir dela.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-docker-commands",
-      "title": "Docker Commands",
-      "description": "Which command starts a container from an image?",
-      "situation": "You have an nginx image and want to start a web server container from it.",
+      "title": "Comandos Docker",
+      "description": "Qual comando inicia um container a partir de uma imagem?",
+      "situation": "Você tem uma imagem do nginx e quer iniciar um container de servidor web a partir dela.",
       "codeExample": "You want to run nginx and expose port 80",
       "options": [
         "docker create nginx",
@@ -189,68 +189,68 @@
         "docker run nginx"
       ],
       "correctAnswer": 3,
-      "explanation": "'docker run' creates and starts a new container from an image. Example: 'docker run -d -p 80:80 nginx' runs nginx in detached mode and maps port 80. 'docker start' restarts an existing stopped container, 'docker create' only creates (doesn't start), and 'docker execute' isn't a valid command.",
-      "hint": "This is the most common command to launch containers.",
+      "explanation": "'docker run' cria e inicia um novo container a partir de uma imagem. Exemplo: 'docker run -d -p 80:80 nginx' roda o nginx em modo detached e mapeia a porta 80. 'docker start' reinicia um container existente parado, 'docker create' só cria (não inicia), e 'docker execute' não é um comando válido.",
+      "hint": "Este é o comando mais comum para lançar containers.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-docker-dockerfile",
-      "title": "Dockerfile Basics",
-      "description": "What is the purpose of a Dockerfile?",
-      "situation": "You need to containerize a Node.js application. Your team lead mentions creating a Dockerfile.",
+      "title": "Noções Básicas de Dockerfile",
+      "description": "Qual é o propósito de um Dockerfile?",
+      "situation": "Você precisa containerizar uma aplicação Node.js. Seu tech lead menciona criar um Dockerfile.",
       "options": [
-        "A Dockerfile is a text document containing instructions to build a Docker image",
-        "A Dockerfile runs containers",
-        "A Dockerfile stores container logs",
-        "A Dockerfile manages Docker networks"
+        "Um Dockerfile é um documento de texto contendo instruções para construir uma imagem Docker",
+        "Um Dockerfile roda containers",
+        "Um Dockerfile armazena logs de container",
+        "Um Dockerfile gerencia redes Docker"
       ],
       "correctAnswer": 0,
-      "explanation": "A Dockerfile is a text file with instructions (FROM, RUN, COPY, CMD, etc.) that Docker uses to build an image. It defines the base image, dependencies, files to include, and startup commands. Running 'docker build' with a Dockerfile creates an image that can then be used to run containers.",
-      "hint": "Think of it as a blueprint or recipe for creating images.",
+      "explanation": "Um Dockerfile é um arquivo de texto com instruções (FROM, RUN, COPY, CMD, etc.) que o Docker usa para construir uma imagem. Ele define a imagem base, dependências, arquivos a incluir e comandos de inicialização. Rodar 'docker build' com um Dockerfile cria uma imagem que pode então ser usada para rodar containers.",
+      "hint": "Pense nele como uma planta ou receita para criar imagens.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-docker-layers",
-      "title": "Docker Image Layers",
-      "description": "Why are Docker images built in layers?",
-      "situation": "You notice when rebuilding an image that some steps say 'Using cache'. You want to understand how this works.",
+      "title": "Camadas de Imagem Docker",
+      "description": "Por que as imagens Docker são construídas em camadas?",
+      "situation": "Você percebe que, ao reconstruir uma imagem, alguns passos mostram 'Using cache'. Você quer entender como isso funciona.",
       "codeExample": "Step 3/8 : RUN npm install\n ---> Using cache\n ---> a1b2c3d4e5f6",
       "options": [
-        "Layers have no purpose, they're just how Docker works internally",
-        "Layers slow down Docker operations",
-        "Layers enable caching and sharing, making builds faster and images smaller",
-        "Each layer requires separate storage, making images larger"
+        "Camadas não têm propósito, é só como o Docker funciona internamente",
+        "Camadas deixam as operações do Docker mais lentas",
+        "Camadas permitem cache e compartilhamento, deixando os builds mais rápidos e as imagens menores",
+        "Cada camada exige armazenamento separado, deixando as imagens maiores"
       ],
       "correctAnswer": 2,
-      "explanation": "Docker's layered architecture allows: 1) Caching - unchanged layers are reused, speeding up builds, 2) Sharing - multiple images can share common layers (e.g., same base OS), 3) Efficiency - only changed layers need to be downloaded/uploaded. Each Dockerfile instruction creates a new layer. Order matters: put frequently changing instructions last.",
-      "hint": "Consider why rebuilding is faster when only code changes, not dependencies.",
+      "explanation": "A arquitetura em camadas do Docker permite: 1) Cache - camadas inalteradas são reaproveitadas, acelerando os builds, 2) Compartilhamento - múltiplas imagens podem compartilhar camadas comuns (por exemplo, o mesmo SO base), 3) Eficiência - só as camadas alteradas precisam ser baixadas/enviadas. Cada instrução do Dockerfile cria uma nova camada. A ordem importa: coloque as instruções que mudam com mais frequência por último.",
+      "hint": "Pense em por que reconstruir é mais rápido quando só o código muda, não as dependências.",
       "difficulty": "intermediate",
       "points": 7
     },
     {
       "id": "junior-cicd-concepts",
-      "title": "CI/CD Pipeline Basics",
-      "description": "What does CI/CD stand for and what's its purpose?",
-      "situation": "You're interviewing for a junior DevOps role and need to explain CI/CD fundamentals.",
+      "title": "Noções Básicas de Pipeline CI/CD",
+      "description": "O que significa CI/CD e qual é o seu propósito?",
+      "situation": "Você está fazendo uma entrevista para uma vaga júnior de DevOps e precisa explicar os fundamentos de CI/CD.",
       "options": [
-        "Code Integration / Code Deployment - manual process for releasing software",
-        "Container Installation / Container Distribution - Docker deployment system",
-        "Cloud Integration / Cloud Development - cloud-only development workflow",
-        "Continuous Integration / Continuous Delivery - automates building, testing, and deploying code changes"
+        "Code Integration / Code Deployment - processo manual para lançar software",
+        "Container Installation / Container Distribution - sistema de deploy do Docker",
+        "Cloud Integration / Cloud Development - fluxo de desenvolvimento só em nuvem",
+        "Continuous Integration / Continuous Delivery - automatiza a construção, teste e deploy de mudanças de código"
       ],
       "correctAnswer": 3,
-      "explanation": "CI/CD automates software delivery: Continuous Integration (CI) automatically builds and tests code when developers commit changes, catching bugs early. Continuous Delivery/Deployment (CD) automates releasing to staging and production. Benefits: faster releases, fewer bugs, consistent deployments, reduced manual work. Common tools: Jenkins, GitLab CI, GitHub Actions, CircleCI.",
-      "hint": "Think about automating the path from code commit to production.",
+      "explanation": "CI/CD automatiza a entrega de software: a Integração Contínua (CI) constrói e testa o código automaticamente quando desenvolvedores fazem commit de mudanças, capturando bugs cedo. A Entrega/Deploy Contínuo (CD) automatiza o lançamento para staging e produção. Benefícios: releases mais rápidos, menos bugs, deploys consistentes, menos trabalho manual. Ferramentas comuns: Jenkins, GitLab CI, GitHub Actions, CircleCI.",
+      "hint": "Pense em automatizar o caminho do commit de código até a produção.",
       "difficulty": "beginner",
       "points": 6
     },
     {
       "id": "junior-cicd-stages",
-      "title": "Pipeline Stages",
-      "description": "What are typical stages in a CI/CD pipeline?",
-      "situation": "Your team is setting up a new pipeline. You need to identify the common stages in order.",
+      "title": "Estágios do Pipeline",
+      "description": "Quais são os estágios típicos de um pipeline de CI/CD?",
+      "situation": "Seu time está configurando um novo pipeline. Você precisa identificar os estágios comuns, em ordem.",
       "codeExample": "Pipeline: [?] -> [?] -> [?] -> [?]",
       "options": [
         "Build -> Test -> Deploy -> Monitor",
@@ -259,77 +259,77 @@
         "Monitor -> Test -> Build -> Deploy"
       ],
       "correctAnswer": 0,
-      "explanation": "Standard pipeline flow: 1) Build - compile code, install dependencies, 2) Test - run unit, integration, security tests, 3) Deploy - release to staging/production, 4) Monitor - track application health. Each stage must pass before proceeding. Failed tests block deployment, preventing bugs from reaching production.",
-      "hint": "Consider the logical order: prepare, validate, release, observe.",
+      "explanation": "Fluxo padrão de pipeline: 1) Build - compila o código, instala dependências, 2) Test - roda testes unitários, de integração, de segurança, 3) Deploy - libera para staging/produção, 4) Monitor - acompanha a saúde da aplicação. Cada estágio precisa passar antes de seguir adiante. Testes que falham bloqueiam o deploy, evitando que bugs cheguem à produção.",
+      "hint": "Pense na ordem lógica: preparar, validar, lançar, observar.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-cloud-service-models",
-      "title": "Cloud Service Models",
-      "description": "What's the difference between IaaS, PaaS, and SaaS?",
-      "situation": "During an interview, you're asked to explain cloud service models with examples.",
+      "title": "Modelos de Serviço em Nuvem",
+      "description": "Qual é a diferença entre IaaS, PaaS e SaaS?",
+      "situation": "Durante uma entrevista, pedem que você explique os modelos de serviço em nuvem com exemplos.",
       "options": [
-        "IaaS provides infrastructure (VMs, storage), PaaS provides platforms (runtime environments), SaaS provides complete applications",
-        "They're all the same, just different names",
-        "IaaS is cheapest, SaaS is most expensive",
-        "Only large companies use IaaS, startups use SaaS"
+        "O IaaS fornece infraestrutura (VMs, armazenamento), o PaaS fornece plataformas (ambientes de execução), o SaaS fornece aplicações completas",
+        "São todos a mesma coisa, só com nomes diferentes",
+        "O IaaS é o mais barato, o SaaS é o mais caro",
+        "Só grandes empresas usam IaaS, startups usam SaaS"
       ],
       "correctAnswer": 0,
-      "explanation": "IaaS (Infrastructure as a Service): Rent VMs, storage, networks - you manage OS and above (AWS EC2, Azure VMs). PaaS (Platform as a Service): Provider manages infrastructure and runtime, you deploy code (Heroku, Google App Engine). SaaS (Software as a Service): Ready-to-use applications (Gmail, Salesforce). More control = more management responsibility.",
-      "hint": "Think about the level of abstraction and who manages what.",
+      "explanation": "IaaS (Infrastructure as a Service): você aluga VMs, armazenamento, redes - e gerencia o SO para cima (AWS EC2, Azure VMs). PaaS (Platform as a Service): o provedor gerencia a infraestrutura e o runtime, você só faz o deploy do código (Heroku, Google App Engine). SaaS (Software as a Service): aplicações prontas para uso (Gmail, Salesforce). Mais controle = mais responsabilidade de gerenciamento.",
+      "hint": "Pense no nível de abstração e em quem gerencia o quê.",
       "difficulty": "beginner",
       "points": 6
     },
     {
       "id": "junior-cloud-basics",
-      "title": "Load Balancing",
-      "description": "What is the purpose of a load balancer?",
-      "situation": "Your web application runs on multiple servers. You need to explain why you need a load balancer.",
+      "title": "Balanceamento de Carga",
+      "description": "Qual é o propósito de um load balancer?",
+      "situation": "Sua aplicação web roda em vários servidores. Você precisa explicar por que precisa de um load balancer.",
       "options": [
-        "Load balancers distribute incoming traffic across multiple servers for high availability and performance",
-        "Load balancers store data",
-        "Load balancers are only for large enterprises",
-        "Load balancers replace the need for multiple servers"
+        "Load balancers distribuem o tráfego recebido entre vários servidores para alta disponibilidade e performance",
+        "Load balancers armazenam dados",
+        "Load balancers são só para grandes empresas",
+        "Load balancers eliminam a necessidade de vários servidores"
       ],
       "correctAnswer": 0,
-      "explanation": "Load balancers distribute traffic across multiple backend servers, providing: 1) High availability - if one server fails, traffic routes to healthy servers, 2) Better performance - requests spread across multiple servers, 3) Scalability - easily add/remove servers, 4) Health checks - automatically detect and avoid unhealthy servers. Examples: AWS ALB/NLB, nginx, HAProxy.",
-      "hint": "Think about spreading work across multiple workers for reliability.",
+      "explanation": "Load balancers distribuem o tráfego entre vários servidores backend, fornecendo: 1) Alta disponibilidade - se um servidor falha, o tráfego é roteado para servidores saudáveis, 2) Melhor performance - requisições distribuídas entre vários servidores, 3) Escalabilidade - facilidade para adicionar/remover servidores, 4) Health checks - detectam e evitam automaticamente servidores não saudáveis. Exemplos: AWS ALB/NLB, nginx, HAProxy.",
+      "hint": "Pense em distribuir o trabalho entre vários trabalhadores para ter mais confiabilidade.",
       "difficulty": "intermediate",
       "points": 6
     },
     {
       "id": "junior-scripting-basics",
-      "title": "Bash Scripting",
-      "description": "What does the shebang line '#!/bin/bash' do in a script?",
-      "situation": "You're writing your first deployment script and see this line at the top of examples.",
+      "title": "Scripting em Bash",
+      "description": "O que a linha shebang '#!/bin/bash' faz em um script?",
+      "situation": "Você está escrevendo seu primeiro script de deploy e vê essa linha no topo dos exemplos.",
       "codeExample": "#!/bin/bash\necho 'Deploying application...'",
       "options": [
-        "It specifies which interpreter should execute the script",
-        "It's a comment that has no effect",
-        "It makes the script executable",
-        "It's required for all text files"
+        "Especifica qual interpretador deve executar o script",
+        "É um comentário sem nenhum efeito",
+        "Torna o script executável",
+        "É obrigatória em todos os arquivos de texto"
       ],
       "correctAnswer": 0,
-      "explanation": "The shebang (#!) tells the system which interpreter to use to execute the script. #!/bin/bash uses the Bash shell, #!/usr/bin/python3 uses Python. Without it, the system uses the default shell. To run the script directly (./script.sh), you also need execute permissions (chmod +x script.sh).",
-      "hint": "This line tells the OS how to run the file.",
+      "explanation": "O shebang (#!) diz ao sistema qual interpretador usar para executar o script. #!/bin/bash usa o shell Bash, #!/usr/bin/python3 usa o Python. Sem ele, o sistema usa o shell padrão. Para rodar o script diretamente (./script.sh), você também precisa de permissão de execução (chmod +x script.sh).",
+      "hint": "Essa linha diz ao SO como rodar o arquivo.",
       "difficulty": "beginner",
       "points": 5
     },
     {
       "id": "junior-monitoring-metrics",
-      "title": "Basic Monitoring Metrics",
-      "description": "What are the four golden signals of monitoring?",
-      "situation": "Your team is setting up monitoring for a new service. You need to know which metrics matter most.",
+      "title": "Métricas Básicas de Monitoramento",
+      "description": "Quais são os quatro sinais de ouro do monitoramento?",
+      "situation": "Seu time está configurando o monitoramento de um novo serviço. Você precisa saber quais métricas importam mais.",
       "options": [
-        "CPU, Memory, Disk, Network",
-        "Latency, Traffic, Errors, Saturation",
-        "Uptime, Users, Revenue, Bugs",
-        "Logs, Metrics, Traces, Events"
+        "CPU, Memória, Disco, Rede",
+        "Latência, Tráfego, Erros, Saturação",
+        "Uptime, Usuários, Receita, Bugs",
+        "Logs, Métricas, Traces, Eventos"
       ],
       "correctAnswer": 1,
-      "explanation": "The Four Golden Signals (from Google SRE): 1) Latency - how long requests take, 2) Traffic - how many requests per second, 3) Errors - rate of failing requests, 4) Saturation - how 'full' your system is (CPU, memory, disk). These metrics quickly indicate service health and help diagnose issues. Track these first before adding more detailed metrics.",
-      "hint": "These signals come from Google's Site Reliability Engineering practices.",
+      "explanation": "Os Quatro Sinais de Ouro (do SRE do Google): 1) Latência - quanto tempo as requisições levam, 2) Tráfego - quantas requisições por segundo, 3) Erros - taxa de requisições que falham, 4) Saturação - o quão 'cheio' está o seu sistema (CPU, memória, disco). Essas métricas indicam rapidamente a saúde do serviço e ajudam a diagnosticar problemas. Acompanhe essas primeiro antes de adicionar métricas mais detalhadas.",
+      "hint": "Esses sinais vêm das práticas de Site Reliability Engineering do Google.",
       "difficulty": "intermediate",
       "points": 7
     }
