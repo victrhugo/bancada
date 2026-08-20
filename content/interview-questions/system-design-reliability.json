@@ -1,10 +1,10 @@
 {
   "id": "system-design-reliability",
   "slug": "system-design-reliability",
-  "title": "System Design for Reliability",
-  "question": "How would you design a highly available web application? What components and patterns would you use?",
-  "answer": "For high availability: 1) Multi-AZ deployment with load balancers distributing traffic across zones. 2) Stateless application servers that can scale horizontally. 3) Database replication with automatic failover (primary-replica or multi-master). 4) Caching layer (Redis/Memcached) to reduce database load. 5) CDN for static assets and geographic distribution. 6) Circuit breakers and retries for external dependencies. 7) Health checks at every layer. 8) Async processing with message queues for non-critical operations. Design for failure: assume every component can fail and plan accordingly.",
-  "explanation": "System design for reliability is a senior-level skill that combines architectural knowledge, cloud expertise, and operational experience. It requires understanding trade-offs between consistency, availability, cost, and complexity.",
+  "title": "Design de Sistemas para Confiabilidade",
+  "question": "Como você projetaria uma aplicação web de alta disponibilidade? Quais componentes e padrões você usaria?",
+  "answer": "Para alta disponibilidade: 1) Deploy multi-AZ com balanceadores de carga distribuindo o tráfego entre zonas. 2) Servidores de aplicação sem estado que podem escalar horizontalmente. 3) Replicação de banco de dados com failover automático (primário-réplica ou multi-master). 4) Camada de cache (Redis/Memcached) para reduzir a carga no banco de dados. 5) CDN para ativos estáticos e distribuição geográfica. 6) Circuit breakers e retries para dependências externas. 7) Health checks em cada camada. 8) Processamento assíncrono com filas de mensagens para operações não críticas. Projete para a falha: assuma que todo componente pode falhar e planeje de acordo.",
+  "explanation": "Design de sistemas para confiabilidade é uma habilidade de nível sênior que combina conhecimento arquitetural, expertise em nuvem e experiência operacional. Requer entender os trade-offs entre consistência, disponibilidade, custo e complexidade.",
   "category": "Architecture",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "text",
-      "label": "High Availability Architecture",
+      "label": "Arquitetura de Alta Disponibilidade",
       "code": "                    [CDN]\n                      |\n              [Load Balancer]\n              /      |      \\\n         [App-1] [App-2] [App-3]  <- Stateless, multi-AZ\n              \\      |      /\n              [Cache Layer]\n                    |\n           [Database Primary]\n                    |\n           [Database Replica]\n                    |\n              [Backup/DR]"
     }
   ],
   "followUpQuestions": [
-    "How would you handle a database failover scenario?",
-    "What is the CAP theorem and how does it affect your design decisions?",
-    "How do you test system resilience?"
+    "Como você lidaria com um cenário de failover de banco de dados?",
+    "O que é o teorema CAP e como ele afeta suas decisões de design?",
+    "Como você testa a resiliência do sistema?"
   ],
   "commonMistakes": [
-    "Single points of failure in the architecture",
-    "Not testing failover scenarios before production",
-    "Over-engineering for availability that isn't required"
+    "Pontos únicos de falha na arquitetura",
+    "Não testar cenários de failover antes da produção",
+    "Superengenheirar para uma disponibilidade que não é necessária"
   ],
   "relatedTopics": [
     "high-availability",
