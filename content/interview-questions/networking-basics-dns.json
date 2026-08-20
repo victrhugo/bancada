@@ -1,10 +1,10 @@
 {
   "id": "networking-basics-dns",
   "slug": "networking-basics-dns",
-  "title": "DNS Basics",
-  "question": "What is DNS and how does the DNS resolution process work step by step?",
-  "answer": "DNS (Domain Name System) translates human-readable domain names to IP addresses. Resolution flow: browser cache → OS cache → resolver (ISP/configured DNS) → root servers → TLD servers → authoritative nameservers. Common record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), TXT (verification).",
-  "explanation": "DNS is fundamental to how the internet works. DevOps engineers need to understand DNS for configuring domains, troubleshooting connectivity issues, setting up load balancers, managing SSL certificates, and configuring email services.",
+  "title": "Fundamentos de DNS",
+  "question": "O que é DNS e como funciona o processo de resolução de DNS, passo a passo?",
+  "answer": "DNS (Domain Name System) traduz nomes de domínio legíveis por humanos em endereços IP. Fluxo de resolução: cache do navegador → cache do sistema operacional → resolver (ISP/DNS configurado) → servidores raiz → servidores TLD → servidores de nomes autoritativos. Tipos de registro comuns: A (IPv4), AAAA (IPv6), CNAME (alias), MX (e-mail), TXT (verificação).",
+  "explanation": "O DNS é fundamental para o funcionamento da internet. Engenheiros de DevOps precisam entender DNS para configurar domínios, solucionar problemas de conectividade, configurar balanceadores de carga, gerenciar certificados SSL e configurar serviços de e-mail.",
   "category": "Networking",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "DNS troubleshooting commands",
+      "label": "Comandos de troubleshooting de DNS",
       "code": "# Query DNS records\ndig example.com\ndig example.com MX\ndig +short example.com A\n\n# Alternative tool\nnslookup example.com\n\n# Trace DNS resolution path\ndig +trace example.com\n\n# Check specific nameserver\ndig @8.8.8.8 example.com"
     },
     {
       "language": "bash",
-      "label": "Local DNS configuration",
+      "label": "Configuração local de DNS",
       "code": "# View DNS resolver config\ncat /etc/resolv.conf\n\n# Local hosts file (bypasses DNS)\ncat /etc/hosts\n# 127.0.0.1   localhost\n# 192.168.1.10   myapp.local\n\n# Flush DNS cache (varies by OS)\n# macOS\ndscacheutil -flushcache\n# Linux systemd\nsudo systemd-resolve --flush-caches"
     }
   ],
   "followUpQuestions": [
-    "What's the difference between A records and CNAME records?",
-    "What is TTL and why does it matter?",
-    "How would you set up DNS for a load-balanced application?"
+    "Qual a diferença entre registros A e registros CNAME?",
+    "O que é TTL e por que ele importa?",
+    "Como você configuraria DNS para uma aplicação com balanceamento de carga?"
   ],
   "commonMistakes": [
-    "Forgetting about DNS caching when making changes (TTL)",
-    "Using CNAME at the apex/root domain (not allowed)",
-    "Not understanding DNS propagation delays"
+    "Esquecer do cache de DNS ao fazer mudanças (TTL)",
+    "Usar CNAME no domínio raiz/apex (não permitido)",
+    "Não entender os atrasos de propagação de DNS"
   ],
   "relatedTopics": [
     "route53",

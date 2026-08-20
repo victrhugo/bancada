@@ -1,10 +1,10 @@
 {
   "id": "performance-optimization",
   "slug": "performance-optimization",
-  "title": "Application Performance Optimization",
-  "question": "How do you identify and resolve performance bottlenecks in a production application?",
-  "answer": "Performance optimization process: 1) Measure first - use APM tools (Datadog, New Relic) to identify slow endpoints. 2) Profile - CPU profiling, memory analysis, database query analysis. 3) Common bottlenecks: N+1 queries, missing indexes, synchronous operations that should be async, memory leaks, inefficient algorithms. 4) Load test to find breaking points. 5) Optimize incrementally - cache frequently accessed data, optimize database queries, implement connection pooling, use CDNs for static assets. Always measure impact of changes.",
-  "explanation": "Premature optimization is the root of all evil, but measured optimization is essential. Start with observability - you can't improve what you can't measure. APM tools show where time is spent. Database queries are often the bottleneck. Caching (Redis, CDN) can dramatically improve performance but adds complexity. Load testing reveals how the system behaves under stress.",
+  "title": "Otimização de Desempenho de Aplicações",
+  "question": "Como você identifica e resolve gargalos de desempenho em uma aplicação de produção?",
+  "answer": "Processo de otimização de desempenho: 1) Meça primeiro - use ferramentas de APM (Datadog, New Relic) para identificar endpoints lentos. 2) Faça profiling - profiling de CPU, análise de memória, análise de queries de banco de dados. 3) Gargalos comuns: queries N+1, índices ausentes, operações síncronas que deveriam ser assíncronas, vazamentos de memória, algoritmos ineficientes. 4) Faça teste de carga para encontrar pontos de ruptura. 5) Otimize incrementalmente - cacheie dados acessados com frequência, otimize queries de banco de dados, implemente connection pooling, use CDNs para assets estáticos. Sempre meça o impacto das mudanças.",
+  "explanation": "Otimização prematura é a raiz de todo mal, mas otimização baseada em medição é essencial. Comece com observabilidade - você não pode melhorar o que não pode medir. Ferramentas de APM mostram onde o tempo é gasto. Queries de banco de dados são frequentemente o gargalo. Caching (Redis, CDN) pode melhorar drasticamente o desempenho mas adiciona complexidade. Teste de carga revela como o sistema se comporta sob estresse.",
   "category": "SRE",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Database query analysis",
+      "label": "Análise de queries de banco de dados",
       "code": "# PostgreSQL slow query log\n# In postgresql.conf:\n# log_min_duration_statement = 1000  # Log queries > 1s\n\n# Analyze query plan\nEXPLAIN ANALYZE SELECT * FROM orders \n  WHERE user_id = 123 \n  ORDER BY created_at DESC\n  LIMIT 10;\n\n# Find missing indexes\nSELECT schemaname, tablename, \n       seq_scan, seq_tup_read,\n       idx_scan, idx_tup_fetch\nFROM pg_stat_user_tables\nWHERE seq_scan > idx_scan\nORDER BY seq_tup_read DESC;"
     },
     {
       "language": "yaml",
-      "label": "Redis caching pattern",
+      "label": "Padrão de cache com Redis",
       "code": "# Kubernetes Redis deployment for caching\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: redis-cache\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: redis\n  template:\n    spec:\n      containers:\n      - name: redis\n        image: redis:7-alpine\n        command: [\"redis-server\"]\n        args:\n        - \"--maxmemory\"\n        - \"256mb\"\n        - \"--maxmemory-policy\"\n        - \"allkeys-lru\"  # Evict least recently used\n        resources:\n          limits:\n            memory: 300Mi"
     }
   ],
   "followUpQuestions": [
-    "When should you use caching vs. optimizing the underlying operation?",
-    "How do you prevent cache stampede problems?",
-    "What tools do you use for load testing?"
+    "Quando você deveria usar caching vs. otimizar a operação subjacente?",
+    "Como você previne problemas de cache stampede?",
+    "Quais ferramentas você usa para teste de carga?"
   ],
   "commonMistakes": [
-    "Optimizing without measuring - guessing where bottlenecks are",
-    "Caching everything without considering cache invalidation complexity",
-    "Fixing symptoms (adding more servers) instead of root causes"
+    "Otimizar sem medir - adivinhar onde estão os gargalos",
+    "Cachear tudo sem considerar a complexidade de invalidação de cache",
+    "Corrigir sintomas (adicionar mais servidores) em vez das causas raiz"
   ],
   "relatedTopics": [
     "caching",
