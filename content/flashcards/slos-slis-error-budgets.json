@@ -1,11 +1,11 @@
 {
   "id": "slos-slis-error-budgets",
-  "title": "SLOs, SLIs, and Error Budgets",
-  "description": "A practical guide to defining service level objectives, choosing meaningful service level indicators, and managing error budgets for production services.",
+  "title": "SLOs, SLIs e Orçamentos de Erro",
+  "description": "Um guia prático para definir objetivos de nível de serviço, escolher indicadores de nível de serviço significativos e gerenciar orçamentos de erro para serviços em produção.",
   "category": "SRE",
   "icon": "Target",
   "difficulty": "intermediate",
-  "estimatedTime": "20 minutes",
+  "estimatedTime": "20 minutos",
   "cardCount": 16,
   "theme": {
     "primaryColor": "amber",
@@ -15,113 +15,113 @@
   "cards": [
     {
       "id": "sli-definition",
-      "front": "What is a Service Level Indicator (SLI)?",
-      "back": "An SLI is a quantitative measure of some aspect of the level of service being provided. It is a carefully defined metric that captures how well a service is performing from the user's perspective. Common SLIs include request latency, error rate, availability, and throughput. SLIs are expressed as a ratio: good events / total events.",
+      "front": "O que é um Service Level Indicator (SLI)?",
+      "back": "Um SLI é uma medida quantitativa de algum aspecto do nível de serviço prestado. É uma métrica cuidadosamente definida que captura o quão bem um serviço está performando do ponto de vista do usuário. SLIs comuns incluem latência de requisição, taxa de erro, disponibilidade e throughput. SLIs são expressos como uma razão: eventos bons / eventos totais.",
       "category": "Core Concepts",
       "tags": ["sre", "slis", "metrics"]
     },
     {
       "id": "slo-definition",
-      "front": "What is a Service Level Objective (SLO)?",
-      "back": "An SLO is a target value or range for an SLI, measured over a specific time window. For example: '99.9% of requests will complete in under 200ms over a rolling 30-day window.' SLOs set the reliability target that a team commits to. They should be ambitious but achievable, and directly tied to user experience.",
+      "front": "O que é um Service Level Objective (SLO)?",
+      "back": "Um SLO é um valor alvo ou faixa para um SLI, medido em uma janela de tempo específica. Por exemplo: '99,9% das requisições serão concluídas em menos de 200ms em uma janela móvel de 30 dias.' SLOs definem a meta de confiabilidade que um time assume. Devem ser ambiciosos, mas alcançáveis, e diretamente ligados à experiência do usuário.",
       "category": "Core Concepts",
       "tags": ["sre", "slos", "reliability"]
     },
     {
       "id": "sla-definition",
-      "front": "What is the difference between an SLO and an SLA?",
-      "back": "An SLA (Service Level Agreement) is a contractual commitment to customers with financial consequences if violated. An SLO is an internal reliability target used by engineering teams. SLOs should always be stricter than SLAs to provide a buffer before contractual obligations are breached. Example: SLA of 99.9% uptime externally, SLO of 99.95% internally.",
+      "front": "Qual é a diferença entre um SLO e um SLA?",
+      "back": "Um SLA (Service Level Agreement) é um compromisso contratual com clientes, com consequências financeiras se violado. Um SLO é uma meta interna de confiabilidade usada pelos times de engenharia. SLOs devem sempre ser mais rígidos que os SLAs, para dar uma margem antes que as obrigações contratuais sejam violadas. Exemplo: SLA de 99,9% de uptime externamente, SLO de 99,95% internamente.",
       "category": "Core Concepts",
       "tags": ["sre", "slos", "slas"]
     },
     {
       "id": "error-budget-definition",
-      "front": "What is an Error Budget?",
-      "back": "An error budget is the allowed amount of unreliability derived from the SLO. If your SLO is 99.9% availability, your error budget is 0.1% of total requests or time. Over a 30-day window, that is roughly 43 minutes of downtime. Error budgets create a shared framework between reliability and velocity: as long as the budget is not exhausted, teams can ship features and take risks.",
+      "front": "O que é um Orçamento de Erro (Error Budget)?",
+      "back": "Um orçamento de erro é a quantidade permitida de indisponibilidade derivada do SLO. Se o seu SLO é de 99,9% de disponibilidade, seu orçamento de erro é 0,1% do total de requisições ou do tempo. Em uma janela de 30 dias, isso equivale a aproximadamente 43 minutos de indisponibilidade. Orçamentos de erro criam um framework compartilhado entre confiabilidade e velocidade: enquanto o orçamento não estiver esgotado, os times podem lançar funcionalidades e assumir riscos.",
       "category": "Core Concepts",
       "tags": ["sre", "error-budgets", "reliability"]
     },
     {
       "id": "error-budget-calculation",
-      "front": "How do you calculate an error budget for a 30-day window?",
-      "back": "Error Budget = (1 - SLO target) x total time or requests.\n\nFor a 99.9% availability SLO over 30 days:\n- Budget = (1 - 0.999) x 30 x 24 x 60 = 43.2 minutes of allowed downtime\n\nFor a 99.95% latency SLO with 1M daily requests:\n- Budget = (1 - 0.9995) x 1,000,000 x 30 = 15,000 allowed slow requests per month",
+      "front": "Como calcular um orçamento de erro para uma janela de 30 dias?",
+      "back": "Orçamento de Erro = (1 - meta do SLO) x tempo total ou requisições totais.\n\nPara um SLO de disponibilidade de 99,9% em 30 dias:\n- Orçamento = (1 - 0,999) x 30 x 24 x 60 = 43,2 minutos de indisponibilidade permitida\n\nPara um SLO de latência de 99,95% com 1 milhão de requisições diárias:\n- Orçamento = (1 - 0,9995) x 1.000.000 x 30 = 15.000 requisições lentas permitidas por mês",
       "category": "Error Budgets",
       "tags": ["sre", "error-budgets", "math"]
     },
     {
       "id": "choosing-slis",
-      "front": "How do you choose the right SLIs for a service?",
-      "back": "Start from the user journey. Ask: 'What does the user care about?' Common SLI categories:\n\n1. Availability: Could the user complete their request?\n2. Latency: How long did it take?\n3. Quality: Was the response correct and complete?\n4. Freshness: How up-to-date is the data?\n\nAvoid vanity metrics (CPU usage, pod count). Focus on signals that directly reflect user happiness.",
+      "front": "Como escolher os SLIs certos para um serviço?",
+      "back": "Comece pela jornada do usuário. Pergunte: 'Com o que o usuário se importa?' Categorias comuns de SLI:\n\n1. Disponibilidade: o usuário conseguiu concluir a solicitação?\n2. Latência: quanto tempo levou?\n3. Qualidade: a resposta estava correta e completa?\n4. Atualidade (freshness): os dados estão atualizados?\n\nEvite métricas de vaidade (uso de CPU, contagem de pods). Foque em sinais que refletem diretamente a satisfação do usuário.",
       "category": "Implementation",
       "tags": ["sre", "slis", "best-practices"]
     },
     {
       "id": "sli-specification-vs-implementation",
-      "front": "What is the difference between an SLI specification and an SLI implementation?",
-      "back": "An SLI specification describes what you want to measure in user-centric terms (e.g., 'the proportion of requests that load in under 200ms'). An SLI implementation defines how you actually measure it (e.g., 'count of requests with response_time < 200ms in the load balancer logs divided by total request count'). Start with the specification, then find the best available implementation.",
+      "front": "Qual é a diferença entre a especificação e a implementação de um SLI?",
+      "back": "Uma especificação de SLI descreve o que você quer medir em termos centrados no usuário (por exemplo, 'a proporção de requisições que carregam em menos de 200ms'). Uma implementação de SLI define como você de fato mede isso (por exemplo, 'contagem de requisições com response_time < 200ms nos logs do load balancer dividida pelo total de requisições'). Comece pela especificação e depois encontre a melhor implementação disponível.",
       "category": "Implementation",
       "tags": ["sre", "slis", "measurement"]
     },
     {
       "id": "time-vs-event-based-slos",
-      "front": "What is the difference between time-based and event-based SLOs?",
-      "back": "Time-based SLOs measure the proportion of time a system is in a good state (e.g., '99.9% of minutes have zero errors'). Event-based SLOs measure the proportion of events that are good (e.g., '99.9% of requests succeed'). Event-based SLOs are generally preferred because they are more granular, handle variable traffic better, and more accurately reflect user experience.",
+      "front": "Qual é a diferença entre SLOs baseados em tempo e SLOs baseados em eventos?",
+      "back": "SLOs baseados em tempo medem a proporção de tempo em que um sistema está em um estado bom (por exemplo, '99,9% dos minutos têm zero erros'). SLOs baseados em eventos medem a proporção de eventos que são bons (por exemplo, '99,9% das requisições têm sucesso'). SLOs baseados em eventos geralmente são preferíveis porque são mais granulares, lidam melhor com tráfego variável e refletem com mais precisão a experiência do usuário.",
       "category": "Implementation",
       "tags": ["sre", "slos", "measurement"]
     },
     {
       "id": "error-budget-policy",
-      "front": "What is an Error Budget Policy and why is it important?",
-      "back": "An error budget policy defines what actions the team takes based on remaining error budget. Examples:\n\n- Budget > 50%: Normal feature development\n- Budget 20-50%: Prioritize reliability work alongside features\n- Budget < 20%: Freeze non-critical launches, focus on reliability\n- Budget exhausted: All engineering effort shifts to reliability\n\nWithout a policy, error budgets become informational only and lose their power to drive decisions.",
+      "front": "O que é uma Política de Orçamento de Erro e por que ela é importante?",
+      "back": "Uma política de orçamento de erro define quais ações o time toma com base no orçamento de erro restante. Exemplos:\n\n- Orçamento > 50%: desenvolvimento normal de funcionalidades\n- Orçamento entre 20-50%: priorizar trabalho de confiabilidade junto com funcionalidades\n- Orçamento < 20%: congelar lançamentos não críticos, focar em confiabilidade\n- Orçamento esgotado: todo o esforço de engenharia migra para confiabilidade\n\nSem uma política, os orçamentos de erro se tornam apenas informativos e perdem o poder de guiar decisões.",
       "category": "Error Budgets",
       "tags": ["sre", "error-budgets", "policy"]
     },
     {
       "id": "burn-rate",
-      "front": "What is a burn rate and how is it used for alerting?",
-      "back": "Burn rate measures how fast the error budget is being consumed relative to the SLO window. A burn rate of 1 means the budget will be exactly exhausted by the end of the window. A burn rate of 10 means the budget will be consumed 10x faster than sustainable.\n\nMulti-window burn rate alerts (e.g., 14.4x over 1 hour AND 6x over 6 hours) provide fast, accurate alerting with low false-positive rates. This is the recommended approach from Google's SRE workbook.",
+      "front": "O que é burn rate e como ele é usado para alertas?",
+      "back": "O burn rate mede a velocidade com que o orçamento de erro está sendo consumido em relação à janela do SLO. Um burn rate de 1 significa que o orçamento será exatamente esgotado ao fim da janela. Um burn rate de 10 significa que o orçamento será consumido 10x mais rápido do que o sustentável.\n\nAlertas de burn rate com múltiplas janelas (por exemplo, 14,4x em 1 hora E 6x em 6 horas) fornecem alertas rápidos e precisos, com baixa taxa de falsos positivos. Essa é a abordagem recomendada pelo SRE workbook do Google.",
       "category": "Alerting",
       "tags": ["sre", "error-budgets", "alerting", "burn-rate"]
     },
     {
       "id": "multi-window-alerting",
-      "front": "Why use multi-window, multi-burn-rate alerting instead of simple threshold alerts?",
-      "back": "Simple threshold alerts (e.g., 'error rate > 1%') suffer from either slow detection or high false-positive rates. Multi-window burn rate alerts solve this by combining:\n\n- A short window for fast detection (e.g., 1-hour burn rate > 14.4x)\n- A longer window to confirm sustained impact (e.g., 6-hour burn rate > 6x)\n\nThis catches both sudden outages and slow-burn degradations while filtering out brief spikes that do not meaningfully affect the error budget.",
+      "front": "Por que usar alertas de burn rate com múltiplas janelas em vez de alertas simples de limiar?",
+      "back": "Alertas simples de limiar (por exemplo, 'taxa de erro > 1%') sofrem tanto com detecção lenta quanto com alta taxa de falsos positivos. Alertas de burn rate com múltiplas janelas resolvem isso combinando:\n\n- Uma janela curta para detecção rápida (por exemplo, burn rate de 1 hora > 14,4x)\n- Uma janela mais longa para confirmar impacto sustentado (por exemplo, burn rate de 6 horas > 6x)\n\nIsso captura tanto interrupções súbitas quanto degradações lentas, filtrando picos breves que não afetam significativamente o orçamento de erro.",
       "category": "Alerting",
       "tags": ["sre", "alerting", "burn-rate", "best-practices"]
     },
     {
       "id": "rolling-vs-calendar-windows",
-      "front": "Should SLOs use rolling windows or calendar-aligned windows?",
-      "back": "Rolling windows (e.g., last 30 days) provide continuous measurement and avoid the 'reset effect' at month boundaries where teams might tolerate degradation early in a period. Calendar windows (e.g., per month) are simpler to report on and align with business cycles.\n\nBest practice: use rolling windows for operational decisions and alerting. Use calendar windows for business reporting and review meetings.",
+      "front": "SLOs devem usar janelas móveis ou janelas alinhadas ao calendário?",
+      "back": "Janelas móveis (por exemplo, os últimos 30 dias) fornecem medição contínua e evitam o 'efeito de reinício' nas fronteiras do mês, em que os times poderiam tolerar degradação no início de um período. Janelas de calendário (por exemplo, por mês) são mais simples de reportar e se alinham aos ciclos de negócio.\n\nBoa prática: use janelas móveis para decisões operacionais e alertas. Use janelas de calendário para relatórios de negócio e reuniões de revisão.",
       "category": "Implementation",
       "tags": ["sre", "slos", "measurement"]
     },
     {
       "id": "setting-slo-targets",
-      "front": "How do you set the right SLO target? What if you have no historical data?",
-      "back": "With historical data: measure current performance, then set the SLO slightly below actual performance to start. Tighten it over time as reliability improves.\n\nWithout historical data: start with industry benchmarks (e.g., 99.9% for most web services) and adjust after collecting 2-4 weeks of data.\n\nKey principles:\n- Do not aim for 100%, it is infinitely expensive\n- SLOs should reflect user expectations\n- Tighter SLOs mean less room for feature velocity\n- Different user tiers may warrant different SLOs",
+      "front": "Como definir a meta certa de SLO? E se você não tiver dados históricos?",
+      "back": "Com dados históricos: meça o desempenho atual e defina o SLO ligeiramente abaixo do desempenho real para começar. Aperte-o ao longo do tempo conforme a confiabilidade melhora.\n\nSem dados históricos: comece com benchmarks do setor (por exemplo, 99,9% para a maioria dos serviços web) e ajuste depois de coletar de 2 a 4 semanas de dados.\n\nPrincípios-chave:\n- Não almeje 100%, isso é infinitamente caro\n- SLOs devem refletir as expectativas do usuário\n- SLOs mais rígidos significam menos espaço para velocidade de funcionalidades\n- Diferentes níveis de usuário podem justificar SLOs diferentes",
       "category": "Implementation",
       "tags": ["sre", "slos", "best-practices"]
     },
     {
       "id": "where-to-measure-slis",
-      "front": "Where should SLIs be measured in the request path?",
-      "back": "Measure as close to the user as possible:\n\n1. Best: Client-side instrumentation or Real User Monitoring (RUM)\n2. Good: Load balancer or API gateway logs\n3. Acceptable: Application-level metrics\n4. Avoid: Backend infrastructure metrics (database CPU, pod memory)\n\nMeasuring at the edge captures issues like DNS failures, TLS errors, and network latency that internal metrics miss. The further from the user you measure, the more failure modes you miss.",
+      "front": "Onde os SLIs devem ser medidos no caminho da requisição?",
+      "back": "Meça o mais próximo possível do usuário:\n\n1. Melhor: instrumentação client-side ou Real User Monitoring (RUM)\n2. Bom: logs do load balancer ou do API gateway\n3. Aceitável: métricas em nível de aplicação\n4. Evite: métricas de infraestrutura de backend (CPU do banco de dados, memória do pod)\n\nMedir na borda captura problemas como falhas de DNS, erros de TLS e latência de rede que métricas internas não enxergam. Quanto mais longe do usuário você mede, mais modos de falha você perde.",
       "category": "Implementation",
       "tags": ["sre", "slis", "measurement", "monitoring"]
     },
     {
       "id": "slo-document",
-      "front": "What should an SLO document include?",
-      "back": "A complete SLO document should contain:\n\n1. Service overview and stakeholders\n2. SLI definitions (specification and implementation)\n3. SLO targets and measurement windows\n4. Error budget policy with escalation steps\n5. Rationale for chosen targets\n6. Review schedule (quarterly is common)\n\nThe document should be co-owned by the engineering team and product stakeholders, and reviewed regularly to ensure SLOs still reflect user needs.",
+      "front": "O que um documento de SLO deve incluir?",
+      "back": "Um documento de SLO completo deve conter:\n\n1. Visão geral do serviço e stakeholders\n2. Definições de SLI (especificação e implementação)\n3. Metas de SLO e janelas de medição\n4. Política de orçamento de erro com etapas de escalonamento\n5. Justificativa para as metas escolhidas\n6. Cronograma de revisão (trimestral é comum)\n\nO documento deve ser de propriedade conjunta do time de engenharia e dos stakeholders de produto, e revisado regularmente para garantir que os SLOs ainda reflitam as necessidades dos usuários.",
       "category": "Process",
       "tags": ["sre", "slos", "documentation"]
     },
     {
       "id": "common-slo-mistakes",
-      "front": "What are common mistakes teams make when implementing SLOs?",
-      "back": "1. Setting SLOs based on infrastructure metrics instead of user experience\n2. Targeting 100% reliability (impossible and blocks all change)\n3. Having too many SLOs per service (aim for 2-4)\n4. No error budget policy, making SLOs purely informational\n5. Not involving product owners in setting targets\n6. Measuring at the wrong layer (server-side only)\n7. Never revising SLOs after initial setup\n8. Using SLOs to blame teams instead of driving improvement",
+      "front": "Quais são os erros comuns que os times cometem ao implementar SLOs?",
+      "back": "1. Definir SLOs com base em métricas de infraestrutura em vez de experiência do usuário\n2. Almejar 100% de confiabilidade (impossível e bloqueia toda mudança)\n3. Ter SLOs demais por serviço (o ideal é entre 2 e 4)\n4. Não ter política de orçamento de erro, tornando os SLOs puramente informativos\n5. Não envolver os donos de produto na definição das metas\n6. Medir na camada errada (apenas server-side)\n7. Nunca revisar os SLOs após a configuração inicial\n8. Usar SLOs para culpar times em vez de guiar melhorias",
       "category": "Process",
       "tags": ["sre", "slos", "anti-patterns"]
     }

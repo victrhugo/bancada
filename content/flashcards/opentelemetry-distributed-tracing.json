@@ -1,11 +1,11 @@
 {
   "id": "opentelemetry-distributed-tracing",
-  "title": "Distributed Tracing with OpenTelemetry",
-  "description": "Learn how OpenTelemetry works end to end: instrumenting services, propagating context, running the Collector, sampling traces, and visualizing them in Jaeger or Tempo.",
+  "title": "Tracing Distribuído com OpenTelemetry",
+  "description": "Aprenda como o OpenTelemetry funciona de ponta a ponta: instrumentando serviços, propagando contexto, rodando o Collector, amostrando traces e visualizando-os no Jaeger ou Tempo.",
   "category": "Observability",
   "icon": "GitFork",
   "difficulty": "intermediate",
-  "estimatedTime": "22 minutes",
+  "estimatedTime": "22 minutos",
   "cardCount": 16,
   "theme": {
     "primaryColor": "indigo",
@@ -15,113 +15,113 @@
   "cards": [
     {
       "id": "why-distributed-tracing",
-      "front": "Why do you need distributed tracing in a microservices system?",
-      "back": "When one user request touches five services, logs alone cannot tell you which hop was slow or which one returned a 500. A trace stitches all the hops into a single timeline using a shared trace ID, so you can see exactly where latency or errors appear. Without tracing you end up grepping logs across services trying to correlate timestamps.",
+      "front": "Por que você precisa de tracing distribuído em um sistema de microsserviços?",
+      "back": "Quando uma requisição de usuário passa por cinco serviços, os logs sozinhos não conseguem dizer qual etapa foi lenta ou qual retornou um 500. Um trace costura todas as etapas em uma única linha do tempo usando um trace ID compartilhado, para que você veja exatamente onde a latência ou os erros aparecem. Sem tracing, você acaba fazendo grep em logs entre serviços tentando correlacionar timestamps.",
       "category": "Fundamentals",
       "tags": ["tracing", "microservices", "debugging"]
     },
     {
       "id": "trace-vs-span",
-      "front": "What is the difference between a trace and a span?",
-      "back": "A trace is the full journey of one request through your system. A span is one unit of work inside that trace, like a single HTTP call or database query. Spans have a start time, duration, attributes, and a parent span ID that builds the tree. One trace usually contains many spans.",
+      "front": "Qual é a diferença entre um trace e um span?",
+      "back": "Um trace é a jornada completa de uma requisição pelo seu sistema. Um span é uma unidade de trabalho dentro desse trace, como uma única chamada HTTP ou consulta a banco de dados. Spans têm um horário de início, duração, atributos e um parent span ID que constrói a árvore. Um trace geralmente contém muitos spans.",
       "category": "Fundamentals",
       "tags": ["trace", "span", "concepts"]
     },
     {
       "id": "what-is-opentelemetry",
-      "front": "What is OpenTelemetry and what problem does it solve?",
-      "back": "OpenTelemetry (OTel) is a vendor neutral standard and set of SDKs for generating traces, metrics, and logs. Before OTel, every tracing vendor had its own SDK (Jaeger, Zipkin, Datadog, New Relic), so switching backends meant rewriting instrumentation. With OTel you instrument once and export to any backend that speaks OTLP.",
+      "front": "O que é o OpenTelemetry e qual problema ele resolve?",
+      "back": "OpenTelemetry (OTel) é um padrão neutro em relação a fornecedores e um conjunto de SDKs para gerar traces, métricas e logs. Antes do OTel, cada fornecedor de tracing tinha seu próprio SDK (Jaeger, Zipkin, Datadog, New Relic), então trocar de backend significava reescrever a instrumentação. Com o OTel, você instrumenta uma vez e exporta para qualquer backend que fale OTLP.",
       "category": "Fundamentals",
       "tags": ["opentelemetry", "otel", "standard"]
     },
     {
       "id": "context-propagation",
-      "front": "What is context propagation and why does it matter?",
-      "back": "Context propagation passes the trace ID and parent span ID across service boundaries, usually in HTTP headers like traceparent (W3C Trace Context). If service A calls service B without propagating context, service B starts a new trace and you lose the connection. Every HTTP client, message producer, and gRPC call needs the propagator configured.",
+      "front": "O que é propagação de contexto e por que ela importa?",
+      "back": "A propagação de contexto passa o trace ID e o parent span ID entre os limites de serviço, geralmente em cabeçalhos HTTP como traceparent (W3C Trace Context). Se o serviço A chama o serviço B sem propagar o contexto, o serviço B inicia um novo trace e você perde a conexão. Todo cliente HTTP, produtor de mensagens e chamada gRPC precisa ter o propagador configurado.",
       "category": "Fundamentals",
       "tags": ["context-propagation", "traceparent", "w3c"]
     },
     {
       "id": "auto-vs-manual-instrumentation",
-      "front": "When should you use auto instrumentation versus manual instrumentation?",
-      "back": "Start with auto instrumentation. It patches common libraries (HTTP clients, frameworks, DB drivers) with zero code changes and gets you 80% of the value. Add manual spans for business logic that matters: cache lookups, queue processing, expensive computations. You almost always want both, not one or the other.",
+      "front": "Quando usar instrumentação automática versus instrumentação manual?",
+      "back": "Comece com instrumentação automática. Ela aplica patches em bibliotecas comuns (clientes HTTP, frameworks, drivers de banco de dados) sem nenhuma alteração de código e já entrega 80% do valor. Adicione spans manuais para lógica de negócio que importa: buscas em cache, processamento de filas, cálculos caros. Você quase sempre vai querer as duas, não apenas uma delas.",
       "category": "Instrumentation",
       "tags": ["auto-instrumentation", "manual", "best-practices"]
     },
     {
       "id": "python-auto-instrument",
-      "front": "How do you auto instrument a Python app without changing any code?",
-      "back": "Install the packages and run the app under opentelemetry-instrument:\n\npip install opentelemetry-distro opentelemetry-exporter-otlp\nopentelemetry-bootstrap -a install\nopentelemetry-instrument \\\n  --traces_exporter otlp \\\n  --service_name checkout-api \\\n  --exporter_otlp_endpoint http://collector:4317 \\\n  python app.py\n\nFlask, Django, requests, psycopg2, and many others get instrumented automatically.",
+      "front": "Como instrumentar automaticamente uma aplicação Python sem alterar nenhum código?",
+      "back": "Instale os pacotes e rode a aplicação sob opentelemetry-instrument:\n\npip install opentelemetry-distro opentelemetry-exporter-otlp\nopentelemetry-bootstrap -a install\nopentelemetry-instrument \\\n  --traces_exporter otlp \\\n  --service_name checkout-api \\\n  --exporter_otlp_endpoint http://collector:4317 \\\n  python app.py\n\nFlask, Django, requests, psycopg2 e muitos outros são instrumentados automaticamente.",
       "category": "Instrumentation",
       "tags": ["python", "auto-instrumentation", "otlp"]
     },
     {
       "id": "create-manual-span",
-      "front": "How do you create a manual span in Python?",
-      "back": "Get a tracer and use start_as_current_span as a context manager:\n\nfrom opentelemetry import trace\n\ntracer = trace.get_tracer(__name__)\n\nwith tracer.start_as_current_span(\"charge_customer\") as span:\n    span.set_attribute(\"customer.id\", customer_id)\n    span.set_attribute(\"order.total\", total)\n    charge(customer_id, total)\n\nThe span automatically ends when the block exits and any nested spans become its children.",
+      "front": "Como criar um span manual em Python?",
+      "back": "Obtenha um tracer e use start_as_current_span como um context manager:\n\nfrom opentelemetry import trace\n\ntracer = trace.get_tracer(__name__)\n\nwith tracer.start_as_current_span(\"charge_customer\") as span:\n    span.set_attribute(\"customer.id\", customer_id)\n    span.set_attribute(\"order.total\", total)\n    charge(customer_id, total)\n\nO span termina automaticamente quando o bloco é encerrado, e quaisquer spans aninhados se tornam seus filhos.",
       "category": "Instrumentation",
       "tags": ["python", "manual-spans", "tracer"]
     },
     {
       "id": "span-attributes-events",
-      "front": "What is the difference between span attributes and span events?",
-      "back": "Attributes are key value tags on a span, like http.method=GET or user.id=42. They describe what the span did. Events are timestamped log messages attached to a span, like \"cache miss\" or \"retry attempt 2\". Use attributes for structured data you will query on. Use events for point in time things that happened during the span.",
+      "front": "Qual é a diferença entre atributos de span e eventos de span?",
+      "back": "Atributos são tags de chave-valor em um span, como http.method=GET ou user.id=42. Eles descrevem o que o span fez. Eventos são mensagens de log com timestamp anexadas a um span, como \"cache miss\" ou \"tentativa de retry 2\". Use atributos para dados estruturados que você vai consultar. Use eventos para coisas pontuais que aconteceram durante o span.",
       "category": "Instrumentation",
       "tags": ["attributes", "events", "semantic-conventions"]
     },
     {
       "id": "record-exception",
-      "front": "How do you record an exception on a span and mark it as failed?",
-      "back": "Use record_exception to attach the stack trace and set_status to mark the span as errored:\n\nfrom opentelemetry.trace import Status, StatusCode\n\ntry:\n    do_work()\nexcept Exception as e:\n    span.record_exception(e)\n    span.set_status(Status(StatusCode.ERROR, str(e)))\n    raise\n\nWithout set_status the span shows green in the UI even though an exception was recorded.",
+      "front": "Como registrar uma exceção em um span e marcá-lo como falho?",
+      "back": "Use record_exception para anexar o stack trace e set_status para marcar o span como com erro:\n\nfrom opentelemetry.trace import Status, StatusCode\n\ntry:\n    do_work()\nexcept Exception as e:\n    span.record_exception(e)\n    span.set_status(Status(StatusCode.ERROR, str(e)))\n    raise\n\nSem set_status, o span aparece verde na interface mesmo que uma exceção tenha sido registrada.",
       "category": "Instrumentation",
       "tags": ["errors", "exceptions", "status"]
     },
     {
       "id": "otel-collector",
-      "front": "What is the OpenTelemetry Collector and why should you run one?",
-      "back": "The Collector is a standalone service that receives telemetry from apps, processes it, and exports it to backends. Running one means your apps only need to know about OTLP. The Collector handles batching, retries, sampling, enrichment, and fan out to multiple backends. Upgrading or switching vendors becomes a config change instead of a redeploy of every service.",
+      "front": "O que é o OpenTelemetry Collector e por que você deveria rodar um?",
+      "back": "O Collector é um serviço independente que recebe telemetria das aplicações, a processa e a exporta para backends. Rodar um significa que suas aplicações só precisam saber sobre OTLP. O Collector cuida de batching, retries, sampling, enriquecimento e fan out para múltiplos backends. Atualizar ou trocar de fornecedor se torna uma mudança de configuração em vez de um redeploy de cada serviço.",
       "category": "Collection",
       "tags": ["collector", "otlp", "architecture"]
     },
     {
       "id": "collector-pipeline",
-      "front": "What are the three stages of a Collector pipeline?",
-      "back": "Receivers, processors, and exporters:\n\nreceivers:\n  otlp:\n    protocols:\n      grpc:\n        endpoint: 0.0.0.0:4317\nprocessors:\n  batch:\n  memory_limiter:\n    limit_mib: 512\nexporters:\n  otlp/jaeger:\n    endpoint: jaeger:4317\nservice:\n  pipelines:\n    traces:\n      receivers: [otlp]\n      processors: [memory_limiter, batch]\n      exporters: [otlp/jaeger]\n\nReceivers ingest, processors transform, exporters send.",
+      "front": "Quais são os três estágios de um pipeline do Collector?",
+      "back": "Receivers, processors e exporters:\n\nreceivers:\n  otlp:\n    protocols:\n      grpc:\n        endpoint: 0.0.0.0:4317\nprocessors:\n  batch:\n  memory_limiter:\n    limit_mib: 512\nexporters:\n  otlp/jaeger:\n    endpoint: jaeger:4317\nservice:\n  pipelines:\n    traces:\n      receivers: [otlp]\n      processors: [memory_limiter, batch]\n      exporters: [otlp/jaeger]\n\nReceivers recebem os dados, processors os transformam, exporters os enviam.",
       "category": "Collection",
       "tags": ["collector", "pipeline", "config"]
     },
     {
       "id": "otlp-protocol",
-      "front": "What is OTLP and which ports does it use?",
-      "back": "OTLP is the OpenTelemetry Protocol, the wire format apps use to send telemetry. It runs over gRPC on port 4317 or HTTP on port 4318. gRPC is more efficient and is the default for most SDKs. HTTP is useful when you need to go through proxies or load balancers that do not speak gRPC well.",
+      "front": "O que é o OTLP e quais portas ele usa?",
+      "back": "OTLP é o OpenTelemetry Protocol, o formato de transmissão que as aplicações usam para enviar telemetria. Ele roda sobre gRPC na porta 4317 ou HTTP na porta 4318. gRPC é mais eficiente e é o padrão na maioria dos SDKs. HTTP é útil quando você precisa passar por proxies ou load balancers que não lidam bem com gRPC.",
       "category": "Collection",
       "tags": ["otlp", "grpc", "http"]
     },
     {
       "id": "head-vs-tail-sampling",
-      "front": "What is the difference between head based and tail based sampling?",
-      "back": "Head based sampling decides to keep or drop a trace at the first span, before you know what happens. It is cheap but blind: you might drop the exact slow or failed request you wanted. Tail based sampling buffers all spans of a trace in the Collector, then decides after it is complete. You can keep every error and every trace over 1s, drop the rest. More expensive, much more useful.",
+      "front": "Qual é a diferença entre sampling baseado em head e sampling baseado em tail?",
+      "back": "O sampling baseado em head decide manter ou descartar um trace no primeiro span, antes de saber o que vai acontecer. É barato, mas cego: você pode descartar exatamente a requisição lenta ou com falha que queria. O sampling baseado em tail armazena todos os spans de um trace no Collector e decide depois que ele está completo. Você pode manter todo erro e todo trace acima de 1s, e descartar o resto. Mais caro, muito mais útil.",
       "category": "Sampling",
       "tags": ["sampling", "head-based", "tail-based"]
     },
     {
       "id": "tail-sampling-config",
-      "front": "How do you configure tail based sampling in the Collector to keep errors and slow traces?",
-      "back": "Use the tail_sampling processor with policies:\n\nprocessors:\n  tail_sampling:\n    decision_wait: 10s\n    policies:\n      - name: errors\n        type: status_code\n        status_code:\n          status_codes: [ERROR]\n      - name: slow\n        type: latency\n        latency:\n          threshold_ms: 1000\n      - name: baseline\n        type: probabilistic\n        probabilistic:\n          sampling_percentage: 5\n\nAll errors and traces over 1s are kept, plus 5% of normal traffic.",
+      "front": "Como configurar tail based sampling no Collector para manter erros e traces lentos?",
+      "back": "Use o processor tail_sampling com políticas:\n\nprocessors:\n  tail_sampling:\n    decision_wait: 10s\n    policies:\n      - name: errors\n        type: status_code\n        status_code:\n          status_codes: [ERROR]\n      - name: slow\n        type: latency\n        latency:\n          threshold_ms: 1000\n      - name: baseline\n        type: probabilistic\n        probabilistic:\n          sampling_percentage: 5\n\nTodos os erros e traces acima de 1s são mantidos, além de 5% do tráfego normal.",
       "category": "Sampling",
       "tags": ["tail-sampling", "collector", "policies"]
     },
     {
       "id": "jaeger-vs-tempo",
-      "front": "Jaeger, Tempo, or Zipkin: how do they compare as trace backends?",
-      "back": "Jaeger is the classic choice: mature, good UI, supports search by service, operation, tags. Tempo (Grafana) is cheaper at scale because it only indexes trace IDs and stores spans in object storage like S3. You find traces via Loki logs or Grafana exemplars, not by searching tags. Zipkin is older and simpler, fine for small setups. For new projects pick Tempo if you already run Grafana, otherwise Jaeger.",
+      "front": "Jaeger, Tempo ou Zipkin: como eles se comparam como backends de trace?",
+      "back": "Jaeger é a escolha clássica: maduro, boa interface, suporta busca por serviço, operação e tags. Tempo (Grafana) é mais barato em escala porque só indexa trace IDs e armazena spans em object storage como S3. Você encontra traces via logs do Loki ou exemplars do Grafana, não buscando por tags. Zipkin é mais antigo e mais simples, adequado para instalações pequenas. Para projetos novos, escolha Tempo se você já usa Grafana, caso contrário Jaeger.",
       "category": "Visualization",
       "tags": ["jaeger", "tempo", "zipkin"]
     },
     {
       "id": "debug-slow-request-with-trace",
-      "front": "How do you find the bottleneck in a slow request using a trace view?",
-      "back": "Open the trace in Jaeger or Tempo and look at the Gantt chart. The longest bar on the critical path is your bottleneck. Watch for: one span taking most of the total duration (slow downstream call), many small sequential spans (N+1 query pattern, batch them), large gaps between child spans (work happening without instrumentation, add a manual span there). The critical path rarely lies.",
+      "front": "Como encontrar o gargalo em uma requisição lenta usando uma visualização de trace?",
+      "back": "Abra o trace no Jaeger ou Tempo e observe o gráfico de Gantt. A barra mais longa no caminho crítico é o seu gargalo. Fique atento a: um span que ocupa a maior parte da duração total (chamada downstream lenta), muitos spans sequenciais pequenos (padrão N+1 de consultas, agrupe-as), grandes lacunas entre spans filhos (trabalho acontecendo sem instrumentação, adicione um span manual ali). O caminho crítico raramente mente.",
       "category": "Visualization",
       "tags": ["debugging", "latency", "gantt"]
     }
