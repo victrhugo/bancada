@@ -1,7 +1,7 @@
 {
   "id": "terraform-basics",
-  "title": "Terraform Basics",
-  "description": "Learn Infrastructure as Code fundamentals with Terraform.",
+  "title": "Fundamentos do Terraform",
+  "description": "Aprenda os fundamentos de Infrastructure as Code com o Terraform.",
   "category": "Infrastructure as Code",
   "icon": "Boxes",
   "difficulty": "intermediate",
@@ -15,113 +15,113 @@
   "cards": [
     {
       "id": "tf-1",
-      "front": "What are the main Terraform workflow steps?",
-      "back": "Write → Init → Plan → Apply → Destroy. Write configuration, initialize providers, preview changes, apply infrastructure, and optionally destroy resources.",
+      "front": "Quais são as principais etapas do fluxo de trabalho do Terraform?",
+      "back": "Escrever → Init → Plan → Apply → Destroy. Escreva a configuração, inicialize os providers, visualize as mudanças, aplique a infraestrutura e, opcionalmente, destrua os recursos.",
       "category": "Workflow",
       "tags": ["workflow", "basics"]
     },
     {
       "id": "tf-2",
-      "front": "What does 'terraform init' do?",
-      "back": "Initializes a Terraform working directory by downloading provider plugins and setting up the backend for state storage.",
+      "front": "O que o comando 'terraform init' faz?",
+      "back": "Inicializa um diretório de trabalho do Terraform, baixando os plugins de provider e configurando o backend para armazenamento do state.",
       "category": "Commands",
       "tags": ["init", "setup"]
     },
     {
       "id": "tf-3",
-      "front": "What's the purpose of terraform.tfstate?",
-      "back": "Stores the current state of managed infrastructure, mapping real-world resources to configuration. Critical for tracking changes.",
+      "front": "Qual o propósito do terraform.tfstate?",
+      "back": "Armazena o estado atual da infraestrutura gerenciada, mapeando recursos do mundo real para a configuração. Fundamental para rastrear mudanças.",
       "category": "State Management",
       "tags": ["state", "tfstate"]
     },
     {
       "id": "tf-4",
-      "front": "What's the difference between 'terraform plan' and 'terraform apply'?",
-      "back": "plan shows a preview of changes without applying them; apply executes the changes and updates infrastructure.",
+      "front": "Qual a diferença entre 'terraform plan' e 'terraform apply'?",
+      "back": "O plan mostra uma prévia das mudanças sem aplicá-las; o apply executa as mudanças e atualiza a infraestrutura.",
       "category": "Commands",
       "tags": ["plan", "apply"]
     },
     {
       "id": "tf-5",
-      "front": "What are Terraform providers?",
-      "back": "Plugins that enable Terraform to interact with cloud platforms, SaaS providers, and APIs (e.g., AWS, Azure, Kubernetes).",
+      "front": "O que são os providers do Terraform?",
+      "back": "Plugins que permitem ao Terraform interagir com plataformas de nuvem, provedores de SaaS e APIs (por exemplo, AWS, Azure, Kubernetes).",
       "category": "Providers",
       "tags": ["providers", "plugins"]
     },
     {
       "id": "tf-6",
-      "front": "What's a Terraform module?",
-      "back": "A reusable collection of Terraform configuration files in a directory. Modules enable code organization and reusability.",
+      "front": "O que é um módulo do Terraform?",
+      "back": "Uma coleção reutilizável de arquivos de configuração do Terraform em um diretório. Módulos permitem organização e reutilização de código.",
       "category": "Modules",
       "tags": ["modules", "reusability"]
     },
     {
       "id": "tf-7",
-      "front": "What are Terraform variables?",
-      "back": "Input parameters that allow customization of infrastructure without modifying source code. Defined with 'variable' blocks.",
+      "front": "O que são as variáveis do Terraform?",
+      "back": "Parâmetros de entrada que permitem customizar a infraestrutura sem modificar o código-fonte. Definidas com blocos 'variable'.",
       "category": "Variables",
       "tags": ["variables", "input"]
     },
     {
       "id": "tf-8",
-      "front": "What's the difference between local and remote backends?",
-      "back": "Local stores state on disk; remote stores state in a shared location (S3, Terraform Cloud) enabling team collaboration.",
+      "front": "Qual a diferença entre backends local e remoto?",
+      "back": "O local armazena o state em disco; o remoto armazena o state em um local compartilhado (S3, Terraform Cloud), permitindo colaboração em equipe.",
       "category": "State Management",
       "tags": ["backend", "state"]
     },
     {
       "id": "tf-9",
-      "front": "What command imports existing infrastructure?",
-      "back": "terraform import <resource_type>.<name> <id> - Brings existing resources under Terraform management.",
+      "front": "Qual comando importa infraestrutura existente?",
+      "back": "terraform import <tipo_do_recurso>.<nome> <id> — traz recursos existentes para o gerenciamento do Terraform.",
       "category": "Commands",
       "tags": ["import", "migration"]
     },
     {
       "id": "tf-10",
-      "front": "What are Terraform outputs?",
-      "back": "Values exported from Terraform configuration, useful for displaying info or passing to other modules/scripts.",
+      "front": "O que são os outputs do Terraform?",
+      "back": "Valores exportados da configuração do Terraform, úteis para exibir informações ou repassá-las a outros módulos/scripts.",
       "category": "Outputs",
       "tags": ["outputs", "export"]
     },
     {
       "id": "tf-11",
-      "front": "What's the purpose of 'terraform fmt'?",
-      "back": "Formats Terraform configuration files to a canonical style for consistency and readability.",
+      "front": "Qual o propósito do 'terraform fmt'?",
+      "back": "Formata os arquivos de configuração do Terraform em um estilo canônico, garantindo consistência e legibilidade.",
       "category": "Best Practices",
       "tags": ["formatting", "style"]
     },
     {
       "id": "tf-12",
-      "front": "What are data sources in Terraform?",
-      "back": "Allow Terraform to fetch information from external sources or existing infrastructure without managing it.",
+      "front": "O que são data sources no Terraform?",
+      "back": "Permitem que o Terraform busque informações de fontes externas ou de infraestrutura existente sem gerenciá-la.",
       "category": "Data Sources",
       "tags": ["data", "read"]
     },
     {
       "id": "tf-13",
-      "front": "What's 'terraform taint' used for?",
-      "back": "Marks a resource for destruction and recreation on the next apply. Useful when a resource is damaged or needs replacement.",
+      "front": "Para que serve o 'terraform taint'?",
+      "back": "Marca um recurso para destruição e recriação no próximo apply. Útil quando um recurso está danificado ou precisa ser substituído.",
       "category": "Commands",
       "tags": ["taint", "recreation"]
     },
     {
       "id": "tf-14",
-      "front": "What are provisioners in Terraform?",
-      "back": "Execute scripts or commands on resources during creation/destruction. Use as a last resort; prefer cloud-init or config management.",
+      "front": "O que são provisioners no Terraform?",
+      "back": "Executam scripts ou comandos em recursos durante a criação/destruição. Use como último recurso; prefira cloud-init ou ferramentas de gerenciamento de configuração.",
       "category": "Provisioners",
       "tags": ["provisioners", "scripts"]
     },
     {
       "id": "tf-15",
-      "front": "What's the purpose of .terraform.lock.hcl?",
-      "back": "Lock file that records exact provider versions used, ensuring consistent provider versions across team members.",
+      "front": "Qual o propósito do .terraform.lock.hcl?",
+      "back": "Arquivo de lock que registra as versões exatas dos providers usados, garantindo versões consistentes entre os membros da equipe.",
       "category": "State Management",
       "tags": ["lock", "versions"]
     },
     {
       "id": "tf-16",
-      "front": "What does 'terraform validate' do?",
-      "back": "Checks configuration files for syntax errors and internal consistency without accessing remote services.",
+      "front": "O que o comando 'terraform validate' faz?",
+      "back": "Verifica os arquivos de configuração em busca de erros de sintaxe e consistência interna, sem acessar serviços remotos.",
       "category": "Commands",
       "tags": ["validate", "syntax"]
     }

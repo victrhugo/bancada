@@ -1,11 +1,11 @@
 {
   "id": "helm-fundamentals",
-  "title": "Helm Fundamentals",
-  "description": "Master Helm package manager for Kubernetes including charts, releases, values, templates, hooks, and repository management.",
+  "title": "Fundamentos do Helm",
+  "description": "Domine o gerenciador de pacotes Helm para Kubernetes, incluindo charts, releases, values, templates, hooks e gerenciamento de repositórios.",
   "category": "Kubernetes",
   "icon": "Package",
   "difficulty": "intermediate",
-  "estimatedTime": "15 minutes",
+  "estimatedTime": "15 minutos",
   "cardCount": 14,
   "theme": {
     "primaryColor": "indigo",
@@ -15,99 +15,99 @@
   "cards": [
     {
       "id": "helm-definition",
-      "front": "What is Helm?",
-      "back": "Helm is a package manager for Kubernetes that simplifies deploying and managing applications. It packages Kubernetes manifests into charts, supports versioning, templating, and dependency management. Think of it as apt/yum for Kubernetes.",
+      "front": "O que é o Helm?",
+      "back": "O Helm é um gerenciador de pacotes para Kubernetes que simplifica a implantação e o gerenciamento de aplicações. Ele empacota manifests do Kubernetes em charts, com suporte a versionamento, templates e gerenciamento de dependências. Pense nele como o apt/yum do Kubernetes.",
       "category": "Fundamentals",
       "tags": ["helm", "basics", "package-manager"]
     },
     {
       "id": "helm-chart",
-      "front": "What is a Helm Chart?",
-      "back": "A Chart is a collection of files describing a Kubernetes application. Contains templates (K8s manifests with variables), values.yaml (default config), Chart.yaml (metadata), and optional dependencies. Charts are versioned and can be shared.",
+      "front": "O que é um Helm Chart?",
+      "back": "Um Chart é uma coleção de arquivos que descreve uma aplicação Kubernetes. Contém templates (manifests do K8s com variáveis), values.yaml (configuração padrão), Chart.yaml (metadados) e dependências opcionais. Charts são versionados e podem ser compartilhados.",
       "category": "Charts",
       "tags": ["chart", "package", "basics"]
     },
     {
       "id": "helm-release",
-      "front": "What is a Helm Release?",
-      "back": "A Release is an instance of a Chart running in a Kubernetes cluster. Same Chart can be installed multiple times with different names/configurations. Each release has a unique name and maintains its own history for rollbacks.",
+      "front": "O que é um Helm Release?",
+      "back": "Um Release é uma instância de um Chart em execução em um cluster Kubernetes. O mesmo Chart pode ser instalado várias vezes com nomes/configurações diferentes. Cada release tem um nome único e mantém seu próprio histórico para rollbacks.",
       "category": "Fundamentals",
       "tags": ["release", "deployment", "basics"]
     },
     {
       "id": "values-yaml",
-      "front": "What is values.yaml?",
-      "back": "values.yaml defines default configuration values for a Chart. Variables like image tags, replicas, resources. Override with custom values: helm install -f custom-values.yaml or --set key=value. Values injected into templates.",
+      "front": "O que é o values.yaml?",
+      "back": "O values.yaml define os valores de configuração padrão de um Chart. Variáveis como tags de imagem, réplicas, recursos. Sobrescreva com valores customizados: helm install -f custom-values.yaml ou --set key=value. Os valores são injetados nos templates.",
       "category": "Configuration",
       "tags": ["values", "configuration", "yaml"]
     },
     {
       "id": "helm-templates",
-      "front": "What are Helm Templates?",
-      "back": "Templates are Kubernetes manifests with Go template syntax. Use {{ .Values.image.tag }} to insert values, {{ if }} for conditionals, {{ range }} for loops. Helm renders templates with values to generate final K8s YAML.",
+      "front": "O que são os Templates do Helm?",
+      "back": "Templates são manifests do Kubernetes com sintaxe de templates Go. Use {{ .Values.image.tag }} para inserir valores, {{ if }} para condicionais, {{ range }} para loops. O Helm renderiza os templates com os valores para gerar o YAML final do K8s.",
       "category": "Templates",
       "tags": ["templates", "go-templates", "syntax"]
     },
     {
       "id": "chart-structure",
-      "front": "What's the structure of a Helm Chart?",
-      "back": "Chart directory contains: Chart.yaml (metadata), values.yaml (defaults), templates/ (K8s manifests), charts/ (dependencies), .helmignore (ignore files), README.md (docs), and optionally crds/ (Custom Resource Definitions).",
+      "front": "Qual a estrutura de um Helm Chart?",
+      "back": "O diretório do Chart contém: Chart.yaml (metadados), values.yaml (padrões), templates/ (manifests do K8s), charts/ (dependências), .helmignore (arquivos ignorados), README.md (documentação) e, opcionalmente, crds/ (Custom Resource Definitions).",
       "category": "Charts",
       "tags": ["chart", "structure", "filesystem"]
     },
     {
       "id": "helm-install",
-      "front": "How do you install a Helm Chart?",
-      "back": "helm install [release-name] [chart]: helm install my-nginx bitnami/nginx. Options: --namespace, -f values.yaml, --set key=value, --version (chart version), --wait (wait for ready), --dry-run (simulate).",
+      "front": "Como instalar um Helm Chart?",
+      "back": "helm install [nome-release] [chart]: helm install my-nginx bitnami/nginx. Opções: --namespace, -f values.yaml, --set key=value, --version (versão do chart), --wait (aguardar ficar pronto), --dry-run (simular).",
       "category": "Commands",
       "tags": ["install", "commands", "deployment"]
     },
     {
       "id": "helm-upgrade",
-      "front": "How do you upgrade a Helm Release?",
-      "back": "helm upgrade [release] [chart]: helm upgrade my-nginx bitnami/nginx --set replicas=3. Updates existing release. Options: --reuse-values (keep current), --reset-values (use chart defaults), --install (install if not exists).",
+      "front": "Como atualizar um Helm Release?",
+      "back": "helm upgrade [release] [chart]: helm upgrade my-nginx bitnami/nginx --set replicas=3. Atualiza um release existente. Opções: --reuse-values (mantém os atuais), --reset-values (usa os padrões do chart), --install (instala se não existir).",
       "category": "Commands",
       "tags": ["upgrade", "commands", "update"]
     },
     {
       "id": "helm-rollback",
-      "front": "How do you rollback a Helm Release?",
-      "back": "helm rollback [release] [revision]: helm rollback my-nginx 1. Reverts to previous working state. View history with helm history [release]. Each upgrade creates new revision. Rollback creates new revision pointing to old config.",
+      "front": "Como reverter um Helm Release?",
+      "back": "helm rollback [release] [revisão]: helm rollback my-nginx 1. Reverte para o último estado funcional. Veja o histórico com helm history [release]. Cada upgrade cria uma nova revisão. O rollback cria uma nova revisão apontando para a configuração antiga.",
       "category": "Commands",
       "tags": ["rollback", "commands", "recovery"]
     },
     {
       "id": "helm-hooks",
-      "front": "What are Helm Hooks?",
-      "back": "Hooks are resources that run at specific points in release lifecycle using annotations. Types: pre-install, post-install, pre-upgrade, post-upgrade, pre-delete, post-delete, pre-rollback, post-rollback. Used for migrations, backups, or cleanup.",
+      "front": "O que são os Hooks do Helm?",
+      "back": "Hooks são recursos que executam em pontos específicos do ciclo de vida do release, usando annotations. Tipos: pre-install, post-install, pre-upgrade, post-upgrade, pre-delete, post-delete, pre-rollback, post-rollback. Usados para migrações, backups ou limpeza.",
       "category": "Advanced",
       "tags": ["hooks", "lifecycle", "automation"]
     },
     {
       "id": "helm-dependencies",
-      "front": "How do Chart dependencies work?",
-      "back": "Define dependencies in Chart.yaml: dependencies list with name, version, repository. Run helm dependency update to download to charts/ directory. Parent chart can override child values. Supports condition/tags for optional dependencies.",
+      "front": "Como funcionam as dependências de Chart?",
+      "back": "Defina dependências no Chart.yaml: uma lista com name, version, repository. Execute helm dependency update para baixá-las no diretório charts/. O chart pai pode sobrescrever os valores do filho. Suporta condition/tags para dependências opcionais.",
       "category": "Charts",
       "tags": ["dependencies", "charts", "composition"]
     },
     {
       "id": "helm-repository",
-      "front": "What is a Helm Repository?",
-      "back": "A Repository is an HTTP server hosting packaged charts (index.yaml + .tgz files). Add repo: helm repo add bitnami https://charts.bitnami.com/bitnami. Update: helm repo update. Popular repos: Bitnami, Jetstack, stable (deprecated).",
+      "front": "O que é um Helm Repository?",
+      "back": "Um Repository é um servidor HTTP que hospeda charts empacotados (index.yaml + arquivos .tgz). Adicionar repo: helm repo add bitnami https://charts.bitnami.com/bitnami. Atualizar: helm repo update. Repositórios populares: Bitnami, Jetstack, stable (descontinuado).",
       "category": "Repository",
       "tags": ["repository", "helm-hub", "distribution"]
     },
     {
       "id": "helm-test",
-      "front": "What is helm test?",
-      "back": "helm test runs tests defined in chart's templates/tests/ directory. Test pods with helm.sh/hook: test annotation run validation (e.g., curl health endpoint). Command: helm test [release]. Tests verify deployment success.",
+      "front": "O que é o helm test?",
+      "back": "O helm test executa os testes definidos no diretório templates/tests/ do chart. Pods de teste com a annotation helm.sh/hook: test rodam validações (ex: curl em um endpoint de saúde). Comando: helm test [release]. Os testes verificam o sucesso do deploy.",
       "category": "Testing",
       "tags": ["test", "validation", "quality"]
     },
     {
       "id": "helm-best-practices",
-      "front": "What are Helm best practices?",
-      "back": "Use meaningful release names, version charts semantically (SemVer), document values in values.yaml, use _helpers.tpl for reusable templates, validate with helm lint, test before deploying, use --dry-run, keep charts idempotent, use hooks for setup/teardown.",
+      "front": "Quais são as boas práticas do Helm?",
+      "back": "Use nomes de release significativos, versione charts semanticamente (SemVer), documente os valores em values.yaml, use _helpers.tpl para templates reutilizáveis, valide com helm lint, teste antes de implantar, use --dry-run, mantenha os charts idempotentes, use hooks para setup/teardown.",
       "category": "Best Practices",
       "tags": ["best-practices", "guidelines", "quality"]
     }
