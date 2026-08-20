@@ -1,7 +1,7 @@
 {
   "id": "linux-quiz",
-  "title": "Linux Command Line Quiz",
-  "description": "Master the terminal through real-world system administration scenarios covering file management, process control, and troubleshooting",
+  "title": "Quiz de Linha de Comando Linux",
+  "description": "Domine o terminal através de cenários reais de administração de sistemas, cobrindo gerenciamento de arquivos, controle de processos e troubleshooting",
   "category": "Linux",
   "icon": "Terminal",
   "totalPoints": 187,
@@ -11,7 +11,7 @@
     "gradientTo": "to-slate-700"
   },
   "metadata": {
-    "estimatedTime": "25-30 minutes",
+    "estimatedTime": "25-30 minutos",
     "difficultyLevels": {
       "beginner": 4,
       "intermediate": 5,
@@ -22,9 +22,9 @@
   "questions": [
     {
       "id": "file-permissions-fix",
-      "title": "Permission Denied Emergency",
-      "description": "Fix file permissions for a web application that suddenly stopped working.",
-      "situation": "Your web server can't read files in /var/www/html after a deployment. The application owner is 'webapp' and group is 'www-data'. Files should be readable by the web server but not writable by others.",
+      "title": "Emergência de Permissão Negada",
+      "description": "Corrija as permissões de arquivo de uma aplicação web que parou de funcionar de repente.",
+      "situation": "Seu servidor web não consegue ler arquivos em /var/www/html após um deploy. O dono da aplicação é 'webapp' e o grupo é 'www-data'. Os arquivos devem ser legíveis pelo servidor web, mas não graváveis por outros.",
       "codeExample": "Current permissions:\n-rw------- 1 root root index.html\n-rw------- 1 root root style.css\ndrwx------ 2 root root images/",
       "options": [
         "chown -R webapp:www-data /var/www/html && find /var/www/html -type f -exec chmod 644 {} \\; && find /var/www/html -type d -exec chmod 755 {} \\;",
@@ -33,16 +33,16 @@
         "chmod -R 755 /var/www/html"
       ],
       "correctAnswer": 0,
-      "explanation": "This command properly sets ownership recursively, then sets appropriate permissions: 644 for files (read/write for owner, read for group/others) and 755 for directories (executable needed to enter directories).",
-      "hint": "Consider security best practices. Files and directories need different permissions, and you should avoid giving write access to everyone.",
+      "explanation": "Esse comando define a propriedade recursivamente da forma correta, depois define as permissões apropriadas: 644 para arquivos (leitura/escrita para o dono, leitura para grupo/outros) e 755 para diretórios (execução necessária para entrar nos diretórios).",
+      "hint": "Considere as boas práticas de segurança. Arquivos e diretórios precisam de permissões diferentes, e você deve evitar dar acesso de escrita para todo mundo.",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "process-investigation",
-      "title": "High CPU Usage Investigation",
-      "description": "Identify and manage a process consuming excessive CPU resources.",
-      "situation": "Your server's CPU usage is at 95% and users are complaining about slow response times. You need to quickly identify the culprit process and take action.",
+      "title": "Investigação de Alto Uso de CPU",
+      "description": "Identifique e gerencie um processo consumindo recursos de CPU excessivos.",
+      "situation": "O uso de CPU do seu servidor está em 95% e usuários estão reclamando de tempos de resposta lentos. Você precisa identificar rapidamente o processo culpado e tomar uma ação.",
       "codeExample": "$ top\n%Cpu(s): 95.2 us,  2.1 sy,  0.0 ni,  2.7 id\nSomething is consuming CPU but top output is scrolling too fast to see clearly.",
       "options": [
         "ps aux | head -10",
@@ -51,16 +51,16 @@
         "htop --sort-key PERCENT_CPU"
       ],
       "correctAnswer": 2,
-      "explanation": "ps aux --sort=-%cpu sorts processes by CPU usage in descending order and shows the top 10 CPU consumers. This gives a clear, static view of which processes are using the most CPU.",
-      "hint": "You need a static snapshot sorted by CPU usage to clearly identify the problem process. Which command provides this view?",
+      "explanation": "ps aux --sort=-%cpu ordena os processos por uso de CPU em ordem decrescente e mostra os 10 maiores consumidores de CPU. Isso dá uma visão clara e estática de quais processos estão usando mais CPU.",
+      "hint": "Você precisa de um snapshot estático ordenado por uso de CPU para identificar claramente o processo problemático. Qual comando fornece essa visão?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "disk-space-cleanup",
-      "title": "Disk Space Crisis",
-      "description": "Free up disk space when the root filesystem is 98% full.",
-      "situation": "Your server's root partition is 98% full and applications are failing. You need to quickly identify what's consuming space and free it up safely.",
+      "title": "Crise de Espaço em Disco",
+      "description": "Libere espaço em disco quando o sistema de arquivos raiz está 98% cheio.",
+      "situation": "A partição raiz do seu servidor está 98% cheia e aplicações estão falhando. Você precisa identificar rapidamente o que está consumindo espaço e liberá-lo com segurança.",
       "codeExample": "$ df -h\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        20G   19G  200M  98% /\n\nApplications are logging 'No space left on device' errors.",
       "options": [
         "rm -rf /tmp/* /var/log/*",
@@ -69,16 +69,16 @@
         "find / -size +100M -exec ls -lh {} \\;"
       ],
       "correctAnswer": 2,
-      "explanation": "This command finds the largest directories in root, suppresses permission errors, and then specifically checks log files which are often safe to clean. It's systematic and avoids dangerous deletions.",
-      "hint": "You need to identify what's using space before deleting anything. Which approach safely investigates space usage without risking system files?",
+      "explanation": "Esse comando encontra os maiores diretórios na raiz, suprime erros de permissão e, em seguida, verifica especificamente os arquivos de log, que geralmente são seguros de limpar. É sistemático e evita exclusões perigosas.",
+      "hint": "Você precisa identificar o que está usando espaço antes de excluir qualquer coisa. Qual abordagem investiga o uso de espaço com segurança, sem arriscar arquivos do sistema?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "log-analysis-error",
-      "title": "Application Error Investigation",
-      "description": "Find error patterns in application logs during a production incident.",
-      "situation": "Users reported errors between 14:00-15:00 today. You need to find error messages in the application log file '/var/log/app.log' and count how many occurred.",
+      "title": "Investigação de Erro em Aplicação",
+      "description": "Encontre padrões de erro nos logs da aplicação durante um incidente de produção.",
+      "situation": "Usuários relataram erros entre 14:00-15:00 hoje. Você precisa encontrar mensagens de erro no arquivo de log da aplicação '/var/log/app.log' e contar quantas ocorreram.",
       "codeExample": "Log format:\n2024-06-21 14:23:15 INFO User login successful\n2024-06-21 14:24:32 ERROR Database connection failed\n2024-06-21 14:25:01 WARN Cache miss for user:12345\n\nNeed: Find all ERROR messages from 14:00-15:00 hour",
       "options": [
         "grep ERROR /var/log/app.log",
@@ -87,16 +87,16 @@
         "sed -n '/2024-06-21 14:/,/2024-06-21 15:/p' /var/log/app.log | grep ERROR | wc -l"
       ],
       "correctAnswer": 1,
-      "explanation": "This grep pattern matches the date, hour (14:), and ERROR in the same line, then counts the occurrences with wc -l. It's precise and efficient for the specific time range needed.",
-      "hint": "You need to match both the time pattern and ERROR level. Which command efficiently filters by both criteria and counts the results?",
+      "explanation": "Esse padrão de grep casa a data, a hora (14:) e ERROR na mesma linha, depois conta as ocorrências com wc -l. É preciso e eficiente para a faixa de horário específica necessária.",
+      "hint": "Você precisa casar tanto o padrão de horário quanto o nível ERROR. Qual comando filtra eficientemente pelos dois critérios e conta os resultados?",
       "difficulty": "beginner",
       "points": 11
     },
     {
       "id": "network-connectivity-debug",
-      "title": "Network Connection Troubleshooting",
-      "description": "Diagnose why your application can't connect to a database server.",
-      "situation": "Your web application can't connect to database server 'db.company.com' on port 5432. You need to systematically check network connectivity and identify where the connection is failing.",
+      "title": "Troubleshooting de Conexão de Rede",
+      "description": "Diagnostique por que sua aplicação não consegue se conectar a um servidor de banco de dados.",
+      "situation": "Sua aplicação web não consegue se conectar ao servidor de banco de dados 'db.company.com' na porta 5432. Você precisa checar sistematicamente a conectividade de rede e identificar onde a conexão está falhando.",
       "codeExample": "Error: Connection to db.company.com:5432 failed\nTimeout after 30 seconds\n\nNeed to check: DNS resolution, network path, port accessibility",
       "options": [
         "nslookup db.company.com && ping db.company.com && nc -zv db.company.com 5432",
@@ -105,16 +105,16 @@
         "traceroute db.company.com && netstat -an | grep 5432"
       ],
       "correctAnswer": 0,
-      "explanation": "This systematic approach first checks DNS resolution (nslookup), then basic connectivity (ping), and finally tests the specific port (nc -zv). It diagnoses each layer of the connection.",
-      "hint": "Network issues can occur at different layers. Which approach tests DNS, connectivity, and port accessibility systematically?",
+      "explanation": "Essa abordagem sistemática primeiro checa a resolução de DNS (nslookup), depois a conectividade básica (ping), e por fim testa a porta específica (nc -zv). Ela diagnostica cada camada da conexão.",
+      "hint": "Problemas de rede podem ocorrer em diferentes camadas. Qual abordagem testa DNS, conectividade e acessibilidade de porta sistematicamente?",
       "difficulty": "intermediate",
       "points": 14
     },
     {
       "id": "text-processing-pipeline",
-      "title": "Log Data Analysis Pipeline",
-      "description": "Extract and analyze specific data from web server access logs.",
-      "situation": "You need to find the top 10 IP addresses making the most requests in your Apache access log and show their request counts.",
+      "title": "Pipeline de Análise de Dados de Log",
+      "description": "Extraia e analise dados específicos dos logs de acesso do servidor web.",
+      "situation": "Você precisa encontrar os 10 principais endereços IP fazendo mais requisições no seu log de acesso do Apache e mostrar suas contagens de requisições.",
       "codeExample": "Apache log format:\n192.168.1.100 - - [21/Jun/2024:14:23:15 +0000] \"GET /index.html HTTP/1.1\" 200 1024\n10.0.0.50 - - [21/Jun/2024:14:23:16 +0000] \"POST /api/login HTTP/1.1\" 200 256\n\nGoal: Top 10 IPs by request count",
       "options": [
         "cut -d' ' -f1 /var/log/apache2/access.log | sort | uniq -c | sort -nr | head -10",
@@ -123,16 +123,16 @@
         "sed 's/ .*//' /var/log/apache2/access.log | sort | uniq -c | sort -nr | head -10"
       ],
       "correctAnswer": 1,
-      "explanation": "awk '{print $1}' extracts the first field (IP address), sort groups identical IPs, uniq -c counts occurrences, sort -nr sorts by count in reverse order, and head -10 shows the top 10.",
-      "hint": "You need to extract the IP field, count occurrences, and sort by frequency. Which command pipeline efficiently handles this text processing task?",
+      "explanation": "awk '{print $1}' extrai o primeiro campo (endereço IP), sort agrupa IPs idênticos, uniq -c conta as ocorrências, sort -nr ordena pela contagem em ordem reversa, e head -10 mostra os 10 principais.",
+      "hint": "Você precisa extrair o campo de IP, contar as ocorrências e ordenar por frequência. Qual pipeline de comandos lida eficientemente com essa tarefa de processamento de texto?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "process-management-kill",
-      "title": "Stubborn Process Termination",
-      "description": "Safely terminate a hung application process that's not responding to normal signals.",
-      "situation": "A Java application (PID 1234) is completely unresponsive and consuming 100% CPU. It's not responding to normal termination requests, and you need to stop it without affecting other processes.",
+      "title": "Encerramento de Processo Teimoso",
+      "description": "Encerre com segurança um processo de aplicação travado que não está respondendo a sinais normais.",
+      "situation": "Uma aplicação Java (PID 1234) está completamente sem resposta e consumindo 100% de CPU. Ela não está respondendo a solicitações normais de encerramento, e você precisa pará-la sem afetar outros processos.",
       "codeExample": "$ ps aux | grep java\nuser  1234  99.9  25.0 2048000 1024000 ?  R  14:23  45:32 java -jar myapp.jar\n\nProcess is unresponsive to user input and consuming excessive resources.",
       "options": [
         "kill -9 1234",
@@ -141,16 +141,16 @@
         "pkill -f 'java -jar myapp.jar'"
       ],
       "correctAnswer": 2,
-      "explanation": "This approach tries graceful termination first (SIGTERM), waits, then escalates to SIGKILL only if needed. It checks if the process still exists and follows the proper signal escalation sequence.",
-      "hint": "Best practice is to try graceful termination before using force. Which approach follows the proper signal escalation sequence?",
+      "explanation": "Essa abordagem tenta o encerramento gracioso primeiro (SIGTERM), espera, e só escala para SIGKILL se necessário. Ela checa se o processo ainda existe e segue a sequência apropriada de escalonamento de sinais.",
+      "hint": "A boa prática é tentar o encerramento gracioso antes de usar força. Qual abordagem segue a sequência apropriada de escalonamento de sinais?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "find-and-replace-bulk",
-      "title": "Bulk Configuration Update",
-      "description": "Update configuration values across multiple files in a directory structure.",
-      "situation": "You need to change the database host from 'localhost' to 'db.internal' in all .conf files within /etc/myapp/ and its subdirectories, but only if the line contains 'db_host='.",
+      "title": "Atualização de Configuração em Massa",
+      "description": "Atualize valores de configuração em múltiplos arquivos dentro de uma estrutura de diretórios.",
+      "situation": "Você precisa mudar o host do banco de dados de 'localhost' para 'db.internal' em todos os arquivos .conf dentro de /etc/myapp/ e seus subdiretórios, mas só se a linha contiver 'db_host='.",
       "codeExample": "Files contain lines like:\ndb_host=localhost\napi_host=localhost  # Should NOT change this\ncache_host=redis.local\n\nOnly change db_host lines from localhost to db.internal",
       "options": [
         "sed -i 's/localhost/db.internal/g' /etc/myapp/*.conf",
@@ -159,16 +159,16 @@
         "grep -r 'db_host=localhost' /etc/myapp --include='*.conf' | sed 's/localhost/db.internal/'"
       ],
       "correctAnswer": 2,
-      "explanation": "This command finds all .conf files recursively, then uses sed with a pattern address '/db_host=/' to only modify lines containing 'db_host=', preventing unintended changes to other localhost references.",
-      "hint": "You need to be precise about which lines to modify. Which approach only changes localhost on lines that contain 'db_host='?",
+      "explanation": "Esse comando encontra todos os arquivos .conf recursivamente, depois usa o sed com um endereço de padrão '/db_host=/' para modificar apenas as linhas contendo 'db_host=', evitando mudanças indesejadas em outras referências a localhost.",
+      "hint": "Você precisa ser preciso sobre quais linhas modificar. Qual abordagem muda o localhost apenas em linhas que contêm 'db_host='?",
       "difficulty": "intermediate",
       "points": 16
     },
     {
       "id": "system-monitoring-performance",
-      "title": "Performance Bottleneck Investigation",
-      "description": "Identify system bottlenecks during performance issues using command-line tools.",
-      "situation": "Your server is experiencing slow response times. You need to check CPU, memory, disk I/O, and network to identify the bottleneck. Users report intermittent timeouts.",
+      "title": "Investigação de Gargalo de Desempenho",
+      "description": "Identifique gargalos do sistema durante problemas de desempenho usando ferramentas de linha de comando.",
+      "situation": "Seu servidor está apresentando tempos de resposta lentos. Você precisa checar CPU, memória, I/O de disco e rede para identificar o gargalo. Usuários relatam timeouts intermitentes.",
       "codeExample": "Symptoms:\n• Application response time: 30+ seconds (normally <2s)\n• Users getting timeouts\n• No obvious error messages in logs\n\nNeed to check all system resources systematically",
       "options": [
         "top && free -h && df -h",
@@ -177,16 +177,16 @@
         "uptime && cat /proc/loadavg && cat /proc/meminfo"
       ],
       "correctAnswer": 1,
-      "explanation": "This combination provides comprehensive system monitoring: vmstat shows CPU/memory over time, iostat shows disk I/O statistics, and sar shows network statistics. The '1 5' samples every second for 5 iterations, revealing patterns.",
-      "hint": "You need to monitor multiple system resources over time to identify patterns. Which combination provides comprehensive real-time system metrics?",
+      "explanation": "Essa combinação fornece monitoramento abrangente do sistema: vmstat mostra CPU/memória ao longo do tempo, iostat mostra estatísticas de I/O de disco, e sar mostra estatísticas de rede. O '1 5' amostra a cada segundo por 5 iterações, revelando padrões.",
+      "hint": "Você precisa monitorar múltiplos recursos do sistema ao longo do tempo para identificar padrões. Qual combinação fornece métricas de sistema abrangentes em tempo real?",
       "difficulty": "intermediate",
       "points": 17
     },
     {
       "id": "security-audit-files",
-      "title": "Security Audit - Suspicious Files",
-      "description": "Find potentially compromised files and unusual permissions for security investigation.",
-      "situation": "Security team suspects a breach. You need to find files modified in the last 24 hours, world-writable files, and files with unusual ownership in system directories.",
+      "title": "Auditoria de Segurança - Arquivos Suspeitos",
+      "description": "Encontre arquivos potencialmente comprometidos e permissões incomuns para investigação de segurança.",
+      "situation": "O time de segurança suspeita de uma violação. Você precisa encontrar arquivos modificados nas últimas 24 horas, arquivos graváveis por qualquer usuário, e arquivos com propriedade incomum em diretórios do sistema.",
       "codeExample": "Investigation needed:\n• Files modified in last 24 hours in /usr, /bin, /sbin\n• World-writable files that shouldn't be\n• Files owned by unusual users in system directories\n\nSecurity incident response protocol active",
       "options": [
         "find /usr /bin /sbin \\( -mtime -1 -o -perm -002 -o ! -user root \\) -ls | tee /tmp/security_audit.log",
@@ -195,16 +195,16 @@
         "ls -la /usr /bin /sbin | grep $(date +%Y-%m-%d)"
       ],
       "correctAnswer": 0,
-      "explanation": "This command uses proper grouping with parentheses to find files that match ANY of the suspicious criteria: recently modified (-mtime -1), world-writable (-perm -002), or not owned by root (! -user root). The -ls provides detailed output and tee logs results.",
-      "hint": "You need to find files matching any of several suspicious criteria. Which command properly groups the conditions and logs the detailed results?",
+      "explanation": "Esse comando usa agrupamento apropriado com parênteses para encontrar arquivos que casam com QUALQUER um dos critérios suspeitos: modificado recentemente (-mtime -1), gravável por qualquer usuário (-perm -002), ou não pertencente ao root (! -user root). O -ls fornece saída detalhada e o tee registra os resultados.",
+      "hint": "Você precisa encontrar arquivos que casem com qualquer um de vários critérios suspeitos. Qual comando agrupa corretamente as condições e registra os resultados detalhados?",
       "difficulty": "advanced",
       "points": 20
     },
     {
       "id": "backup-and-recovery",
-      "title": "Emergency Backup and Recovery",
-      "description": "Create a compressed backup while the system is running and verify its integrity.",
-      "situation": "You need to create an emergency backup of /home/users before a risky system update. The backup must be compressed, exclude cache directories, and include integrity verification.",
+      "title": "Backup e Recuperação de Emergência",
+      "description": "Crie um backup compactado enquanto o sistema está rodando e verifique sua integridade.",
+      "situation": "Você precisa criar um backup de emergência de /home/users antes de uma atualização de sistema arriscada. O backup deve ser compactado, excluir diretórios de cache, e incluir verificação de integridade.",
       "codeExample": "Requirements:\n• Backup /home/users to /backup/emergency_backup.tar.gz\n• Exclude .cache and .tmp directories\n• Compress for space efficiency\n• Verify backup integrity\n• System must remain operational",
       "options": [
         "tar -czf /backup/emergency_backup.tar.gz /home/users",
@@ -213,16 +213,16 @@
         "tar --exclude='*/.cache' --exclude='*/.tmp' -czf /backup/emergency_backup.tar.gz -C / home/users && tar -tzf /backup/emergency_backup.tar.gz > /dev/null && echo 'Backup verified successfully'"
       ],
       "correctAnswer": 3,
-      "explanation": "This command properly excludes cache/tmp directories with correct patterns, uses -C to avoid absolute paths in the archive, compresses the backup, verifies integrity by listing contents, and provides confirmation of successful verification.",
-      "hint": "Consider exclusion patterns, path handling, compression, and verification. Which approach handles all requirements properly including integrity checking?",
+      "explanation": "Esse comando exclui corretamente os diretórios de cache/tmp com os padrões certos, usa -C para evitar caminhos absolutos no arquivo, compacta o backup, verifica a integridade listando o conteúdo, e fornece confirmação de verificação bem-sucedida.",
+      "hint": "Considere padrões de exclusão, tratamento de caminhos, compactação e verificação. Qual abordagem lida com todos os requisitos corretamente, incluindo a checagem de integridade?",
       "difficulty": "advanced",
       "points": 22
     },
     {
       "id": "shell-scripting-automation",
-      "title": "System Maintenance Automation",
-      "description": "Create a maintenance script that handles multiple system cleanup tasks safely.",
-      "situation": "You need to automate weekly maintenance: clean old logs (>30 days), remove temp files, update package cache, and restart a service only if configuration changed. Script must handle errors gracefully.",
+      "title": "Automação de Manutenção de Sistema",
+      "description": "Crie um script de manutenção que lida com múltiplas tarefas de limpeza do sistema com segurança.",
+      "situation": "Você precisa automatizar a manutenção semanal: limpar logs antigos (>30 dias), remover arquivos temporários, atualizar o cache do gerenciador de pacotes, e reiniciar um serviço somente se a configuração mudou. O script deve lidar com erros de forma graciosa.",
       "codeExample": "Weekly maintenance tasks:\n1. Remove logs older than 30 days from /var/log/myapp/\n2. Clean /tmp files older than 7 days\n3. Update package manager cache\n4. Restart myapp service only if config changed in last week\n5. Log all actions with timestamps",
       "options": [
         "find /var/log/myapp -mtime +30 -delete\nfind /tmp -mtime +7 -delete\napt update\nservice myapp restart",
@@ -231,8 +231,8 @@
         "#!/bin/bash\nset -euo pipefail\nlog() { echo \"$(date): $1\" | tee -a /var/log/maintenance.log; }\nlog \"Starting maintenance\"\nfind /var/log/myapp -name '*.log' -mtime +30 -delete && log \"Old logs cleaned\" || log \"Error cleaning logs\"\nfind /tmp -mtime +7 -type f -delete && log \"Temp files cleaned\" || log \"Error cleaning temp\"\napt update -qq && log \"Package cache updated\" || log \"Error updating cache\"\nif [ $(find /etc/myapp/ -name '*.conf' -mtime -7 | wc -l) -gt 0 ]; then\n  systemctl restart myapp && log \"Service restarted\" || log \"Error restarting service\"\nelse\n  log \"No config changes, service restart skipped\"\nfi\nlog \"Maintenance completed\""
       ],
       "correctAnswer": 3,
-      "explanation": "This script includes proper error handling (set -euo pipefail), logging function with timestamps, conditional service restart based on config changes, and comprehensive error reporting. It follows bash scripting best practices for production use.",
-      "hint": "Production scripts need error handling, logging, and conditional logic. Which approach includes all these elements and follows scripting best practices?",
+      "explanation": "Esse script inclui tratamento de erros apropriado (set -euo pipefail), função de log com timestamps, reinício condicional do serviço baseado em mudanças de configuração, e relatório de erros abrangente. Ele segue as boas práticas de scripting bash para uso em produção.",
+      "hint": "Scripts de produção precisam de tratamento de erros, logging e lógica condicional. Qual abordagem inclui todos esses elementos e segue as boas práticas de scripting?",
       "difficulty": "advanced",
       "points": 25
     }
