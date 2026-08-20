@@ -1,11 +1,11 @@
 {
   "id": "monitoring-observability",
-  "title": "Monitoring & Observability",
-  "description": "Learn monitoring fundamentals including metrics, logs, traces, Prometheus, Grafana, alerting strategies, and SLIs/SLOs/SLAs.",
+  "title": "Monitoramento e Observabilidade",
+  "description": "Aprenda os fundamentos de monitoramento, incluindo métricas, logs, traces, Prometheus, Grafana, estratégias de alerta e SLIs/SLOs/SLAs.",
   "category": "Monitoring",
   "icon": "Activity",
   "difficulty": "intermediate",
-  "estimatedTime": "18 minutes",
+  "estimatedTime": "18 minutos",
   "cardCount": 16,
   "theme": {
     "primaryColor": "cyan",
@@ -15,113 +15,113 @@
   "cards": [
     {
       "id": "observability-definition",
-      "front": "What is Observability?",
-      "back": "Observability is the ability to understand a system's internal state from its external outputs. Built on three pillars: metrics (what is happening), logs (why it's happening), traces (where it's happening). Enables debugging complex distributed systems.",
+      "front": "O que é Observabilidade?",
+      "back": "Observabilidade é a capacidade de entender o estado interno de um sistema a partir de suas saídas externas. Baseia-se em três pilares: métricas (o que está acontecendo), logs (por que está acontecendo), traces (onde está acontecendo). Permite depurar sistemas distribuídos complexos.",
       "category": "Fundamentals",
       "tags": ["observability", "basics", "pillars"]
     },
     {
       "id": "monitoring-vs-observability",
-      "front": "What's the difference between Monitoring and Observability?",
-      "back": "Monitoring: tracking known failure modes with predefined metrics and alerts. Observability: exploring unknown issues through rich telemetry data. Monitoring answers 'Is there a problem?', Observability answers 'Why is there a problem?'.",
+      "front": "Qual é a diferença entre Monitoramento e Observabilidade?",
+      "back": "Monitoramento: acompanhar modos de falha conhecidos com métricas e alertas predefinidos. Observabilidade: explorar problemas desconhecidos por meio de dados de telemetria ricos. Monitoramento responde 'Há um problema?', Observabilidade responde 'Por que há um problema?'.",
       "category": "Fundamentals",
       "tags": ["monitoring", "observability", "comparison"]
     },
     {
       "id": "prometheus-definition",
-      "front": "What is Prometheus?",
-      "back": "Prometheus is an open-source monitoring system with time-series database. Uses pull model to scrape metrics from endpoints. Features: multi-dimensional data model, powerful PromQL query language, built-in alerting, service discovery, no external dependencies.",
+      "front": "O que é o Prometheus?",
+      "back": "Prometheus é um sistema de monitoramento de código aberto com banco de dados de séries temporais. Usa o modelo pull para coletar métricas de endpoints. Características: modelo de dados multidimensional, linguagem de consulta poderosa (PromQL), alertas embutidos, service discovery, sem dependências externas.",
       "category": "Tools",
       "tags": ["prometheus", "metrics", "monitoring"]
     },
     {
       "id": "metric-types",
-      "front": "What are Prometheus metric types?",
-      "back": "Four types: 1) Counter (monotonically increasing, e.g., requests_total), 2) Gauge (can go up/down, e.g., memory_usage), 3) Histogram (observations in buckets, e.g., request_duration), 4) Summary (similar to histogram with quantiles).",
+      "front": "Quais são os tipos de métricas do Prometheus?",
+      "back": "Quatro tipos: 1) Counter (aumenta monotonicamente, ex.: requests_total), 2) Gauge (pode subir/descer, ex.: memory_usage), 3) Histogram (observações em buckets, ex.: request_duration), 4) Summary (semelhante ao histogram, com quantis).",
       "category": "Metrics",
       "tags": ["prometheus", "metrics", "types"]
     },
     {
       "id": "promql-basics",
-      "front": "What is PromQL?",
-      "back": "Prometheus Query Language for selecting and aggregating time-series data. Examples: rate(http_requests_total[5m]) (requests per second over 5 minutes), avg(node_cpu_usage) by (instance) (average CPU by instance). Supports functions, operators, aggregations.",
+      "front": "O que é PromQL?",
+      "back": "Prometheus Query Language, usada para selecionar e agregar dados de séries temporais. Exemplos: rate(http_requests_total[5m]) (requisições por segundo em uma janela de 5 minutos), avg(node_cpu_usage) by (instance) (CPU média por instância). Suporta funções, operadores e agregações.",
       "category": "Tools",
       "tags": ["promql", "prometheus", "queries"]
     },
     {
       "id": "grafana-definition",
-      "front": "What is Grafana?",
-      "back": "Grafana is an open-source visualization and analytics platform. Creates dashboards with graphs, tables, heatmaps from multiple data sources (Prometheus, InfluxDB, Elasticsearch). Features: templating, alerts, annotations, sharing, plugins.",
+      "front": "O que é o Grafana?",
+      "back": "Grafana é uma plataforma de visualização e análise de código aberto. Cria dashboards com gráficos, tabelas e heatmaps a partir de múltiplas fontes de dados (Prometheus, InfluxDB, Elasticsearch). Características: templating, alertas, anotações, compartilhamento, plugins.",
       "category": "Tools",
       "tags": ["grafana", "visualization", "dashboards"]
     },
     {
       "id": "golden-signals",
-      "front": "What are the Four Golden Signals?",
-      "back": "Google SRE's key metrics for monitoring services: 1) Latency (response time), 2) Traffic (request rate), 3) Errors (failure rate), 4) Saturation (resource fullness). Monitor these to understand service health comprehensively.",
+      "front": "O que são os Quatro Sinais de Ouro (Golden Signals)?",
+      "back": "Métricas-chave do Google SRE para monitorar serviços: 1) Latência (tempo de resposta), 2) Tráfego (taxa de requisições), 3) Erros (taxa de falhas), 4) Saturação (nível de ocupação dos recursos). Monitorar esses sinais dá uma visão abrangente da saúde do serviço.",
       "category": "Best Practices",
       "tags": ["golden-signals", "sre", "metrics"]
     },
     {
       "id": "red-method",
-      "front": "What is the RED method?",
-      "back": "RED method for monitoring services: Rate (requests per second), Errors (failed requests per second), Duration (latency distribution). Focused on request-driven services. Simpler alternative to Four Golden Signals.",
+      "front": "O que é o método RED?",
+      "back": "Método RED para monitorar serviços: Rate (requisições por segundo), Errors (requisições com falha por segundo), Duration (distribuição de latência). Focado em serviços orientados a requisições. Alternativa mais simples aos Quatro Sinais de Ouro.",
       "category": "Best Practices",
       "tags": ["red-method", "monitoring", "metrics"]
     },
     {
       "id": "sli-definition",
-      "front": "What is an SLI?",
-      "back": "Service Level Indicator (SLI) is a quantitative measure of service level. Examples: request success rate, latency percentile, availability percentage. SLIs are the metrics used to measure if you're meeting your SLO.",
+      "front": "O que é um SLI?",
+      "back": "Service Level Indicator (SLI) é uma medida quantitativa do nível de serviço. Exemplos: taxa de sucesso das requisições, percentil de latência, percentual de disponibilidade. SLIs são as métricas usadas para medir se você está cumprindo seu SLO.",
       "category": "SRE",
       "tags": ["sli", "sre", "metrics"]
     },
     {
       "id": "slo-definition",
-      "front": "What is an SLO?",
-      "back": "Service Level Objective (SLO) is a target range for an SLI. Example: '99.9% of requests succeed' or 'p95 latency < 200ms'. Sets reliability goals and guides engineering priorities. Breaching SLO triggers action.",
+      "front": "O que é um SLO?",
+      "back": "Service Level Objective (SLO) é uma faixa-alvo para um SLI. Exemplo: '99,9% das requisições têm sucesso' ou 'latência p95 < 200ms'. Define metas de confiabilidade e orienta as prioridades de engenharia. Descumprir o SLO dispara ações.",
       "category": "SRE",
       "tags": ["slo", "sre", "reliability"]
     },
     {
       "id": "sla-definition",
-      "front": "What is an SLA?",
-      "back": "Service Level Agreement (SLA) is a business contract with consequences for not meeting SLOs. Includes financial penalties or service credits. SLA is stricter than SLO. Example: '99.9% uptime or customers get 10% credit'.",
+      "front": "O que é um SLA?",
+      "back": "Service Level Agreement (SLA) é um contrato comercial com consequências para o não cumprimento dos SLOs. Inclui multas financeiras ou créditos de serviço. O SLA é mais rígido que o SLO. Exemplo: '99,9% de uptime ou os clientes recebem 10% de crédito'.",
       "category": "SRE",
       "tags": ["sla", "sre", "contract"]
     },
     {
       "id": "error-budget",
-      "front": "What is an Error Budget?",
-      "back": "Error Budget = (100% - SLO). If SLO is 99.9%, error budget is 0.1% (43 minutes/month downtime allowed). When budget exhausted, prioritize reliability over features. Balances innovation with stability.",
+      "front": "O que é um Error Budget (orçamento de erro)?",
+      "back": "Error Budget = (100% - SLO). Se o SLO é 99,9%, o orçamento de erro é 0,1% (43 minutos/mês de indisponibilidade permitida). Quando o orçamento se esgota, priorize confiabilidade em vez de novas funcionalidades. Equilibra inovação com estabilidade.",
       "category": "SRE",
       "tags": ["error-budget", "sre", "reliability"]
     },
     {
       "id": "distributed-tracing",
-      "front": "What is Distributed Tracing?",
-      "back": "Tracing tracks requests across multiple services in microservices. Each request gets a trace ID, services add spans with timing data. Tools: Jaeger, Zipkin, OpenTelemetry. Helps identify bottlenecks and failures in complex systems.",
+      "front": "O que é Distributed Tracing (rastreamento distribuído)?",
+      "back": "Tracing acompanha requisições através de múltiplos serviços em arquiteturas de microsserviços. Cada requisição recebe um trace ID, e os serviços adicionam spans com dados de tempo. Ferramentas: Jaeger, Zipkin, OpenTelemetry. Ajuda a identificar gargalos e falhas em sistemas complexos.",
       "category": "Tracing",
       "tags": ["tracing", "distributed", "microservices"]
     },
     {
       "id": "logging-strategies",
-      "front": "What are logging best practices?",
-      "back": "Structured logging (JSON format), consistent log levels (DEBUG, INFO, WARN, ERROR), include context (request IDs, user IDs), centralized aggregation (ELK, Loki), retention policies, avoid sensitive data, use correlation IDs for distributed systems.",
+      "front": "Quais são as boas práticas de logging?",
+      "back": "Logging estruturado (formato JSON), níveis de log consistentes (DEBUG, INFO, WARN, ERROR), incluir contexto (IDs de requisição, IDs de usuário), agregação centralizada (ELK, Loki), políticas de retenção, evitar dados sensíveis, usar correlation IDs para sistemas distribuídos.",
       "category": "Logging",
       "tags": ["logging", "best-practices", "structured"]
     },
     {
       "id": "alerting-best-practices",
-      "front": "What are alerting best practices?",
-      "back": "Alert on symptoms not causes, keep alerts actionable, avoid alert fatigue (too many alerts), use severity levels, include runbooks in alerts, set appropriate thresholds, alert on SLO burn rate, use escalation policies, test alerts regularly.",
+      "front": "Quais são as boas práticas de alerta?",
+      "back": "Alerte sobre sintomas, não sobre causas, mantenha os alertas acionáveis, evite fadiga de alertas (alertas em excesso), use níveis de severidade, inclua runbooks nos alertas, defina limiares apropriados, alerte com base na taxa de consumo do SLO (burn rate), use políticas de escalonamento, teste os alertas regularmente.",
       "category": "Alerting",
       "tags": ["alerting", "best-practices", "monitoring"]
     },
     {
       "id": "on-call-practices",
-      "front": "What are on-call best practices?",
-      "back": "Rotate on-call schedules, provide escalation paths, maintain runbooks, post-incident reviews (blameless), compensate on-call time, limit alert volume, automate common fixes, establish response SLOs, practice incident response, use incident commanders for major outages.",
+      "front": "Quais são as boas práticas de plantão (on-call)?",
+      "back": "Faça rodízio das escalas de plantão, forneça caminhos de escalonamento, mantenha runbooks, realize revisões pós-incidente (sem culpados), remunere o tempo de plantão, limite o volume de alertas, automatize correções comuns, estabeleça SLOs de resposta, pratique resposta a incidentes, use incident commanders para grandes interrupções.",
       "category": "Operations",
       "tags": ["on-call", "incident-response", "sre"]
     }
