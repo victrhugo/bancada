@@ -1,10 +1,10 @@
 {
   "id": "service-mesh-concepts",
   "slug": "service-mesh-concepts",
-  "title": "Service Mesh Concepts",
-  "question": "What is a service mesh and when would you implement one? Explain the sidecar pattern.",
-  "answer": "A service mesh is a dedicated infrastructure layer for service-to-service communication, handling traffic management, security, and observability. It uses the sidecar pattern: a proxy container (like Envoy) runs alongside each service, intercepting all network traffic. Benefits: mutual TLS encryption, traffic splitting, retries/timeouts, and distributed tracing without code changes. Popular options: Istio, Linkerd, and Consul Connect. Implement when you have many microservices needing consistent networking policies.",
-  "explanation": "As microservices grow, managing inter-service communication becomes complex. A service mesh extracts networking concerns from application code into infrastructure. The sidecar proxy handles all traffic, enabling features like circuit breaking and canary deployments transparently. However, it adds operational complexity and resource overhead - don't use it for simple architectures.",
+  "title": "Conceitos de Service Mesh",
+  "question": "O que é um service mesh e quando você implementaria um? Explique o padrão sidecar.",
+  "answer": "Um service mesh é uma camada de infraestrutura dedicada para comunicação serviço-a-serviço, cuidando de gerenciamento de tráfego, segurança e observabilidade. Ele usa o padrão sidecar: um container proxy (como o Envoy) roda ao lado de cada serviço, interceptando todo o tráfego de rede. Benefícios: criptografia com mTLS, divisão de tráfego, retries/timeouts e distributed tracing sem mudanças de código. Opções populares: Istio, Linkerd e Consul Connect. Implemente quando você tem muitos microsserviços que precisam de políticas de rede consistentes.",
+  "explanation": "À medida que os microsserviços crescem, gerenciar a comunicação entre serviços fica complexo. Um service mesh extrai as preocupações de rede do código da aplicação para a infraestrutura. O proxy sidecar lida com todo o tráfego, permitindo funcionalidades como circuit breaking e deploys canary de forma transparente. Porém, isso adiciona complexidade operacional e overhead de recursos - não use para arquiteturas simples.",
   "category": "Kubernetes",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Istio traffic splitting",
+      "label": "Divisão de tráfego no Istio",
       "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: reviews\nspec:\n  hosts:\n  - reviews\n  http:\n  - route:\n    - destination:\n        host: reviews\n        subset: v1\n      weight: 90\n    - destination:\n        host: reviews\n        subset: v2\n      weight: 10  # 10% canary traffic"
     },
     {
       "language": "yaml",
-      "label": "Retry and timeout policy",
+      "label": "Política de retry e timeout",
       "code": "apiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: payments\nspec:\n  hosts:\n  - payments\n  http:\n  - timeout: 10s\n    retries:\n      attempts: 3\n      perTryTimeout: 3s\n      retryOn: 5xx,reset,connect-failure\n    route:\n    - destination:\n        host: payments"
     }
   ],
   "followUpQuestions": [
-    "How does mutual TLS work in a service mesh?",
-    "What is the performance overhead of running a service mesh?",
-    "How do you debug issues when traffic passes through sidecar proxies?"
+    "Como funciona o mTLS em um service mesh?",
+    "Qual o overhead de desempenho de rodar um service mesh?",
+    "Como você depura problemas quando o tráfego passa por proxies sidecar?"
   ],
   "commonMistakes": [
-    "Implementing a service mesh for a simple monolith or few services",
-    "Not accounting for increased resource usage from sidecar containers",
-    "Misconfiguring traffic policies causing cascading failures"
+    "Implementar um service mesh para um monólito simples ou poucos serviços",
+    "Não considerar o aumento no uso de recursos dos containers sidecar",
+    "Configurar mal as políticas de tráfego, causando falhas em cascata"
   ],
   "relatedTopics": [
     "microservices",

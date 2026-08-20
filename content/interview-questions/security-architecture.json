@@ -1,10 +1,10 @@
 {
   "id": "security-architecture",
   "slug": "security-architecture",
-  "title": "Security Architecture and DevSecOps",
-  "question": "How do you integrate security into the DevOps pipeline? Describe the key components of a secure architecture.",
-  "answer": "DevSecOps shifts security left by integrating it throughout the pipeline: 1) Pre-commit: secrets scanning, linting. 2) CI: SAST (static analysis), dependency scanning, container scanning. 3) CD: DAST (dynamic testing), infrastructure security scanning. 4) Runtime: WAF, network policies, runtime protection. Architecture security includes: defense in depth (multiple security layers), zero trust (verify everything, trust nothing), least privilege access, encryption at rest and in transit, network segmentation, and comprehensive logging and monitoring for security events.",
-  "explanation": "Security is a shared responsibility in modern DevOps. Understanding how to build security into systems from the start, rather than bolting it on later, is essential for senior engineers. Security breaches can have severe business and legal consequences.",
+  "title": "Arquitetura de Segurança e DevSecOps",
+  "question": "Como você integra segurança no pipeline de DevOps? Descreva os componentes-chave de uma arquitetura segura.",
+  "answer": "O DevSecOps desloca a segurança para o início (shift left) integrando-a ao longo de todo o pipeline: 1) Pre-commit: escaneamento de segredos, linting. 2) CI: SAST (análise estática), escaneamento de dependências, escaneamento de containers. 3) CD: DAST (teste dinâmico), escaneamento de segurança de infraestrutura. 4) Runtime: WAF, políticas de rede, proteção em tempo de execução. A segurança arquitetural inclui: defesa em profundidade (múltiplas camadas de segurança), zero trust (verifique tudo, não confie em nada), acesso com privilégio mínimo, criptografia em repouso e em trânsito, segmentação de rede e registro e monitoramento abrangentes para eventos de segurança.",
+  "explanation": "Segurança é uma responsabilidade compartilhada no DevOps moderno. Entender como construir segurança nos sistemas desde o início, em vez de adicioná-la depois, é essencial para engenheiros sêniores. Violações de segurança podem ter consequências severas para o negócio e legais.",
   "category": "Security",
   "difficulty": "advanced",
   "tier": "senior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Security scanning in CI/CD",
+      "label": "Escaneamento de segurança em CI/CD",
       "code": "# GitHub Actions security workflow\nname: Security Scan\non: [push, pull_request]\n\njobs:\n  security:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      \n      # Secrets detection\n      - name: Detect secrets\n        uses: trufflesecurity/trufflehog@main\n      \n      # Dependency scanning\n      - name: Dependency check\n        run: npm audit --audit-level=high\n      \n      # Container scanning\n      - name: Scan container image\n        uses: aquasecurity/trivy-action@master\n        with:\n          image-ref: 'myapp:latest'\n          severity: 'CRITICAL,HIGH'\n      \n      # SAST\n      - name: Static analysis\n        uses: github/codeql-action/analyze@v2"
     }
   ],
   "followUpQuestions": [
-    "How do you manage secrets in a Kubernetes environment?",
-    "What is the principle of defense in depth?",
-    "How do you implement zero trust networking?"
+    "Como você gerencia segredos em um ambiente Kubernetes?",
+    "O que é o princípio de defesa em profundidade?",
+    "Como você implementa redes zero trust?"
   ],
   "commonMistakes": [
-    "Treating security as a final step before release",
-    "Not scanning third-party dependencies",
-    "Storing secrets in code repositories"
+    "Tratar segurança como uma etapa final antes do lançamento",
+    "Não escanear dependências de terceiros",
+    "Armazenar segredos em repositórios de código"
   ],
   "relatedTopics": [
     "devsecops",
