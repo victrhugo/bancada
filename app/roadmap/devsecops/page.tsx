@@ -41,10 +41,22 @@ const priorityColors = {
   'nice-to-have': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
 };
 
+const PRIORITY_LABELS: Record<string, string> = {
+  essential: 'essencial',
+  important: 'importante',
+  'nice-to-have': 'bom ter',
+};
+
 const difficultyColors = {
   easy: 'text-green-600 dark:text-green-400',
   medium: 'text-yellow-600 dark:text-yellow-400',
   hard: 'text-red-600 dark:text-red-400',
+};
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  easy: 'fácil',
+  medium: 'médio',
+  hard: 'difícil',
 };
 
 export default function DevSecOpsRoadmapPage() {
@@ -91,45 +103,45 @@ export default function DevSecOpsRoadmapPage() {
           <div className="text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-sm font-medium">
               <ShieldCheck className="h-4 w-4" />
-              <span>Security-First DevOps</span>
+              <span>Segurança em Primeiro Lugar</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              DevSecOps{' '}
+              Roadmap{' '}
               <span className="text-primary">
-                Roadmap
+                DevSecOps
               </span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Master the art of integrating security into every stage of the software development
-              lifecycle. Shift left, automate security, and build resilient systems.
+              Domine a arte de integrar segurança em cada etapa do ciclo de vida do desenvolvimento
+              de software. Aplique o shift left, automatize a segurança e construa sistemas resilientes.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 pt-4">
               <Badge variant="outline" className="px-3 py-1">
                 <Clock className="h-3 w-3 mr-1" />
-                6-7 Months
+                6-7 Meses
               </Badge>
               <Badge variant="outline" className="px-3 py-1">
                 <Target className="h-3 w-3 mr-1" />
-                6 Milestones
+                6 Marcos
               </Badge>
               <Badge variant="outline" className="px-3 py-1">
                 <Shield className="h-3 w-3 mr-1" />
-                30+ Security Skills
+                30+ Habilidades de Segurança
               </Badge>
             </div>
 
             {/* Progress Overview */}
             <div className="max-w-md mx-auto pt-8">
               <div className="flex items-center justify-between text-sm mb-2">
-                <span className="text-muted-foreground">Your Progress</span>
+                <span className="text-muted-foreground">Seu Progresso</span>
                 <span className="font-medium">{getTotalProgress()}%</span>
               </div>
               <Progress value={getTotalProgress()} className="h-2" />
               <p className="text-xs text-muted-foreground mt-2">
-                Click on skills to mark them as completed
+                Clique nas habilidades para marcá-las como concluídas
               </p>
             </div>
           </div>
@@ -148,8 +160,8 @@ export default function DevSecOpsRoadmapPage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Integrate security early in the development process to catch vulnerabilities before
-                they reach production.
+                Integre segurança no início do processo de desenvolvimento para identificar
+                vulnerabilidades antes que cheguem à produção.
               </p>
             </CardContent>
           </Card>
@@ -158,13 +170,13 @@ export default function DevSecOpsRoadmapPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Workflow className="h-5 w-5 text-purple-500" />
-                Automate Everything
+                Automatize Tudo
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Embed security checks into CI/CD pipelines for consistent, repeatable security
-                validation.
+                Incorpore verificações de segurança nos pipelines de CI/CD para uma validação
+                consistente e repetível.
               </p>
             </CardContent>
           </Card>
@@ -173,13 +185,13 @@ export default function DevSecOpsRoadmapPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Eye className="h-5 w-5 text-blue-500" />
-                Continuous Monitoring
+                Monitoramento Contínuo
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Monitor, detect, and respond to security threats in real-time across your entire
-                infrastructure.
+                Monitore, detecte e responda a ameaças de segurança em tempo real em toda a sua
+                infraestrutura.
               </p>
             </CardContent>
           </Card>
@@ -189,7 +201,7 @@ export default function DevSecOpsRoadmapPage() {
       {/* Milestones */}
       <section className="py-12 container mx-auto px-4 max-w-6xl">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
-          Your DevSecOps Journey
+          Sua Jornada DevSecOps
         </h2>
 
         <div className="space-y-6">
@@ -236,7 +248,7 @@ export default function DevSecOpsRoadmapPage() {
                           {milestone.skills.filter((s) =>
                             completedSkills.has(`${milestone.id}-${s.name}`)
                           ).length}
-                          /{milestone.skills.length} skills
+                          /{milestone.skills.length} habilidades
                         </div>
                       </div>
                       <ChevronRight
@@ -257,7 +269,7 @@ export default function DevSecOpsRoadmapPage() {
                       <div className="lg:col-span-2 space-y-3">
                         <h4 className="font-semibold flex items-center gap-2">
                           <BookOpen className="h-4 w-4" />
-                          Skills to Learn
+                          Habilidades para Aprender
                         </h4>
                         <div className="space-y-2">
                           {milestone.skills.map((skill) => {
@@ -309,7 +321,7 @@ export default function DevSecOpsRoadmapPage() {
                                           priorityColors[skill.priority]
                                         )}
                                       >
-                                        {skill.priority}
+                                        {PRIORITY_LABELS[skill.priority] ?? skill.priority}
                                       </Badge>
                                       <span className="text-xs text-muted-foreground">
                                         ~{skill.estimatedHours}h
@@ -325,7 +337,7 @@ export default function DevSecOpsRoadmapPage() {
                                         onClick={(e) => e.stopPropagation()}
                                       >
                                         <PlayCircle className="h-3 w-3" />
-                                        Learn more
+                                        Saiba mais
                                         {skill.external && (
                                           <ExternalLink className="h-3 w-3" />
                                         )}
@@ -339,7 +351,7 @@ export default function DevSecOpsRoadmapPage() {
                                         onClick={(e) => e.stopPropagation()}
                                       >
                                         <Terminal className="h-3 w-3" />
-                                        Try: {sim.name}
+                                        Experimentar: {sim.name}
                                       </Link>
                                     ))}
                                   </div>
@@ -356,7 +368,7 @@ export default function DevSecOpsRoadmapPage() {
                         <div className="p-4 rounded-lg border bg-background/50">
                           <h4 className="font-semibold flex items-center gap-2 mb-2">
                             <Rocket className="h-4 w-4" />
-                            Milestone Project
+                            Projeto do Marco
                           </h4>
                           <p className="font-medium text-sm">{milestone.project.name}</p>
                           <p className="text-xs text-muted-foreground mt-1">
@@ -366,7 +378,7 @@ export default function DevSecOpsRoadmapPage() {
                             variant="outline"
                             className={cn('mt-2', difficultyColors[milestone.project.difficulty])}
                           >
-                            {milestone.project.difficulty}
+                            {DIFFICULTY_LABELS[milestone.project.difficulty] ?? milestone.project.difficulty}
                           </Badge>
                         </div>
 
@@ -374,7 +386,7 @@ export default function DevSecOpsRoadmapPage() {
                         <div className="p-4 rounded-lg border bg-background/50">
                           <h4 className="font-semibold flex items-center gap-2 mb-2">
                             <Target className="h-4 w-4" />
-                            Outcomes
+                            Resultados
                           </h4>
                           <ul className="space-y-1">
                             {milestone.outcomes.map((outcome) => (
@@ -393,7 +405,7 @@ export default function DevSecOpsRoadmapPage() {
                         <div className="p-4 rounded-lg border bg-background/50">
                           <h4 className="font-semibold flex items-center gap-2 mb-2">
                             <Lightbulb className="h-4 w-4 text-yellow-500" />
-                            Pro Tips
+                            Dicas de Especialista
                           </h4>
                           <ul className="space-y-1">
                             {milestone.tips.map((tip) => (
@@ -422,22 +434,22 @@ export default function DevSecOpsRoadmapPage() {
         <Card className="border-2 border-dashed">
           <CardContent className="py-12 text-center">
             <Trophy className="h-12 w-12 mx-auto text-yellow-500 mb-4" />
-            <h3 className="text-2xl font-bold mb-2">Ready to Secure Your Pipeline?</h3>
+            <h3 className="text-2xl font-bold mb-2">Pronto para Proteger seu Pipeline?</h3>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              Start with the Security Fundamentals milestone and work your way up. Remember:
-              security is a journey, not a destination.
+              Comece pelo marco de Fundamentos de Segurança e vá progredindo. Lembre-se:
+              segurança é uma jornada, não um destino.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild>
                 <Link href="/checklists">
                   <Shield className="h-4 w-4 mr-2" />
-                  Security Checklists
+                  Checklists de Segurança
                 </Link>
               </Button>
               <Button variant="outline" asChild>
                 <Link href="/roadmap">
                   <MapPin className="h-4 w-4 mr-2" />
-                  Full DevOps Roadmap
+                  Roadmap Completo de DevOps
                 </Link>
               </Button>
             </div>
@@ -447,39 +459,39 @@ export default function DevSecOpsRoadmapPage() {
 
       {/* Resources */}
       <section className="py-12 container mx-auto px-4 max-w-6xl mb-16">
-        <h2 className="text-2xl font-bold text-center mb-8">Additional Resources</h2>
+        <h2 className="text-2xl font-bold text-center mb-8">Recursos Adicionais</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             href="/checklists/aws-security"
             className="p-4 rounded-lg border bg-card hover:bg-accent transition-colors"
           >
             <Cloud className="h-8 w-8 text-orange-500 mb-2" />
-            <h4 className="font-semibold">AWS Security</h4>
-            <p className="text-xs text-muted-foreground">Cloud security checklist</p>
+            <h4 className="font-semibold">Segurança AWS</h4>
+            <p className="text-xs text-muted-foreground">Checklist de segurança na nuvem</p>
           </Link>
           <Link
             href="/checklists/kubernetes-security"
             className="p-4 rounded-lg border bg-card hover:bg-accent transition-colors"
           >
             <Container className="h-8 w-8 text-blue-500 mb-2" />
-            <h4 className="font-semibold">Kubernetes Security</h4>
-            <p className="text-xs text-muted-foreground">Container security checklist</p>
+            <h4 className="font-semibold">Segurança do Kubernetes</h4>
+            <p className="text-xs text-muted-foreground">Checklist de segurança de containers</p>
           </Link>
           <Link
             href="/checklists/docker-security"
             className="p-4 rounded-lg border bg-card hover:bg-accent transition-colors"
           >
             <Container className="h-8 w-8 text-cyan-500 mb-2" />
-            <h4 className="font-semibold">Docker Security</h4>
-            <p className="text-xs text-muted-foreground">Image hardening checklist</p>
+            <h4 className="font-semibold">Segurança do Docker</h4>
+            <p className="text-xs text-muted-foreground">Checklist de hardening de imagens</p>
           </Link>
           <Link
             href="/checklists/ssh-hardening"
             className="p-4 rounded-lg border bg-card hover:bg-accent transition-colors"
           >
             <Lock className="h-8 w-8 text-green-500 mb-2" />
-            <h4 className="font-semibold">SSH Hardening</h4>
-            <p className="text-xs text-muted-foreground">Secure access checklist</p>
+            <h4 className="font-semibold">Hardening de SSH</h4>
+            <p className="text-xs text-muted-foreground">Checklist de acesso seguro</p>
           </Link>
         </div>
       </section>
@@ -488,7 +500,7 @@ export default function DevSecOpsRoadmapPage() {
       <section className="py-8 container mx-auto px-4 max-w-4xl mb-16">
         <div className="text-center">
           <ReportIssue
-            title="Found an issue with this roadmap?"
+            title="Encontrou um problema com esse roadmap?"
             type="page"
             slug="roadmap/devsecops"
             variant="default"

@@ -31,15 +31,15 @@ import { milestones } from '@/lib/roadmap-junior-data';
 
 const priorityConfig = {
   essential: {
-    label: 'Essential',
+    label: 'Essencial',
     color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
   },
   important: {
-    label: 'Important',
+    label: 'Importante',
     color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
   },
   'nice-to-have': {
-    label: 'Nice to Have',
+    label: 'Bom Ter',
     color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
   },
 };
@@ -89,60 +89,60 @@ export default function JuniorDevOpsRoadmap() {
           <div className="max-w-3xl mx-auto text-center">
             <Badge variant="secondary" className="mb-4 gap-1.5">
               <GraduationCap className="w-3.5 h-3.5" />
-              Beginner Friendly
+              Ideal para Iniciantes
             </Badge>
 
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-              Junior DevOps{' '}
+              Roadmap Junior{' '}
               <span className="text-primary">
-                Roadmap
+                DevOps
               </span>
             </h1>
 
             <p className="mb-8 text-lg text-muted-foreground md:text-xl">
-              A clear, focused path to land your first DevOps role.{' '}
-              <span className="font-medium text-foreground">No overwhelm, just essentials.</span>
+              Um caminho claro e focado para conseguir sua primeira vaga em DevOps.{' '}
+              <span className="font-medium text-foreground">Sem sobrecarga, só o essencial.</span>
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-6 mb-8 text-sm">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-500" />
-                <span>6 months</span>
+                <span>6 meses</span>
               </div>
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-green-500" />
-                <span>5 milestones</span>
+                <span>5 marcos</span>
               </div>
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-yellow-500" />
-                <span>{totalSkills} core skills</span>
+                <span>{totalSkills} habilidades essenciais</span>
               </div>
             </div>
 
             {/* Progress Tracker */}
             <div className="p-4 rounded-lg bg-background/80 backdrop-blur border max-w-md mx-auto">
               <div className="flex items-center justify-between mb-2 text-sm">
-                <span className="font-medium">Your Progress</span>
+                <span className="font-medium">Seu Progresso</span>
                 <span className="text-muted-foreground">
-                  {completedCount}/{totalSkills} skills
+                  {completedCount}/{totalSkills} habilidades
                 </span>
               </div>
               <Progress value={progressPercentage} className="h-2" />
               <p className="mt-2 text-xs text-muted-foreground">
-                Click skills below to track your progress
+                Clique nas habilidades abaixo para acompanhar seu progresso
               </p>
             </div>
 
             <div className="flex flex-wrap justify-center gap-3 mt-8">
               <Button asChild size="lg">
                 <a href="#roadmap">
-                  Start Learning
+                  Começar a Aprender
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
               </Button>
               <Button variant="outline" asChild size="lg">
                 <Link href="/roadmap">
-                  View Full Roadmap
+                  Ver Roadmap Completo
                   <ExternalLink className="ml-2 w-4 h-4" />
                 </Link>
               </Button>
@@ -161,9 +161,9 @@ export default function JuniorDevOpsRoadmap() {
                   <Target className="w-5 h-5 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Focused</h3>
+                  <h3 className="font-semibold mb-1">Focado</h3>
                   <p className="text-sm text-muted-foreground">
-                    Only the skills you actually need for a junior role
+                    Apenas as habilidades que você realmente precisa para uma vaga júnior
                   </p>
                 </div>
               </div>
@@ -172,9 +172,9 @@ export default function JuniorDevOpsRoadmap() {
                   <Lightbulb className="w-5 h-5 text-green-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Project Ideas</h3>
+                  <h3 className="font-semibold mb-1">Ideias de Projetos</h3>
                   <p className="text-sm text-muted-foreground">
-                    Suggested projects to practice skills
+                    Projetos sugeridos para praticar as habilidades
                   </p>
                 </div>
               </div>
@@ -183,9 +183,9 @@ export default function JuniorDevOpsRoadmap() {
                   <Rocket className="w-5 h-5 text-purple-500" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Achievable</h3>
+                  <h3 className="font-semibold mb-1">Alcançável</h3>
                   <p className="text-sm text-muted-foreground">
-                    Realistic 6-month timeline with clear goals
+                    Cronograma realista de 6 meses com metas claras
                   </p>
                 </div>
               </div>
@@ -199,9 +199,9 @@ export default function JuniorDevOpsRoadmap() {
         <div className="container px-4 mx-auto">
           <div className="max-w-4xl mx-auto">
             <div className="mb-12 text-center">
-              <h2 className="mb-3 text-2xl font-bold md:text-3xl">Your Learning Path</h2>
+              <h2 className="mb-3 text-2xl font-bold md:text-3xl">Sua Trilha de Aprendizado</h2>
               <p className="text-muted-foreground">
-                Follow these milestones in order. Each builds on the previous one.
+                Siga esses marcos em ordem. Cada um constrói sobre o anterior.
               </p>
             </div>
 
@@ -259,7 +259,7 @@ export default function JuniorDevOpsRoadmap() {
                       <div className="mb-6">
                         <h4 className="mb-3 text-sm font-semibold flex items-center gap-2">
                           <BookOpen className="w-4 h-4" />
-                          Skills to Learn
+                          Habilidades para Aprender
                         </h4>
                         <div className="space-y-2">
                           {milestone.skills.map((skill) => (
@@ -319,7 +319,7 @@ export default function JuniorDevOpsRoadmap() {
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <PlayCircle className="w-3 h-3" />
-                                      Start learning
+                                      Começar a aprender
                                       {skill.external && <ExternalLink className="w-3 h-3" />}
                                     </Link>
                                   )}
@@ -331,7 +331,7 @@ export default function JuniorDevOpsRoadmap() {
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <Terminal className="w-3 h-3" />
-                                      Try: {sim.name}
+                                      Experimentar: {sim.name}
                                     </Link>
                                   ))}
                                 </div>
@@ -345,14 +345,14 @@ export default function JuniorDevOpsRoadmap() {
                       <div className="mb-6 p-4 rounded-lg bg-primary/5 border">
                         <h4 className="mb-2 text-sm font-semibold flex items-center gap-2">
                           <Trophy className="w-4 h-4 text-yellow-500" />
-                          Milestone Project
+                          Projeto do Marco
                         </h4>
                         <p className="font-medium">{milestone.project.name}</p>
                         <p className="text-sm text-muted-foreground mt-1">
                           {milestone.project.description}
                         </p>
                         <Badge variant="outline" className="mt-2 text-xs">
-                          {milestone.project.difficulty === 'easy' ? '🌱 Beginner' : '🌿 Intermediate'}
+                          {milestone.project.difficulty === 'easy' ? '🌱 Iniciante' : '🌿 Intermediário'}
                         </Badge>
                       </div>
 
@@ -361,7 +361,7 @@ export default function JuniorDevOpsRoadmap() {
                         <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
                           <h4 className="mb-2 text-sm font-semibold flex items-center gap-2 text-green-700 dark:text-green-400">
                             <CheckCircle2 className="w-4 h-4" />
-                            By the End You'll
+                            Ao Final Você Vai
                           </h4>
                           <ul className="space-y-1">
                             {milestone.outcomes.map((outcome) => (
@@ -378,7 +378,7 @@ export default function JuniorDevOpsRoadmap() {
                         <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
                           <h4 className="mb-2 text-sm font-semibold flex items-center gap-2 text-amber-700 dark:text-amber-400">
                             <Lightbulb className="w-4 h-4" />
-                            Pro Tips
+                            Dicas de Especialista
                           </h4>
                           <ul className="space-y-1">
                             {milestone.tips.map((tip) => (
@@ -403,22 +403,22 @@ export default function JuniorDevOpsRoadmap() {
             <Card className="mt-12 bg-primary/10">
               <CardContent className="p-8 text-center">
                 <Sparkles className="w-10 h-10 mx-auto mb-4 text-yellow-500" />
-                <h3 className="mb-2 text-xl font-bold">Ready for More?</h3>
+                <h3 className="mb-2 text-xl font-bold">Pronto para Mais?</h3>
                 <p className="mb-6 text-muted-foreground max-w-md mx-auto">
-                  Once you've completed this roadmap, you'll be ready to tackle intermediate DevOps
-                  topics like Kubernetes, advanced IaC, and observability.
+                  Depois de concluir esse roadmap, você estará pronto para encarar tópicos
+                  intermediários de DevOps, como Kubernetes, IaC avançado e observabilidade.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
                   <Button asChild>
                     <Link href="/roadmap">
                       <MapPin className="w-4 h-4 mr-2" />
-                      Full DevOps Roadmap
+                      Roadmap Completo de DevOps
                     </Link>
                   </Button>
                   <Button variant="outline" asChild>
                     <Link href="/exercises">
                       <BookOpen className="w-4 h-4 mr-2" />
-                      Browse All Exercises
+                      Ver Todos os Exercícios
                     </Link>
                   </Button>
                 </div>
@@ -428,7 +428,7 @@ export default function JuniorDevOpsRoadmap() {
             {/* Report Issue */}
             <div className="mt-8 text-center">
               <ReportIssue
-                title="Found an issue with this roadmap?"
+                title="Encontrou um problema com esse roadmap?"
                 type="page"
                 slug="roadmap/junior"
                 variant="default"

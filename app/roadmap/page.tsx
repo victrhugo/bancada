@@ -55,6 +55,46 @@ import {
   roadmapStages,
 } from '@/lib/roadmap-data';
 
+// Display labels for raw enum values coming from lib/roadmap-data.ts.
+// The underlying values (e.g. 'basic', 'very-high') must stay in English
+// because they're used as lookup keys and compared elsewhere in this file;
+// these maps translate them for display only.
+const LEVEL_LABELS: Record<string, string> = {
+  basic: 'Básico',
+  intermediate: 'Intermediário',
+  advanced: 'Avançado',
+};
+
+const SKILL_TYPE_LABELS: Record<string, string> = {
+  tool: 'Ferramenta',
+  concept: 'Conceito',
+  practice: 'Prática',
+  certification: 'Certificação',
+};
+
+const RESOURCE_TYPE_LABELS: Record<string, string> = {
+  tutorial: 'Tutorial',
+  documentation: 'Documentação',
+  course: 'Curso',
+  video: 'Vídeo',
+  book: 'Livro',
+  tool: 'Ferramenta',
+  practice: 'Prática',
+};
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner: 'Iniciante',
+  intermediate: 'Intermediário',
+  advanced: 'Avançado',
+};
+
+const DEMAND_LABELS: Record<string, string> = {
+  low: 'Baixa demanda',
+  medium: 'Demanda média',
+  high: 'Alta demanda',
+  'very-high': 'Demanda muito alta',
+};
+
 const SkillModal = ({
   skill,
   isOpen,
@@ -117,13 +157,13 @@ const SkillModal = ({
               <div className="flex items-center gap-2 mb-3">
                 {skill.level && (
                   <Badge variant="outline" className={cn('text-xs', levelColors[skill.level])}>
-                    {skill.level}
+                    {LEVEL_LABELS[skill.level] ?? skill.level}
                   </Badge>
                 )}
                 {skill.type && (
                   <Badge variant="secondary" className="text-xs capitalize">
                     <TypeIcon className="w-3 h-3 mr-1" />
-                    {skill.type}
+                    {SKILL_TYPE_LABELS[skill.type] ?? skill.type}
                   </Badge>
                 )}
               </div>
@@ -142,7 +182,7 @@ const SkillModal = ({
             <div className="p-4 border rounded-lg bg-muted/30 border-border/50">
               <h4 className="flex items-center gap-2 mb-2 font-semibold">
                 <Star className="w-4 h-4 text-primary" />
-                Primary Resource
+                Recurso Principal
               </h4>
               {skill.external ? (
                 <a
@@ -152,7 +192,7 @@ const SkillModal = ({
                   className="flex items-center gap-2 transition-colors text-primary hover:text-primary/80"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Visit External Resource
+                  Acessar Recurso Externo
                 </a>
               ) : (
                 <Link
@@ -161,7 +201,7 @@ const SkillModal = ({
                   onClick={onClose}
                 >
                   <ChevronRight className="w-4 h-4" />
-                  View Internal Guide
+                  Ver Guia Interno
                 </Link>
               )}
             </div>
@@ -172,7 +212,7 @@ const SkillModal = ({
             <div>
               <h4 className="flex items-center gap-2 mb-4 font-semibold">
                 <BookOpen className="w-4 h-4" />
-                Learning Resources ({resources.length})
+                Recursos de Aprendizado ({resources.length})
               </h4>
               <div className="grid gap-3">
                 {resources.map((resource, index) => {
@@ -198,7 +238,7 @@ const SkillModal = ({
                                 resourceTypeBadges[resource.type]
                               )}
                             >
-                              {resource.type}
+                              {RESOURCE_TYPE_LABELS[resource.type] ?? resource.type}
                             </Badge>
                           </div>
                           {resource.description && (
@@ -214,7 +254,7 @@ const SkillModal = ({
                               className="inline-flex items-center gap-1 text-sm transition-colors text-primary hover:text-primary/80"
                             >
                               <ExternalLink className="w-3 h-3" />
-                              Open Resource
+                              Abrir Recurso
                             </a>
                           ) : (
                             <Link
@@ -223,7 +263,7 @@ const SkillModal = ({
                               onClick={onClose}
                             >
                               <ChevronRight className="w-3 h-3" />
-                              View Guide
+                              Ver Guia
                             </Link>
                           )}
                         </div>
@@ -240,7 +280,8 @@ const SkillModal = ({
             <div className="py-8 text-center text-muted-foreground">
               <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p className="text-sm">
-                Resources for this skill are coming soon! Check back later for tutorials and guides.
+                Os recursos para esta habilidade estão a caminho! Volte em breve para conferir
+                tutoriais e guias.
               </p>
             </div>
           )}
@@ -249,7 +290,7 @@ const SkillModal = ({
         <button
           onClick={onClose}
           className="absolute p-2 transition-colors rounded-md top-4 right-4 hover:bg-muted/50"
-          aria-label="Close modal"
+          aria-label="Fechar modal"
         ></button>
       </DialogContent>
     </Dialog>
@@ -299,7 +340,7 @@ const SkillCard = ({
             </h4>
             {skill.level && (
               <Badge variant="outline" className={cn('text-xs h-5 mt-1', levelColors[skill.level])}>
-                {skill.level}
+                {LEVEL_LABELS[skill.level] ?? skill.level}
               </Badge>
             )}
           </div>
@@ -316,7 +357,9 @@ const SkillCard = ({
       {skill.type && (
         <div className="flex items-center gap-1">
           <TypeIcon className="w-3 h-3 text-muted-foreground" />
-          <span className="text-xs capitalize text-muted-foreground">{skill.type}</span>
+          <span className="text-xs capitalize text-muted-foreground">
+            {SKILL_TYPE_LABELS[skill.type] ?? skill.type}
+          </span>
         </div>
       )}
 
@@ -378,12 +421,12 @@ const CareerProgressionCard = ({
         >
           <Briefcase className="w-4 h-4" />
         </div>
-        <h4 className="font-semibold">Career Progression</h4>
+        <h4 className="font-semibold">Progressão de Carreira</h4>
       </div>
 
       <div className="space-y-3">
         <div>
-          <h5 className="mb-2 text-sm font-medium text-muted-foreground">Potential Roles</h5>
+          <h5 className="mb-2 text-sm font-medium text-muted-foreground">Cargos Potenciais</h5>
           <div className="flex flex-wrap gap-1">
             {careerProgression.jobTitles.map((title) => (
               <Badge key={title} variant="outline" className="text-xs">
@@ -402,12 +445,12 @@ const CareerProgressionCard = ({
             variant="outline"
             className={cn('text-xs', demandColors[careerProgression.demandLevel])}
           >
-            {careerProgression.demandLevel.replace('-', ' ')} demand
+            {DEMAND_LABELS[careerProgression.demandLevel] ?? careerProgression.demandLevel}
           </Badge>
         </div>
 
         <div>
-          <h5 className="mb-2 text-sm font-medium text-muted-foreground">Industry Adoption</h5>
+          <h5 className="mb-2 text-sm font-medium text-muted-foreground">Adoção no Mercado</h5>
           <p className="text-xs text-muted-foreground">{careerProgression.industryAdoption}</p>
         </div>
       </div>
@@ -443,7 +486,7 @@ const ProjectCard = ({ project, stageColor }: { project: RoadmapProject; stageCo
                 variant="outline"
                 className={cn('text-xs h-5', difficultyColors[project.difficulty])}
               >
-                {project.difficulty}
+                {DIFFICULTY_LABELS[project.difficulty] ?? project.difficulty}
               </Badge>
               <Badge variant="outline" className="h-5 text-xs">
                 <Clock className="w-3 h-3 mr-1" />
@@ -469,7 +512,7 @@ const ProjectCard = ({ project, stageColor }: { project: RoadmapProject; stageCo
         ))}
         {project.technologies.length > 4 && (
           <Badge variant="secondary" className="text-xs">
-            +{project.technologies.length - 4} more
+            +{project.technologies.length - 4} mais
           </Badge>
         )}
       </div>
@@ -514,7 +557,7 @@ const MarketContextCard = ({
         >
           <TrendingUp className="w-4 h-4" />
         </div>
-        <h4 className="font-semibold">Market Context</h4>
+        <h4 className="font-semibold">Contexto de Mercado</h4>
       </div>
 
       <div className="space-y-3">
@@ -563,12 +606,12 @@ export default function RoadmapPage() {
             <div className="mb-16 text-center">
               <Badge variant="outline" className="mb-4">
                 <Brain className="w-3.5 h-3.5 mr-2" />
-                Interactive Learning Path
+                Trilha de Aprendizado Interativa
               </Badge>
-              <h2 className="mb-4 text-3xl font-bold md:text-4xl">The Complete DevOps Journey</h2>
+              <h2 className="mb-4 text-3xl font-bold md:text-4xl">A Jornada Completa do DevOps</h2>
               <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
-                Each stage includes curated resources, hands-on projects, and real-world skills you
-                can practice immediately.
+                Cada etapa inclui recursos selecionados, projetos práticos e habilidades do mundo
+                real que você pode praticar imediatamente.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
                 <Link
@@ -576,15 +619,15 @@ export default function RoadmapPage() {
                   className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-primary/10 border border-primary/20 hover:border-primary/40 hover:bg-primary/20 transition-all duration-300 group"
                 >
                   <GraduationCap className="w-4 h-4 text-primary" />
-                  <span>New to DevOps? <span className="text-primary">Junior Roadmap</span></span>
+                  <span>Novo no DevOps? <span className="text-primary">Roadmap Júnior</span></span>
                   <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link 
+                <Link
                   href="/roadmap/devsecops"
                   className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-red-500/10 to-purple-500/10 border border-red-500/20 hover:border-red-500/40 hover:from-red-500/20 hover:to-purple-500/20 transition-all duration-300 group"
                 >
                   <ShieldCheck className="w-4 h-4 text-red-500" />
-                  <span>Security focused? <span className="text-red-600 dark:text-red-400">DevSecOps Roadmap</span></span>
+                  <span>Foco em segurança? <span className="text-red-600 dark:text-red-400">Roadmap DevSecOps</span></span>
                   <ArrowRight className="w-4 h-4 text-red-500 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -683,7 +726,7 @@ export default function RoadmapPage() {
                           <div>
                             <h4 className="flex items-center gap-2 mb-4 font-semibold">
                               <Target className="w-4 h-4 text-primary" />
-                              Skills & Resources ({stage.skills.length})
+                              Habilidades e Recursos ({stage.skills.length})
                             </h4>
                             <div className="grid grid-cols-1 gap-3">
                               {stage.skills.map((skill) => (
@@ -700,8 +743,8 @@ export default function RoadmapPage() {
                           {stage.id === 'lifetime' && (
                             <div className="pt-6 mt-6 border-t">
                               <p className="text-sm italic text-muted-foreground">
-                                "The capacity to learn is a gift; the ability to learn is a skill;
-                                the willingness to learn is a choice."
+                                "A capacidade de aprender é um dom; a habilidade de aprender é uma
+                                competência; a disposição para aprender é uma escolha."
                                 <span className="block mt-2 font-semibold text-right">
                                   - Brian Herbert
                                 </span>
@@ -730,7 +773,7 @@ export default function RoadmapPage() {
                             <CardContent className="p-4 bg-blue-50 dark:bg-blue-950/20">
                               <h4 className="flex items-center gap-2 mb-3 text-sm font-semibold text-blue-700 dark:text-blue-300">
                                 <CheckCircle2 className="w-4 h-4" />
-                                Prerequisites
+                                Pré-requisitos
                               </h4>
                               <div className="flex flex-wrap gap-2">
                                 {stage.prerequisites.map((prereq) => (
@@ -761,7 +804,7 @@ export default function RoadmapPage() {
                             <CardHeader className="pb-3">
                               <h4 className="flex items-center gap-2 font-semibold">
                                 <Code className="w-4 h-4 text-primary" />
-                                Hands-on Projects ({stage.projects.length})
+                                Projetos Práticos ({stage.projects.length})
                               </h4>
                             </CardHeader>
                             <CardContent className="pt-0">
@@ -784,7 +827,7 @@ export default function RoadmapPage() {
                             <CardContent className="p-4 bg-green-50 dark:bg-green-950/20">
                               <h4 className="flex items-center gap-2 mb-3 text-sm font-semibold text-green-700 dark:text-green-300">
                                 <Award className="w-4 h-4" />
-                                Learning Outcomes
+                                Resultados de Aprendizado
                               </h4>
                               <ul className="space-y-2">
                                 {stage.outcomes.map((outcome) => (
@@ -896,7 +939,7 @@ export default function RoadmapPage() {
                         <div className="p-3 mb-4 border rounded-lg bg-blue-50 dark:bg-blue-950/20 border-blue-200/50 dark:border-blue-800/50">
                           <h4 className="flex items-center gap-2 mb-2 text-sm font-semibold text-blue-700 dark:text-blue-300">
                             <CheckCircle2 className="w-4 h-4" />
-                            Prerequisites
+                            Pré-requisitos
                           </h4>
                           <div className="flex flex-wrap gap-1">
                             {stage.prerequisites.map((prereq) => (
@@ -926,7 +969,7 @@ export default function RoadmapPage() {
                       <div className="mb-4">
                         <h4 className="flex items-center gap-2 mb-3 font-semibold">
                           <Target className="w-4 h-4 text-primary" />
-                          Skills & Resources ({stage.skills.length})
+                          Habilidades e Recursos ({stage.skills.length})
                         </h4>
                         <div className="space-y-2">
                           {stage.skills.map((skill) => (
@@ -945,7 +988,7 @@ export default function RoadmapPage() {
                         <div className="mb-4">
                           <h4 className="flex items-center gap-2 mb-3 font-semibold">
                             <Code className="w-4 h-4 text-primary" />
-                            Projects ({stage.projects.length})
+                            Projetos ({stage.projects.length})
                           </h4>
                           <div className="space-y-2">
                             {stage.projects.map((project) => (
@@ -964,7 +1007,7 @@ export default function RoadmapPage() {
                         <div className="p-3 border rounded-lg bg-green-50 dark:bg-green-950/20 border-green-200/50 dark:border-green-800/50">
                           <h4 className="flex items-center gap-2 mb-2 text-sm font-semibold text-green-700 dark:text-green-300">
                             <Award className="w-4 h-4" />
-                            Learning Outcomes
+                            Resultados de Aprendizado
                           </h4>
                           <ul className="space-y-1">
                             {stage.outcomes.map((outcome) => (
@@ -983,8 +1026,8 @@ export default function RoadmapPage() {
                       {stage.id === 'lifetime' && (
                         <div className="pt-4 mt-4 border-t">
                           <p className="text-sm italic text-muted-foreground">
-                            "The capacity to learn is a gift; the ability to learn is a skill; the
-                            willingness to learn is a choice."
+                            "A capacidade de aprender é um dom; a habilidade de aprender é uma
+                            competência; a disposição para aprender é uma escolha."
                             <span className="block mt-2 font-semibold text-right">
                               - Brian Herbert
                             </span>
@@ -1000,14 +1043,15 @@ export default function RoadmapPage() {
               <div className="max-w-2xl p-6 mx-auto border rounded-lg bg-muted/30 border-muted-foreground/10">
                 <p className="text-sm italic leading-relaxed text-muted-foreground">
                   <span className="inline-block w-2 h-2 rounded-full bg-muted-foreground/40 mr-2 mb-0.5"></span>
-                  Salary ranges and demand levels reflect US market averages and may vary by region.
+                  As faixas salariais e os níveis de demanda refletem médias do mercado dos EUA e
+                  podem variar por região.
                 </p>
               </div>
             </div>
             <div className="text-sm text-muted-foreground">
               <div className="max-w-2xl mx-auto rounded-lg">
                 <ReportIssue
-                  title="Found an issue with the roadmap?"
+                  title="Encontrou algum problema no roadmap?"
                   type="page"
                   slug="roadmap"
                   variant="default"
@@ -1027,31 +1071,31 @@ export default function RoadmapPage() {
                 <Sparkles className="w-12 h-12 mx-auto mb-6 text-amber-500" />
 
                 <h2 className="mb-6 text-3xl font-bold text-primary md:text-4xl">
-                  Ready to Begin Your DevOps Journey?
+                  Pronto para Começar sua Jornada DevOps?
                 </h2>
 
                 <p className="max-w-2xl mx-auto mb-8 text-xl text-muted-foreground">
-                  Join thousands of engineers who are learning DevOps with our interactive
-                  exercises and simulators.
+                  Junte-se a milhares de engenheiros que estão aprendendo DevOps com nossos
+                  exercícios interativos e simuladores.
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-4 mb-8">
                   <Button asChild size="lg">
                     <Link href="/exercises">
                       <BookOpen className="w-4 h-4 mr-2" />
-                      Browse Exercises
+                      Explorar Exercícios
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
                     <Link href="/quizzes">
                       <TrendingUp className="w-4 h-4 mr-2" />
-                      Take a Quiz
+                      Fazer um Quiz
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
                     <Link href="/games">
                       <PlayCircle className="w-4 h-4 mr-2" />
-                      Practice with Simulators
+                      Praticar com Simuladores
                     </Link>
                   </Button>
                 </div>
@@ -1061,15 +1105,15 @@ export default function RoadmapPage() {
                 <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Zap className="w-4 h-4 text-yellow-500" />
-                    <span>Updated Weekly</span>
+                    <span>Atualizado Semanalmente</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-blue-500" />
-                    <span>Community Driven</span>
+                    <span>Impulsionado pela Comunidade</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Award className="w-4 h-4 text-purple-500" />
-                    <span>Industry Recognized</span>
+                    <span>Reconhecido pelo Mercado</span>
                   </div>
                 </div>
               </CardContent>
