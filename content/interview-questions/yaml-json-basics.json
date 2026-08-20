@@ -1,10 +1,10 @@
 {
   "id": "yaml-json-basics",
   "slug": "yaml-json-basics",
-  "title": "YAML and JSON Configuration Formats",
-  "question": "What are YAML and JSON? When would you use each format in DevOps?",
-  "answer": "YAML (YAML Ain't Markup Language) and JSON (JavaScript Object Notation) are data serialization formats. YAML is human-readable with indentation-based syntax, supports comments, and is preferred for configuration files (Kubernetes, Ansible, CI/CD). JSON is more compact, has strict syntax, and is preferred for APIs and machine-to-machine communication. Both represent the same data structures: objects/maps, arrays/lists, and scalar values.",
-  "explanation": "DevOps engineers work with YAML and JSON daily. Kubernetes manifests, Helm charts, GitHub Actions, and Ansible playbooks all use YAML. APIs typically return JSON. Understanding both formats and being able to convert between them is essential. Common pitfalls include YAML indentation errors and JSON trailing commas.",
+  "title": "Formatos de Configuração YAML e JSON",
+  "question": "O que são YAML e JSON? Quando você usaria cada formato em DevOps?",
+  "answer": "YAML (YAML Ain't Markup Language) e JSON (JavaScript Object Notation) são formatos de serialização de dados. O YAML é legível por humanos, com sintaxe baseada em indentação, suporta comentários e é preferido para arquivos de configuração (Kubernetes, Ansible, CI/CD). O JSON é mais compacto, tem sintaxe rígida e é preferido para APIs e comunicação máquina-a-máquina. Ambos representam as mesmas estruturas de dados: objetos/maps, arrays/listas e valores escalares.",
+  "explanation": "Engenheiros de DevOps trabalham com YAML e JSON diariamente. Manifests do Kubernetes, Helm charts, GitHub Actions e playbooks do Ansible usam YAML. APIs geralmente retornam JSON. Entender os dois formatos e saber converter entre eles é essencial. Armadilhas comuns incluem erros de indentação em YAML e vírgulas sobrando em JSON.",
   "category": "DevOps",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,25 +18,25 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "YAML example",
+      "label": "Exemplo de YAML",
       "code": "# YAML supports comments\napp:\n  name: myapp\n  version: 1.0.0\n  \n  # Nested configuration\n  database:\n    host: localhost\n    port: 5432\n    \n  # List/array\n  environments:\n    - development\n    - staging\n    - production\n    \n  # Boolean and null\n  enabled: true\n  deprecated: false\n  optional_field: null\n  \n  # Multi-line string\n  description: |\n    This is a multi-line\n    description block."
     },
     {
       "language": "json",
-      "label": "Equivalent JSON",
+      "label": "JSON equivalente",
       "code": "{\n  \"app\": {\n    \"name\": \"myapp\",\n    \"version\": \"1.0.0\",\n    \"database\": {\n      \"host\": \"localhost\",\n      \"port\": 5432\n    },\n    \"environments\": [\n      \"development\",\n      \"staging\",\n      \"production\"\n    ],\n    \"enabled\": true,\n    \"deprecated\": false,\n    \"optional_field\": null,\n    \"description\": \"This is a multi-line\\ndescription block.\"\n  }\n}"
     }
   ],
   "followUpQuestions": [
-    "What common YAML mistakes cause parsing errors?",
-    "How do you validate YAML or JSON files?",
-    "What tools can convert between YAML and JSON?"
+    "Quais erros comuns de YAML causam falhas de parsing?",
+    "Como você valida arquivos YAML ou JSON?",
+    "Quais ferramentas conseguem converter entre YAML e JSON?"
   ],
   "commonMistakes": [
-    "Using tabs instead of spaces in YAML (only spaces allowed)",
-    "Inconsistent indentation in YAML files",
-    "Trailing commas in JSON arrays/objects (not allowed)",
-    "Forgetting to quote strings with special characters in YAML"
+    "Usar tabs em vez de espaços em YAML (só espaços são permitidos)",
+    "Indentação inconsistente em arquivos YAML",
+    "Vírgulas sobrando em arrays/objetos JSON (não permitido)",
+    "Esquecer de colocar entre aspas strings com caracteres especiais em YAML"
   ],
   "relatedTopics": [
     "kubernetes",

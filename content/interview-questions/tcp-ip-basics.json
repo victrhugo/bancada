@@ -1,10 +1,10 @@
 {
   "id": "tcp-ip-basics",
   "slug": "tcp-ip-basics",
-  "title": "TCP/IP Fundamentals",
-  "question": "Explain the difference between TCP and UDP. When would you use each?",
-  "answer": "TCP (Transmission Control Protocol) is connection-oriented, ensuring reliable, ordered delivery with error checking and retransmission. UDP (User Datagram Protocol) is connectionless, offering faster but unreliable delivery without guarantees. Use TCP for web traffic (HTTP), file transfers, and email. Use UDP for streaming, gaming, DNS queries, and real-time applications where speed matters more than reliability.",
-  "explanation": "Understanding TCP vs UDP is fundamental for troubleshooting network issues, configuring firewalls, and designing distributed systems. DevOps engineers must know which protocol applications use to properly monitor, secure, and optimize network traffic.",
+  "title": "Fundamentos de TCP/IP",
+  "question": "Explique a diferença entre TCP e UDP. Quando você usaria cada um?",
+  "answer": "TCP (Transmission Control Protocol) é orientado a conexão, garantindo entrega confiável, ordenada, com checagem de erros e retransmissão. UDP (User Datagram Protocol) não é orientado a conexão, oferecendo entrega mais rápida, porém não confiável, sem garantias. Use TCP para tráfego web (HTTP), transferência de arquivos e e-mail. Use UDP para streaming, jogos, consultas DNS e aplicações em tempo real onde velocidade importa mais que confiabilidade.",
+  "explanation": "Entender TCP vs UDP é fundamental para solucionar problemas de rede, configurar firewalls e projetar sistemas distribuídos. Engenheiros de DevOps precisam saber qual protocolo cada aplicação usa para monitorar, proteger e otimizar o tráfego de rede corretamente.",
   "category": "Networking",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Check open TCP/UDP ports",
+      "label": "Verificar portas TCP/UDP abertas",
       "code": "# List all TCP connections\nnetstat -tulpn | grep tcp\nss -tulpn | grep tcp\n\n# List all UDP connections\nnetstat -tulpn | grep udp\nss -tulpn | grep udp\n\n# Test TCP connectivity\nnc -zv hostname 80\n\n# Test UDP connectivity\nnc -zuv hostname 53"
     }
   ],
   "followUpQuestions": [
-    "What is the TCP three-way handshake?",
-    "Why does DNS use UDP by default but can fall back to TCP?",
-    "What are the common TCP states and what do they mean?"
+    "O que é o three-way handshake do TCP?",
+    "Por que o DNS usa UDP por padrão, mas pode recorrer ao TCP?",
+    "Quais são os estados comuns do TCP e o que eles significam?"
   ],
   "commonMistakes": [
-    "Assuming all network traffic uses TCP",
-    "Blocking UDP on firewalls without understanding impact on DNS and NTP",
-    "Not considering TCP overhead for high-throughput applications"
+    "Assumir que todo o tráfego de rede usa TCP",
+    "Bloquear UDP em firewalls sem entender o impacto em DNS e NTP",
+    "Não considerar o overhead do TCP em aplicações de alta vazão"
   ],
   "relatedTopics": [
     "dns",

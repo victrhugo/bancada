@@ -1,10 +1,10 @@
 {
   "id": "ssh-basics",
   "slug": "ssh-basics",
-  "title": "SSH Basics and Key Authentication",
-  "question": "How does SSH key authentication work? How do you set it up?",
-  "answer": "SSH key authentication uses a public-private key pair. Generate keys with ssh-keygen, copy the public key (~/.ssh/id_rsa.pub) to the server's ~/.ssh/authorized_keys file using ssh-copy-id. The private key stays on your machine and should never be shared. Key auth is more secure than passwords and enables passwordless login.",
-  "explanation": "SSH is the primary way to access remote servers securely. Understanding key-based authentication is essential for DevOps work, as it's used for server administration, Git operations, CI/CD pipelines, and automated deployments.",
+  "title": "Fundamentos de SSH e Autenticação por Chave",
+  "question": "Como funciona a autenticação por chave SSH? Como você configura isso?",
+  "answer": "A autenticação por chave SSH usa um par de chaves pública-privada. Gere as chaves com ssh-keygen, copie a chave pública (~/.ssh/id_rsa.pub) para o arquivo ~/.ssh/authorized_keys do servidor usando ssh-copy-id. A chave privada fica na sua máquina e nunca deve ser compartilhada. A autenticação por chave é mais segura que senhas e permite login sem senha.",
+  "explanation": "O SSH é a principal forma de acessar servidores remotos com segurança. Entender a autenticação baseada em chaves é essencial para o trabalho de DevOps, já que ela é usada para administração de servidores, operações de Git, pipelines de CI/CD e deploys automatizados.",
   "category": "Linux",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Generate and deploy SSH keys",
+      "label": "Gerar e implantar chaves SSH",
       "code": "# Generate new SSH key pair\nssh-keygen -t ed25519 -C 'your@email.com'\n\n# Copy public key to server\nssh-copy-id user@server.example.com\n\n# Or manually copy the key\ncat ~/.ssh/id_ed25519.pub | ssh user@server 'cat >> ~/.ssh/authorized_keys'\n\n# Connect to server\nssh user@server.example.com"
     },
     {
       "language": "bash",
-      "label": "SSH config file for easier access",
+      "label": "Arquivo de configuração SSH para acesso mais fácil",
       "code": "# Create/edit ~/.ssh/config\nHost prod-server\n  HostName 192.168.1.100\n  User deploy\n  IdentityFile ~/.ssh/prod_key\n  Port 22\n\n# Now connect with just:\nssh prod-server\n\n# Run command on remote server\nssh prod-server 'df -h'"
     }
   ],
   "followUpQuestions": [
-    "What's the difference between RSA, ECDSA, and Ed25519 keys?",
-    "How do you use SSH agent to manage multiple keys?",
-    "How would you set up SSH tunneling/port forwarding?"
+    "Qual a diferença entre chaves RSA, ECDSA e Ed25519?",
+    "Como usar o SSH agent para gerenciar múltiplas chaves?",
+    "Como você configuraria SSH tunneling/encaminhamento de porta?"
   ],
   "commonMistakes": [
-    "Setting wrong permissions on .ssh directory (should be 700) and authorized_keys (should be 600)",
-    "Sharing or committing private keys to version control",
-    "Not using a passphrase on private keys"
+    "Definir permissões erradas no diretório .ssh (deveria ser 700) e no authorized_keys (deveria ser 600)",
+    "Compartilhar ou commitar chaves privadas no controle de versão",
+    "Não usar uma passphrase nas chaves privadas"
   ],
   "relatedTopics": [
     "ssh-agent",
