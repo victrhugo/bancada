@@ -1,10 +1,10 @@
 {
   "id": "litmus-core-resources-explained",
   "slug": "litmus-core-resources-explained",
-  "title": "Litmus Building Blocks: ChaosEngine vs ChaosExperiment",
-  "question": "You install Litmus on a cluster and want to kill a pod to see what happens. Walk me through the pieces Litmus gives you, and what is the actual difference between a ChaosExperiment and a ChaosEngine?",
-  "answer": "Litmus is built around a few custom resources plus an operator that watches them. A ChaosExperiment is the reusable template: it describes one fault (pod-delete, pod-network-latency, node-drain), the litmus-go container image that runs it, the default tunables, and the RBAC permissions that fault needs. You install these from the ChaosHub, and on their own they do nothing. Think of ChaosExperiment as the recipe for what could go wrong. A ChaosEngine is the order ticket: it binds one or more ChaosExperiments to a specific target through appinfo (appns, applabel, appkind), names the chaosServiceAccount to run as, lets you override env, and attaches probes. Applying a ChaosEngine is what actually triggers a run. The chaos-operator reconciles that ChaosEngine, spins up a chaos-runner pod, and the runner launches the experiment job that injects the fault. The third resource is ChaosResult, which holds the verdict: Pass, Fail, or Awaited, plus probeSuccessPercentage and the failStep. That is your source of truth for whether the hypothesis held, not just whether the pod came back. So the short version: ChaosExperiment is the recipe, ChaosEngine is the order, ChaosResult is the review.",
-  "explanation": "This question tells you fast whether someone has actually run Litmus or only read about chaos engineering in the abstract. The ChaosExperiment versus ChaosEngine split is the single thing beginners get muddled. Listen for the operator and runner flow, and for the candidate naming ChaosResult as the place you read the outcome. If they say 'the pod rescheduled so it passed' without mentioning the verdict resource, they have done the tutorial once and stopped thinking.",
+  "title": "Peças Fundamentais do Litmus: ChaosEngine vs ChaosExperiment",
+  "question": "Você instala o Litmus em um cluster e quer matar um pod para ver o que acontece. Me explique as peças que o Litmus oferece, e qual é a diferença real entre um ChaosExperiment e um ChaosEngine?",
+  "answer": "O Litmus é construído em torno de alguns custom resources mais um operator que os observa. Um ChaosExperiment é o template reutilizável: ele descreve uma falha (pod-delete, pod-network-latency, node-drain), a imagem de container litmus-go que a executa, os ajustes padrão, e as permissões de RBAC que aquela falha exige. Você instala esses experimentos a partir do ChaosHub, e sozinhos eles não fazem nada. Pense no ChaosExperiment como a receita do que pode dar errado. Um ChaosEngine é o pedido: ele vincula um ou mais ChaosExperiments a um alvo específico por meio do appinfo (appns, applabel, appkind), define o chaosServiceAccount que vai executar, permite sobrescrever variáveis de ambiente, e anexa probes. Aplicar um ChaosEngine é o que de fato dispara uma execução. O chaos-operator reconcilia esse ChaosEngine, sobe um pod chaos-runner, e o runner inicia o job do experimento que injeta a falha. O terceiro recurso é o ChaosResult, que guarda o veredito: Pass, Fail ou Awaited, mais o probeSuccessPercentage e o failStep. Essa é a sua fonte da verdade sobre se a hipótese se sustentou, não apenas se o pod voltou. Então, resumindo: ChaosExperiment é a receita, ChaosEngine é o pedido, ChaosResult é a avaliação.",
+  "explanation": "Essa pergunta revela rápido se alguém já rodou o Litmus de fato ou só leu sobre chaos engineering em abstrato. A distinção entre ChaosExperiment e ChaosEngine é o ponto único em que iniciantes se confundem. Preste atenção ao fluxo entre operator e runner, e se o candidato menciona o ChaosResult como o lugar onde se lê o resultado. Se disserem 'o pod foi reagendado então passou' sem mencionar o recurso de veredito, é sinal de que fizeram o tutorial uma vez e pararam de pensar no assunto.",
   "category": "Chaos Engineering",
   "difficulty": "beginner",
   "tier": "junior",
@@ -17,24 +17,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "A minimal ChaosEngine that runs the pod-delete experiment",
+      "label": "Um ChaosEngine mínimo que roda o experimento pod-delete",
       "code": "apiVersion: litmuschaos.io/v1alpha1\nkind: ChaosEngine\nmetadata:\n  name: nginx-chaos\n  namespace: default\nspec:\n  appinfo:\n    appns: default\n    applabel: 'app=nginx'\n    appkind: deployment\n  chaosServiceAccount: pod-delete-sa\n  engineState: active\n  experiments:\n    - name: pod-delete\n      spec:\n        components:\n          env:\n            - name: TOTAL_CHAOS_DURATION\n              value: '30'\n            - name: PODS_AFFECTED_PERC\n              value: '50'"
     },
     {
       "language": "bash",
-      "label": "Install the experiment definition, then read the verdict",
+      "label": "Instalar a definição do experimento e depois ler o veredito",
       "code": "# ChaosExperiment definitions come from the ChaosHub\nkubectl apply -n default -f \\\n  https://hub.litmuschaos.io/api/chaos/3.0.0?file=charts/generic/pod-delete/experiment.yaml\n\n# After applying the ChaosEngine, the verdict lives in the ChaosResult\nkubectl get chaosresult nginx-chaos-pod-delete -n default \\\n  -o jsonpath='{.status.experimentStatus.verdict}'\n# -> Pass / Fail / Awaited"
     }
   ],
   "followUpQuestions": [
-    "Where does the ChaosExperiment definition actually come from, and what is the ChaosHub?",
-    "What is the chaos-runner pod doing, and how is it different from the chaos-operator?",
-    "If the deleted pod comes back but ChaosResult never reaches Pass, what would you go look at first?"
+    "De onde vem de fato a definição do ChaosExperiment, e o que é o ChaosHub?",
+    "O que o pod chaos-runner está fazendo, e como ele difere do chaos-operator?",
+    "Se o pod excluído volta mas o ChaosResult nunca chega a Pass, o que você iria checar primeiro?"
   ],
   "commonMistakes": [
-    "Thinking that installing Litmus alone runs chaos; you still need the experiment definition, an RBAC service account, and a ChaosEngine to trigger anything",
-    "Using ChaosEngine and ChaosExperiment as if they are the same object",
-    "Treating a rescheduled pod as a pass instead of reading the ChaosResult verdict"
+    "Pensar que instalar o Litmus sozinho já executa chaos; ainda é preciso a definição do experimento, uma service account de RBAC e um ChaosEngine para disparar algo",
+    "Tratar ChaosEngine e ChaosExperiment como se fossem o mesmo objeto",
+    "Considerar um pod reagendado como aprovação em vez de ler o veredito do ChaosResult"
   ],
   "relatedTopics": [
     "kubernetes-operators",

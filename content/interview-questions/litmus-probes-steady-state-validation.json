@@ -1,10 +1,10 @@
 {
   "id": "litmus-probes-steady-state-validation",
   "slug": "litmus-probes-steady-state-validation",
-  "title": "How Litmus Decides Pass or Fail: Probes",
-  "question": "Your pod-delete experiment shows Pass, but during the run users got 502s for about 20 seconds. How can the experiment pass while the service was actually down, and how do you fix that?",
-  "answer": "It passes because, with no probe attached, the verdict mostly checks that the fault was injected and the target recovered to a healthy pod count. It never checked whether your service kept serving traffic. A bare ChaosEngine gives you green that means almost nothing. The fix is probes, which is how you encode the steady-state hypothesis and feed probeSuccessPercentage into the verdict. Litmus has four probe types: httpProbe hits an endpoint and asserts on the status or response, cmdProbe runs a command and compares output, k8sProbe asserts on the state of a Kubernetes resource, and promProbe runs a PromQL query and asserts on the result (for example, error rate stays under a threshold). But the type matters less than the mode. SOT and EOT run the probe once, at the start or end of the test. Edge runs it at both ends. Continuous polls throughout the chaos window at probePollingInterval, and that is the one that catches the 20 seconds of 502s, because it samples while the failure is happening. So add an httpProbe in Continuous mode against the service, with a tight polling interval and a sane retry budget. If availability dips during chaos, the probe fails, probeSuccessPercentage drops, and ChaosResult becomes Fail. Now Pass actually means the failure was injected and the service stayed up. The probe is the experiment's assertion. Without one you are just deleting pods and hoping.",
-  "explanation": "This separates people who ran the happy-path tutorial from people who validate a hypothesis. The scenario is real and common: a green verdict that hides a real availability gap. Listen for probes, and specifically Continuous mode versus the once-at-the-edges modes, plus the framing that the probe is the assertion that makes the verdict meaningful. A strong candidate reaches for promProbe to assert on an SLO like error rate or latency, not just a 200 from an endpoint.",
+  "title": "Como o Litmus Decide Pass ou Fail: Probes",
+  "question": "Seu experimento de pod-delete mostra Pass, mas durante a execução os usuários receberam 502s por cerca de 20 segundos. Como o experimento pode passar enquanto o serviço estava de fato fora do ar, e como você conserta isso?",
+  "answer": "Ele passa porque, sem nenhuma probe anexada, o veredito basicamente checa se a falha foi injetada e se o alvo se recuperou para uma contagem saudável de pods. Ele nunca checou se o seu serviço continuou servindo tráfego. Um ChaosEngine sem probes te dá um verde que praticamente não significa nada. A correção são as probes, que é como você codifica a hipótese de steady state e alimenta o probeSuccessPercentage no veredito. O Litmus tem quatro tipos de probe: httpProbe acessa um endpoint e valida o status ou a resposta, cmdProbe roda um comando e compara a saída, k8sProbe valida o estado de um recurso do Kubernetes, e promProbe roda uma query PromQL e valida o resultado (por exemplo, a taxa de erro permanece abaixo de um limite). Mas o tipo importa menos que o modo. SOT e EOT rodam a probe uma única vez, no início ou no fim do teste. Edge roda nos dois extremos. Continuous faz polling durante toda a janela de chaos no probePollingInterval, e é esse que pega os 20 segundos de 502s, porque ele amostra enquanto a falha está acontecendo. Então adicione uma httpProbe em modo Continuous contra o serviço, com um intervalo de polling apertado e um orçamento de retry sensato. Se a disponibilidade cair durante o chaos, a probe falha, o probeSuccessPercentage cai, e o ChaosResult vira Fail. Agora Pass realmente significa que a falha foi injetada e o serviço se manteve no ar. A probe é a asserção do experimento. Sem uma, você está só deletando pods e torcendo.",
+  "explanation": "Isso separa quem rodou o tutorial do caminho feliz de quem valida uma hipótese de verdade. O cenário é real e comum: um veredito verde que esconde uma lacuna real de disponibilidade. Preste atenção a probes, especialmente ao modo Continuous versus os modos que rodam só nas pontas, e à ideia de que a probe é a asserção que dá significado ao veredito. Um candidato forte recorre ao promProbe para validar um SLO como taxa de erro ou latência, não só um 200 de um endpoint.",
   "category": "Chaos Engineering",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -17,25 +17,25 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "ChaosEngine with a Continuous httpProbe plus a Prometheus SLO probe",
+      "label": "ChaosEngine com uma httpProbe Continuous mais uma probe de SLO do Prometheus",
       "code": "experiments:\n  - name: pod-delete\n    spec:\n      probe:\n        - name: frontend-stays-up\n          type: httpProbe\n          mode: Continuous\n          httpProbe/inputs:\n            url: http://nginx.default.svc.cluster.local\n            method:\n              get:\n                criteria: ==\n                responseCode: '200'\n          runProperties:\n            probeTimeout: 2s\n            interval: 1s\n            attempt: 3\n            probePollingInterval: 2s\n        - name: error-rate-under-1pct\n          type: promProbe\n          mode: Continuous\n          promProbe/inputs:\n            endpoint: http://prometheus.monitoring:9090\n            query: rate(http_requests_total{code=~\"5..\"}[1m])\n            comparator:\n              criteria: '<'\n              value: '1'\n          runProperties:\n            probeTimeout: 5s\n            interval: 5s\n            attempt: 2\n            probePollingInterval: 5s"
     },
     {
       "language": "bash",
-      "label": "Read the probe result, not just the verdict",
+      "label": "Leia o resultado da probe, não só o veredito",
       "code": "kubectl get chaosresult nginx-chaos-pod-delete -n default \\\n  -o jsonpath='{.status.experimentStatus.probeSuccessPercentage}'\n# 100 means every probe poll held the hypothesis.\n# Anything less means the service dipped while the fault was live."
     }
   ],
   "followUpQuestions": [
-    "What is the difference between Continuous and Edge mode, and when would Edge actually be the right choice?",
-    "How do probeTimeout, attempt, and probePollingInterval interact, and how do you keep a probe from producing flaky verdicts?",
-    "How would you assert on a real SLO like p99 latency staying under 300ms during the chaos window?",
-    "How would you turn probeSuccessPercentage into a pass or fail gate in a CI pipeline?"
+    "Qual é a diferença entre o modo Continuous e o Edge, e quando o Edge seria de fato a escolha certa?",
+    "Como probeTimeout, attempt e probePollingInterval interagem, e como você evita que uma probe produza veredictos instáveis?",
+    "Como você validaria um SLO real, como p99 de latência abaixo de 300ms, durante a janela de chaos?",
+    "Como você transformaria o probeSuccessPercentage em um gate de pass ou fail em um pipeline de CI?"
   ],
   "commonMistakes": [
-    "Running experiments with no probe at all and trusting the green Pass it produces",
-    "Using SOT or EOT mode when the failure window is mid-experiment, so the availability dip is never sampled",
-    "Setting probes so strict (zero retries, tiny timeout) that you get flaky failures and the team stops trusting the results"
+    "Rodar experimentos sem nenhuma probe e confiar no Pass verde que isso produz",
+    "Usar o modo SOT ou EOT quando a janela de falha está no meio do experimento, então a queda de disponibilidade nunca é amostrada",
+    "Configurar probes rígidas demais (zero retries, timeout minúsculo), gerando falhas instáveis até o time parar de confiar nos resultados"
   ],
   "relatedTopics": [
     "steady-state-hypothesis",

@@ -2,9 +2,9 @@
   "id": "kubernetes-kubelet",
   "slug": "kubernetes-kubelet",
   "title": "Kubernetes Kubelet",
-  "question": "What is the role of the kubelet in a Kubernetes cluster? How does it interact with the control plane?",
-  "answer": "The kubelet is an agent running on each worker node. It receives Pod specifications from the API server, ensures containers are running in those pods, reports node and pod status back to the control plane, and manages pod lifecycle including health checks. It's the bridge between the Kubernetes control plane and container runtime.",
-  "explanation": "Understanding kubelet is essential for troubleshooting node-level issues. When pods fail to start or behave unexpectedly, kubelet logs often reveal the root cause. The kubelet also handles resource limits, volume mounting, and liveness/readiness probes.",
+  "question": "Qual é o papel do kubelet em um cluster Kubernetes? Como ele interage com o control plane?",
+  "answer": "O kubelet é um agente que roda em cada worker node. Ele recebe as especificações de Pod vindas do API server, garante que os containers estejam rodando nesses pods, reporta o status do node e dos pods de volta ao control plane, e gerencia o ciclo de vida dos pods, incluindo health checks. É a ponte entre o control plane do Kubernetes e o container runtime.",
+  "explanation": "Entender o kubelet é essencial para solucionar problemas em nível de node. Quando pods falham ao iniciar ou se comportam de forma inesperada, os logs do kubelet costumam revelar a causa raiz. O kubelet também lida com limites de recursos, montagem de volumes e as probes de liveness/readiness.",
   "category": "Kubernetes",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Kubelet troubleshooting",
+      "label": "Troubleshooting do kubelet",
       "code": "# Check kubelet status\nsystemctl status kubelet\n\n# View kubelet logs\njournalctl -u kubelet -f\n\n# Check node conditions\nkubectl describe node <node-name>\n\n# View kubelet configuration\nkubectl proxy & curl localhost:8001/api/v1/nodes/<node>/proxy/configz"
     },
     {
       "language": "yaml",
-      "label": "Kubelet configuration",
+      "label": "Configuração do kubelet",
       "code": "# /var/lib/kubelet/config.yaml example\napiVersion: kubelet.config.k8s.io/v1beta1\nkind: KubeletConfiguration\ncontainerRuntimeEndpoint: unix:///var/run/containerd/containerd.sock\nmaxPods: 110\nevictionHard:\n  memory.available: 100Mi\n  nodefs.available: 10%\n  imagefs.available: 15%"
     }
   ],
   "followUpQuestions": [
-    "What happens when the kubelet loses connection to the API server?",
-    "How does the kubelet determine if a pod is healthy?",
-    "What is the difference between kubelet and kube-proxy?"
+    "O que acontece quando o kubelet perde a conexão com o API server?",
+    "Como o kubelet determina se um pod está saudável?",
+    "Qual é a diferença entre kubelet e kube-proxy?"
   ],
   "commonMistakes": [
-    "Not checking kubelet logs when pods fail to start",
-    "Misconfiguring eviction thresholds leading to unexpected pod evictions",
-    "Forgetting that kubelet needs container runtime (containerd/cri-o) to be running"
+    "Não checar os logs do kubelet quando pods falham ao iniciar",
+    "Configurar mal os thresholds de eviction, causando evictions inesperadas de pods",
+    "Esquecer que o kubelet precisa do container runtime (containerd/cri-o) rodando"
   ],
   "relatedTopics": [
     "kube-proxy",

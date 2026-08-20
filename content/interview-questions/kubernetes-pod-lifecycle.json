@@ -1,10 +1,10 @@
 {
   "id": "kubernetes-pod-lifecycle",
   "slug": "kubernetes-pod-lifecycle",
-  "title": "Kubernetes Pod Lifecycle",
-  "question": "Explain the different phases of a Kubernetes Pod lifecycle and what happens during each phase.",
-  "answer": "A Kubernetes Pod goes through several phases: Pending (waiting for scheduling or image pulls), Running (at least one container is running), Succeeded (all containers terminated successfully), Failed (at least one container failed), and Unknown (Pod state cannot be determined). Each phase reflects the Pod's current status in the cluster.",
-  "explanation": "Understanding Pod lifecycle is crucial for debugging applications and implementing proper health checks. The lifecycle begins when a Pod is created and ends when it's deleted or evicted. During this time, Kubernetes continuously monitors and manages the Pod's state through its control loops.",
+  "title": "Ciclo de Vida do Pod no Kubernetes",
+  "question": "Explique as diferentes fases do ciclo de vida de um Pod no Kubernetes e o que acontece em cada uma delas.",
+  "answer": "Um Pod no Kubernetes passa por várias fases: Pending (aguardando agendamento ou pull de imagens), Running (pelo menos um container está rodando), Succeeded (todos os containers terminaram com sucesso), Failed (pelo menos um container falhou) e Unknown (o estado do Pod não pode ser determinado). Cada fase reflete o status atual do Pod no cluster.",
+  "explanation": "Entender o ciclo de vida do Pod é fundamental para depurar aplicações e implementar health checks adequados. O ciclo de vida começa quando um Pod é criado e termina quando ele é excluído ou despejado (evicted). Durante esse tempo, o Kubernetes monitora e gerencia continuamente o estado do Pod por meio dos seus control loops.",
   "category": "Kubernetes",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Check Pod phase",
+      "label": "Verificar a fase do Pod",
       "code": "# Get Pod phase\nkubectl get pod my-pod -o jsonpath='{.status.phase}'\n\n# Watch Pod status changes\nkubectl get pod my-pod -w\n\n# Describe Pod for detailed lifecycle events\nkubectl describe pod my-pod"
     },
     {
       "language": "yaml",
-      "label": "Pod with lifecycle hooks",
+      "label": "Pod com lifecycle hooks",
       "code": "apiVersion: v1\nkind: Pod\nmetadata:\n  name: lifecycle-demo\nspec:\n  containers:\n  - name: app\n    image: nginx\n    lifecycle:\n      postStart:\n        exec:\n          command: [\"/bin/sh\", \"-c\", \"echo Hello > /tmp/started\"]\n      preStop:\n        exec:\n          command: [\"/bin/sh\", \"-c\", \"nginx -s quit; sleep 10\"]"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between a Pod restart policy of Always, OnFailure, and Never?",
-    "How do liveness and readiness probes affect the Pod lifecycle?",
-    "What happens when a Pod's container exceeds its memory limit?"
+    "Qual é a diferença entre uma restart policy de Pod Always, OnFailure e Never?",
+    "Como as probes de liveness e readiness afetam o ciclo de vida do Pod?",
+    "O que acontece quando o container de um Pod excede seu limite de memória?"
   ],
   "commonMistakes": [
-    "Confusing Pod phase with container state - a Running Pod can have containers in different states",
-    "Not implementing graceful shutdown handlers, leading to data loss",
-    "Setting terminationGracePeriodSeconds too low for applications that need cleanup time"
+    "Confundir a fase do Pod com o estado do container - um Pod em Running pode ter containers em estados diferentes",
+    "Não implementar handlers de graceful shutdown, causando perda de dados",
+    "Definir terminationGracePeriodSeconds baixo demais para aplicações que precisam de tempo para limpeza"
   ],
   "relatedTopics": [
     "container-states",

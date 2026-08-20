@@ -1,10 +1,10 @@
 {
   "id": "monitoring-alerting-strategy",
   "slug": "monitoring-alerting-strategy",
-  "title": "Monitoring and Alerting Strategy",
-  "question": "How do you design a monitoring and alerting strategy? What metrics would you track and how do you avoid alert fatigue?",
-  "answer": "Start with the four golden signals: latency, traffic, errors, and saturation. Use RED method for services (Rate, Errors, Duration) and USE method for resources (Utilization, Saturation, Errors). To avoid alert fatigue: alert on symptoms not causes, set appropriate thresholds with historical data, use severity levels (page vs ticket), implement alert grouping and deduplication, require runbooks for every alert, and regularly review and tune alerts. Only page for actionable issues that require immediate human intervention.",
-  "explanation": "Effective monitoring enables proactive issue detection and faster incident resolution. Poor alerting leads to alert fatigue where important signals get ignored. This is a critical skill for maintaining reliable systems.",
+  "title": "Estratégia de Monitoramento e Alertas",
+  "question": "Como você projeta uma estratégia de monitoramento e alertas? Quais métricas você acompanharia e como evitar a fadiga de alertas?",
+  "answer": "Comece pelos quatro golden signals: latência, tráfego, erros e saturação. Use o método RED para serviços (Rate, Errors, Duration) e o método USE para recursos (Utilization, Saturation, Errors). Para evitar a fadiga de alertas: alerte com base em sintomas, não em causas, defina limiares apropriados usando dados históricos, use níveis de severidade (page vs ticket), implemente agrupamento e deduplicação de alertas, exija runbooks para todo alerta, e revise e ajuste os alertas regularmente. Faça page apenas para problemas acionáveis que exigem intervenção humana imediata.",
+  "explanation": "Um monitoramento eficaz permite detecção proativa de problemas e resolução mais rápida de incidentes. Alertas mal configurados levam à fadiga de alertas, em que sinais importantes acabam sendo ignorados. Essa é uma habilidade crítica para manter sistemas confiáveis.",
   "category": "Observability",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Prometheus alerting rules example",
+      "label": "Exemplo de regras de alerta no Prometheus",
       "code": "groups:\n- name: service-alerts\n  rules:\n  # High error rate - page immediately\n  - alert: HighErrorRate\n    expr: |\n      sum(rate(http_requests_total{status=~\"5..\"}[5m]))\n      / sum(rate(http_requests_total[5m])) > 0.05\n    for: 5m\n    labels:\n      severity: critical\n    annotations:\n      summary: High error rate detected\n      runbook: https://wiki/runbooks/high-error-rate\n\n  # High latency - create ticket\n  - alert: HighLatency\n    expr: |\n      histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5\n    for: 10m\n    labels:\n      severity: warning\n    annotations:\n      summary: P95 latency above 500ms"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between metrics, logs, and traces?",
-    "How do you decide between warning and critical alert severity?",
-    "What is an error budget and how does it relate to alerting?"
+    "Qual é a diferença entre métricas, logs e traces?",
+    "Como você decide entre severidade de alerta warning e critical?",
+    "O que é um error budget e como ele se relaciona com alertas?"
   ],
   "commonMistakes": [
-    "Alerting on every metric threshold crossing",
-    "Not including runbooks with alerts",
-    "Setting thresholds without historical baseline data"
+    "Alertar em toda vez que um limiar de métrica é ultrapassado",
+    "Não incluir runbooks junto com os alertas",
+    "Definir limiares sem dados históricos de referência"
   ],
   "relatedTopics": [
     "prometheus",

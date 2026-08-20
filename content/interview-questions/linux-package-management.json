@@ -1,10 +1,10 @@
 {
   "id": "linux-package-management",
   "slug": "linux-package-management",
-  "title": "Linux Package Management",
-  "question": "How do you install and manage software packages in Linux? What's the difference between apt and yum?",
-  "answer": "Package managers handle software installation, updates, and dependencies. apt (Debian/Ubuntu) and yum/dnf (RHEL/CentOS/Fedora) are the main ones. apt uses .deb packages, yum uses .rpm. Basic commands: apt update && apt install package, yum install package. Both resolve dependencies automatically.",
-  "explanation": "Understanding package management is essential for setting up servers, installing dependencies, and maintaining system security through updates. Different distributions use different package managers, so knowing both apt and yum families is valuable.",
+  "title": "Gerenciamento de Pacotes no Linux",
+  "question": "Como você instala e gerencia pacotes de software no Linux? Qual é a diferença entre apt e yum?",
+  "answer": "Gerenciadores de pacotes cuidam da instalação, atualização e das dependências de softwares. apt (Debian/Ubuntu) e yum/dnf (RHEL/CentOS/Fedora) são os principais. O apt usa pacotes .deb, o yum usa .rpm. Comandos básicos: apt update && apt install pacote, yum install pacote. Ambos resolvem as dependências automaticamente.",
+  "explanation": "Entender gerenciamento de pacotes é essencial para configurar servidores, instalar dependências e manter a segurança do sistema por meio de atualizações. Distribuições diferentes usam gerenciadores de pacotes diferentes, então conhecer tanto a família apt quanto a yum é valioso.",
   "category": "Linux",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "apt commands (Debian/Ubuntu)",
+      "label": "Comandos apt (Debian/Ubuntu)",
       "code": "# Update package list\nsudo apt update\n\n# Install a package\nsudo apt install nginx\n\n# Upgrade all packages\nsudo apt upgrade\n\n# Remove a package\nsudo apt remove nginx\n\n# Search for packages\napt search docker\n\n# Show package info\napt show nginx"
     },
     {
       "language": "bash",
-      "label": "yum/dnf commands (RHEL/CentOS)",
+      "label": "Comandos yum/dnf (RHEL/CentOS)",
       "code": "# Install a package\nsudo yum install httpd\n# or with dnf (newer)\nsudo dnf install httpd\n\n# Update all packages\nsudo yum update\n\n# List installed packages\nyum list installed\n\n# Check for security updates\nyum updateinfo list security"
     }
   ],
   "followUpQuestions": [
-    "What are PPAs and how do you add third-party repositories?",
-    "How would you pin a package to a specific version?",
-    "What's the difference between apt and apt-get?"
+    "O que são PPAs e como você adiciona repositórios de terceiros?",
+    "Como você fixaria um pacote em uma versão específica?",
+    "Qual é a diferença entre apt e apt-get?"
   ],
   "commonMistakes": [
-    "Forgetting to run apt update before installing new packages",
-    "Running apt upgrade in production without testing first",
-    "Not understanding that apt and yum are for different distros"
+    "Esquecer de rodar apt update antes de instalar novos pacotes",
+    "Rodar apt upgrade em produção sem testar antes",
+    "Não entender que apt e yum são para distribuições diferentes"
   ],
   "relatedTopics": [
     "snap",
