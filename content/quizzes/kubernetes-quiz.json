@@ -1,7 +1,7 @@
 {
   "id": "kubernetes-quiz",
-  "title": "Kubernetes Fundamentals Quiz",
-  "description": "Learn Kubernetes concepts through practical scenarios covering pods, services, deployments, and troubleshooting",
+  "title": "Quiz de Fundamentos do Kubernetes",
+  "description": "Aprenda conceitos de Kubernetes através de cenários práticos envolvendo pods, services, deployments e troubleshooting",
   "category": "Kubernetes",
   "icon": "Code",
   "totalPoints": 115,
@@ -11,7 +11,7 @@
     "gradientTo": "to-indigo-600"
   },
   "metadata": {
-    "estimatedTime": "18-22 minutes",
+    "estimatedTime": "18-22 minutos",
     "difficultyLevels": {
       "beginner": 4,
       "intermediate": 3,
@@ -22,9 +22,9 @@
   "questions": [
     {
       "id": "pod-creation",
-      "title": "Creating Your First Pod",
-      "description": "What's the correct way to create a pod running nginx?",
-      "situation": "You need to deploy an nginx web server in a Kubernetes cluster.",
+      "title": "Criando seu Primeiro Pod",
+      "description": "Qual é a forma correta de criar um pod rodando nginx?",
+      "situation": "Você precisa implantar um servidor web nginx em um cluster Kubernetes.",
       "codeExample": "# Goal: Create a pod named 'web-server' running nginx:1.20\n# The pod should be accessible on port 80",
       "options": [
         "kubectl apply -f - <<EOF\napiVersion: v1\nkind: Pod\nmetadata:\n  name: web-server\nspec:\n  containers:\n  - name: nginx\n    image: nginx:1.20\n    ports:\n    - containerPort: 80\nEOF",
@@ -33,16 +33,16 @@
         "kubectl run web-server --image=nginx:1.20 --port=80"
       ],
       "correctAnswer": 0,
-      "explanation": "While 'kubectl run' creates pods quickly, using YAML manifests with 'kubectl apply' is the best practice as it's declarative, version-controllable, and allows for more complex configurations.",
-      "hint": "Think about which approach is more maintainable and follows Kubernetes best practices.",
+      "explanation": "Embora 'kubectl run' crie pods rapidamente, usar manifestos YAML com 'kubectl apply' é a melhor prática, pois é declarativo, versionável e permite configurações mais complexas.",
+      "hint": "Pense em qual abordagem é mais sustentável e segue as melhores práticas do Kubernetes.",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "service-types",
-      "title": "Exposing Your Application",
-      "description": "How do you expose a pod to external traffic?",
-      "situation": "Your nginx pod is running, but you need to make it accessible from outside the cluster.",
+      "title": "Expondo sua Aplicação",
+      "description": "Como você expõe um pod para tráfego externo?",
+      "situation": "Seu pod nginx está rodando, mas você precisa torná-lo acessível de fora do cluster.",
       "options": [
         "kubectl expose pod web-server --type=ClusterIP --port=80",
         "kubectl expose pod web-server --type=NodePort --port=80",
@@ -50,16 +50,16 @@
         "kubectl expose pod web-server --type=LoadBalancer --port=80"
       ],
       "correctAnswer": 3,
-      "explanation": "LoadBalancer service type exposes the service externally using a cloud provider's load balancer, making it accessible from outside the cluster. NodePort only works if you can access cluster nodes directly.",
-      "hint": "Consider which service type actually makes your application accessible from the internet.",
+      "explanation": "O tipo de service LoadBalancer expõe o service externamente usando o balanceador de carga de um provedor de nuvem, tornando-o acessível de fora do cluster. NodePort só funciona se você conseguir acessar os nós do cluster diretamente.",
+      "hint": "Pense em qual tipo de service realmente torna sua aplicação acessível pela internet.",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "deployment-scaling",
-      "title": "Scaling Applications",
-      "description": "Your application is experiencing high traffic. How do you scale it?",
-      "situation": "You have a deployment called 'web-app' with 1 replica, but you need 5 replicas to handle traffic.",
+      "title": "Escalando Aplicações",
+      "description": "Sua aplicação está enfrentando um alto volume de tráfego. Como você a escala?",
+      "situation": "Você tem um deployment chamado 'web-app' com 1 réplica, mas precisa de 5 réplicas para lidar com o tráfego.",
       "codeExample": "# Current state:\n# deployment.apps/web-app   1/1     1            1           2m\n# Need: 5 replicas running",
       "options": [
         "kubectl scale pod web-app --replicas=5",
@@ -68,16 +68,16 @@
         "kubectl patch deployment web-app -p '{\"spec\":{\"replicas\":5}}'"
       ],
       "correctAnswer": 1,
-      "explanation": "kubectl scale deployment is the most direct and common way to scale a deployment. While edit and patch work, scale is specifically designed for this purpose and is more intuitive.",
-      "hint": "What's the most straightforward command for changing the number of replicas?",
+      "explanation": "kubectl scale deployment é a forma mais direta e comum de escalar um deployment. Embora edit e patch também funcionem, scale foi criado especificamente para esse propósito e é mais intuitivo.",
+      "hint": "Qual é o comando mais direto para mudar o número de réplicas?",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "troubleshooting-pods",
-      "title": "Debugging Failed Pods",
-      "description": "Your pod is in CrashLoopBackOff state. How do you diagnose the issue?",
-      "situation": "A pod named 'app-pod' keeps restarting and shows CrashLoopBackOff status.",
+      "title": "Depurando Pods com Falha",
+      "description": "Seu pod está no estado CrashLoopBackOff. Como você diagnostica o problema?",
+      "situation": "Um pod chamado 'app-pod' fica reiniciando e mostra o status CrashLoopBackOff.",
       "codeExample": "$ kubectl get pods\nNAME      READY   STATUS             RESTARTS   AGE\napp-pod   0/1     CrashLoopBackOff   4          2m",
       "options": [
         "kubectl delete pod app-pod",
@@ -86,69 +86,69 @@
         "kubectl get events"
       ],
       "correctAnswer": 1,
-      "explanation": "kubectl describe shows pod events and status details, while kubectl logs shows the application's output. Together, they provide comprehensive debugging information for pod issues.",
-      "hint": "You need to gather information about what's going wrong. Which commands provide the most diagnostic information?",
+      "explanation": "kubectl describe mostra os eventos do pod e detalhes de status, enquanto kubectl logs mostra a saída da aplicação. Juntos, eles fornecem informações abrangentes para depurar problemas do pod.",
+      "hint": "Você precisa reunir informações sobre o que está dando errado. Quais comandos fornecem mais informações de diagnóstico?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "configmap-usage",
-      "title": "Managing Configuration",
-      "description": "How do you inject configuration into a pod without rebuilding the image?",
-      "situation": "Your application needs database connection settings that might change between environments.",
+      "title": "Gerenciando Configuração",
+      "description": "Como você injeta configuração em um pod sem reconstruir a imagem?",
+      "situation": "Sua aplicação precisa de configurações de conexão com o banco de dados que podem mudar entre ambientes.",
       "codeExample": "# You have these config values:\n# DB_HOST=postgres.example.com\n# DB_PORT=5432\n# DB_NAME=myapp",
       "options": [
         "kubectl create configmap db-config --from-literal=DB_HOST=postgres.example.com --from-literal=DB_PORT=5432 --from-literal=DB_NAME=myapp",
         "kubectl create secret db-config --from-literal=DB_HOST=postgres.example.com",
         "kubectl set env deployment/app DB_HOST=postgres.example.com",
-        "Rebuild the Docker image with the config values"
+        "Reconstruir a imagem Docker com os valores de configuração"
       ],
       "correctAnswer": 0,
-      "explanation": "ConfigMaps are specifically designed for non-sensitive configuration data. They can be mounted as volumes or exposed as environment variables, keeping configuration separate from application code.",
-      "hint": "Think about Kubernetes resources designed specifically for configuration management.",
+      "explanation": "ConfigMaps foram criados especificamente para dados de configuração não sensíveis. Podem ser montados como volumes ou expostos como variáveis de ambiente, mantendo a configuração separada do código da aplicação.",
+      "hint": "Pense nos recursos do Kubernetes criados especificamente para gerenciamento de configuração.",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "persistent-storage",
-      "title": "Data Persistence",
-      "description": "How do you ensure database data survives pod restarts?",
-      "situation": "You're running a PostgreSQL database pod that needs to retain data even if the pod is recreated.",
+      "title": "Persistência de Dados",
+      "description": "Como você garante que os dados do banco de dados sobrevivam a reinicializações do pod?",
+      "situation": "Você está rodando um pod de banco de dados PostgreSQL que precisa reter dados mesmo se o pod for recriado.",
       "options": [
-        "Use hostPath volume to mount host directory",
-        "Create a PersistentVolumeClaim and mount it to the database pod",
-        "Use emptyDir volume for data storage",
-        "Store data in the container's filesystem"
+        "Usar um volume hostPath para montar um diretório do host",
+        "Criar um PersistentVolumeClaim e montá-lo no pod do banco de dados",
+        "Usar um volume emptyDir para armazenamento de dados",
+        "Armazenar dados no sistema de arquivos do container"
       ],
       "correctAnswer": 1,
-      "explanation": "PersistentVolumeClaims provide durable storage that survives pod restarts and rescheduling. They abstract the underlying storage implementation and can be dynamically provisioned.",
-      "hint": "What Kubernetes feature is specifically designed for durable, persistent storage?",
+      "explanation": "PersistentVolumeClaims fornecem armazenamento durável que sobrevive a reinicializações e reagendamentos do pod. Eles abstraem a implementação de armazenamento subjacente e podem ser provisionados dinamicamente.",
+      "hint": "Qual funcionalidade do Kubernetes foi criada especificamente para armazenamento durável e persistente?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "resource-limits",
-      "title": "Resource Management",
-      "description": "How do you prevent a single pod from consuming all cluster resources?",
-      "situation": "You need to ensure your application pod doesn't use more than 500Mi of memory and 0.5 CPU cores.",
+      "title": "Gerenciamento de Recursos",
+      "description": "Como você impede que um único pod consuma todos os recursos do cluster?",
+      "situation": "Você precisa garantir que o pod da sua aplicação não use mais de 500Mi de memória e 0,5 núcleo de CPU.",
       "codeExample": "# Pod should be limited to:\n# Memory: 500Mi\n# CPU: 0.5 cores (500m)",
       "options": [
-        "Set NODE_OPTIONS='--max-old-space-size=500' environment variable",
-        "Use cgroups on the host system",
-        "Set resources.limits in the pod specification:\n  limits:\n    memory: \"500Mi\"\n    cpu: \"500m\"",
-        "Configure the container runtime limits"
+        "Definir a variável de ambiente NODE_OPTIONS='--max-old-space-size=500'",
+        "Usar cgroups no sistema host",
+        "Definir resources.limits na especificação do pod:\n  limits:\n    memory: \"500Mi\"\n    cpu: \"500m\"",
+        "Configurar os limites do runtime do container"
       ],
       "correctAnswer": 2,
-      "explanation": "Kubernetes resource limits in the pod specification enforce hard limits on CPU and memory usage, preventing pods from consuming excessive cluster resources and affecting other workloads.",
-      "hint": "What's the Kubernetes-native way to control resource consumption?",
+      "explanation": "Os limites de recursos do Kubernetes na especificação do pod impõem limites rígidos de uso de CPU e memória, evitando que pods consumam recursos excessivos do cluster e afetem outras cargas de trabalho.",
+      "hint": "Qual é a forma nativa do Kubernetes de controlar o consumo de recursos?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "rolling-updates",
-      "title": "Zero-Downtime Deployments",
-      "description": "How do you update your application without service interruption?",
-      "situation": "You need to update your web application from version 1.0 to 2.0 without any downtime.",
+      "title": "Deploys sem Downtime",
+      "description": "Como você atualiza sua aplicação sem interrupção do serviço?",
+      "situation": "Você precisa atualizar sua aplicação web da versão 1.0 para a 2.0 sem nenhum downtime.",
       "codeExample": "# Current: myapp:1.0 (3 replicas)\n# Target: myapp:2.0 (zero downtime)",
       "options": [
         "kubectl delete deployment myapp && kubectl create deployment myapp --image=myapp:2.0",
@@ -157,25 +157,25 @@
         "kubectl replace -f new-deployment.yaml"
       ],
       "correctAnswer": 1,
-      "explanation": "kubectl set image triggers a rolling update, gradually replacing old pods with new ones. Kubernetes ensures availability by maintaining running instances during the update process.",
-      "hint": "Which approach updates the image while maintaining service availability?",
+      "explanation": "kubectl set image dispara uma atualização gradual (rolling update), substituindo os pods antigos pelos novos aos poucos. O Kubernetes garante disponibilidade mantendo instâncias em execução durante o processo de atualização.",
+      "hint": "Qual abordagem atualiza a imagem mantendo a disponibilidade do serviço?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "network-policies",
-      "title": "Securing Pod Communication",
-      "description": "How do you restrict network traffic between pods for security?",
-      "situation": "Your frontend pods should only communicate with backend pods, and backend pods should only accept traffic from frontend pods.",
+      "title": "Protegendo a Comunicação entre Pods",
+      "description": "Como você restringe o tráfego de rede entre pods por segurança?",
+      "situation": "Seus pods de frontend devem se comunicar apenas com os pods de backend, e os pods de backend devem aceitar tráfego apenas dos pods de frontend.",
       "options": [
-        "Use iptables rules on each node",
-        "Configure firewall rules in the cloud provider",
-        "Create NetworkPolicy resources to define allowed traffic",
-        "Use service mesh like Istio for all traffic control"
+        "Usar regras de iptables em cada nó",
+        "Configurar regras de firewall no provedor de nuvem",
+        "Criar recursos NetworkPolicy para definir o tráfego permitido",
+        "Usar um service mesh como o Istio para todo o controle de tráfego"
       ],
       "correctAnswer": 2,
-      "explanation": "NetworkPolicies are Kubernetes-native resources that define rules for pod-to-pod communication. They work at the cluster level and are enforced by the CNI plugin.",
-      "hint": "What Kubernetes resource is specifically designed for controlling network traffic between pods?",
+      "explanation": "NetworkPolicies são recursos nativos do Kubernetes que definem regras para a comunicação entre pods. Funcionam no nível do cluster e são aplicadas pelo plugin CNI.",
+      "hint": "Qual recurso do Kubernetes foi criado especificamente para controlar o tráfego de rede entre pods?",
       "difficulty": "advanced",
       "points": 19
     }

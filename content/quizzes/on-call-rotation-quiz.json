@@ -1,7 +1,7 @@
 {
   "id": "on-call-rotation-quiz",
-  "title": "On-Call Rotation and Escalation Policy Quiz",
-  "description": "Test your skills designing on-call schedules, escalation paths, and alerting strategies that keep engineers sane and incidents short.",
+  "title": "Quiz de Escala de Plantão e Política de Escalonamento",
+  "description": "Teste suas habilidades para projetar escalas de plantão, caminhos de escalonamento e estratégias de alertas que mantêm os engenheiros sãos e os incidentes curtos.",
   "category": "Incident Management",
   "icon": "BellRing",
   "totalPoints": 199,
@@ -11,7 +11,7 @@
     "gradientTo": "to-orange-600"
   },
   "metadata": {
-    "estimatedTime": "18-22 minutes",
+    "estimatedTime": "18-22 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 7,
@@ -22,237 +22,237 @@
   "questions": [
     {
       "id": "rotation-pattern-distributed-team",
-      "title": "Picking a Rotation Pattern",
-      "description": "A small distributed team is setting up its first on-call rotation.",
-      "situation": "You have six engineers across three time zones (US East, UK, India). Today, every alert goes to a shared Slack channel and whoever is awake responds. Pages are missed overnight. Leadership asks you to design the first formal rotation.",
+      "title": "Escolhendo um Padrão de Escala",
+      "description": "Uma pequena equipe distribuída está configurando sua primeira escala de plantão.",
+      "situation": "Você tem seis engenheiros em três fusos horários (Leste dos EUA, Reino Unido, Índia). Hoje, todo alerta vai para um canal compartilhado do Slack e quem estiver acordado responde. Alertas são perdidos durante a madrugada. A liderança pede que você projete a primeira escala formal.",
       "codeExample": "Team layout:\n- 2 engineers in New York (UTC-5)\n- 2 engineers in London (UTC+0)\n- 2 engineers in Bengaluru (UTC+5:30)\n\nCurrent state:\n- Single Slack channel for alerts\n- 4 missed pages last month between 02:00-06:00 local for whoever was on-duty\n- Average ack time at night: 38 minutes\n- Average ack time during business hours: 4 minutes",
       "options": [
-        "One weekly rotation covering all 24 hours, primary picks one engineer regardless of location",
-        "A follow-the-sun rotation with three regional shifts so each engineer is only paged during their working hours",
-        "Keep the shared channel but require everyone to install the PagerDuty app on their phones",
-        "Rotate daily so nobody gets stuck with a bad week"
+        "Uma escala semanal cobrindo as 24 horas, o principal escolhe um único engenheiro independentemente da localização",
+        "Uma escala follow-the-sun com três turnos regionais, para que cada engenheiro só seja acionado durante seu horário de trabalho",
+        "Manter o canal compartilhado mas exigir que todos instalem o app do PagerDuty no celular",
+        "Alternar diariamente para que ninguém fique preso a uma semana ruim"
       ],
       "correctAnswer": 1,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "Follow-the-sun shifts let each region cover its waking hours. That fixes the root cause: people were being paged while asleep. Single 24-hour rotations create burnout fast for a six-person team. Pushing alerts to a shared channel without ownership is what got them into this mess. Daily rotation adds churn and breaks context between handoffs.",
-      "hint": "What problem are you actually solving? Read the ack time numbers again."
+      "explanation": "Turnos follow-the-sun permitem que cada região cubra suas horas de vigília. Isso corrige a causa raiz: as pessoas estavam sendo acionadas enquanto dormiam. Escalas únicas de 24 horas geram burnout rápido para uma equipe de seis pessoas. Empurrar alertas para um canal compartilhado sem propriedade é o que os colocou nessa confusão. Alternância diária adiciona rotatividade e quebra o contexto entre transições.",
+      "hint": "Qual problema você está realmente resolvendo? Releia os números de tempo de confirmação (ack)."
     },
     {
       "id": "escalation-timeout-basics",
-      "title": "When the Primary Doesn't Ack",
-      "description": "An alert fires at 03:17 and nobody acknowledges it. What should the escalation policy do next?",
-      "situation": "Your team just configured its first escalation policy in PagerDuty. The primary engineer's phone was on Do Not Disturb. The alert page below shows what happened. You're deciding what step 2 of the escalation should look like.",
+      "title": "Quando o Principal Não Confirma",
+      "description": "Um alerta dispara às 03:17 e ninguém o confirma. O que a política de escalonamento deve fazer em seguida?",
+      "situation": "Sua equipe acabou de configurar sua primeira política de escalonamento no PagerDuty. O celular do engenheiro principal estava no modo Não Perturbe. A página do alerta abaixo mostra o que aconteceu. Você está decidindo como deve ser o passo 2 do escalonamento.",
       "codeExample": "Incident timeline:\n03:17:02  PagerDuty triggers incident #4821 (severity: high)\n03:17:03  Primary engineer (Alice) paged - SMS + push + phone call\n03:17:04  No response\n03:22:00  ??? what happens here ???\n\nCurrent policy:\nlevel_1:\n  notify: alice@team.com\n  timeout: 5m\nlevel_2:\n  notify: ???\n  timeout: 5m",
       "options": [
-        "Re-page Alice every 5 minutes until she acknowledges, since she is the on-call",
-        "Send the alert to the team Slack channel and hope someone sees it",
-        "Page the secondary on-call engineer, then escalate to the engineering manager if still unacked after another 5 minutes",
-        "Auto-resolve the incident after 15 minutes since nobody is responding"
+        "Acionar Alice novamente a cada 5 minutos até que ela confirme, já que ela é a plantonista",
+        "Enviar o alerta para o canal do Slack da equipe e torcer para que alguém veja",
+        "Acionar o engenheiro secundário de plantão, e então escalar para o gerente de engenharia se ainda não confirmado após mais 5 minutos",
+        "Resolver automaticamente o incidente depois de 15 minutos já que ninguém está respondendo"
       ],
       "correctAnswer": 2,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "Escalation exists exactly for the case where the primary cannot respond, phone died, sleeping through it, sick, whatever. Hammering the same person rarely works. Slack channels are not a paging mechanism, nobody has Slack notifications on at 3am. Auto-resolving an unacked incident hides real outages. A proper policy moves to a secondary on a short timeout, then to a manager or wider team if the secondary also doesn't ack.",
-      "hint": "The point of escalation is to find someone who can actually respond, not to nag the same person harder."
+      "explanation": "O escalonamento existe exatamente para o caso em que o principal não consegue responder, celular morreu, dormiu durante o alerta, está doente, seja lá o que for. Martelar a mesma pessoa raramente funciona. Canais do Slack não são um mecanismo de acionamento, ninguém tem notificações do Slack ativadas às 3h da manhã. Resolver automaticamente um incidente não confirmado esconde interrupções reais. Uma política adequada avança para um secundário após um timeout curto, e então para um gerente ou equipe mais ampla se o secundário também não confirmar.",
+      "hint": "O objetivo do escalonamento é encontrar alguém que realmente possa responder, não insistir mais forte com a mesma pessoa."
     },
     {
       "id": "alert-fatigue-symptoms",
-      "title": "Reading the Signs of Alert Fatigue",
-      "description": "Your on-call engineers are starting to behave in concerning ways. Which signal points most clearly to alert fatigue?",
-      "situation": "You took over as the team's tech lead two months ago. You've noticed some patterns in how people interact with pages. The on-call retro this week included these comments.",
+      "title": "Reconhecendo os Sinais de Fadiga de Alertas",
+      "description": "Seus engenheiros de plantão estão começando a se comportar de formas preocupantes. Qual sinal aponta mais claramente para fadiga de alertas?",
+      "situation": "Você assumiu como tech lead da equipe há dois meses. Você notou alguns padrões em como as pessoas interagem com os acionamentos. A retro de plantão desta semana incluiu estes comentários.",
       "codeExample": "Retro notes:\n- \"I just ack and silence everything now, I'll check in the morning\"\n- \"Half the alerts auto-resolve before I even open my laptop\"\n- 312 pages last month across 4 engineers (78 per person)\n- 71% of pages auto-resolved without action\n- 4 engineers asked to drop off the rotation this quarter\n- One engineer admitted to muting PagerDuty during a shift",
       "options": [
-        "The team needs more training on how to use PagerDuty effectively",
-        "The number of pages and self-resolution rate prove the alerts are not actionable, and people are coping by ignoring them",
-        "Engineers are not committed enough to operational excellence",
-        "The on-call shifts are probably too short, longer shifts would build muscle memory"
+        "A equipe precisa de mais treinamento sobre como usar o PagerDuty de forma eficaz",
+        "O número de acionamentos e a taxa de auto-resolução provam que os alertas não são acionáveis, e as pessoas estão lidando com isso ignorando-os",
+        "Os engenheiros não estão comprometidos o suficiente com a excelência operacional",
+        "Os turnos de plantão provavelmente são curtos demais, turnos mais longos construiriam memória muscular"
       ],
       "correctAnswer": 1,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "When 71% of pages auto-resolve, the alert is not telling you anything useful, it is just noise. People who ignore or mute pages are not lazy, they are responding rationally to a broken signal. Training cannot fix bad alerts. Longer shifts make burnout worse, not better. The fix is to ruthlessly delete alerts that do not require human action and tune the rest.",
-      "hint": "Look at the auto-resolution rate. What does it tell you about the alerts themselves?"
+      "explanation": "Quando 71% dos acionamentos se resolvem automaticamente, o alerta não está dizendo nada útil, é apenas ruído. Pessoas que ignoram ou silenciam acionamentos não são preguiçosas, estão respondendo racionalmente a um sinal quebrado. Treinamento não corrige alertas ruins. Turnos mais longos pioram o burnout, não melhoram. A correção é excluir impiedosamente os alertas que não exigem ação humana e ajustar o resto.",
+      "hint": "Olhe a taxa de auto-resolução. O que ela diz sobre os próprios alertas?"
     },
     {
       "id": "escalation-policy-yaml-bug",
-      "title": "Spot the Bug in This Escalation Policy",
-      "description": "Review this PagerDuty-style escalation policy. What's the most serious problem with it?",
-      "situation": "A teammate wrote this policy for a new service and asked for your review before they apply it. The service is customer-facing with a 99.9% availability SLO.",
+      "title": "Encontre o Bug nesta Política de Escalonamento",
+      "description": "Revise esta política de escalonamento estilo PagerDuty. Qual é o problema mais sério nela?",
+      "situation": "Um colega de equipe escreveu esta política para um novo serviço e pediu sua revisão antes de aplicá-la. O serviço é voltado ao cliente, com um SLO de disponibilidade de 99,9%.",
       "codeExample": "name: payments-api-escalation\nrules:\n  - level: 1\n    notify:\n      - alice@team.com\n    timeout_minutes: 30\n  - level: 2\n    notify:\n      - bob@team.com\n    timeout_minutes: 30\n  - level: 3\n    notify:\n      - cto@company.com\n    timeout_minutes: 60\nrepeat: false",
       "options": [
-        "The CTO should not be on an escalation policy, only engineers should",
-        "The 30 minute timeout is far too long for a customer-facing service; the SLO allows about 43 minutes of total downtime per month",
-        "The policy should use phone calls instead of email notifications",
-        "Three escalation levels is too many, two is the standard"
+        "O CTO não deveria estar em uma política de escalonamento, apenas engenheiros deveriam",
+        "O timeout de 30 minutos é longo demais para um serviço voltado ao cliente; o SLO permite cerca de 43 minutos de downtime total por mês",
+        "A política deveria usar chamadas telefônicas em vez de notificações por e-mail",
+        "Três níveis de escalonamento é demais, dois é o padrão"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "A 99.9% SLO leaves roughly 43 minutes of error budget per month. Waiting 30 minutes before even paging a secondary burns most of your monthly budget on a single incident. For a customer-facing service, level 1 timeouts of 5 to 10 minutes are typical. Notification channel (the policy already includes the engineer's contact, channels are configured per-user), having a leader as a final fallback, and the number of levels are all reasonable choices.",
-      "hint": "Convert 99.9% availability into minutes of allowed downtime per month, then look at the timeout values."
+      "explanation": "Um SLO de 99,9% deixa aproximadamente 43 minutos de orçamento de erro por mês. Esperar 30 minutos antes mesmo de acionar um secundário consome a maior parte do seu orçamento mensal em um único incidente. Para um serviço voltado ao cliente, timeouts de nível 1 de 5 a 10 minutos são típicos. Canal de notificação (a política já inclui o contato do engenheiro, canais são configurados por usuário), ter um líder como fallback final, e o número de níveis são todas escolhas razoáveis.",
+      "hint": "Converta 99,9% de disponibilidade em minutos de downtime permitido por mês, depois olhe os valores de timeout."
     },
     {
       "id": "symptom-vs-cause-alerts",
-      "title": "Symptom-Based vs Cause-Based Alerts",
-      "description": "You have two Prometheus alert rules covering the same service. Which one should you keep?",
-      "situation": "The on-call team is auditing alerts on the checkout-service. They want to keep one of these two rules and delete the other. The service has an SLO of 99.5% successful requests.",
+      "title": "Alertas Baseados em Sintoma vs em Causa",
+      "description": "Você tem duas regras de alerta do Prometheus cobrindo o mesmo serviço. Qual delas você deveria manter?",
+      "situation": "A equipe de plantão está auditando os alertas do checkout-service. Eles querem manter uma dessas duas regras e excluir a outra. O serviço tem um SLO de 99,5% de requisições bem-sucedidas.",
       "codeExample": "# Rule A\n- alert: CheckoutHighCPU\n  expr: rate(node_cpu_seconds_total{job=\"checkout\",mode!=\"idle\"}[5m]) > 0.85\n  for: 10m\n  labels:\n    severity: page\n  annotations:\n    summary: \"Checkout service CPU above 85%\"\n\n# Rule B\n- alert: CheckoutErrorRateHigh\n  expr: |\n    sum(rate(http_requests_total{job=\"checkout\",status=~\"5..\"}[5m]))\n    / sum(rate(http_requests_total{job=\"checkout\"}[5m])) > 0.005\n  for: 5m\n  labels:\n    severity: page\n  annotations:\n    summary: \"Checkout 5xx rate exceeds SLO budget\"",
       "options": [
-        "Rule A, because high CPU is a leading indicator and you want to catch problems before users see them",
-        "Rule B, because it pages on actual user-facing symptoms tied directly to the SLO",
-        "Keep both, since CPU and error rate are independent signals",
-        "Delete both and use synthetic monitoring instead"
+        "Regra A, porque CPU alta é um indicador antecipado e você quer pegar problemas antes que os usuários os vejam",
+        "Regra B, porque ela aciona com base em sintomas reais vistos pelo usuário, ligados diretamente ao SLO",
+        "Manter ambas, já que CPU e taxa de erro são sinais independentes",
+        "Excluir ambas e usar monitoramento sintético em vez disso"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Page on what users feel, not on causes. High CPU is often fine, a service can run hot and still serve requests perfectly. Paging on CPU produces noise and trains the team to ignore alerts. Rule B fires when actual users are getting errors, which is what your SLO measures. Keep cause-based metrics for dashboards and post-incident analysis, not for waking people up.",
-      "hint": "Which of these alerts can fire while everything users care about is working fine?"
+      "explanation": "Acione com base no que os usuários sentem, não nas causas. CPU alta muitas vezes está tudo bem, um serviço pode rodar quente e ainda atender requisições perfeitamente. Acionar por CPU produz ruído e treina a equipe a ignorar alertas. A Regra B dispara quando usuários reais estão recebendo erros, que é o que seu SLO mede. Mantenha métricas baseadas em causa para dashboards e análise pós-incidente, não para acordar as pessoas.",
+      "hint": "Qual desses alertas pode disparar enquanto tudo que os usuários se importam está funcionando bem?"
     },
     {
       "id": "severity-classification",
-      "title": "Choosing the Right Severity",
-      "description": "Pick the correct severity for the scenario below using the team's severity matrix.",
-      "situation": "Your team uses a four-level severity matrix. A new alert just fired and you need to triage. The internal admin dashboard is returning 500 errors. Only 5 engineering staff use this dashboard, never customers. It's used to view sales reports.",
+      "title": "Escolhendo a Severidade Correta",
+      "description": "Escolha a severidade correta para o cenário abaixo usando a matriz de severidade da equipe.",
+      "situation": "Sua equipe usa uma matriz de severidade de quatro níveis. Um novo alerta acabou de disparar e você precisa fazer triagem. O dashboard administrativo interno está retornando erros 500. Apenas 5 pessoas da engenharia usam esse dashboard, nunca clientes. Ele é usado para ver relatórios de vendas.",
       "codeExample": "Severity matrix:\nSEV-1: Customer-facing outage or data loss. Page primary + manager. All hands.\nSEV-2: Major feature degraded for customers, or full outage of an internal critical tool. Page primary.\nSEV-3: Minor customer impact, or internal tool degraded. Ticket only, fix during business hours.\nSEV-4: No impact, informational. No page, log only.\n\nIncident details:\n- Service: internal-admin-dashboard\n- Symptom: HTTP 500 on /reports endpoint\n- Users affected: 5 internal staff\n- Workaround: query the warehouse directly\n- Time: 02:14 local",
       "options": [
-        "SEV-1, any 500 error indicates a serious problem that needs all-hands attention",
-        "SEV-2, the dashboard is broken and internal tools need to stay up",
-        "SEV-3, internal tool with a workaround and no customer impact, fix it in the morning",
-        "SEV-4, since no customer is affected this is just informational"
+        "SEV-1, qualquer erro 500 indica um problema sério que precisa de atenção geral",
+        "SEV-2, o dashboard está quebrado e ferramentas internas precisam ficar no ar",
+        "SEV-3, ferramenta interna com um workaround e sem impacto ao cliente, corrija pela manhã",
+        "SEV-4, já que nenhum cliente é afetado isso é apenas informativo"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Severity should reflect impact, not the size of the error message. No customer is affected, a workaround exists, and only five internal users use the tool. Waking someone up for this trains them to ignore SEV-1s. SEV-1 is reserved for customer-facing pain or data loss. SEV-2 is for major internal tools that block work, a reports page does not qualify. SEV-4 understates it, the dashboard genuinely is broken and needs a ticket and a fix.",
-      "hint": "Look at impact and whether a workaround exists. Severity is not about how scary the error looks."
+      "explanation": "A severidade deveria refletir o impacto, não o tamanho da mensagem de erro. Nenhum cliente é afetado, existe um workaround, e apenas cinco usuários internos usam a ferramenta. Acordar alguém para isso treina a pessoa a ignorar SEV-1s. SEV-1 é reservado para dor voltada ao cliente ou perda de dados. SEV-2 é para ferramentas internas importantes que bloqueiam o trabalho, uma página de relatórios não se qualifica. SEV-4 subestima o problema, o dashboard genuinamente está quebrado e precisa de um ticket e uma correção.",
+      "hint": "Olhe o impacto e se existe um workaround. Severidade não é sobre quão assustador o erro parece."
     },
     {
       "id": "shift-handoff-checklist",
-      "title": "What to Include in a Handoff",
-      "description": "You're ending your week-long shift. What belongs in the handoff to the next on-call?",
-      "situation": "You spent the week on-call. A few incidents are still unresolved, you noticed a noisy alert, and there's a planned database migration tomorrow morning. You have 15 minutes to write the handoff before logging off.",
+      "title": "O que Incluir em uma Transição de Turno",
+      "description": "Você está terminando seu turno de plantão de uma semana. O que deve entrar na transição para o próximo plantonista?",
+      "situation": "Você passou a semana de plantão. Alguns incidentes ainda estão sem resolução, você notou um alerta barulhento, e há uma migração de banco de dados planejada para amanhã de manhã. Você tem 15 minutos para escrever a transição antes de desconectar.",
       "codeExample": "This week's state:\n- Open incident #5102: intermittent 502s on cart-service, root cause not found, mitigation: retries enabled\n- Alert \"DiskUsage85\" fired 14 times, every time it cleared itself within 10 minutes\n- Planned: db schema migration scheduled for Tuesday 09:00 by data team\n- New runbook added for Redis evictions\n- Two engineers in EU region taking PTO Mon-Wed",
       "options": [
-        "A summary of what you fixed this week, since the next on-call needs to know your accomplishments",
-        "Open incidents, ongoing investigations, known noisy alerts, planned changes, and any unusual coverage gaps",
-        "Just the open incidents, everything else can be found in PagerDuty history",
-        "A full retrospective with timelines for every incident you handled"
+        "Um resumo do que você corrigiu essa semana, já que o próximo plantonista precisa saber suas conquistas",
+        "Incidentes abertos, investigações em andamento, alertas barulhentos conhecidos, mudanças planejadas, e quaisquer lacunas incomuns de cobertura",
+        "Só os incidentes abertos, tudo mais pode ser encontrado no histórico do PagerDuty",
+        "Uma retrospectiva completa com linhas do tempo de todo incidente que você tratou"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "A good handoff transfers the operational context the next person needs to act fast. Open incidents tell them what is still broken. Noisy alerts let them filter signal from noise. Planned changes prevent them from being surprised by a database migration at 9am. Coverage gaps matter when they need to escalate. What you fixed this week and full retrospectives belong in different documents, the handoff is about what the next person needs in the next 7 days.",
-      "hint": "Think about what the next on-call needs to do their job, not what you want them to know about yours."
+      "explanation": "Uma boa transição transfere o contexto operacional que a próxima pessoa precisa para agir rápido. Incidentes abertos dizem o que ainda está quebrado. Alertas barulhentos permitem filtrar sinal de ruído. Mudanças planejadas evitam que sejam surpreendidos por uma migração de banco de dados às 9h. Lacunas de cobertura importam quando precisam escalar. O que você corrigiu essa semana e retrospectivas completas pertencem a documentos diferentes, a transição é sobre o que a próxima pessoa precisa nos próximos 7 dias.",
+      "hint": "Pense no que o próximo plantonista precisa para fazer o trabalho dele, não no que você quer que ele saiba sobre o seu."
     },
     {
       "id": "burn-rate-alert-design",
-      "title": "Multi-Window Burn Rate Alert",
-      "description": "Why does this SLO alert use two windows instead of one?",
-      "situation": "Your team is moving away from threshold-based alerts and toward SLO burn rate alerts. A senior SRE proposes this rule for the payments service with a 99.9% availability SLO over 30 days.",
+      "title": "Alerta de Burn Rate com Múltiplas Janelas",
+      "description": "Por que esse alerta de SLO usa duas janelas em vez de uma?",
+      "situation": "Sua equipe está se afastando de alertas baseados em limiar e migrando para alertas de burn rate de SLO. Um SRE sênior propõe esta regra para o serviço de pagamentos com um SLO de disponibilidade de 99,9% ao longo de 30 dias.",
       "codeExample": "- alert: PaymentsErrorBudgetBurn\n  expr: |\n    (\n      sum(rate(http_requests_total{job=\"payments\",status=~\"5..\"}[1h]))\n      / sum(rate(http_requests_total{job=\"payments\"}[1h])) > (14.4 * 0.001)\n    )\n    and\n    (\n      sum(rate(http_requests_total{job=\"payments\",status=~\"5..\"}[5m]))\n      / sum(rate(http_requests_total{job=\"payments\"}[5m])) > (14.4 * 0.001)\n    )\n  for: 2m\n  labels:\n    severity: page",
       "options": [
-        "Two windows just doubles the alert evaluations, it's a mistake",
-        "The long window detects sustained burn and the short window makes the alert fire quickly without waiting an hour",
-        "The 5 minute window is for tests, it should be removed in production",
-        "Two windows let you alert on both the average and the median error rate"
+        "Duas janelas apenas dobram as avaliações do alerta, é um erro",
+        "A janela longa detecta consumo sustentado e a janela curta faz o alerta disparar rapidamente sem esperar uma hora",
+        "A janela de 5 minutos é para testes, deveria ser removida em produção",
+        "Duas janelas permitem alertar tanto sobre a taxa de erro média quanto sobre a mediana"
       ],
       "correctAnswer": 1,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "Multi-window multi-burn-rate alerts solve the trade-off between alert latency and false positives. A short window alone fires on every small blip. A long window alone takes too long to detect a real outage. Requiring both to exceed the burn rate threshold gives you fast detection (5m window) while filtering out brief spikes (1h window must also be burning). This is the pattern described in the Google SRE Workbook for SLO-based alerting.",
-      "hint": "What would happen if you only used the 5-minute window? What about only the 1-hour window?"
+      "explanation": "Alertas de burn rate com múltiplas janelas resolvem o trade-off entre latência de alerta e falsos positivos. Uma janela curta sozinha dispara a cada pequena oscilação. Uma janela longa sozinha demora demais para detectar uma interrupção real. Exigir que ambas ultrapassem o limiar de burn rate dá detecção rápida (janela de 5m) enquanto filtra picos breves (a janela de 1h também precisa estar consumindo). Esse é o padrão descrito no Google SRE Workbook para alertas baseados em SLO.",
+      "hint": "O que aconteceria se você usasse apenas a janela de 5 minutos? E se usasse apenas a de 1 hora?"
     },
     {
       "id": "noisy-disk-alert",
-      "title": "Fixing a Noisy Disk Alert",
-      "description": "This alert paged seven times last week. How do you fix it?",
-      "situation": "Every time a nightly batch job runs, this alert fires for about 20 minutes while temporary files are written. Then the job cleans up and the alert resolves. The on-call has paged seven times in the last week from this single rule.",
+      "title": "Corrigindo um Alerta de Disco Barulhento",
+      "description": "Esse alerta acionou sete vezes na semana passada. Como você conserta isso?",
+      "situation": "Toda vez que um job noturno em lote roda, esse alerta dispara por cerca de 20 minutos enquanto arquivos temporários são gravados. Depois o job limpa e o alerta se resolve. O plantonista foi acionado sete vezes na última semana por essa única regra.",
       "codeExample": "- alert: HostDiskUsageHigh\n  expr: (1 - node_filesystem_avail_bytes / node_filesystem_size_bytes) > 0.80\n  for: 1m\n  labels:\n    severity: page\n  annotations:\n    summary: \"Disk usage above 80% on {{ $labels.instance }}\"\n\nContext:\n- Disk reaches 82-86% during nightly batch job 02:00-02:25\n- Recovers to 60% after job finishes\n- Job runs every night, has run reliably for 18 months\n- True disk-full incident in past 18 months: 0",
       "options": [
-        "Raise the threshold to 90% so the batch job no longer triggers it",
-        "Change the alert to predictive: page only if disk is filling at a rate that would hit 100% within 4 hours, and ticket (not page) at static high thresholds",
-        "Disable the alert during the 02:00-02:25 window using a silence",
-        "Add more disk space to the host so it never crosses 80%"
+        "Aumentar o limiar para 90% para que o job em lote não o dispare mais",
+        "Mudar o alerta para preditivo: acionar apenas se o disco estiver enchendo a uma taxa que atingiria 100% em 4 horas, e abrir um ticket (não acionar) em limiares estáticos altos",
+        "Desabilitar o alerta durante a janela 02:00-02:25 usando um silence",
+        "Adicionar mais espaço em disco ao host para que ele nunca ultrapasse 80%"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Static thresholds on disk usage are almost always wrong. Raising the threshold to 90% just delays the problem and hides actual leaks. Silences need to be maintained and break when the batch job moves. Adding disk treats the symptom not the design flaw. A predictive alert based on fill rate catches actual problems (slow leaks, runaway logs) without firing on planned, self-correcting spikes. Pair it with a ticket-level static alert for the unusual case of a sudden jump.",
-      "hint": "The alert fires every night on a known, healthy pattern. What does that tell you about the threshold model?"
+      "explanation": "Limiares estáticos em uso de disco quase sempre estão errados. Aumentar o limiar para 90% só adia o problema e esconde vazamentos reais. Silences precisam ser mantidos e quebram quando o job em lote muda de horário. Adicionar disco trata o sintoma, não a falha de design. Um alerta preditivo baseado na taxa de enchimento pega problemas reais (vazamentos lentos, logs descontrolados) sem disparar em picos planejados e autocorrigíveis. Combine isso com um alerta estático de nível ticket para o caso incomum de um salto repentino.",
+      "hint": "O alerta dispara toda noite em um padrão conhecido e saudável. O que isso diz sobre o modelo de limiar?"
     },
     {
       "id": "on-call-compensation-sustainability",
-      "title": "Making On-Call Sustainable",
-      "description": "Your best engineer just asked to leave the rotation. What's the most effective long-term fix?",
-      "situation": "Three engineers have left the rotation in the past six months. The remaining engineers are picking up more shifts. One of them, your strongest IC, just sent this Slack message.",
+      "title": "Tornando o Plantão Sustentável",
+      "description": "Seu melhor engenheiro acabou de pedir para sair da escala. Qual é a correção mais eficaz no longo prazo?",
+      "situation": "Três engenheiros saíram da escala nos últimos seis meses. Os engenheiros restantes estão assumindo mais turnos. Um deles, seu IC mais forte, acabou de enviar esta mensagem no Slack.",
       "codeExample": "Slack message from senior engineer:\n\n\"Hey, I need to talk about on-call. Last month I got paged 23 times,\n11 of those were between midnight and 5am. I haven't had a full\nweekend off in 7 weeks because the rotation is short-staffed.\nI know we need coverage but I can't keep doing this. I'm thinking\nabout looking for another job if this doesn't change.\"\n\nCurrent state:\n- 4 engineers in rotation, was 7 six months ago\n- Average pages per week per engineer: 6\n- Page volume trend: increasing\n- Compensation: none, on-call is unpaid",
       "options": [
-        "Add on-call pay so people are compensated for the pain",
-        "Hire more engineers to spread the rotation across more people",
-        "Treat the page volume as a bug: dedicate one sprint per quarter to alert quality and operational debt, reduce noise at the source",
-        "Move to a 24-hour shift model so engineers only do one bad day at a time"
+        "Adicionar remuneração por plantão para que as pessoas sejam compensadas pelo sofrimento",
+        "Contratar mais engenheiros para distribuir a escala entre mais pessoas",
+        "Tratar o volume de acionamentos como um bug: dedicar um sprint por trimestre à qualidade dos alertas e à dívida operacional, reduzindo o ruído na fonte",
+        "Migrar para um modelo de turno de 24 horas para que os engenheiros só enfrentem um dia ruim de cada vez"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Compensation, more headcount, and shift restructuring all treat symptoms. The actual problem is 23 pages a month, most of them at night. If those pages were actionable and valuable, the engineer would feel useful. The real fix is to reduce page volume at the source: delete useless alerts, fix the bugs causing repeat incidents, raise thresholds, automate runbook actions. Comp helps morale, but if every comped on-call shift is still a sleepless night, retention will not improve. The engineer in this story is asking for fewer 3am wake-ups, not a bigger paycheck for them.",
-      "hint": "Look at the page volume numbers. What if those numbers were cut by 80%?"
+      "explanation": "Remuneração, mais contratações, e reestruturação de turnos tratam sintomas. O problema real são 23 acionamentos por mês, a maioria à noite. Se esses acionamentos fossem acionáveis e valiosos, o engenheiro se sentiria útil. A correção real é reduzir o volume de acionamentos na fonte: excluir alertas inúteis, corrigir os bugs que causam incidentes repetidos, elevar limiares, automatizar ações de runbook. Remuneração ajuda o moral, mas se todo turno remunerado ainda for uma noite sem dormir, a retenção não vai melhorar. O engenheiro nessa história está pedindo menos despertares às 3h, não um salário maior.",
+      "hint": "Olhe os números de volume de acionamentos. E se esses números fossem cortados em 80%?"
     },
     {
       "id": "cross-team-routing",
-      "title": "Routing Alerts to the Right Team",
-      "description": "An alert for a database is paging the application team. How should routing be set up?",
-      "situation": "Your app team has been paged five times this month for issues that turned out to be database problems. Each time, the app on-call had to wake up, investigate, then page the database team. The database team has its own on-call rotation but no alerts are routed to them directly.",
+      "title": "Roteando Alertas para a Equipe Certa",
+      "description": "Um alerta de banco de dados está acionando a equipe de aplicação. Como o roteamento deveria ser configurado?",
+      "situation": "Sua equipe de aplicação foi acionada cinco vezes esse mês por problemas que se revelaram ser do banco de dados. A cada vez, o plantonista da aplicação teve que acordar, investigar, e então acionar a equipe de banco de dados. A equipe de banco de dados tem sua própria escala de plantão, mas nenhum alerta é roteado diretamente para eles.",
       "codeExample": "Current routing (Alertmanager):\nroute:\n  receiver: app-team-pager\n  group_by: ['alertname']\n\nreceivers:\n  - name: app-team-pager\n    pagerduty_configs:\n      - service_key: <app-team-key>\n\nRecent incidents app-team handled:\n- DB connection pool exhausted (real cause: long-running query)\n- Replication lag spike (real cause: backup job)\n- Disk full on db primary (real cause: log rotation broken)\nAll routed to app-team, then manually escalated to db-team.",
       "options": [
-        "Page both teams every time so nobody has to escalate manually",
-        "Route alerts to the team that owns the underlying service, using labels like service or team to pick the receiver",
-        "Have the app team learn database administration so they can fix these issues themselves",
-        "Move all database alerts to email so they don't wake anyone at night"
+        "Acionar as duas equipes sempre para que ninguém precise escalar manualmente",
+        "Rotear alertas para a equipe dona do serviço subjacente, usando labels como service ou team para escolher o receptor",
+        "Fazer a equipe de aplicação aprender administração de banco de dados para consertar esses problemas sozinha",
+        "Mover todos os alertas de banco de dados para e-mail para que não acordem ninguém à noite"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Alerts should reach the team that owns the failing component. Routing by labels (service, team, component) sends each alert to the right rotation directly. Paging both teams creates duplicate work and dilutes ownership, the database team will assume the app team is on it and vice versa. Cross-training is good but does not fix the routing bug. Moving database alerts to email loses urgency for genuinely critical issues. The fix is at the routing layer: tag metrics with owning team, route by label.",
-      "hint": "Who can actually fix a database issue at 3am? Make sure the alert reaches them directly."
+      "explanation": "Alertas deveriam chegar à equipe dona do componente com falha. Rotear por labels (service, team, component) envia cada alerta diretamente para a escala certa. Acionar as duas equipes cria trabalho duplicado e dilui a propriedade, a equipe de banco de dados vai assumir que a equipe de aplicação está cuidando disso e vice-versa. Treinamento cruzado é bom mas não corrige o bug de roteamento. Mover alertas de banco de dados para e-mail perde a urgência para problemas genuinamente críticos. A correção está na camada de roteamento: marcar métricas com a equipe dona, rotear por label.",
+      "hint": "Quem consegue realmente consertar um problema de banco de dados às 3h da manhã? Garanta que o alerta chegue diretamente a essa pessoa."
     },
     {
       "id": "override-and-coverage-gaps",
-      "title": "Handling Mid-Shift Coverage Gaps",
-      "description": "Your on-call gets sick mid-shift and a public holiday is approaching. How do you handle coverage?",
-      "situation": "It's Tuesday afternoon. Alice is on-call for the week (Mon-Sun). She just messaged that she's running a fever and going to sleep, she'll be out for 24 to 48 hours. Friday is a US national holiday and three of your six engineers are US-based. Schedule below.",
+      "title": "Lidando com Lacunas de Cobertura no Meio do Turno",
+      "description": "Seu plantonista fica doente no meio do turno e um feriado nacional está chegando. Como você lida com a cobertura?",
+      "situation": "É terça-feira à tarde. Alice está de plantão essa semana (seg-dom). Ela acabou de avisar que está com febre e vai dormir, ficará ausente por 24 a 48 horas. Sexta-feira é feriado nacional nos EUA e três dos seus seis engenheiros estão baseados nos EUA. Escala abaixo.",
       "codeExample": "This week's schedule:\nMon  Tue  Wed  Thu  Fri  Sat  Sun\nAlice Alice Alice Alice Alice Alice Alice\n\nSecondary: Bob (US, off Friday for holiday)\n\nTeam availability:\n- Alice (UK): Out sick 24-48h\n- Bob (US): Available now, off Friday\n- Carol (US): Off Friday\n- Dave (US): Off Friday\n- Eve (India): Available\n- Frank (India): Available\n\nIt is currently 14:00 UTC Tuesday.",
       "options": [
-        "Move Alice's whole week to Bob and tell Bob to find someone for Friday himself",
-        "Use PagerDuty overrides: assign Bob primary until Alice returns, then split Friday between Eve and Frank by time zone; document the change so everyone knows who to escalate to",
-        "Leave the schedule as-is and hope Alice recovers before any alerts fire",
-        "Send the alerts to a shared Slack channel for the next few days until things stabilize"
+        "Passar a semana inteira de Alice para Bob e dizer a Bob que encontre alguém para sexta-feira sozinho",
+        "Usar overrides no PagerDuty: designar Bob como principal até Alice voltar, depois dividir sexta-feira entre Eve e Frank por fuso horário; documentar a mudança para que todos saibam para quem escalar",
+        "Deixar a escala como está e torcer para Alice se recuperar antes que qualquer alerta dispare",
+        "Enviar os alertas para um canal compartilhado do Slack pelos próximos dias até as coisas se estabilizarem"
       ],
       "correctAnswer": 1,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "Coverage gaps are normal and need an explicit process. Time-bounded overrides in your paging tool make the new assignments visible to everyone, including monitoring and escalations. Splitting Friday between two India-based engineers gives the US team a real day off without leaving the rotation uncovered. Pushing the problem onto Bob without a plan creates ambiguity and risks missed pages, particularly on Friday. Doing nothing or falling back to a shared Slack channel are exactly the patterns a proper escalation policy is supposed to replace.",
-      "hint": "You have engineers awake in India when the US holiday hits. Use the time zones you have."
+      "explanation": "Lacunas de cobertura são normais e precisam de um processo explícito. Overrides com prazo definido na sua ferramenta de acionamento tornam as novas atribuições visíveis para todos, incluindo monitoramento e escalonamentos. Dividir sexta-feira entre dois engenheiros baseados na Índia dá à equipe dos EUA um dia de folga de verdade sem deixar a escala descoberta. Empurrar o problema para Bob sem um plano cria ambiguidade e arrisca acionamentos perdidos, particularmente na sexta-feira. Não fazer nada ou recorrer a um canal compartilhado do Slack são exatamente os padrões que uma política de escalonamento adequada deveria substituir.",
+      "hint": "Você tem engenheiros acordados na Índia quando o feriado dos EUA chega. Use os fusos horários que você tem."
     },
     {
       "id": "post-incident-rotation-review",
-      "title": "Using Postmortems to Improve On-Call",
-      "description": "How should postmortem findings feed back into the on-call program?",
-      "situation": "After a SEV-2 incident last week, the postmortem produced a list of action items. Your manager asks you which of these actually improves the on-call program long-term rather than just patching this one incident.",
+      "title": "Usando Postmortems para Melhorar o Plantão",
+      "description": "Como as descobertas de um postmortem deveriam retroalimentar o programa de plantão?",
+      "situation": "Depois de um incidente SEV-2 na semana passada, o postmortem produziu uma lista de itens de ação. Seu gerente pergunta quais deles realmente melhoram o programa de plantão a longo prazo, em vez de apenas remendar esse incidente específico.",
       "codeExample": "Postmortem action items:\n1. Add a runbook entry for \"queue consumer stalled\"\n2. Delete the alert \"QueueDepthAbove1000\" (fired all the time, ignored)\n3. Replace it with \"QueueConsumerLagAbove5m\" (symptom-based)\n4. Add automated restart for stalled consumers via systemd\n5. Schedule a quarterly review of alerts that paged but had no action taken\n6. Buy the team t-shirts that say \"I survived incident #6042\"\n7. Train two more engineers on the queue subsystem so the rotation is not bottlenecked",
       "options": [
-        "Items 1 and 6, since runbooks and morale matter most",
-        "Just item 4, automation is the only real fix",
-        "Items 1, 2, 3, 4, 5, and 7 all reduce future page load or speed up response; item 6 is fine but irrelevant to the on-call program",
-        "Items 2 and 3 only, since deleting noisy alerts is the single highest-impact action"
+        "Itens 1 e 6, já que runbooks e moral importam mais",
+        "Só o item 4, automação é a única correção real",
+        "Os itens 1, 2, 3, 4, 5 e 7 todos reduzem o volume futuro de acionamentos ou aceleram a resposta; o item 6 é válido mas irrelevante para o programa de plantão",
+        "Só os itens 2 e 3, já que excluir alertas barulhentos é a ação de maior impacto isoladamente"
       ],
       "correctAnswer": 2,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "A good postmortem produces operational improvements across multiple layers: documentation (runbooks), signal quality (delete noisy alerts, add symptom-based ones), automation (self-heal where possible), process (regular review of useless pages), and people (spread knowledge). Item 6 is fine for morale but does not change on-call load. Picking only one category misses the compound effect, the rotation gets better when you reduce noise AND automate fixes AND share knowledge. Treat the action item list as a portfolio of improvements, not a single silver bullet.",
-      "hint": "Which items will reduce the number of pages, the time to fix, or the people-bottleneck? Probably more than you think."
+      "explanation": "Um bom postmortem produz melhorias operacionais em várias camadas: documentação (runbooks), qualidade do sinal (excluir alertas barulhentos, adicionar alertas baseados em sintoma), automação (autorrecuperação onde possível), processo (revisão regular de acionamentos inúteis), e pessoas (disseminar conhecimento). O item 6 é bom para o moral mas não muda a carga de plantão. Escolher apenas uma categoria perde o efeito composto, a escala melhora quando você reduz ruído E automatiza correções E compartilha conhecimento. Trate a lista de itens de ação como um portfólio de melhorias, não uma única bala de prata.",
+      "hint": "Quais itens vão reduzir o número de acionamentos, o tempo de correção, ou o gargalo de pessoas? Provavelmente mais do que você pensa."
     }
   ]
 }

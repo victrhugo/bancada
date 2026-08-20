@@ -1,7 +1,7 @@
 {
   "id": "cicd-pipelines-quiz",
-  "title": "CI/CD Pipelines Quiz",
-  "description": "Test your CI/CD pipeline knowledge with scenarios covering build stages, artifact promotion, environment strategy, deployment patterns, and rollbacks.",
+  "title": "Quiz de Pipelines de CI/CD",
+  "description": "Teste seu conhecimento sobre pipelines de CI/CD com cenários envolvendo etapas de build, promoção de artefatos, estratégia de ambientes, padrões de deploy e rollbacks.",
   "category": "CI/CD",
   "icon": "Code",
   "totalPoints": 110,
@@ -11,7 +11,7 @@
     "gradientTo": "to-teal-600"
   },
   "metadata": {
-    "estimatedTime": "15-20 minutes",
+    "estimatedTime": "15-20 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 3,
@@ -22,143 +22,143 @@
   "questions": [
     {
       "id": "pipeline-basics",
-      "title": "Setting Up Your First Pipeline",
-      "description": "What's the correct order of stages in a basic CI/CD pipeline?",
-      "situation": "You're setting up a CI/CD pipeline for a web application that needs to be tested and deployed to production.",
+      "title": "Configurando seu Primeiro Pipeline",
+      "description": "Qual é a ordem correta das etapas em um pipeline de CI/CD básico?",
+      "situation": "Você está configurando um pipeline de CI/CD para uma aplicação web que precisa ser testada e implantada em produção.",
       "codeExample": "# Your application:\n- Unit tests\n- Integration tests\n- Docker image build\n- Deploy to staging\n- Deploy to production",
       "options": [
-        "Build → Test → Deploy",
-        "Build → Unit Tests → Integration Tests → Deploy to Staging → Deploy to Production",
-        "Test → Build → Deploy",
-        "Deploy → Test → Build"
+        "Build → Testes → Deploy",
+        "Build → Testes Unitários → Testes de Integração → Deploy em Staging → Deploy em Produção",
+        "Testes → Build → Deploy",
+        "Deploy → Testes → Build"
       ],
       "correctAnswer": 1,
-      "explanation": "The correct order follows the principle of fail fast: build first, run unit tests (fastest), then integration tests (slower), deploy to staging for verification, and finally to production. This catches issues early and reduces waste.",
-      "hint": "Think about catching problems as early as possible. What order minimizes wasted effort?",
+      "explanation": "A ordem correta segue o princípio de falhar rápido: primeiro o build, depois os testes unitários (mais rápidos), em seguida os testes de integração (mais lentos), deploy em staging para verificação e, por fim, em produção. Isso identifica problemas cedo e reduz desperdício.",
+      "hint": "Pense em identificar problemas o mais cedo possível. Qual ordem minimiza esforço desperdiçado?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "branch-strategies",
-      "title": "Git Branching for CI/CD",
-      "description": "Which branching strategy works best with automated deployments?",
-      "situation": "Your team needs to deploy features frequently while maintaining production stability. Multiple developers work on features simultaneously.",
+      "title": "Branches Git para CI/CD",
+      "description": "Qual estratégia de branching funciona melhor com deploys automatizados?",
+      "situation": "Sua equipe precisa entregar funcionalidades com frequência mantendo a estabilidade da produção. Vários desenvolvedores trabalham em features simultaneamente.",
       "options": [
-        "Trunk-based development with feature flags and automated deployments from main branch",
-        "Create a branch for each environment (dev, staging, prod)",
-        "Long-lived feature branches merged monthly",
-        "Everyone commits directly to main branch"
+        "Trunk-based development com feature flags e deploys automatizados a partir da branch main",
+        "Criar uma branch para cada ambiente (dev, staging, prod)",
+        "Feature branches de vida longa, mescladas mensalmente",
+        "Todo mundo commita diretamente na branch main"
       ],
       "correctAnswer": 0,
-      "explanation": "Trunk-based development with short-lived branches and feature flags enables continuous integration, reduces merge conflicts, and allows controlled feature releases. Combined with automated deployments, it supports rapid delivery.",
-      "hint": "Consider what enables frequent integration while maintaining control over feature releases.",
+      "explanation": "Trunk-based development com branches de vida curta e feature flags permite integração contínua, reduz conflitos de merge e possibilita lançamentos controlados de funcionalidades. Combinado com deploys automatizados, sustenta entregas rápidas.",
+      "hint": "Pense no que permite integração frequente mantendo controle sobre o lançamento de funcionalidades.",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "testing-pyramid",
-      "title": "Test Automation Strategy",
-      "description": "How should you structure your automated tests in a CI pipeline?",
-      "situation": "You need to balance test coverage with pipeline speed. Your pipeline is taking 45 minutes to run.",
+      "title": "Estratégia de Automação de Testes",
+      "description": "Como você deve estruturar seus testes automatizados em um pipeline de CI?",
+      "situation": "Você precisa equilibrar cobertura de testes com velocidade do pipeline. Seu pipeline está levando 45 minutos para rodar.",
       "codeExample": "# Current situation:\n# - 200 unit tests (2 minutes)\n# - 50 integration tests (15 minutes)\n# - 20 end-to-end tests (28 minutes)\n# Total: 45 minutes",
       "options": [
-        "Run only end-to-end tests since they test everything",
-        "Run all tests in parallel regardless of type",
-        "Follow the test pyramid: many fast unit tests, fewer integration tests, minimal E2E tests. Run unit tests on every commit, integration tests before merge, E2E tests before deployment",
-        "Skip automated tests and rely on manual QA"
+        "Rodar apenas testes end-to-end, já que eles testam tudo",
+        "Rodar todos os testes em paralelo, independentemente do tipo",
+        "Seguir a pirâmide de testes: muitos testes unitários rápidos, menos testes de integração, poucos testes E2E. Rodar testes unitários a cada commit, testes de integração antes do merge, testes E2E antes do deploy",
+        "Pular testes automatizados e depender de QA manual"
       ],
       "correctAnswer": 2,
-      "explanation": "The test pyramid prioritizes fast, focused unit tests that run frequently, with fewer but comprehensive integration tests, and minimal slow E2E tests. This balances coverage with speed and gives rapid feedback.",
-      "hint": "What approach gives you fast feedback while maintaining good coverage?",
+      "explanation": "A pirâmide de testes prioriza testes unitários rápidos e focados, que rodam com frequência, com menos testes de integração (porém abrangentes) e poucos testes E2E lentos. Isso equilibra cobertura com velocidade e dá feedback rápido.",
+      "hint": "Qual abordagem oferece feedback rápido mantendo uma boa cobertura?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "environment-config",
-      "title": "Managing Environment Configuration",
-      "description": "How should you handle different configurations across dev, staging, and production?",
-      "situation": "Your application needs different database URLs, API keys, and feature flags for each environment.",
+      "title": "Gerenciando Configuração de Ambientes",
+      "description": "Como você deve lidar com configurações diferentes entre dev, staging e produção?",
+      "situation": "Sua aplicação precisa de URLs de banco de dados, chaves de API e feature flags diferentes para cada ambiente.",
       "codeExample": "# Need to manage:\n# - Database URLs (different per environment)\n# - API keys (secrets)\n# - Feature flags\n# - Resource limits",
       "options": [
-        "Hard-code values in application code with if/else statements",
-        "Store all configs including secrets in Git repository",
-        "Use different branches for each environment",
-        "Use environment variables and secret management tools (like AWS Secrets Manager, HashiCorp Vault) with separate configs per environment"
+        "Fixar valores no código da aplicação com instruções if/else",
+        "Guardar todas as configurações, incluindo segredos, no repositório Git",
+        "Usar branches diferentes para cada ambiente",
+        "Usar variáveis de ambiente e ferramentas de gerenciamento de segredos (como AWS Secrets Manager, HashiCorp Vault) com configurações separadas por ambiente"
       ],
       "correctAnswer": 3,
-      "explanation": "Environment variables separate configuration from code, while secret management tools handle sensitive data securely. This follows the 12-factor app principles and prevents secrets from leaking into version control.",
-      "hint": "What approach keeps secrets secure while making configuration manageable?",
+      "explanation": "Variáveis de ambiente separam a configuração do código, enquanto ferramentas de gerenciamento de segredos lidam com dados sensíveis de forma segura. Isso segue os princípios de 12-factor app e evita que segredos vazem para o controle de versão.",
+      "hint": "Qual abordagem mantém os segredos seguros e, ao mesmo tempo, torna a configuração gerenciável?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "deployment-strategies",
-      "title": "Zero-Downtime Deployments",
-      "description": "Your production application serves 10,000 concurrent users. How do you deploy updates without downtime?",
-      "situation": "You need to deploy a new version of your application that includes database migrations and code changes.",
+      "title": "Deploys sem Downtime",
+      "description": "Sua aplicação em produção atende 10.000 usuários simultâneos. Como implantar atualizações sem downtime?",
+      "situation": "Você precisa implantar uma nova versão da aplicação que inclui migrações de banco de dados e mudanças de código.",
       "codeExample": "# Requirements:\n# - No downtime\n# - Ability to rollback quickly\n# - Verify new version before full rollout",
       "options": [
-        "Stop all servers, update, restart all at once",
-        "Blue-green deployment: deploy to new environment, switch traffic after verification, keep old environment for quick rollback",
-        "Update servers one by one manually",
-        "Deploy at 3 AM when traffic is lowest"
+        "Parar todos os servidores, atualizar e reiniciar tudo de uma vez",
+        "Deploy blue-green: implantar em um novo ambiente, alternar o tráfego após a verificação, manter o ambiente antigo para rollback rápido",
+        "Atualizar os servidores um por um manualmente",
+        "Fazer o deploy às 3h da manhã, quando o tráfego é menor"
       ],
       "correctAnswer": 1,
-      "explanation": "Blue-green deployments eliminate downtime by running two identical environments. Deploy to the inactive environment, verify it works, then switch traffic. The old environment remains available for instant rollback if issues arise.",
-      "hint": "What strategy allows you to verify the new version is working before directing user traffic to it?",
+      "explanation": "Deploys blue-green eliminam o downtime ao manter dois ambientes idênticos rodando. Implante no ambiente inativo, verifique se está funcionando e então alterne o tráfego. O ambiente antigo continua disponível para rollback instantâneo caso surjam problemas.",
+      "hint": "Qual estratégia permite verificar se a nova versão está funcionando antes de direcionar o tráfego dos usuários para ela?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "artifact-management",
-      "title": "Build Artifact Strategy",
-      "description": "How should you handle build artifacts in your CI/CD pipeline?",
-      "situation": "Your team builds Docker images, npm packages, and compiled binaries. You need consistency across environments.",
+      "title": "Estratégia de Artefatos de Build",
+      "description": "Como você deve lidar com artefatos de build no seu pipeline de CI/CD?",
+      "situation": "Sua equipe constrói imagens Docker, pacotes npm e binários compilados. Você precisa de consistência entre os ambientes.",
       "codeExample": "# Build outputs:\n# - Docker images\n# - npm packages  \n# - JAR files\n# - Configuration files",
       "options": [
-        "Rebuild from source in each environment",
-        "Store artifacts on developer laptops",
-        "Build once, store in artifact repository (Docker Registry, npm registry, Artifactory), deploy the same artifact to all environments",
-        "Email artifacts to operations team"
+        "Reconstruir a partir do código-fonte em cada ambiente",
+        "Guardar artefatos nos laptops dos desenvolvedores",
+        "Construir uma vez, armazenar em um repositório de artefatos (Docker Registry, npm registry, Artifactory) e implantar o mesmo artefato em todos os ambientes",
+        "Enviar artefatos por e-mail para a equipe de operações"
       ],
       "correctAnswer": 2,
-      "explanation": "Building once and promoting the same immutable artifact through environments ensures consistency and eliminates 'works on my machine' issues. Artifact repositories provide versioning, access control, and reliable storage.",
-      "hint": "What ensures you're deploying exactly the same code that was tested?",
+      "explanation": "Construir uma vez e promover o mesmo artefato imutável pelos ambientes garante consistência e elimina problemas do tipo 'funciona na minha máquina'. Repositórios de artefatos oferecem versionamento, controle de acesso e armazenamento confiável.",
+      "hint": "O que garante que você está implantando exatamente o mesmo código que foi testado?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "pipeline-security",
-      "title": "Securing Your CI/CD Pipeline",
-      "description": "What security practices should be implemented in your CI/CD pipeline?",
-      "situation": "Your pipeline has access to production systems and secrets. You need to prevent security vulnerabilities.",
+      "title": "Protegendo seu Pipeline de CI/CD",
+      "description": "Quais práticas de segurança devem ser implementadas no seu pipeline de CI/CD?",
+      "situation": "Seu pipeline tem acesso a sistemas de produção e segredos. Você precisa prevenir vulnerabilidades de segurança.",
       "options": [
-        "Implement SAST/DAST scanning, dependency vulnerability checks, secret scanning, least-privilege access, and audit logging",
-        "Only allow senior developers to run pipelines",
-        "Run security scans manually once per quarter",
-        "Trust that code reviews catch all security issues"
+        "Implementar varredura SAST/DAST, verificação de vulnerabilidades em dependências, varredura de segredos, acesso de privilégio mínimo e registro de auditoria",
+        "Permitir que apenas desenvolvedores sêniores executem os pipelines",
+        "Rodar varreduras de segurança manualmente uma vez por trimestre",
+        "Confiar que as revisões de código pegam todos os problemas de segurança"
       ],
       "correctAnswer": 0,
-      "explanation": "Comprehensive security includes automated scanning for code vulnerabilities (SAST), runtime vulnerabilities (DAST), dependency issues, leaked secrets, proper access controls, and audit trails. Security should be automated and continuous.",
-      "hint": "What approach automates security checks and prevents multiple types of vulnerabilities?",
+      "explanation": "Segurança abrangente inclui varredura automatizada de vulnerabilidades no código (SAST), vulnerabilidades em tempo de execução (DAST), problemas de dependências, segredos vazados, controles de acesso adequados e trilhas de auditoria. A segurança deve ser automatizada e contínua.",
+      "hint": "Qual abordagem automatiza verificações de segurança e previne vários tipos de vulnerabilidades?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "pipeline-optimization",
-      "title": "Optimizing Pipeline Performance",
-      "description": "Your CI/CD pipeline takes 30 minutes to run. How do you optimize it?",
-      "situation": "Developers complain about slow feedback. The pipeline runs tests sequentially and rebuilds everything from scratch each time.",
+      "title": "Otimizando o Desempenho do Pipeline",
+      "description": "Seu pipeline de CI/CD leva 30 minutos para rodar. Como otimizá-lo?",
+      "situation": "Os desenvolvedores reclamam do feedback lento. O pipeline roda os testes sequencialmente e reconstrói tudo do zero a cada execução.",
       "codeExample": "# Current pipeline:\n# - Install dependencies (8 min)\n# - Lint code (3 min)\n# - Unit tests (10 min)\n# - Integration tests (9 min)\n# Total: 30 minutes",
       "options": [
-        "Skip tests to make it faster",
-        "Run pipeline less frequently",
-        "Tell developers to be patient",
-        "Parallelize test stages, cache dependencies, use incremental builds, and optimize Docker layer caching"
+        "Pular os testes para deixar mais rápido",
+        "Rodar o pipeline com menos frequência",
+        "Pedir aos desenvolvedores para terem paciência",
+        "Paralelizar as etapas de teste, fazer cache de dependências, usar builds incrementais e otimizar o cache de camadas do Docker"
       ],
       "correctAnswer": 3,
-      "explanation": "Modern CI/CD optimization involves running independent stages in parallel, caching dependencies and build artifacts, using incremental builds that only rebuild changed code, and optimizing Docker builds with proper layer caching.",
-      "hint": "What techniques can reduce redundant work while maintaining all quality checks?",
+      "explanation": "A otimização moderna de CI/CD envolve rodar etapas independentes em paralelo, fazer cache de dependências e artefatos de build, usar builds incrementais que reconstroem apenas o código alterado e otimizar builds Docker com cache de camadas adequado.",
+      "hint": "Quais técnicas podem reduzir trabalho redundante mantendo todas as verificações de qualidade?",
       "difficulty": "advanced",
       "points": 18
     }

@@ -1,7 +1,7 @@
 {
   "id": "git-quiz",
-  "title": "Git Command Quiz",
-  "description": "Test your Git command knowledge with real-world scenarios covering commits, branching, merging, rebasing, remotes, and recovering from common mistakes.",
+  "title": "Quiz de Comandos Git",
+  "description": "Teste seu conhecimento de comandos Git com cenários reais envolvendo commits, branching, merge, rebase, remotes e recuperação de erros comuns.",
   "category": "Git",
   "icon": "GitBranch",
   "totalPoints": 115,
@@ -11,7 +11,7 @@
     "gradientTo": "to-red-600"
   },
   "metadata": {
-    "estimatedTime": "15-20 minutes",
+    "estimatedTime": "15-20 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 3,
@@ -22,9 +22,9 @@
   "questions": [
     {
       "id": "merge-conflict-basic",
-      "title": "Basic Merge Conflict",
-      "description": "You have changes in both main and feature branches that conflict.",
-      "situation": "You are on the main branch and want to merge feature-auth, but there are conflicts in app.js",
+      "title": "Conflito de Merge Básico",
+      "description": "Você tem alterações nas branches main e feature que conflitam entre si.",
+      "situation": "Você está na branch main e quer fazer merge da feature-auth, mas há conflitos em app.js",
       "branches": [
         {
           "name": "main",
@@ -42,7 +42,7 @@
           ]
         }
       ],
-      "conflict": "Both branches modified app.js differently",
+      "conflict": "Ambas as branches modificaram app.js de formas diferentes",
       "options": [
         "git merge feature-auth",
         "git merge feature-auth &&\ngit add . && git commit",
@@ -50,16 +50,16 @@
         "git rebase feature-auth"
       ],
       "correctAnswer": 2,
-      "explanation": "When merging with conflicts, you must: 1) Start the merge, 2) Resolve conflicts manually, 3) Add resolved files, 4) Commit the merge.",
-      "hint": "Think about what happens in each step: Start with the basic git command, then consider what to do with conflicts.",
+      "explanation": "Ao fazer merge com conflitos, você deve: 1) Iniciar o merge, 2) Resolver os conflitos manualmente, 3) Adicionar os arquivos resolvidos, 4) Commitar o merge.",
+      "hint": "Pense no que acontece em cada etapa: comece com o comando git básico e depois considere o que fazer com os conflitos.",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "fast-forward-merge",
-      "title": "Fast-Forward Merge",
-      "description": "Your feature branch is ahead of main with no conflicts.",
-      "situation": "feature-ui is 3 commits ahead of main, and main has no new commits since branching.",
+      "title": "Merge Fast-Forward",
+      "description": "Sua branch de feature está à frente da main sem conflitos.",
+      "situation": "feature-ui está 3 commits à frente da main, e a main não tem novos commits desde a criação da branch.",
       "branches": [
         {
           "name": "main",
@@ -87,16 +87,16 @@
         "git cherry-pick feature-ui"
       ],
       "correctAnswer": 0,
-      "explanation": "This is a fast-forward merge situation. Git will simply move the main pointer forward to match feature-ui.",
-      "hint": "Since main hasn't moved forward, what's the simplest way to integrate the changes?",
+      "explanation": "Esta é uma situação de merge fast-forward. O Git simplesmente moverá o ponteiro da main para frente até corresponder à feature-ui.",
+      "hint": "Já que a main não avançou, qual é a forma mais simples de integrar as mudanças?",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "rebase-vs-merge",
-      "title": "Clean History with Rebase",
-      "description": "You want to maintain a linear history when integrating your feature branch.",
-      "situation": "You have been working on feature-api while main has received new commits. You want a clean, linear history.",
+      "title": "Histórico Limpo com Rebase",
+      "description": "Você quer manter um histórico linear ao integrar sua branch de feature.",
+      "situation": "Você tem trabalhado na feature-api enquanto a main recebeu novos commits. Você quer um histórico limpo e linear.",
       "branches": [
         {
           "name": "main",
@@ -126,16 +126,16 @@
         "git rebase main"
       ],
       "correctAnswer": 3,
-      "explanation": "Rebase will replay your feature commits on top of the latest main, creating a linear history without merge commits.",
-      "hint": "Consider whether you want to preserve history or create a clean linear timeline.",
+      "explanation": "O rebase vai reaplicar os commits da sua feature sobre a versão mais recente da main, criando um histórico linear sem commits de merge.",
+      "hint": "Pense se você quer preservar o histórico ou criar uma linha do tempo limpa e linear.",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "undo-last-commit",
-      "title": "Oops! Wrong Commit",
-      "description": "You just committed changes but realized you made a mistake.",
-      "situation": "You committed 'Fix typo' but the commit contains additional unintended changes that should not be included.",
+      "title": "Ops! Commit Errado",
+      "description": "Você acabou de commitar alterações mas percebeu que cometeu um erro.",
+      "situation": "Você commitou 'Fix typo', mas o commit contém alterações adicionais não intencionais que não deveriam estar ali.",
       "branches": [
         {
           "name": "main",
@@ -154,16 +154,16 @@
         "git reset --soft HEAD~1"
       ],
       "correctAnswer": 3,
-      "explanation": "reset --soft HEAD~1 undoes the commit but keeps your changes staged, allowing you to modify and recommit correctly.",
-      "hint": "You want to undo the commit but keep your changes so you can fix them. Which reset option preserves your work?",
+      "explanation": "reset --soft HEAD~1 desfaz o commit mas mantém suas alterações na área de staging, permitindo que você as modifique e faça o commit novamente da forma correta.",
+      "hint": "Você quer desfazer o commit mas manter suas alterações para poder corrigi-las. Qual opção de reset preserva seu trabalho?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "stash-workflow",
-      "title": "Interrupted Workflow",
-      "description": "You are working on a feature but need to quickly fix a bug on main.",
-      "situation": "You have uncommitted changes on feature-search but need to switch to main to fix an urgent bug.",
+      "title": "Fluxo de Trabalho Interrompido",
+      "description": "Você está trabalhando em uma feature mas precisa corrigir rapidamente um bug na main.",
+      "situation": "Você tem alterações não commitadas na feature-search, mas precisa trocar para a main para corrigir um bug urgente.",
       "branches": [
         {
           "name": "main",
@@ -190,16 +190,16 @@
         "git checkout main\n(force)"
       ],
       "correctAnswer": 1,
-      "explanation": "git stash saves your uncommitted changes temporarily, allowing you to switch branches cleanly and restore them later with git stash pop.",
-      "hint": "You need to temporarily save your work without making a permanent commit. What Git feature is designed for this?",
+      "explanation": "git stash guarda temporariamente suas alterações não commitadas, permitindo trocar de branch de forma limpa e restaurá-las depois com git stash pop.",
+      "hint": "Você precisa salvar temporariamente seu trabalho sem fazer um commit permanente. Qual funcionalidade do Git foi criada para isso?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "interactive-rebase",
-      "title": "Clean Up Commit History",
-      "description": "You have multiple small commits that should be combined before merging.",
-      "situation": "You have 4 commits: 'Add login', 'Fix typo', 'Another typo fix', 'Update login'. You want to clean this up before merging.",
+      "title": "Limpar o Histórico de Commits",
+      "description": "Você tem vários commits pequenos que deveriam ser combinados antes do merge.",
+      "situation": "Você tem 4 commits: 'Add login', 'Fix typo', 'Another typo fix', 'Update login'. Você quer organizar isso antes de fazer o merge.",
       "branches": [
         {
           "name": "feature-login",
@@ -220,16 +220,16 @@
         "git commit --amend"
       ],
       "correctAnswer": 1,
-      "explanation": "Interactive rebase (git rebase -i) allows you to squash, reorder, or edit commits to create a cleaner history.",
-      "hint": "Think about the end goal and which Git feature is designed for this specific use case of cleaning up multiple commits.",
+      "explanation": "O rebase interativo (git rebase -i) permite fazer squash, reordenar ou editar commits para criar um histórico mais limpo.",
+      "hint": "Pense no objetivo final e em qual funcionalidade do Git foi criada especificamente para esse caso de limpar vários commits.",
       "difficulty": "advanced",
       "points": 20
     },
     {
       "id": "cherry-pick-scenario",
-      "title": "Selective Commit Integration",
-      "description": "You need only one specific commit from another branch.",
-      "situation": "The experimental-features branch has many commits, but you only want the 'Add error handling' commit on main.",
+      "title": "Integração Seletiva de Commit",
+      "description": "Você precisa de apenas um commit específico de outra branch.",
+      "situation": "A branch experimental-features tem muitos commits, mas você quer apenas o commit 'Add error handling' na main.",
       "branches": [
         {
           "name": "main",
@@ -257,16 +257,16 @@
         "git diff\nexperimental-features"
       ],
       "correctAnswer": 2,
-      "explanation": "Cherry-pick allows you to apply a specific commit from another branch without merging the entire branch.",
-      "hint": "You only want one specific commit, not the entire branch. Which Git feature lets you selectively apply commits?",
+      "explanation": "O cherry-pick permite aplicar um commit específico de outra branch sem fazer merge da branch inteira.",
+      "hint": "Você quer apenas um commit específico, não a branch inteira. Qual funcionalidade do Git permite aplicar commits seletivamente?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "detached-head",
-      "title": "Detached HEAD Recovery",
-      "description": "You're in a detached HEAD state and made commits you want to keep.",
-      "situation": "You checked out a specific commit, made some changes and committed them. Now you're in detached HEAD state but want to keep your changes.",
+      "title": "Recuperação de HEAD Destacada",
+      "description": "Você está em um estado de HEAD destacada (detached HEAD) e fez commits que quer manter.",
+      "situation": "Você deu checkout em um commit específico, fez algumas alterações e as commitou. Agora você está em estado de detached HEAD, mas quer manter suas alterações.",
       "codeExample": "$ git log --oneline\nf3a4b2c (HEAD) Fix critical bug\n1a2b3c4 Add feature\n9d8e7f6 (main) Initial commit",
       "options": [
         "git checkout main &&\ngit merge f3a4b2c",
@@ -275,8 +275,8 @@
         "git reset --hard main"
       ],
       "correctAnswer": 2,
-      "explanation": "Create a new branch from the detached HEAD state, then merge it into main. This preserves your commits and gets you back to a normal state.",
-      "hint": "You need to create a branch to capture your commits, then integrate them properly.",
+      "explanation": "Crie uma nova branch a partir do estado de detached HEAD e depois faça merge dela na main. Isso preserva seus commits e traz você de volta a um estado normal.",
+      "hint": "Você precisa criar uma branch para capturar seus commits e, então, integrá-los corretamente.",
       "difficulty": "advanced",
       "points": 20
     }

@@ -1,7 +1,7 @@
 {
   "id": "message-queues-delivery-guarantees-quiz",
-  "title": "Message Queues and Delivery Guarantees Quiz",
-  "description": "At-least-once, at-most-once, and the exactly-once myth: idempotent consumers, visibility timeouts, dead-letter queues, ordering, offset commits, and the outbox pattern that the queue-backed systems you design actually depend on.",
+  "title": "Quiz de Filas de Mensagens e Garantias de Entrega",
+  "description": "At-least-once, at-most-once, e o mito do exactly-once: consumidores idempotentes, visibility timeouts, dead-letter queues, ordenação, commits de offset, e o padrão outbox do qual os sistemas baseados em filas que você projeta realmente dependem.",
   "category": "System Design",
   "icon": "Workflow",
   "totalPoints": 172,
@@ -11,7 +11,7 @@
     "gradientTo": "to-amber-600"
   },
   "metadata": {
-    "estimatedTime": "18-24 minutes",
+    "estimatedTime": "18-24 minutos",
     "difficultyLevels": {
       "beginner": 2,
       "intermediate": 7,
@@ -29,222 +29,222 @@
   "questions": [
     {
       "id": "three-delivery-semantics",
-      "title": "The Three Delivery Semantics",
-      "description": "The vocabulary every queue conversation starts with.",
-      "situation": "You are choosing the delivery guarantee for an order-processing pipeline.",
+      "title": "As Três Semânticas de Entrega",
+      "description": "O vocabulário com que toda conversa sobre filas começa.",
+      "situation": "Você está escolhendo a garantia de entrega para um pipeline de processamento de pedidos.",
       "options": [
-        "At-most-once may lose messages but never duplicates; at-least-once never loses but may duplicate; exactly-once means each message takes effect once",
-        "They all mean the same thing in practice",
-        "At-least-once means messages are never delivered more than the queue size",
-        "Exactly-once is the easiest to implement and the default everywhere"
+        "At-most-once pode perder mensagens mas nunca duplica; at-least-once nunca perde mas pode duplicar; exactly-once significa que cada mensagem tem efeito uma única vez",
+        "Todas significam a mesma coisa na prática",
+        "At-least-once significa que as mensagens nunca são entregues além do tamanho da fila",
+        "Exactly-once é o mais fácil de implementar e o padrão em todo lugar"
       ],
       "correctAnswer": 0,
-      "explanation": "At-most-once: deliver and forget, so a failure can drop a message but you never see duplicates. At-least-once: keep retrying until acknowledged, so you never lose a message but can deliver it more than once. Exactly-once: each message affects the system exactly one time, which is the hardest to achieve and almost always built as at-least-once delivery plus idempotency. Knowing which you have determines everything downstream.",
-      "hint": "One can lose but not duplicate, one can duplicate but not lose, one promises neither.",
+      "explanation": "At-most-once: entrega e esquece, então uma falha pode descartar uma mensagem, mas você nunca vê duplicatas. At-least-once: continua tentando até ser confirmada, então você nunca perde uma mensagem, mas pode entregá-la mais de uma vez. Exactly-once: cada mensagem afeta o sistema exatamente uma vez, o que é o mais difícil de alcançar e quase sempre é construído como entrega at-least-once mais idempotência. Saber qual você tem determina tudo que vem depois.",
+      "hint": "Uma pode perder mas não duplicar, uma pode duplicar mas não perder, uma não promete nenhuma das duas coisas.",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "idempotent-consumer",
-      "title": "Surviving At-Least-Once",
-      "description": "The consumer-side defence against duplicates.",
-      "situation": "Your queue guarantees at-least-once delivery, so a payment message can be delivered twice.",
+      "title": "Sobrevivendo ao At-Least-Once",
+      "description": "A defesa do lado do consumidor contra duplicatas.",
+      "situation": "Sua fila garante entrega at-least-once, então uma mensagem de pagamento pode ser entregue duas vezes.",
       "options": [
-        "Trust the queue and charge the card on every message",
-        "Make the consumer idempotent: deduplicate on a message/business id so processing the same message twice has the same effect as once",
-        "Switch to at-most-once so you never see duplicates",
-        "Add a sleep before processing to avoid duplicates"
+        "Confiar na fila e cobrar o cartão a cada mensagem",
+        "Tornar o consumidor idempotente: deduplicar por um id de mensagem/negócio, para que processar a mesma mensagem duas vezes tenha o mesmo efeito que processá-la uma vez",
+        "Mudar para at-most-once para nunca ver duplicatas",
+        "Adicionar um sleep antes do processamento para evitar duplicatas"
       ],
       "correctAnswer": 1,
-      "explanation": "At-least-once means duplicates are a when, not an if. The consumer must be idempotent: track a unique id (payment id, message id) and skip or no-op if already processed, often via a unique constraint or an idempotency key. Then a redelivery is harmless. Idempotency at the consumer is how real systems get 'effectively-once' behaviour on top of at-least-once delivery.",
-      "hint": "If the same message arrives twice, how do you make the second one a no-op?",
+      "explanation": "At-least-once significa que duplicatas são uma questão de quando, não de se. O consumidor precisa ser idempotente: rastrear um id único (id de pagamento, id de mensagem) e pular ou não fazer nada se já foi processado, frequentemente via uma restrição de unicidade ou uma chave de idempotência. Assim, uma reentrega se torna inofensiva. A idempotência no consumidor é como sistemas reais obtêm comportamento 'efetivamente uma vez' sobre entrega at-least-once.",
+      "hint": "Se a mesma mensagem chega duas vezes, como você faz a segunda vez não ter efeito nenhum?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "visibility-timeout",
-      "title": "Acks and Visibility Timeouts",
-      "description": "Why an unacked message comes back.",
-      "situation": "A consumer pulls a message from an SQS-style queue, starts working, but crashes before acknowledging. The visibility timeout is 30 seconds.",
+      "title": "Acks e Visibility Timeouts",
+      "description": "Por que uma mensagem não confirmada retorna.",
+      "situation": "Um consumidor puxa uma mensagem de uma fila estilo SQS, começa a trabalhar, mas trava antes de confirmar (ack). O visibility timeout é de 30 segundos.",
       "options": [
-        "The message is lost forever",
-        "The message is deleted immediately on receipt",
-        "After the visibility timeout expires without an ack, the message becomes visible again and is redelivered to another consumer",
-        "The queue blocks all other messages until that consumer recovers"
+        "A mensagem é perdida para sempre",
+        "A mensagem é excluída imediatamente ao ser recebida",
+        "Depois que o visibility timeout expira sem um ack, a mensagem se torna visível novamente e é reentregue a outro consumidor",
+        "A fila bloqueia todas as outras mensagens até que esse consumidor se recupere"
       ],
       "correctAnswer": 2,
-      "explanation": "Pulling a message hides it for the visibility timeout rather than deleting it. The consumer must acknowledge (delete) it after successful processing. If it crashes and the timeout passes with no ack, the broker assumes failure and redelivers, which is exactly what produces at-least-once semantics. Set the timeout longer than worst-case processing time, or you get duplicate work while the first consumer is still busy.",
-      "hint": "Receipt hides the message temporarily; processing must ack it. What happens when the timer runs out with no ack?",
+      "explanation": "Puxar uma mensagem a esconde durante o visibility timeout em vez de excluí-la. O consumidor precisa confirmar (excluir) a mensagem após o processamento bem-sucedido. Se ele travar e o timeout passar sem um ack, o broker assume falha e reentrega a mensagem, o que é exatamente o que produz a semântica at-least-once. Configure o timeout maior que o pior caso de tempo de processamento, ou você terá trabalho duplicado enquanto o primeiro consumidor ainda está ocupado.",
+      "hint": "Receber esconde a mensagem temporariamente; o processamento precisa confirmá-la. O que acontece quando o timer expira sem um ack?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "dead-letter-queue",
       "title": "Dead-Letter Queues",
-      "description": "Where bad messages go to be examined.",
-      "situation": "One malformed message keeps failing, getting redelivered, failing again, blocking the queue.",
+      "description": "Para onde vão as mensagens ruins para serem examinadas.",
+      "situation": "Uma mensagem malformada continua falhando, sendo reentregue, falhando de novo, bloqueando a fila.",
       "options": [
-        "Delete the entire queue and start over",
-        "Acknowledge every message immediately so nothing fails",
-        "Increase the visibility timeout to infinity",
-        "Route messages that exceed a max-retries threshold to a dead-letter queue, so the main queue keeps flowing and failures can be inspected later"
+        "Excluir a fila inteira e começar de novo",
+        "Confirmar toda mensagem imediatamente para que nada falhe",
+        "Aumentar o visibility timeout para infinito",
+        "Rotear mensagens que excedem um limite máximo de tentativas para uma dead-letter queue, para que a fila principal continue fluindo e as falhas possam ser inspecionadas depois"
       ],
       "correctAnswer": 3,
-      "explanation": "A dead-letter queue (DLQ) captures messages that fail more than a configured number of times. This stops a single poison message from being retried forever and blocking healthy traffic, and it preserves the failures for debugging, alerting, or manual replay. A DLQ with a max-receive-count is the standard pattern for isolating bad messages without losing them.",
-      "hint": "Where should a message go after it has failed N times so it stops blocking the rest?",
+      "explanation": "Uma dead-letter queue (DLQ) captura mensagens que falham mais do que um número configurado de vezes. Isso impede que uma única mensagem envenenada seja retentada para sempre e bloqueie o tráfego saudável, e preserva as falhas para depuração, alertas ou replay manual. Uma DLQ com um limite máximo de recebimentos é o padrão consagrado para isolar mensagens ruins sem perdê-las.",
+      "hint": "Para onde uma mensagem deveria ir depois de falhar N vezes, para que pare de bloquear o resto?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "ordering-guarantees",
-      "title": "Ordering Is Not Global",
-      "description": "A common, costly misconception.",
-      "situation": "You assume a partitioned log like Kafka delivers all messages in the exact global order they were produced.",
+      "title": "Ordenação Não É Global",
+      "description": "Um equívoco comum e custoso.",
+      "situation": "Você assume que um log particionado como o Kafka entrega todas as mensagens na ordem global exata em que foram produzidas.",
       "options": [
-        "No: ordering is guaranteed only within a partition (or key), not across partitions; to keep related events ordered you must route them to the same partition via a partition key",
-        "Correct, Kafka guarantees total global ordering across all partitions",
-        "Ordering is never guaranteed anywhere in Kafka",
-        "Ordering depends only on the number of consumers"
+        "Não: a ordenação só é garantida dentro de uma partição (ou chave), não entre partições; para manter eventos relacionados ordenados, você precisa roteá-los para a mesma partição via uma chave de partição",
+        "Correto, o Kafka garante ordenação global total entre todas as partições",
+        "A ordenação nunca é garantida em lugar nenhum no Kafka",
+        "A ordenação depende apenas do número de consumidores"
       ],
       "correctAnswer": 0,
-      "explanation": "Partitioned logs scale by spreading messages across partitions, and ordering is preserved only within a single partition. Across partitions there is no global order. To keep a customer's events in order, you pick a partition key (e.g. customer id) so all their events land on one partition. Expecting global ordering, or using a random key for events that must stay ordered, is a classic source of subtle bugs.",
-      "hint": "What is the unit within which a partitioned log actually preserves order?",
+      "explanation": "Logs particionados escalam distribuindo mensagens entre partições, e a ordenação é preservada apenas dentro de uma única partição. Entre partições não há ordem global. Para manter os eventos de um cliente em ordem, você escolhe uma chave de partição (por exemplo, id do cliente) para que todos os eventos dele caiam na mesma partição. Esperar ordenação global, ou usar uma chave aleatória para eventos que precisam permanecer ordenados, é uma fonte clássica de bugs sutis.",
+      "hint": "Qual é a unidade dentro da qual um log particionado de fato preserva a ordem?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "exactly-once-myth",
-      "title": "The Exactly-Once Myth",
-      "description": "What 'exactly-once' really means.",
-      "situation": "A vendor claims their queue offers true end-to-end exactly-once delivery with no effort on your part.",
+      "title": "O Mito do Exactly-Once",
+      "description": "O que 'exactly-once' realmente significa.",
+      "situation": "Um fornecedor afirma que sua fila oferece entrega exactly-once ponta a ponta verdadeira, sem nenhum esforço da sua parte.",
       "options": [
-        "Believe it: exactly-once delivery over an unreliable network is trivially solved",
-        "Be skeptical: exactly-once delivery is impossible in general over unreliable networks; what systems actually provide is at-least-once delivery plus idempotency/transactions to get exactly-once processing (effectively-once)",
-        "Exactly-once is the same as at-most-once",
-        "Exactly-once requires turning off all retries"
+        "Acreditar: entrega exactly-once sobre uma rede não confiável é um problema trivialmente resolvido",
+        "Ser cético: entrega exactly-once é impossível em geral sobre redes não confiáveis; o que os sistemas realmente fornecem é entrega at-least-once mais idempotência/transações para obter processamento exactly-once (efetivamente uma vez)",
+        "Exactly-once é o mesmo que at-most-once",
+        "Exactly-once exige desligar todos os retries"
       ],
       "correctAnswer": 1,
-      "explanation": "You cannot guarantee a message is delivered exactly once across an unreliable network, because the sender can never be sure an ack was lost vs the message was lost. Real 'exactly-once' is engineered: at-least-once delivery combined with idempotent consumers or transactional/atomic commits (e.g. Kafka transactions tying offset commit to output). The honest framing is exactly-once processing, not magic exactly-once delivery.",
-      "hint": "If an ack can be lost, can the sender ever be certain it delivered exactly once? How do systems fake it?",
+      "explanation": "Você não pode garantir que uma mensagem seja entregue exatamente uma vez através de uma rede não confiável, porque o remetente nunca pode ter certeza se um ack foi perdido ou se a mensagem foi perdida. O verdadeiro 'exactly-once' é construído: entrega at-least-once combinada com consumidores idempotentes ou commits transacionais/atômicos (por exemplo, transações do Kafka vinculando o commit de offset à saída). O enquadramento honesto é processamento exactly-once, não entrega exactly-once mágica.",
+      "hint": "Se um ack pode se perder, o remetente pode algum dia ter certeza de que entregou exatamente uma vez? Como os sistemas simulam isso?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "consumer-lag-backpressure",
-      "title": "Consumer Lag and Backpressure",
-      "description": "When producers outrun consumers.",
-      "situation": "Producers write 50,000 messages/second; consumers process 30,000/second. This runs for hours.",
+      "title": "Consumer Lag e Backpressure",
+      "description": "Quando produtores ultrapassam consumidores.",
+      "situation": "Produtores escrevem 50.000 mensagens/segundo; consumidores processam 30.000/segundo. Isso continua por horas.",
       "options": [
-        "Nothing happens, queues have infinite capacity",
-        "The queue automatically slows producers with no consequences",
-        "Lag grows without bound: the backlog (and storage/memory) keeps increasing, latency climbs, and you must scale consumers, shed load, or apply backpressure to producers",
-        "Consumers will magically speed up to match"
+        "Nada acontece, filas têm capacidade infinita",
+        "A fila desacelera os produtores automaticamente, sem consequências",
+        "O lag cresce sem limite: o backlog (e armazenamento/memória) continua aumentando, a latência sobe, e você precisa escalar consumidores, descartar carga, ou aplicar backpressure nos produtores",
+        "Os consumidores vão magicamente acelerar para acompanhar"
       ],
       "correctAnswer": 2,
-      "explanation": "A sustained producer rate above consumer throughput means lag grows forever: the backlog, end-to-end latency, and broker storage all climb until something breaks. You monitor consumer lag and respond by scaling out consumers, increasing parallelism (partitions), shedding or sampling load, or applying backpressure so producers slow down. A queue absorbs bursts, it does not fix a permanent throughput deficit.",
-      "hint": "If inflow permanently exceeds outflow, what happens to the backlog over hours?",
+      "explanation": "Uma taxa de produtores sustentadamente acima do throughput dos consumidores significa que o lag cresce para sempre: o backlog, a latência ponta a ponta, e o armazenamento do broker sobem até que algo quebre. Você monitora o consumer lag e responde escalando consumidores, aumentando o paralelismo (partições), descartando ou amostrando carga, ou aplicando backpressure para que os produtores desacelerem. Uma fila absorve rajadas, ela não resolve um déficit de throughput permanente.",
+      "hint": "Se a entrada excede permanentemente a saída, o que acontece com o backlog ao longo de horas?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "competing-vs-pubsub",
       "title": "Work Queue vs Pub/Sub",
-      "description": "Two fundamentally different delivery shapes.",
-      "situation": "You need a job processed by exactly one worker. Separately, you need an event seen by every interested service.",
+      "description": "Duas formas de entrega fundamentalmente diferentes.",
+      "situation": "Você precisa que um job seja processado por exatamente um worker. Separadamente, você precisa que um evento seja visto por todo serviço interessado.",
       "options": [
-        "Both need the same delivery model",
-        "Competing consumers means every consumer gets every message",
-        "Pub/sub guarantees only one subscriber ever receives a message",
-        "A work queue (competing consumers) delivers each message to one worker among many; pub/sub (fan-out) delivers each message to every subscriber. The first load-balances work, the second broadcasts events"
+        "Ambos precisam do mesmo modelo de entrega",
+        "Consumidores concorrentes (competing consumers) significa que todo consumidor recebe toda mensagem",
+        "Pub/sub garante que apenas um assinante jamais receba uma mensagem",
+        "Uma work queue (consumidores concorrentes) entrega cada mensagem a um worker entre vários; pub/sub (fan-out) entrega cada mensagem a todo assinante. A primeira balanceia carga de trabalho, a segunda transmite eventos"
       ],
       "correctAnswer": 3,
-      "explanation": "A work queue with competing consumers spreads messages so each job runs once on one of several workers, that is how you parallelise processing. Pub/sub (or Kafka consumer groups, each group a separate subscriber) fans a message out to every interested party. Mixing these up, e.g. expecting all workers to see every job, or expecting one subscriber to absorb a broadcast, breaks the design. Pick the topology that matches the intent.",
-      "hint": "One pattern load-balances a job to a single worker; the other broadcasts to all subscribers.",
+      "explanation": "Uma work queue com consumidores concorrentes distribui mensagens de forma que cada job rode uma vez em um dos vários workers, é assim que você paraleliza o processamento. Pub/sub (ou grupos de consumidores do Kafka, cada grupo um assinante separado) transmite uma mensagem a cada parte interessada. Confundir isso, por exemplo, esperar que todos os workers vejam todo job, ou esperar que um assinante absorva uma transmissão, quebra o design. Escolha a topologia que corresponde à intenção.",
+      "hint": "Um padrão balanceia a carga de um job para um único worker; o outro transmite para todos os assinantes.",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "poison-message",
-      "title": "The Poison Message",
-      "description": "One message that keeps killing the consumer.",
-      "situation": "A consumer repeatedly crashes on the same message, recovers, gets redelivered the same message, and crashes again.",
+      "title": "A Mensagem Envenenada",
+      "description": "Uma mensagem que fica matando o consumidor.",
+      "situation": "Um consumidor trava repetidamente na mesma mensagem, se recupera, recebe a mesma mensagem reentregue, e trava de novo.",
       "options": [
-        "It is a poison message: it must be capped with a retry/redelivery limit and routed to a DLQ, otherwise it blocks the partition/queue and starves all other messages",
-        "This is normal and self-resolves",
-        "Adding more consumers fixes a poison message",
-        "Poison messages only occur with at-most-once delivery"
+        "É uma mensagem envenenada (poison message): ela precisa ser limitada com um teto de retry/reentrega e roteada para uma DLQ, senão bloqueia a partição/fila e priva todas as outras mensagens",
+        "Isso é normal e se resolve sozinho",
+        "Adicionar mais consumidores resolve uma mensagem envenenada",
+        "Mensagens envenenadas só ocorrem com entrega at-most-once"
       ],
       "correctAnswer": 0,
-      "explanation": "A poison message is one that can never be processed successfully (bad schema, unhandled edge case). Without a redelivery cap it loops forever, and in an ordered partition it blocks everything behind it. The fix is a max-delivery count that diverts it to a dead-letter queue so the rest of the stream proceeds, plus alerting so a human investigates. Unbounded retries on a poison message turn one bad record into an outage.",
-      "hint": "A single un-processable message on an ordered stream blocks everything behind it. What caps the damage?",
+      "explanation": "Uma mensagem envenenada é aquela que nunca pode ser processada com sucesso (schema ruim, caso extremo não tratado). Sem um teto de reentrega, ela entra em loop para sempre, e em uma partição ordenada bloqueia tudo que vem atrás dela. A correção é um número máximo de entregas que a desvia para uma dead-letter queue, para que o resto do fluxo continue, mais alertas para que um humano investigue. Retries ilimitados em uma mensagem envenenada transformam um único registro ruim em uma interrupção.",
+      "hint": "Uma única mensagem não processável em um fluxo ordenado bloqueia tudo atrás dela. O que limita o dano?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "offset-commit-timing",
-      "title": "When You Commit the Offset",
-      "description": "The decision that sets your delivery semantics.",
-      "situation": "In a Kafka consumer, you choose whether to commit the offset before or after processing the message.",
+      "title": "Quando Você Faz o Commit do Offset",
+      "description": "A decisão que define sua semântica de entrega.",
+      "situation": "Em um consumidor Kafka, você escolhe se faz o commit do offset antes ou depois de processar a mensagem.",
       "options": [
-        "It makes no difference to delivery guarantees",
-        "Commit before processing risks losing a message on a crash (at-most-once); commit after processing risks reprocessing on a crash (at-least-once). The order of commit vs work decides which guarantee you get",
-        "Committing after processing guarantees exactly-once with no other work",
-        "You should never commit offsets at all"
+        "Não faz diferença nenhuma para as garantias de entrega",
+        "Fazer commit antes de processar arrisca perder uma mensagem em caso de crash (at-most-once); fazer commit depois de processar arrisca reprocessar em caso de crash (at-least-once). A ordem entre commit e trabalho decide qual garantia você obtém",
+        "Fazer commit depois de processar garante exactly-once sem nenhum trabalho adicional",
+        "Você nunca deveria fazer commit de offsets"
       ],
       "correctAnswer": 1,
-      "explanation": "If you commit the offset first and then crash mid-processing, that message is skipped on restart: at-most-once (possible loss). If you process first and crash before committing, the message is redelivered: at-least-once (possible duplicate). There is no commit order that gives exactly-once by itself, you add idempotency or Kafka transactions for that. This single choice is where consumers accidentally lose or duplicate data.",
-      "hint": "Crash right after the commit but before the work, vs after the work but before the commit. Which loses, which duplicates?",
+      "explanation": "Se você faz o commit do offset primeiro e depois trava no meio do processamento, essa mensagem é pulada ao reiniciar: at-most-once (possível perda). Se você processa primeiro e trava antes de fazer o commit, a mensagem é reentregue: at-least-once (possível duplicata). Não existe ordem de commit que dê exactly-once por si só, você adiciona idempotência ou transações do Kafka para isso. Essa única escolha é onde os consumidores acidentalmente perdem ou duplicam dados.",
+      "hint": "Trava logo depois do commit mas antes do trabalho, versus depois do trabalho mas antes do commit. Qual perde, qual duplica?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "producer-acks-durability",
-      "title": "Producer Acks and Durability",
-      "description": "How hard the broker promises to keep your message.",
-      "situation": "A producer can wait for acks=1 (leader only) or acks=all (leader plus in-sync replicas) before considering a write successful.",
+      "title": "Acks do Produtor e Durabilidade",
+      "description": "O quanto o broker promete manter sua mensagem.",
+      "situation": "Um produtor pode esperar por acks=1 (apenas o líder) ou acks=all (líder mais réplicas sincronizadas) antes de considerar uma escrita bem-sucedida.",
       "options": [
-        "Both give identical durability",
-        "acks=1 is more durable than acks=all",
-        "acks=all is more durable: the write is acknowledged only after replicas have it, so a leader failure won't lose the message, at the cost of higher latency; acks=1 is faster but can lose a just-written message if the leader dies before replication",
-        "Acks only affect consumers, not durability"
+        "Ambos oferecem durabilidade idêntica",
+        "acks=1 é mais durável que acks=all",
+        "acks=all é mais durável: a escrita só é confirmada depois que as réplicas a têm, então uma falha do líder não perde a mensagem, ao custo de maior latência; acks=1 é mais rápido mas pode perder uma mensagem recém-escrita se o líder morrer antes da replicação",
+        "Acks só afetam os consumidores, não a durabilidade"
       ],
       "correctAnswer": 2,
-      "explanation": "With acks=1 the leader acknowledges as soon as it has the message locally; if it crashes before replicas copy it, that message is gone. With acks=all the broker waits until the in-sync replicas have it, so a single broker loss won't lose data, trading latency for durability. Durability is a producer-side choice too, not just a consumer concern, and 'fast but lossy' vs 'slower but safe' is a deliberate tradeoff.",
-      "hint": "One waits only for the leader; one waits for replicas. Which survives the leader dying right after the write?",
+      "explanation": "Com acks=1, o líder confirma assim que tem a mensagem localmente; se ele travar antes que as réplicas a copiem, essa mensagem se perde. Com acks=all, o broker espera até que as réplicas sincronizadas a tenham, então a perda de um único broker não perde dados, trocando latência por durabilidade. A durabilidade também é uma escolha do lado do produtor, não apenas uma preocupação do consumidor, e 'rápido mas sujeito a perdas' versus 'mais lento mas seguro' é um trade-off deliberado.",
+      "hint": "Uma espera apenas pelo líder; a outra espera pelas réplicas. Qual sobrevive ao líder morrer logo após a escrita?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "queue-vs-log-replay",
-      "title": "Queue vs Log (Replay)",
-      "description": "A key difference between RabbitMQ-style and Kafka-style systems.",
-      "situation": "After a bug, you want to reprocess the last 24 hours of events through a fixed consumer.",
+      "title": "Fila vs Log (Replay)",
+      "description": "Uma diferença chave entre sistemas estilo RabbitMQ e estilo Kafka.",
+      "situation": "Depois de um bug, você quer reprocessar as últimas 24 horas de eventos através de um consumidor corrigido.",
       "options": [
-        "Always possible: every message system retains everything forever",
-        "Only at-most-once systems support replay",
-        "Replay requires deleting the topic first",
-        "A retained log (like Kafka) lets you reset the consumer offset and replay within the retention window; a classic queue typically removes a message once acknowledged, so it is gone and cannot be replayed"
+        "Sempre possível: todo sistema de mensagens retém tudo para sempre",
+        "Apenas sistemas at-most-once suportam replay",
+        "O replay exige excluir o tópico primeiro",
+        "Um log retido (como o Kafka) permite resetar o offset do consumidor e reproduzir dentro da janela de retenção; uma fila clássica geralmente remove uma mensagem assim que ela é confirmada, então ela se foi e não pode ser reproduzida"
       ],
       "correctAnswer": 3,
-      "explanation": "A log-structured broker keeps messages for a retention period independent of consumption, so consumers track an offset and can rewind to reprocess history, great for bug fixes and new consumers backfilling. A traditional message queue deletes a message once it is acknowledged, so there is nothing to replay. Whether you can 'reprocess last 24h' depends on choosing a retained log vs a consume-and-delete queue up front.",
-      "hint": "Does the broker delete on ack, or keep messages for a retention window you can rewind into?",
+      "explanation": "Um broker estruturado como log mantém mensagens por um período de retenção independente do consumo, então os consumidores rastreiam um offset e podem retroceder para reprocessar histórico, ótimo para correções de bugs e novos consumidores fazendo backfill. Uma fila de mensagens tradicional exclui uma mensagem assim que ela é confirmada, então não há nada para reproduzir. Se você consegue 'reprocessar as últimas 24h' depende de escolher um log retido versus uma fila do tipo consumir-e-excluir desde o início.",
+      "hint": "O broker exclui ao confirmar (ack), ou mantém mensagens por uma janela de retenção para a qual você pode retroceder?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "outbox-pattern",
-      "title": "The Dual-Write Problem and the Outbox",
-      "description": "Keeping the database and the queue consistent.",
-      "situation": "Your service must update its database and publish an event. It writes the DB, then crashes before publishing to the queue.",
+      "title": "O Problema da Escrita Dupla e o Outbox",
+      "description": "Mantendo o banco de dados e a fila consistentes.",
+      "situation": "Seu serviço precisa atualizar seu banco de dados e publicar um evento. Ele escreve no BD, e então trava antes de publicar na fila.",
       "options": [
-        "This is the dual-write problem: the DB and queue can diverge. The transactional outbox pattern writes the event into an outbox table in the same DB transaction, then a relay reliably publishes it, so the state change and the event are atomic",
-        "No problem, the two are always atomic",
-        "Just publish to the queue first, that removes all risk",
-        "Use two separate transactions and hope they both succeed"
+        "Este é o problema da escrita dupla (dual-write): o BD e a fila podem divergir. O padrão outbox transacional escreve o evento em uma tabela outbox na mesma transação do BD, e então um relay o publica de forma confiável, tornando a mudança de estado e o evento atômicos",
+        "Sem problema, os dois são sempre atômicos",
+        "Basta publicar na fila primeiro, isso elimina todo o risco",
+        "Usar duas transações separadas e torcer para que ambas tenham sucesso"
       ],
       "correctAnswer": 0,
-      "explanation": "Writing to a database and a message broker are two separate systems with no shared transaction, so a crash between them leaves state and events inconsistent (the dual-write problem). The transactional outbox writes the event row in the same local DB transaction as the state change, then a separate relay (polling or change-data-capture) publishes outbox rows to the broker at-least-once. The DB commit is the single source of truth, so the event is never lost or phantom-published.",
-      "hint": "You can't share one transaction across a DB and a broker. Where can you atomically record 'an event must be sent'?",
+      "explanation": "Escrever em um banco de dados e em um message broker são dois sistemas separados sem transação compartilhada, então um travamento entre os dois deixa o estado e os eventos inconsistentes (o problema da escrita dupla). O outbox transacional escreve a linha do evento na mesma transação local do BD que a mudança de estado, e então um relay separado (polling ou change-data-capture) publica as linhas do outbox no broker de forma at-least-once. O commit do BD é a fonte única de verdade, então o evento nunca é perdido nem publicado fantasma.",
+      "hint": "Você não pode compartilhar uma transação entre um BD e um broker. Onde você pode registrar atomicamente 'um evento precisa ser enviado'?",
       "difficulty": "advanced",
       "points": 18
     }

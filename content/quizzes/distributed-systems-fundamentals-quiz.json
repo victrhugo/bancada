@@ -1,7 +1,7 @@
 {
   "id": "distributed-systems-fundamentals-quiz",
-  "title": "Distributed Systems Fundamentals Quiz",
-  "description": "Test your grasp of the theory that decides whether a distributed system stays correct under stress: CAP and PACELC, consistency models, quorums, consensus, clocks, and the failure modes that only appear at scale.",
+  "title": "Quiz de Fundamentos de Sistemas Distribuídos",
+  "description": "Teste seu domínio da teoria que decide se um sistema distribuído permanece correto sob estresse: CAP e PACELC, modelos de consistência, quóruns, consenso, relógios, e os modos de falha que só aparecem em escala.",
   "category": "System Design",
   "icon": "Network",
   "totalPoints": 180,
@@ -11,7 +11,7 @@
     "gradientTo": "to-orange-600"
   },
   "metadata": {
-    "estimatedTime": "18-24 minutes",
+    "estimatedTime": "18-24 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 7,
@@ -29,240 +29,240 @@
   "questions": [
     {
       "id": "cap-during-partition",
-      "title": "CAP When the Network Splits",
-      "description": "What the CAP theorem actually forces you to choose.",
-      "situation": "A network partition cuts your cluster into two halves that cannot talk to each other. A write arrives on one side.",
+      "title": "CAP Quando a Rede se Divide",
+      "description": "O que o teorema CAP realmente força você a escolher.",
+      "situation": "Uma partição de rede corta seu cluster em duas metades que não conseguem se comunicar. Uma escrita chega em um dos lados.",
       "options": [
-        "You must choose: reject the write to stay consistent, or accept it and risk divergence to stay available",
-        "You can keep full consistency and full availability if your replication is fast enough",
-        "Partition tolerance is optional, so you can simply turn it off",
-        "The CAP theorem only applies to databases, not application services"
+        "Você deve escolher: rejeitar a escrita para permanecer consistente, ou aceitá-la e correr o risco de divergência para permanecer disponível",
+        "Você pode manter consistência total e disponibilidade total se sua replicação for rápida o suficiente",
+        "A tolerância a partições é opcional, então você pode simplesmente desativá-la",
+        "O teorema CAP só se aplica a bancos de dados, não a serviços de aplicação"
       ],
       "correctAnswer": 0,
-      "explanation": "During a partition (the P you cannot avoid on a real network), CAP says you pick C or A for that operation. Stay consistent by refusing writes that cannot be safely replicated, or stay available by accepting them and reconciling later. You cannot have both while partitioned, no matter how fast your hardware is.",
-      "hint": "P is not a choice on a real network. Given a partition, what are the only two options left?",
+      "explanation": "Durante uma partição (o P que você não pode evitar em uma rede real), o CAP diz que você escolhe C ou A para aquela operação. Permaneça consistente recusando escritas que não podem ser replicadas com segurança, ou permaneça disponível aceitando-as e reconciliando depois. Você não pode ter os dois enquanto particionado, não importa quão rápido seja seu hardware.",
+      "hint": "P não é uma escolha em uma rede real. Dada uma partição, quais são as únicas duas opções restantes?",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "eventual-vs-strong",
-      "title": "Eventual vs Strong Consistency",
-      "description": "Pick the model that matches the requirement.",
-      "situation": "You are designing the balance check for a bank's ATM withdrawals. A stale read could let someone overdraw.",
+      "title": "Consistência Eventual vs Forte",
+      "description": "Escolha o modelo que atende ao requisito.",
+      "situation": "Você está projetando a verificação de saldo para saques em caixas eletrônicos de um banco. Uma leitura desatualizada poderia permitir que alguém sacasse mais do que tem.",
       "options": [
-        "Eventual consistency, because it is faster and the values converge quickly",
-        "Strong (linearizable) consistency, so every read reflects the most recent committed write",
-        "Read-your-writes consistency on a single replica is enough for money",
-        "Causal consistency, because withdrawals are causally related"
+        "Consistência eventual, porque é mais rápida e os valores convergem rapidamente",
+        "Consistência forte (linearizável), para que toda leitura reflita a escrita confirmada mais recente",
+        "Consistência read-your-writes em uma única réplica já é suficiente para dinheiro",
+        "Consistência causal, porque saques são causalmente relacionados"
       ],
       "correctAnswer": 1,
-      "explanation": "Money that must never be double-spent needs linearizable reads: a read always sees the latest committed write, as if there were a single copy. Eventual or causal consistency allow a window where a replica returns a stale balance, which is exactly the gap an attacker (or an honest race) exploits to overdraw.",
-      "hint": "Which model guarantees a read never returns a value older than the last committed write?",
+      "explanation": "Dinheiro que nunca pode ser gasto em duplicidade precisa de leituras linearizáveis: uma leitura sempre vê a escrita confirmada mais recente, como se houvesse uma única cópia. Consistência eventual ou causal permitem uma janela em que uma réplica retorna um saldo desatualizado, exatamente a brecha que um atacante (ou uma corrida honesta) explora para sacar além do saldo.",
+      "hint": "Qual modelo garante que uma leitura nunca retorna um valor mais antigo que a última escrita confirmada?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "quorum-math",
-      "title": "Quorum Reads and Writes",
-      "description": "Make a Dynamo-style system return fresh reads.",
-      "situation": "You run a quorum-based store with N = 5 replicas per key. You want a read to always observe the latest acknowledged write.",
+      "title": "Leituras e Escritas por Quórum",
+      "description": "Faça um sistema estilo Dynamo retornar leituras atualizadas.",
+      "situation": "Você opera um armazenamento baseado em quórum com N = 5 réplicas por chave. Você quer que uma leitura sempre observe a escrita confirmada mais recente.",
       "codeExample": "N = 5 replicas\nW = write quorum\nR = read quorum",
       "options": [
-        "W = 1, R = 1, because any replica has the data",
-        "W = 5, R = 5, the only safe option",
-        "W = 3, R = 3, so that W + R > N and the read and write sets overlap",
-        "W = 2, R = 2, since 2 + 2 = 4 is close enough to 5"
+        "W = 1, R = 1, porque qualquer réplica tem os dados",
+        "W = 5, R = 5, a única opção segura",
+        "W = 3, R = 3, para que W + R > N e os conjuntos de leitura e escrita se sobreponham",
+        "W = 2, R = 2, já que 2 + 2 = 4 está próximo o suficiente de 5"
       ],
       "correctAnswer": 2,
-      "explanation": "Strong consistency in a quorum system needs W + R > N so that any read quorum overlaps any write quorum by at least one replica that has the newest value. With N = 5, W = 3 and R = 3 gives W + R = 6 > 5. W = R = 2 gives 4, which is not greater than 5, so a read can miss the latest write. W = R = 5 works but needlessly sacrifices availability.",
-      "hint": "The overlap rule is W + R > N. Find the smallest quorums that satisfy it.",
+      "explanation": "Consistência forte em um sistema por quórum precisa de W + R > N para que qualquer quórum de leitura se sobreponha a qualquer quórum de escrita por pelo menos uma réplica que tenha o valor mais novo. Com N = 5, W = 3 e R = 3 resultam em W + R = 6 > 5. W = R = 2 resulta em 4, que não é maior que 5, então uma leitura pode perder a escrita mais recente. W = R = 5 funciona, mas sacrifica disponibilidade desnecessariamente.",
+      "hint": "A regra de sobreposição é W + R > N. Encontre os menores quóruns que a satisfazem.",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "raft-leader-election",
-      "title": "Why Raft Needs a Majority",
-      "description": "Consensus and the majority requirement.",
-      "situation": "A 5-node Raft cluster loses 2 nodes. Then the network briefly partitions the remaining 3 into a group of 2 and a group of 1.",
+      "title": "Por que o Raft Precisa de Maioria",
+      "description": "Consenso e o requisito de maioria.",
+      "situation": "Um cluster Raft de 5 nós perde 2 nós. Então a rede particiona brevemente os 3 restantes em um grupo de 2 e um grupo de 1.",
       "options": [
-        "Both partitions elect a leader, giving you two leaders",
-        "Only the group of 2 can elect a leader, because 2 is more than half of the 3 survivors",
-        "The single node elects itself, since it has the most recent log",
-        "No partition can elect a leader, because neither has a majority of the original 5 nodes, so the cluster stops accepting writes"
+        "Ambas as partições elegem um líder, resultando em dois líderes",
+        "Apenas o grupo de 2 pode eleger um líder, porque 2 é mais da metade dos 3 sobreviventes",
+        "O nó isolado se elege sozinho, já que tem o log mais recente",
+        "Nenhuma partição pode eleger um líder, porque nenhuma delas tem maioria dos 5 nós originais, então o cluster para de aceitar escritas"
       ],
       "correctAnswer": 3,
-      "explanation": "Raft requires a majority of the full cluster (3 of 5) to elect a leader and commit entries. After losing 2 nodes and splitting the remaining 3 into 2 and 1, neither side has 3 votes, so no leader is elected and writes halt. This is by design: it is the mechanism that prevents split-brain (two leaders) at the cost of availability when you lose quorum.",
-      "hint": "Majority means a majority of the configured cluster size, not of the survivors.",
+      "explanation": "O Raft exige uma maioria do cluster completo (3 de 5) para eleger um líder e confirmar entradas. Depois de perder 2 nós e dividir os 3 restantes em 2 e 1, nenhum dos lados tem 3 votos, então nenhum líder é eleito e as escritas param. Isso é proposital: é o mecanismo que evita split-brain (dois líderes) ao custo de disponibilidade quando você perde o quórum.",
+      "hint": "Maioria significa maioria do tamanho configurado do cluster, não dos sobreviventes.",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "split-brain",
       "title": "Split-Brain",
-      "description": "Recognise the worst failure mode.",
-      "situation": "After a partition heals, you discover two nodes both believed they were the primary and each accepted conflicting writes.",
+      "description": "Reconheça o pior modo de falha.",
+      "situation": "Depois que uma partição se resolve, você descobre que dois nós acreditavam ser o primário e cada um aceitou escritas conflitantes.",
       "options": [
-        "This is split-brain: two leaders accepted divergent writes, and you now have conflicting state to reconcile or data loss",
-        "This is normal and the writes will automatically merge correctly",
-        "This cannot happen if you use TCP instead of UDP",
-        "This only affects reads, not writes"
+        "Isso é split-brain: dois líderes aceitaram escritas divergentes, e agora você tem estado conflitante para reconciliar ou perda de dados",
+        "Isso é normal e as escritas serão mescladas automaticamente de forma correta",
+        "Isso não pode acontecer se você usar TCP em vez de UDP",
+        "Isso afeta apenas leituras, não escritas"
       ],
       "correctAnswer": 0,
-      "explanation": "Split-brain is when a partition leaves two nodes each acting as the authoritative primary, accepting writes that conflict. When the partition heals you have divergent histories, and resolving them means conflict resolution or, often, losing one side's writes. Quorum/fencing mechanisms exist precisely to make this impossible by ensuring only one side can hold leadership.",
-      "hint": "What goes wrong when both sides of a partition think they are in charge?",
+      "explanation": "Split-brain é quando uma partição deixa dois nós agindo, cada um, como o primário autoritativo, aceitando escritas que conflitam entre si. Quando a partição se resolve, você tem históricos divergentes, e resolvê-los significa resolução de conflitos ou, frequentemente, perder as escritas de um dos lados. Mecanismos de quórum/fencing existem justamente para tornar isso impossível, garantindo que apenas um lado possa deter a liderança.",
+      "hint": "O que dá errado quando ambos os lados de uma partição acham que estão no comando?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "idempotency-retries",
-      "title": "Idempotency and Retries",
-      "description": "Make retries safe.",
-      "situation": "A client sends a 'charge $10' request, the server processes it, but the response is lost. The client retries.",
+      "title": "Idempotência e Novas Tentativas",
+      "description": "Torne as novas tentativas (retries) seguras.",
+      "situation": "Um cliente envia uma requisição de 'cobrar $10', o servidor a processa, mas a resposta se perde. O cliente tenta novamente.",
       "options": [
-        "Retries are always safe, so no special handling is needed",
-        "An idempotency key lets the server recognise the retry and not charge twice",
-        "The server should reject all retries to be safe",
-        "Use UDP so lost responses do not trigger retries"
+        "Retries são sempre seguros, então nenhum tratamento especial é necessário",
+        "Uma chave de idempotência permite que o servidor reconheça a nova tentativa e não cobre duas vezes",
+        "O servidor deveria rejeitar todas as novas tentativas por segurança",
+        "Usar UDP para que respostas perdidas não disparem novas tentativas"
       ],
       "correctAnswer": 1,
-      "explanation": "On an unreliable network a lost response is indistinguishable from a lost request, so clients must retry, and a naive retry double-charges. An idempotency key (a unique token per logical operation) lets the server detect 'I already did this one' and return the original result instead of repeating the side effect. It is the standard pattern for safe retries on non-idempotent operations.",
-      "hint": "The client cannot tell a lost request from a lost response. How does the server make a repeat harmless?",
+      "explanation": "Em uma rede não confiável, uma resposta perdida é indistinguível de uma requisição perdida, então os clientes precisam tentar novamente, e uma nova tentativa ingênua cobra em duplicidade. Uma chave de idempotência (um token único por operação lógica) permite que o servidor detecte 'eu já fiz essa' e retorne o resultado original em vez de repetir o efeito colateral. É o padrão consagrado para novas tentativas seguras em operações não idempotentes.",
+      "hint": "O cliente não consegue distinguir uma requisição perdida de uma resposta perdida. Como o servidor torna uma repetição inofensiva?",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "clock-skew-ordering",
-      "title": "Ordering Events Across Servers",
-      "description": "Why wall-clock timestamps lie.",
-      "situation": "Two events happen on two servers. You want to know which happened first, so you compare their system clock timestamps.",
+      "title": "Ordenando Eventos entre Servidores",
+      "description": "Por que os timestamps de relógio de parede mentem.",
+      "situation": "Dois eventos acontecem em dois servidores. Você quer saber qual aconteceu primeiro, então compara os timestamps dos relógios de sistema.",
       "options": [
-        "Wall-clock timestamps are reliable because NTP keeps clocks perfectly in sync",
-        "The server with the higher IP address is always first",
-        "Clock skew between servers means timestamps can disagree with real causal order; use logical clocks (Lamport or vector clocks) to order events",
-        "You should use the database's auto-increment ID, which is globally ordered across servers"
+        "Timestamps de relógio de parede são confiáveis porque o NTP mantém os relógios perfeitamente sincronizados",
+        "O servidor com o endereço IP mais alto é sempre o primeiro",
+        "O desvio de relógio entre servidores significa que os timestamps podem discordar da ordem causal real; use relógios lógicos (Lamport ou vector clocks) para ordenar eventos",
+        "Você deveria usar o ID auto-incremental do banco de dados, que é ordenado globalmente entre servidores"
       ],
       "correctAnswer": 2,
-      "explanation": "Physical clocks drift and NTP only bounds the error, it does not eliminate it, so two servers can disagree by milliseconds or more. An event with a later real cause can carry an earlier timestamp. Logical clocks (Lamport timestamps, or vector clocks for detecting concurrency) capture happens-before relationships without trusting wall time. Per-server auto-increment IDs are not globally ordered.",
-      "hint": "Can you trust that two machines' clocks agree to the millisecond?",
+      "explanation": "Relógios físicos sofrem desvio, e o NTP apenas limita o erro, não o elimina, então dois servidores podem discordar em milissegundos ou mais. Um evento com uma causa real posterior pode carregar um timestamp anterior. Relógios lógicos (timestamps de Lamport, ou vector clocks para detectar concorrência) capturam relações de precedência causal sem confiar no tempo de parede. IDs auto-incrementais por servidor não são ordenados globalmente.",
+      "hint": "Você pode confiar que os relógios de duas máquinas concordam até o milissegundo?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "pacelc",
-      "title": "PACELC Extends CAP",
-      "description": "The trade-off that exists even without partitions.",
-      "situation": "Your system has no partition right now. A teammate says 'so CAP does not apply, we get consistency and low latency for free.'",
+      "title": "PACELC Estende o CAP",
+      "description": "O trade-off que existe mesmo sem partições.",
+      "situation": "Seu sistema não tem partição no momento. Um colega de equipe diz 'então o CAP não se aplica, temos consistência e baixa latência de graça.'",
       "options": [
-        "Correct, with no partition there is no trade-off",
-        "Without a partition, all systems become linearizable automatically",
-        "PACELC only matters for NoSQL databases",
-        "PACELC says: if Partitioned, choose A or C; Else (normal operation) choose between Latency and Consistency, so the trade-off persists even with a healthy network"
+        "Correto, sem partição não há trade-off",
+        "Sem uma partição, todos os sistemas se tornam linearizáveis automaticamente",
+        "PACELC só importa para bancos de dados NoSQL",
+        "PACELC diz: se Particionado (Partitioned), escolha A ou C; Senão (Else, operação normal) escolha entre Latência e Consistência, então o trade-off persiste mesmo com uma rede saudável"
       ],
       "correctAnswer": 3,
-      "explanation": "PACELC extends CAP with the part CAP ignores: even with no partition (the 'Else' branch), you still trade Latency against Consistency. Synchronously replicating to a quorum before acknowledging gives stronger consistency but higher latency; acknowledging early and replicating async gives lower latency but weaker consistency. The trade-off does not disappear when the network is healthy.",
-      "hint": "What does the 'ELC' (Else, Latency, Consistency) half of PACELC describe?",
+      "explanation": "O PACELC estende o CAP com a parte que o CAP ignora: mesmo sem partição (o ramo 'Else'), você ainda troca Latência por Consistência. Replicar sincronamente para um quórum antes de confirmar dá consistência mais forte mas latência mais alta; confirmar cedo e replicar de forma assíncrona dá latência mais baixa mas consistência mais fraca. O trade-off não desaparece quando a rede está saudável.",
+      "hint": "O que a metade 'ELC' (Else, Latency, Consistency) do PACELC descreve?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "two-phase-commit-blocking",
-      "title": "The Problem With Two-Phase Commit",
-      "description": "Why 2PC is called a blocking protocol.",
-      "situation": "In a two-phase commit, all participants vote 'yes' in the prepare phase. Then the coordinator crashes before sending the commit decision.",
+      "title": "O Problema do Two-Phase Commit",
+      "description": "Por que o 2PC é chamado de protocolo bloqueante.",
+      "situation": "Em um two-phase commit, todos os participantes votam 'sim' na fase de preparação. Então o coordenador falha antes de enviar a decisão de commit.",
       "options": [
-        "Participants are stuck holding locks and cannot unilaterally decide commit or abort; they block until the coordinator recovers",
-        "Participants can safely abort on their own after a short timeout",
-        "Each participant commits independently to avoid waiting",
-        "The transaction silently rolls back with no consequences"
+        "Os participantes ficam presos mantendo locks e não podem decidir unilateralmente entre commit ou abort; eles bloqueiam até o coordenador se recuperar",
+        "Os participantes podem abortar com segurança por conta própria após um curto timeout",
+        "Cada participante faz commit independentemente para evitar esperar",
+        "A transação é revertida silenciosamente sem consequências"
       ],
       "correctAnswer": 0,
-      "explanation": "After voting yes, a participant has promised it can commit and must hold its locks. If the coordinator dies before announcing the decision, participants cannot safely decide alone: committing risks inconsistency if others aborted, and aborting risks the opposite. They block until the coordinator (or a recovery process) resolves it. This blocking weakness is why consensus protocols like Raft/Paxos and three-phase variants are preferred for fault tolerance.",
-      "hint": "After voting yes, can a participant decide the outcome by itself if the coordinator vanishes?",
+      "explanation": "Depois de votar sim, um participante prometeu que pode fazer commit e precisa manter seus locks. Se o coordenador morre antes de anunciar a decisão, os participantes não podem decidir sozinhos com segurança: fazer commit arrisca inconsistência se outros abortaram, e abortar arrisca o oposto. Eles bloqueiam até que o coordenador (ou um processo de recuperação) resolva a situação. Essa fraqueza de bloqueio é por que protocolos de consenso como Raft/Paxos e variantes de três fases são preferidos para tolerância a falhas.",
+      "hint": "Depois de votar sim, um participante pode decidir o resultado sozinho se o coordenador desaparecer?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "fallacies-distributed-computing",
-      "title": "Fallacies of Distributed Computing",
-      "description": "Spot the false assumption.",
-      "situation": "A new service assumes the network is reliable, latency is zero, bandwidth is infinite, and topology never changes.",
+      "title": "As Falácias da Computação Distribuída",
+      "description": "Identifique a suposição falsa.",
+      "situation": "Um novo serviço assume que a rede é confiável, a latência é zero, a largura de banda é infinita, e a topologia nunca muda.",
       "options": [
-        "These are reasonable assumptions inside a single datacenter",
-        "These are the classic fallacies of distributed computing; each is false and ignoring them produces fragile systems",
-        "They are only false on the public internet, not internal networks",
-        "Modern cloud networking has made all of these true"
+        "Essas são suposições razoáveis dentro de um único datacenter",
+        "Essas são as falácias clássicas da computação distribuída; cada uma delas é falsa, e ignorá-las produz sistemas frágeis",
+        "Elas só são falsas na internet pública, não em redes internas",
+        "A rede em nuvem moderna tornou todas essas afirmações verdadeiras"
       ],
       "correctAnswer": 1,
-      "explanation": "These are straight out of the eight fallacies of distributed computing (the network is reliable, latency is zero, bandwidth is infinite, the network is secure, topology does not change, there is one administrator, transport cost is zero, the network is homogeneous). Every one is false, even inside a datacenter, and systems built as if they were true fail in production the first time the network misbehaves.",
-      "hint": "These four statements have a famous name. They are all wrong.",
+      "explanation": "Essas vêm diretamente das oito falácias da computação distribuída (a rede é confiável, a latência é zero, a largura de banda é infinita, a rede é segura, a topologia não muda, existe um único administrador, o custo de transporte é zero, a rede é homogênea). Cada uma delas é falsa, mesmo dentro de um datacenter, e sistemas construídos como se fossem verdadeiras falham em produção na primeira vez que a rede se comporta mal.",
+      "hint": "Essas quatro afirmações têm um nome famoso. Todas estão erradas.",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "read-repair-hinted-handoff",
-      "title": "Read Repair and Hinted Handoff",
-      "description": "How eventually-consistent stores heal.",
-      "situation": "In a Dynamo-style store, a replica was down during a write and missed it. Later a read touches that replica and finds a stale value.",
+      "title": "Read Repair e Hinted Handoff",
+      "description": "Como stores eventualmente consistentes se autocorrigem.",
+      "situation": "Em um store estilo Dynamo, uma réplica estava fora do ar durante uma escrita e não a recebeu. Depois, uma leitura toca essa réplica e encontra um valor desatualizado.",
       "options": [
-        "The stale replica is permanently corrupt and must be rebuilt from scratch",
-        "The read fails because the replicas disagree",
-        "Read repair updates the stale replica with the newest value seen during the read; hinted handoff would have stored the missed write for delivery when the replica returned",
-        "Nothing can be done until an admin manually copies the data"
+        "A réplica desatualizada está permanentemente corrompida e precisa ser reconstruída do zero",
+        "A leitura falha porque as réplicas discordam",
+        "O read repair atualiza a réplica desatualizada com o valor mais novo visto durante a leitura; o hinted handoff teria armazenado a escrita perdida para entrega quando a réplica voltasse",
+        "Nada pode ser feito até que um administrador copie os dados manualmente"
       ],
       "correctAnswer": 2,
-      "explanation": "Eventually-consistent stores self-heal. Read repair: when a read sees replicas disagree, it pushes the newest version back to the stale ones. Hinted handoff: when a replica is down during a write, another node stores a 'hint' and replays the write once the replica recovers. Together with anti-entropy (Merkle-tree) repair, these keep replicas converging without manual intervention.",
-      "hint": "Two named mechanisms let these stores converge: one fixes staleness during reads, one stores writes for absent replicas.",
+      "explanation": "Stores eventualmente consistentes se autocorrigem. Read repair: quando uma leitura percebe que as réplicas discordam, ela empurra a versão mais nova de volta para as desatualizadas. Hinted handoff: quando uma réplica está fora do ar durante uma escrita, outro nó armazena uma 'dica' e reaplica a escrita assim que a réplica se recupera. Junto com a reparação por anti-entropia (árvore de Merkle), esses mecanismos mantêm as réplicas convergindo sem intervenção manual.",
+      "hint": "Dois mecanismos nomeados permitem que esses stores convirjam: um corrige dados desatualizados durante leituras, o outro armazena escritas para réplicas ausentes.",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "exactly-once-delivery",
-      "title": "The Exactly-Once Myth",
-      "description": "What 'exactly-once' really means.",
-      "situation": "A vendor claims their message system guarantees exactly-once delivery over an unreliable network.",
+      "title": "O Mito do Exactly-Once",
+      "description": "O que 'exactly-once' realmente significa.",
+      "situation": "Um fornecedor afirma que seu sistema de mensagens garante entrega exactly-once (exatamente uma vez) sobre uma rede não confiável.",
       "options": [
-        "Believable: exactly-once delivery is a solved problem",
-        "It just requires a fast enough network",
-        "Exactly-once is only possible with UDP",
-        "Exactly-once delivery is impossible in general; what is achievable is at-least-once delivery plus idempotent processing, giving exactly-once effects"
+        "Plausível: a entrega exactly-once é um problema resolvido",
+        "Basta uma rede rápida o suficiente",
+        "Exactly-once só é possível com UDP",
+        "A entrega exactly-once é impossível em geral; o que é alcançável é entrega at-least-once (pelo menos uma vez) combinada com processamento idempotente, resultando em efeitos exactly-once"
       ],
       "correctAnswer": 3,
-      "explanation": "True exactly-once delivery is impossible when nodes and networks can fail, because a sender cannot distinguish a lost message from a lost acknowledgement. The practical guarantee is at-least-once delivery combined with idempotent consumers (or deduplication), which yields exactly-once processing semantics, the effect happens once even though the message may arrive more than once. 'Exactly-once' as marketed is almost always this.",
-      "hint": "If you cannot tell a lost message from a lost ack, what is the honest guarantee, and how do you make duplicates harmless?",
+      "explanation": "A verdadeira entrega exactly-once é impossível quando nós e redes podem falhar, porque um remetente não consegue distinguir uma mensagem perdida de uma confirmação perdida. A garantia prática é entrega at-least-once combinada com consumidores idempotentes (ou deduplicação), o que produz semântica de processamento exactly-once: o efeito acontece uma vez, mesmo que a mensagem possa chegar mais de uma vez. 'Exactly-once' como é vendido comercialmente quase sempre é isso.",
+      "hint": "Se você não consegue distinguir uma mensagem perdida de uma confirmação perdida, qual é a garantia honesta, e como você torna duplicatas inofensivas?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "vector-vs-lamport",
       "title": "Vector Clocks vs Lamport Clocks",
-      "description": "Detecting concurrency, not just order.",
-      "situation": "You need to detect whether two updates were truly concurrent (neither caused the other), so you can flag a conflict.",
+      "description": "Detectar concorrência, não apenas ordem.",
+      "situation": "Você precisa detectar se duas atualizações foram verdadeiramente concorrentes (nenhuma causou a outra), para poder sinalizar um conflito.",
       "options": [
-        "Vector clocks can tell concurrent events apart from causally ordered ones; a single Lamport timestamp only gives a total order and cannot distinguish concurrency",
-        "A single Lamport timestamp tells you whether two events were concurrent",
-        "Wall-clock timestamps are sufficient to detect concurrency",
-        "Concurrency cannot be detected in distributed systems"
+        "Vector clocks conseguem distinguir eventos concorrentes de eventos causalmente ordenados; um único timestamp de Lamport só dá uma ordem total e não consegue distinguir concorrência",
+        "Um único timestamp de Lamport diz se dois eventos foram concorrentes",
+        "Timestamps de relógio de parede são suficientes para detectar concorrência",
+        "Concorrência não pode ser detectada em sistemas distribuídos"
       ],
       "correctAnswer": 0,
-      "explanation": "A Lamport clock gives a consistent total order but loses information: if event A has a smaller timestamp than B, you cannot tell whether A happened-before B or they were concurrent. Vector clocks track a counter per node, so comparing two vectors reveals causally-before, causally-after, or concurrent (neither dominates). That concurrency signal is exactly what conflict-detecting stores need.",
-      "hint": "Which clock lets you say 'these two were concurrent' rather than just 'this one has a smaller number'?",
+      "explanation": "Um relógio de Lamport dá uma ordem total consistente, mas perde informação: se o evento A tem um timestamp menor que B, você não consegue saber se A aconteceu antes de B ou se eram concorrentes. Vector clocks rastreiam um contador por nó, então comparar dois vetores revela causalmente-antes, causalmente-depois, ou concorrente (nenhum domina). Esse sinal de concorrência é exatamente o que stores de detecção de conflitos precisam.",
+      "hint": "Qual relógio permite dizer 'esses dois eram concorrentes' em vez de apenas 'este tem um número menor'?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "failure-detection-heartbeats",
-      "title": "Detecting a Dead Node",
-      "description": "The limits of failure detection.",
-      "situation": "A node stops responding to heartbeats for 10 seconds. Your system declares it dead and promotes a replica. The node was actually just slow and comes back.",
+      "title": "Detectando um Nó Morto",
+      "description": "Os limites da detecção de falhas.",
+      "situation": "Um nó para de responder a heartbeats por 10 segundos. Seu sistema o declara morto e promove uma réplica. O nó estava, na verdade, apenas lento, e volta.",
       "options": [
-        "Heartbeats give perfect, instant failure detection",
-        "You cannot perfectly distinguish a slow node from a dead one over an async network; tune timeouts and use fencing so a wrongly-declared-dead node cannot cause split-brain when it returns",
-        "Longer timeouts eliminate all false positives with no downside",
-        "A node that misses one heartbeat is definitely dead"
+        "Heartbeats dão detecção de falha perfeita e instantânea",
+        "Você não consegue distinguir perfeitamente um nó lento de um nó morto em uma rede assíncrona; ajuste os timeouts e use fencing para que um nó erroneamente declarado morto não cause split-brain ao retornar",
+        "Timeouts mais longos eliminam todos os falsos positivos sem desvantagem alguma",
+        "Um nó que perde um heartbeat está definitivamente morto"
       ],
       "correctAnswer": 1,
-      "explanation": "On an asynchronous network you fundamentally cannot tell 'crashed' from 'slow or partitioned', so any failure detector trades false positives (declaring a live node dead) against detection latency. Short timeouts react fast but mis-fire; long timeouts are safe but slow. Because a wrongly-evicted node may return believing it is still valid, you need fencing (tokens, leases) so its late actions are rejected, preventing split-brain.",
-      "hint": "Can a heartbeat timeout tell the difference between a dead node and a slow one? What protects you when you guess wrong?",
+      "explanation": "Em uma rede assíncrona, você fundamentalmente não consegue distinguir 'travou' de 'está lento ou particionado', então qualquer detector de falhas troca falsos positivos (declarar morto um nó vivo) por latência de detecção. Timeouts curtos reagem rápido mas disparam por engano; timeouts longos são seguros mas lentos. Como um nó erroneamente removido pode voltar acreditando que ainda é válido, você precisa de fencing (tokens, leases) para que suas ações tardias sejam rejeitadas, prevenindo split-brain.",
+      "hint": "Um timeout de heartbeat consegue diferenciar um nó morto de um nó lento? O que te protege quando você erra o palpite?",
       "difficulty": "intermediate",
       "points": 12
     }

@@ -1,7 +1,7 @@
 {
   "id": "devops-quiz",
-  "title": "DevOps Engineering Quiz",
-  "description": "Test your knowledge of DevOps practices with real-world scenarios covering CI/CD, infrastructure, monitoring, and incident response",
+  "title": "Quiz de Engenharia DevOps",
+  "description": "Teste seu conhecimento sobre práticas de DevOps com cenários reais envolvendo CI/CD, infraestrutura, monitoramento e resposta a incidentes",
   "category": "DevOps",
   "icon": "Code",
   "totalPoints": 155,
@@ -11,7 +11,7 @@
     "gradientTo": "to-emerald-600"
   },
   "metadata": {
-    "estimatedTime": "20-25 minutes",
+    "estimatedTime": "20-25 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 4,
@@ -22,178 +22,178 @@
   "questions": [
     {
       "id": "cicd-pipeline-failure",
-      "title": "CI/CD Pipeline Debugging",
-      "description": "Your deployment pipeline is failing at the testing stage.",
-      "situation": "The CI/CD pipeline for your web application passes build but fails during the test execution phase. Tests work locally but fail in the pipeline.",
+      "title": "Depurando um Pipeline de CI/CD",
+      "description": "Seu pipeline de deploy está falhando na etapa de testes.",
+      "situation": "O pipeline de CI/CD da sua aplicação web passa no build mas falha durante a execução dos testes. Os testes funcionam localmente, mas falham no pipeline.",
       "codeExample": "Pipeline stages:\n- Checkout code (SUCCESS)\n- Install dependencies (SUCCESS)\n- Build application (SUCCESS)\n- Run tests (FAILED - Exit code: 1)\n- Deploy to staging (PENDING)\n- Deploy to production (PENDING)",
       "options": [
-        "Check environment variables, test database connections, and review test logs in the CI environment",
-        "Skip the test stage temporarily to unblock deployments",
-        "Run tests locally and manually approve the deployment",
-        "Increase the pipeline timeout and retry"
+        "Verificar variáveis de ambiente, conexões com o banco de dados de teste e revisar os logs de teste no ambiente de CI",
+        "Pular a etapa de testes temporariamente para desbloquear os deploys",
+        "Rodar os testes localmente e aprovar o deploy manualmente",
+        "Aumentar o timeout do pipeline e tentar novamente"
       ],
       "correctAnswer": 0,
-      "explanation": "CI environments often have different configurations than local development. Check environment variables, database connections, external service availability, and review detailed logs to identify the root cause.",
-      "hint": "Think about what might be different between your local environment and the CI environment.",
+      "explanation": "Ambientes de CI geralmente têm configurações diferentes do desenvolvimento local. Verifique variáveis de ambiente, conexões com banco de dados, disponibilidade de serviços externos e revise logs detalhados para identificar a causa raiz.",
+      "hint": "Pense no que pode ser diferente entre seu ambiente local e o ambiente de CI.",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "infrastructure-as-code",
-      "title": "Infrastructure Drift Detection",
-      "description": "Your production infrastructure does not match your Terraform state.",
-      "situation": "A manual change was made to production infrastructure outside of Terraform. Now your infrastructure has drifted from the defined state.",
+      "title": "Detecção de Drift de Infraestrutura",
+      "description": "Sua infraestrutura de produção não corresponde ao seu state do Terraform.",
+      "situation": "Uma alteração manual foi feita na infraestrutura de produção fora do Terraform. Agora sua infraestrutura sofreu drift em relação ao estado definido.",
       "codeExample": "terraform plan shows:\n\nTerraform will perform the following actions:\n\n# aws_instance.web_server will be updated in-place\n~ resource \"aws_instance\" \"web_server\" {\n    ~ instance_type = \"t3.large\" -> \"t3.medium\"\n      # (10 unchanged attributes hidden)\n  }",
       "options": [
-        "Run terraform apply to force the infrastructure back to the desired state",
-        "Import the current state with terraform import and update the code to match",
-        "Investigate the change, update Terraform code if the change is valid, or apply to revert if unauthorized",
-        "Ignore the drift since the application is working fine"
+        "Rodar terraform apply para forçar a infraestrutura de volta ao estado desejado",
+        "Importar o estado atual com terraform import e atualizar o código para corresponder",
+        "Investigar a mudança, atualizar o código do Terraform se a mudança for válida, ou aplicar para reverter se não autorizada",
+        "Ignorar o drift já que a aplicação está funcionando bem"
       ],
       "correctAnswer": 2,
-      "explanation": "First investigate why the change was made. If it was a valid change like scaling for performance, update your Terraform code. If unauthorized, revert with terraform apply and implement change controls.",
-      "hint": "Consider both the technical and process aspects. Why did this drift occur, and how do you prevent it?",
+      "explanation": "Primeiro investigue por que a mudança foi feita. Se foi uma mudança válida, como escalonamento por performance, atualize seu código Terraform. Se não autorizada, reverta com terraform apply e implemente controles de mudança.",
+      "hint": "Considere tanto os aspectos técnicos quanto os de processo. Por que esse drift ocorreu e como você o previne?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "monitoring-alerting",
-      "title": "Setting Up Effective Alerts",
-      "description": "You need to implement monitoring for a critical microservice.",
-      "situation": "Your payment processing service is critical but currently has no monitoring. You need to set up alerts that notify the team of real issues without causing alert fatigue.",
+      "title": "Configurando Alertas Eficazes",
+      "description": "Você precisa implementar monitoramento para um microsserviço crítico.",
+      "situation": "Seu serviço de processamento de pagamentos é crítico, mas atualmente não tem monitoramento. Você precisa configurar alertas que notifiquem a equipe sobre problemas reais sem causar fadiga de alertas.",
       "options": [
-        "Alert on every HTTP 4xx and 5xx response immediately",
-        "Set up alerts for CPU > 80% and memory > 90% only",
-        "Monitor only when the service is completely down",
-        "Monitor error rate > 5%, response time > 2s, and service availability < 99% over 5-minute windows"
+        "Alertar imediatamente em toda resposta HTTP 4xx e 5xx",
+        "Configurar alertas apenas para CPU > 80% e memória > 90%",
+        "Monitorar apenas quando o serviço estiver completamente fora do ar",
+        "Monitorar taxa de erro > 5%, tempo de resposta > 2s e disponibilidade do serviço < 99% em janelas de 5 minutos"
       ],
       "correctAnswer": 3,
-      "explanation": "Effective alerts focus on user impact: error rates, response times, and availability. Use time windows to avoid noise from temporary spikes, and set thresholds based on SLAs and user experience.",
-      "hint": "Think about what actually affects users and how to balance catching real issues while avoiding false alarms.",
+      "explanation": "Alertas eficazes focam no impacto ao usuário: taxas de erro, tempos de resposta e disponibilidade. Use janelas de tempo para evitar ruído de picos temporários e defina limites com base em SLAs e experiência do usuário.",
+      "hint": "Pense no que realmente afeta os usuários e como equilibrar a detecção de problemas reais evitando alarmes falsos.",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "secrets-management",
-      "title": "Secure Secrets Handling",
-      "description": "How should you manage database passwords in your containerized applications?",
-      "situation": "Your application needs database credentials, API keys, and certificates. These secrets should be secure, rotatable, and accessible to containers at runtime.",
+      "title": "Gerenciamento Seguro de Segredos",
+      "description": "Como você deve gerenciar senhas de banco de dados em suas aplicações conteinerizadas?",
+      "situation": "Sua aplicação precisa de credenciais de banco de dados, chaves de API e certificados. Esses segredos devem ser seguros, rotacionáveis e acessíveis aos containers em tempo de execução.",
       "codeExample": "Current problem:\n# Database password hardcoded in environment variables\n# API keys stored in Docker image\n# Certificates in source code repository",
       "options": [
-        "Store secrets in environment variables in the deployment manifests",
-        "Build secrets into the Docker image during the build process",
-        "Use a secrets management system like HashiCorp Vault or AWS Secrets Manager with runtime injection",
-        "Store secrets in a configuration file mounted from a shared volume"
+        "Armazenar segredos em variáveis de ambiente nos manifestos de deploy",
+        "Incorporar segredos na imagem Docker durante o processo de build",
+        "Usar um sistema de gerenciamento de segredos como HashiCorp Vault ou AWS Secrets Manager com injeção em tempo de execução",
+        "Armazenar segredos em um arquivo de configuração montado a partir de um volume compartilhado"
       ],
       "correctAnswer": 2,
-      "explanation": "Dedicated secrets management systems provide encryption at rest and in transit, audit trails, rotation capabilities, and fine-grained access control. They inject secrets at runtime, never storing them in images or code.",
-      "hint": "Consider the security principle of least privilege and the need for audit trails and rotation.",
+      "explanation": "Sistemas dedicados de gerenciamento de segredos oferecem criptografia em repouso e em trânsito, trilhas de auditoria, capacidade de rotação e controle de acesso refinado. Eles injetam segredos em tempo de execução, nunca os armazenando em imagens ou código.",
+      "hint": "Considere o princípio de segurança do menor privilégio e a necessidade de trilhas de auditoria e rotação.",
       "difficulty": "intermediate",
       "points": 18
     },
     {
       "id": "incident-response",
-      "title": "Production Incident Handling",
-      "description": "Your e-commerce site is experiencing a critical outage during peak hours.",
-      "situation": "It's Black Friday, your website is down, customers cannot checkout, and you are losing revenue. Multiple alerts are firing, and the team is stressed.",
+      "title": "Lidando com Incidentes em Produção",
+      "description": "Seu site de e-commerce está enfrentando uma interrupção crítica em horário de pico.",
+      "situation": "É Black Friday, seu site está fora do ar, os clientes não conseguem finalizar a compra e você está perdendo receita. Vários alertas estão disparando e a equipe está sob pressão.",
       "codeExample": "CRITICAL ALERTS:\n- Payment service: HTTP 500 errors\n- Database: Connection timeout\n- Load balancer: Health check failures\n- CDN: Origin server unreachable",
       "options": [
-        "Have everyone investigate different components simultaneously",
-        "Immediately roll back the last deployment without investigation",
-        "Scale up all services and hope it resolves the issue",
-        "Establish incident command, designate roles, create communication channel, and systematically investigate"
+        "Fazer com que todos investiguem componentes diferentes simultaneamente",
+        "Reverter imediatamente o último deploy sem investigação",
+        "Escalar todos os serviços e esperar que isso resolva o problema",
+        "Estabelecer comando de incidente, designar funções, criar canal de comunicação e investigar sistematicamente"
       ],
       "correctAnswer": 3,
-      "explanation": "Structured incident response with clear roles prevents chaos, ensures coordination, and leads to faster resolution while maintaining stakeholder communication.",
-      "hint": "Think about what works during high-stress situations with multiple people involved.",
+      "explanation": "Uma resposta a incidentes estruturada com funções claras evita o caos, garante coordenação e leva a uma resolução mais rápida, mantendo a comunicação com as partes interessadas.",
+      "hint": "Pense no que funciona em situações de alto estresse com várias pessoas envolvidas.",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "blue-green-deployment",
-      "title": "Zero-Downtime Deployment Strategy",
-      "description": "You need to deploy a major application update with zero downtime.",
-      "situation": "Your application serves millions of users 24/7. You need to deploy version 2.0 which includes database schema changes and new features, but cannot afford any downtime.",
+      "title": "Estratégia de Deploy sem Downtime",
+      "description": "Você precisa implantar uma grande atualização da aplicação com zero downtime.",
+      "situation": "Sua aplicação atende milhões de usuários 24/7. Você precisa implantar a versão 2.0, que inclui mudanças no esquema do banco de dados e novas funcionalidades, mas não pode ter downtime algum.",
       "options": [
-        "Deploy directly to production during low-traffic hours",
-        "Use blue-green deployment: deploy to parallel environment, test, then switch traffic",
-        "Deploy gradually using feature flags with the new code disabled",
-        "Use rolling updates to replace instances one by one"
+        "Implantar diretamente em produção durante horários de baixo tráfego",
+        "Usar deploy blue-green: implantar em um ambiente paralelo, testar e depois alternar o tráfego",
+        "Implantar gradualmente usando feature flags com o novo código desabilitado",
+        "Usar atualizações graduais (rolling updates) para substituir as instâncias uma a uma"
       ],
       "correctAnswer": 1,
-      "explanation": "Blue-green deployment creates a complete parallel environment with the new version. After testing, you switch traffic instantly. If issues arise, you can switch back immediately, ensuring true zero downtime.",
-      "hint": "Consider which strategy gives you the fastest rollback capability and truly zero downtime.",
+      "explanation": "O deploy blue-green cria um ambiente paralelo completo com a nova versão. Após os testes, você alterna o tráfego instantaneamente. Se surgirem problemas, você pode reverter imediatamente, garantindo zero downtime de verdade.",
+      "hint": "Considere qual estratégia oferece a capacidade de rollback mais rápida e zero downtime de verdade.",
       "difficulty": "intermediate",
       "points": 16
     },
     {
       "id": "cost-optimization",
-      "title": "Cloud Cost Management",
-      "description": "Your cloud bill has doubled in the last quarter without significant traffic increases.",
-      "situation": "Finance is asking questions about the cloud spend increase. You need to identify cost drivers and implement optimizations without impacting performance or reliability.",
+      "title": "Gestão de Custos em Nuvem",
+      "description": "Sua conta de nuvem dobrou no último trimestre sem um aumento significativo de tráfego.",
+      "situation": "O financeiro está questionando o aumento nos gastos com nuvem. Você precisa identificar os fatores de custo e implementar otimizações sem impactar performance ou confiabilidade.",
       "codeExample": "Cost analysis shows:\n- 40% increase in compute costs\n- 60% increase in storage costs\n- New data transfer charges\n- Underutilized reserved instances",
       "options": [
-        "Immediately downsize all instances to save money",
-        "Analyze resource utilization, right-size instances, implement auto-scaling, review storage classes, and optimize data transfer",
-        "Move everything to the cheapest cloud regions available",
-        "Switch to spot instances for all workloads"
+        "Reduzir imediatamente o tamanho de todas as instâncias para economizar",
+        "Analisar a utilização de recursos, redimensionar instâncias, implementar auto-scaling, revisar classes de armazenamento e otimizar a transferência de dados",
+        "Mover tudo para as regiões de nuvem mais baratas disponíveis",
+        "Migrar todas as cargas de trabalho para instâncias spot"
       ],
       "correctAnswer": 1,
-      "explanation": "Effective cost optimization requires analysis of actual usage patterns, right-sizing based on metrics, implementing auto-scaling for variable workloads, using appropriate storage classes, and optimizing network topology.",
-      "hint": "Think about making data-driven decisions rather than blanket cost-cutting measures.",
+      "explanation": "Uma otimização de custos eficaz exige análise dos padrões reais de uso, redimensionamento com base em métricas, implementação de auto-scaling para cargas variáveis, uso de classes de armazenamento adequadas e otimização da topologia de rede.",
+      "hint": "Pense em tomar decisões baseadas em dados em vez de medidas genéricas de corte de custos.",
       "difficulty": "intermediate",
       "points": 14
     },
     {
       "id": "disaster-recovery",
-      "title": "Disaster Recovery Planning",
-      "description": "Your primary data center has gone offline due to a natural disaster.",
-      "situation": "A hurricane has knocked out your primary AWS region. You have 4 hours to restore service before hitting your SLA breach. Your RTO is 4 hours and RPO is 1 hour.",
+      "title": "Planejamento de Recuperação de Desastres",
+      "description": "Seu data center primário ficou offline devido a um desastre natural.",
+      "situation": "Um furacão derrubou sua região primária na AWS. Você tem 4 horas para restaurar o serviço antes de violar seu SLA. Seu RTO é de 4 horas e o RPO é de 1 hora.",
       "codeExample": "Current setup:\n- Primary: us-east-1 (offline)\n- Secondary: us-west-2 (standby)\n- Database: Cross-region replication\n- DNS: Route53 health checks",
       "options": [
-        "Wait for the primary region to come back online",
-        "Manually restore from backup in a different region",
-        "Activate pre-configured disaster recovery environment, update DNS to point to secondary region, verify data consistency",
-        "Contact AWS support and wait for their guidance"
+        "Esperar a região primária voltar a ficar online",
+        "Restaurar manualmente a partir do backup em uma região diferente",
+        "Ativar o ambiente de recuperação de desastres pré-configurado, atualizar o DNS para apontar para a região secundária e verificar a consistência dos dados",
+        "Contatar o suporte da AWS e aguardar orientação"
       ],
       "correctAnswer": 2,
-      "explanation": "A proper DR plan includes pre-configured secondary infrastructure, automated DNS failover, cross-region data replication, and documented procedures. Execute the plan immediately when disaster strikes.",
-      "hint": "Think about what should be prepared in advance versus what you do during the actual disaster.",
+      "explanation": "Um bom plano de DR inclui infraestrutura secundária pré-configurada, failover de DNS automatizado, replicação de dados entre regiões e procedimentos documentados. Execute o plano imediatamente quando o desastre ocorrer.",
+      "hint": "Pense no que deve ser preparado com antecedência versus o que você faz durante o desastre em si.",
       "difficulty": "advanced",
       "points": 20
     },
     {
       "id": "compliance-automation",
-      "title": "Security Compliance Automation",
-      "description": "Your organization needs to maintain SOC 2 compliance with growing infrastructure.",
-      "situation": "Manual compliance checks are becoming unmanageable as your infrastructure grows. You need to automate security controls and generate audit trails.",
+      "title": "Automação de Conformidade de Segurança",
+      "description": "Sua organização precisa manter a conformidade com o SOC 2 à medida que a infraestrutura cresce.",
+      "situation": "Verificações manuais de conformidade estão se tornando inviáveis à medida que sua infraestrutura cresce. Você precisa automatizar controles de segurança e gerar trilhas de auditoria.",
       "options": [
-        "Hire more security auditors to manually check everything",
-        "Implement policy-as-code, automated security scanning, and compliance monitoring tools",
-        "Document all current practices and review them quarterly",
-        "Only focus on compliance during the annual audit"
+        "Contratar mais auditores de segurança para verificar tudo manualmente",
+        "Implementar policy-as-code, varredura de segurança automatizada e ferramentas de monitoramento de conformidade",
+        "Documentar todas as práticas atuais e revisá-las trimestralmente",
+        "Focar em conformidade apenas durante a auditoria anual"
       ],
       "correctAnswer": 1,
-      "explanation": "Policy-as-code tools, automated security scanning in CI/CD, infrastructure compliance monitoring, and automated audit trail generation scale compliance practices with infrastructure growth.",
-      "hint": "Consider how to make compliance verification continuous rather than periodic.",
+      "explanation": "Ferramentas de policy-as-code, varredura de segurança automatizada no CI/CD, monitoramento de conformidade de infraestrutura e geração automatizada de trilhas de auditoria escalam as práticas de conformidade junto com o crescimento da infraestrutura.",
+      "hint": "Considere como tornar a verificação de conformidade contínua em vez de periódica.",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "observability-strategy",
-      "title": "Comprehensive Observability",
-      "description": "Your microservices architecture is growing complex and debugging issues is becoming difficult.",
-      "situation": "You have 15 microservices, and when something goes wrong, it takes hours to trace the issue across services. You need to implement comprehensive observability.",
+      "title": "Observabilidade Abrangente",
+      "description": "Sua arquitetura de microsserviços está ficando complexa e depurar problemas está cada vez mais difícil.",
+      "situation": "Você tem 15 microsserviços, e quando algo dá errado, leva horas para rastrear o problema entre os serviços. Você precisa implementar observabilidade abrangente.",
       "codeExample": "Current challenges:\n- No correlation between logs across services\n- Limited metrics granularity\n- No request tracing\n- Scattered monitoring tools",
       "options": [
-        "Add more detailed logging to each service",
-        "Implement distributed tracing, structured logging, service mesh observability, and centralized metrics",
-        "Create more dashboards for each service",
-        "Set up more alerts on individual service metrics"
+        "Adicionar logs mais detalhados em cada serviço",
+        "Implementar rastreamento distribuído (distributed tracing), logging estruturado, observabilidade de service mesh e métricas centralizadas",
+        "Criar mais dashboards para cada serviço",
+        "Configurar mais alertas em métricas de serviços individuais"
       ],
       "correctAnswer": 1,
-      "explanation": "Modern microservices require the three pillars of observability: metrics, logs, and traces. Distributed tracing shows request flows, structured logging enables correlation, and service mesh provides network-level insights.",
-      "hint": "Think about the three pillars of observability and how they work together in a distributed system.",
+      "explanation": "Microsserviços modernos exigem os três pilares da observabilidade: métricas, logs e traces. O rastreamento distribuído mostra o fluxo das requisições, o logging estruturado permite correlação, e o service mesh fornece insights no nível de rede.",
+      "hint": "Pense nos três pilares da observabilidade e em como eles funcionam juntos em um sistema distribuído.",
       "difficulty": "advanced",
       "points": 22
     }
