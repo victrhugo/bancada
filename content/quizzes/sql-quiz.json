@@ -1,7 +1,7 @@
 {
   "id": "sql-quiz",
   "title": "SQL & Database Design Quiz",
-  "description": "Master database design and SQL through real business scenarios covering queries, optimization, design patterns, and data modeling",
+  "description": "Domine o design de banco de dados e SQL através de cenários de negócio reais cobrindo queries, otimização, padrões de design e modelagem de dados",
   "category": "SQL",
   "icon": "Database",
   "totalPoints": 197,
@@ -11,7 +11,7 @@
     "gradientTo": "to-indigo-700"
   },
   "metadata": {
-    "estimatedTime": "25-30 minutes",
+    "estimatedTime": "25-30 minutos",
     "difficultyLevels": {
       "beginner": 4,
       "intermediate": 5,
@@ -22,9 +22,9 @@
   "questions": [
     {
       "id": "basic-joins-business",
-      "title": "Customer Order Analysis",
-      "description": "Find customers who placed orders but haven't received them yet.",
-      "situation": "Your e-commerce company needs to identify customers with pending orders for a customer service follow-up campaign.",
+      "title": "Análise de Pedidos de Clientes",
+      "description": "Encontre clientes que fizeram pedidos mas ainda não os receberam.",
+      "situation": "Sua empresa de e-commerce precisa identificar clientes com pedidos pendentes para uma campanha de acompanhamento do atendimento ao cliente.",
       "codeExample": "Tables:\ncustomers: id, name, email, city\norders: id, customer_id, order_date, status, total_amount\n\nStatus values: 'pending', 'shipped', 'delivered', 'cancelled'\nGoal: Find customers with pending orders and their order details",
       "options": [
         "SELECT c.name, c.email, o.order_date, o.total_amount \nFROM customers c \nINNER JOIN orders o ON c.id = o.customer_id \nWHERE o.status = 'pending'",
@@ -33,16 +33,16 @@
         "SELECT * FROM customers WHERE id = (SELECT customer_id FROM orders WHERE status = 'pending')"
       ],
       "correctAnswer": 0,
-      "explanation": "The INNER JOIN with explicit ON clause is clear and efficient, and includes relevant order details (date and amount) that would be useful for customer service follow-up. It's more readable than subqueries for this scenario.",
-      "hint": "Consider what information customer service would need and which JOIN syntax is most readable and efficient.",
+      "explanation": "O INNER JOIN com a cláusula ON explícita é claro e eficiente, e inclui detalhes relevantes do pedido (data e valor) que seriam úteis para o acompanhamento do atendimento ao cliente. É mais legível do que subqueries para esse cenário.",
+      "hint": "Considere quais informações o atendimento ao cliente precisaria e qual sintaxe de JOIN é mais legível e eficiente.",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "aggregation-business-metrics",
-      "title": "Sales Performance Analysis",
-      "description": "Calculate monthly sales metrics for business reporting.",
-      "situation": "Management needs a monthly sales report showing total revenue, number of orders, and average order value by month for the last year.",
+      "title": "Análise de Desempenho de Vendas",
+      "description": "Calcule métricas mensais de vendas para um relatório de negócio.",
+      "situation": "A gerência precisa de um relatório mensal de vendas mostrando receita total, número de pedidos e valor médio do pedido por mês no último ano.",
       "codeExample": "orders table: id, customer_id, order_date, total_amount, status\n\nNeed: Monthly breakdown with:\n- Total revenue\n- Order count\n- Average order value\n- Only completed orders (status = 'delivered')",
       "options": [
         "SELECT MONTH(order_date), SUM(total_amount), COUNT(*), AVG(total_amount) FROM orders WHERE status = 'delivered' GROUP BY MONTH(order_date)",
@@ -51,16 +51,16 @@
         "SELECT \n  DATE_FORMAT(order_date, '%Y-%m') as month,\n  SUM(total_amount) as total_revenue,\n  COUNT(*) as order_count,\n  ROUND(AVG(total_amount), 2) as avg_order_value\nFROM orders \nWHERE status = 'delivered' \n  AND order_date >= DATE_SUB(NOW(), INTERVAL 1 YEAR)\nGROBY DATE_FORMAT(order_date, '%Y-%m')\nORDER BY month"
       ],
       "correctAnswer": 3,
-      "explanation": "This query properly groups by year-month, includes the last year filter, uses descriptive column aliases, rounds the average for readability, and orders results chronologically for reporting purposes.",
-      "hint": "Think about how management would want to see this data - what format and level of detail would be most useful for business decisions?",
+      "explanation": "Essa query agrupa corretamente por ano-mês, inclui o filtro do último ano, usa aliases de coluna descritivos, arredonda a média para melhor legibilidade, e ordena os resultados cronologicamente para fins de relatório.",
+      "hint": "Pense em como a gerência gostaria de ver esses dados - qual formato e nível de detalhe seria mais útil para decisões de negócio?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "subquery-inventory-problem",
-      "title": "Inventory Management Challenge",
-      "description": "Find products that are running low on stock compared to their sales velocity.",
-      "situation": "Your inventory team needs to identify products where current stock is less than 3 times the average monthly sales, indicating potential stockouts.",
+      "title": "Desafio de Gestão de Estoque",
+      "description": "Encontre produtos com estoque baixo em relação à sua velocidade de vendas.",
+      "situation": "Seu time de estoque precisa identificar produtos onde o estoque atual é menor que 3 vezes a média de vendas mensal, indicando possíveis rupturas de estoque.",
       "codeExample": "Tables:\nproducts: id, name, current_stock, category\norder_items: order_id, product_id, quantity, price\norders: id, order_date, status\n\nGoal: Products where current_stock < (3 * avg_monthly_sales)",
       "options": [
         "SELECT p.name, p.current_stock FROM products p WHERE p.current_stock < (SELECT AVG(oi.quantity) FROM order_items oi WHERE oi.product_id = p.id)",
@@ -69,16 +69,16 @@
         "SELECT p.name FROM products p, order_items oi WHERE p.id = oi.product_id AND p.current_stock < oi.quantity * 3"
       ],
       "correctAnswer": 1,
-      "explanation": "This query properly calculates monthly average sales using delivered orders from the last month, multiplies by 3 for the threshold, uses COALESCE to handle products with no recent sales, and provides useful output for inventory decisions.",
-      "hint": "Consider the time period for calculating averages, handling products with no recent sales, and what information inventory managers need to make decisions.",
+      "explanation": "Essa query calcula corretamente a média de vendas mensal usando pedidos entregues do último mês, multiplica por 3 para o limite, usa COALESCE para lidar com produtos sem vendas recentes, e fornece uma saída útil para decisões de estoque.",
+      "hint": "Considere o período para calcular as médias, o tratamento de produtos sem vendas recentes, e quais informações os gerentes de estoque precisam para tomar decisões.",
       "difficulty": "beginner",
       "points": 14
     },
     {
       "id": "window-functions-ranking",
-      "title": "Top Performers by Category",
-      "description": "Rank employees by sales performance within their department.",
-      "situation": "HR needs to identify the top 3 sales performers in each department for bonus allocation based on total sales in the last quarter.",
+      "title": "Melhores Desempenhos por Categoria",
+      "description": "Classifique funcionários por desempenho de vendas dentro do seu departamento.",
+      "situation": "O RH precisa identificar os 3 melhores vendedores em cada departamento para a alocação de bônus com base no total de vendas do último trimestre.",
       "codeExample": "Tables:\nemployees: id, name, department, hire_date\nsales: id, employee_id, sale_amount, sale_date, status\n\nGoal: Top 3 employees per department by Q4 sales total",
       "options": [
         "SELECT e.name, e.department, SUM(s.sale_amount) FROM employees e JOIN sales s ON e.id = s.employee_id GROUP BY e.department ORDER BY SUM(s.sale_amount) DESC LIMIT 3",
@@ -87,16 +87,16 @@
         "SELECT \n  name, \n  department, \n  total_sales,\n  dept_rank\nFROM (\n  SELECT \n    e.name,\n    e.department,\n    SUM(s.sale_amount) as total_sales,\n    ROW_NUMBER() OVER (PARTITION BY e.department ORDER BY SUM(s.sale_amount) DESC) as dept_rank\n  FROM employees e\n  JOIN sales s ON e.id = s.employee_id\n  WHERE s.sale_date >= DATE_SUB(NOW(), INTERVAL 3 MONTH)\n    AND s.status = 'completed'\n  GROUP BY e.id, e.name, e.department\n) ranked\nWHERE dept_rank <= 3"
       ],
       "correctAnswer": 3,
-      "explanation": "This query uses window functions to rank employees within each department (PARTITION BY), considers only the last quarter's completed sales, and limits to top 3 per department. It provides exactly what HR needs for bonus decisions.",
-      "hint": "You need ranking within groups (departments), not overall ranking. Which SQL feature allows ranking within partitions?",
+      "explanation": "Essa query usa window functions para classificar funcionários dentro de cada departamento (PARTITION BY), considera apenas as vendas concluídas do último trimestre, e limita aos 3 melhores por departamento. Ela fornece exatamente o que o RH precisa para decisões de bônus.",
+      "hint": "Você precisa de classificação dentro de grupos (departamentos), não uma classificação geral. Qual recurso do SQL permite classificação dentro de partições?",
       "difficulty": "intermediate",
       "points": 16
     },
     {
       "id": "complex-join-customer-analysis",
-      "title": "Customer Lifecycle Analysis",
-      "description": "Analyze customer behavior across their entire purchase journey.",
-      "situation": "Marketing wants to understand customer lifecycle: first purchase date, total orders, total spent, last purchase date, and average days between orders for customers who made multiple purchases.",
+      "title": "Análise do Ciclo de Vida do Cliente",
+      "description": "Analise o comportamento do cliente ao longo de toda sua jornada de compra.",
+      "situation": "O marketing quer entender o ciclo de vida do cliente: data da primeira compra, total de pedidos, total gasto, data da última compra, e média de dias entre pedidos para clientes que fizeram múltiplas compras.",
       "codeExample": "Tables:\ncustomers: id, name, email, registration_date\norders: id, customer_id, order_date, total_amount, status\n\nGoal: Comprehensive customer behavior metrics for multi-purchase customers",
       "options": [
         "SELECT c.name, COUNT(o.id), SUM(o.total_amount) FROM customers c JOIN orders o ON c.id = o.customer_id GROUP BY c.id",
@@ -105,16 +105,16 @@
         "SELECT \n  c.name,\n  c.email,\n  MIN(o.order_date) as first_purchase,\n  MAX(o.order_date) as last_purchase,\n  COUNT(o.id) as total_orders,\n  SUM(o.total_amount) as total_spent,\n  ROUND(AVG(o.total_amount), 2) as avg_order_value,\n  CASE \n    WHEN COUNT(o.id) > 1 THEN \n      ROUND(DATEDIFF(MAX(o.order_date), MIN(o.order_date)) / (COUNT(o.id) - 1), 1)\n    ELSE NULL \n  END as avg_days_between_orders\nFROM customers c\nJOIN orders o ON c.id = o.customer_id\nWHERE o.status = 'delivered'\nGROUP BY c.id, c.name, c.email\nHAVING COUNT(o.id) > 1\nORDER BY total_spent DESC"
       ],
       "correctAnswer": 3,
-      "explanation": "This comprehensive query calculates all requested metrics including the complex average days between orders calculation, filters for multi-purchase customers using HAVING, and provides actionable insights for marketing analysis.",
-      "hint": "Consider all the metrics requested, how to calculate time between purchases, and filtering for customers with multiple purchases.",
+      "explanation": "Essa query abrangente calcula todas as métricas solicitadas, incluindo o complexo cálculo de média de dias entre pedidos, filtra clientes com múltiplas compras usando HAVING, e fornece insights acionáveis para a análise de marketing.",
+      "hint": "Considere todas as métricas solicitadas, como calcular o tempo entre compras, e a filtragem de clientes com múltiplas compras.",
       "difficulty": "intermediate",
       "points": 18
     },
     {
       "id": "database-design-ecommerce",
-      "title": "E-commerce Database Design",
-      "description": "Design tables for a product catalog with variants and pricing.",
-      "situation": "You're designing a database for an online clothing store. Products have multiple variants (size, color) with different prices and stock levels. You need to track inventory and support complex pricing rules.",
+      "title": "Design de Banco de Dados para E-commerce",
+      "description": "Projete tabelas para um catálogo de produtos com variantes e precificação.",
+      "situation": "Você está projetando um banco de dados para uma loja de roupas online. Produtos têm múltiplas variantes (tamanho, cor) com preços e níveis de estoque diferentes. Você precisa rastrear inventário e suportar regras de precificação complexas.",
       "codeExample": "Requirements:\n• Products (name, description, category, brand)\n• Variants (size, color, SKU, price, stock)\n• Categories can have subcategories\n• Price history for analytics\n• Efficient inventory queries",
       "options": [
         "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  description TEXT,\n  category VARCHAR(100),\n  size VARCHAR(10),\n  color VARCHAR(50),\n  price DECIMAL(10,2),\n  stock INT\n);",
@@ -123,34 +123,34 @@
         "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  product_json JSON\n);"
       ],
       "correctAnswer": 1,
-      "explanation": "This normalized design properly separates products from variants, supports price history, uses foreign keys for data integrity, includes necessary indexes, and allows for complex inventory and pricing queries while maintaining data consistency.",
-      "hint": "Consider normalization principles, data integrity, query performance, and future scalability. Which design best handles variants and pricing complexity?",
+      "explanation": "Esse design normalizado separa corretamente produtos de variantes, suporta histórico de preços, usa chaves estrangeiras para integridade dos dados, inclui índices necessários, e permite queries complexas de estoque e precificação mantendo a consistência dos dados.",
+      "hint": "Considere princípios de normalização, integridade de dados, desempenho de query e escalabilidade futura. Qual design lida melhor com a complexidade de variantes e precificação?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "query-optimization-performance",
-      "title": "Query Performance Optimization",
-      "description": "Optimize a slow-performing query that's causing production issues.",
-      "situation": "A customer search query is taking 15+ seconds and timing out. The query searches products by name, category, and price range. The products table has 2 million rows.",
+      "title": "Otimização de Desempenho de Query",
+      "description": "Otimize uma query com desempenho ruim que está causando problemas em produção.",
+      "situation": "Uma query de busca de clientes está levando mais de 15 segundos e dando timeout. A query busca produtos por nome, categoria e faixa de preço. A tabela de produtos tem 2 milhões de linhas.",
       "codeExample": "Current slow query:\nSELECT * FROM products \nWHERE (name LIKE '%shirt%' OR description LIKE '%shirt%') \n  AND category IN ('clothing', 'fashion') \n  AND price BETWEEN 20 AND 100\nORDER BY created_date DESC\nLIMIT 20;\n\nTable: products (2M rows, no indexes except primary key)",
       "options": [
-        "Add ORDER BY created_date to speed up sorting",
+        "Adicionar ORDER BY created_date para acelerar a ordenação",
         "CREATE INDEX idx_search ON products(category, price, created_date);\n\nSELECT id, name, price, category, created_date \nFROM products \nWHERE category IN ('clothing', 'fashion')\n  AND price BETWEEN 20 AND 100\n  AND (name LIKE '%shirt%' OR description LIKE '%shirt%')\nORDER BY created_date DESC\nLIMIT 20;",
         "CREATE FULLTEXT INDEX ft_products ON products(name, description);\nCREATE INDEX idx_category_price ON products(category, price);\nCREATE INDEX idx_created_date ON products(created_date);\n\nSELECT id, name, price, category, created_date \nFROM products \nWHERE MATCH(name, description) AGAINST('shirt' IN NATURAL LANGUAGE MODE)\n  AND category IN ('clothing', 'fashion')\n  AND price BETWEEN 20 AND 100\nORDER BY created_date DESC\nLIMIT 20;",
         "SELECT * FROM products WHERE name = 'shirt' AND category = 'clothing' ORDER BY price"
       ],
       "correctAnswer": 2,
-      "explanation": "This solution uses FULLTEXT search for efficient text searching, creates a composite index for category and price filtering, adds a separate index for sorting, and selects only needed columns to reduce data transfer.",
-      "hint": "Consider indexing strategy, text search optimization, column selection, and query structure. What combination addresses all performance bottlenecks?",
+      "explanation": "Essa solução usa busca FULLTEXT para buscas de texto eficientes, cria um índice composto para filtragem por categoria e preço, adiciona um índice separado para ordenação, e seleciona apenas as colunas necessárias para reduzir a transferência de dados.",
+      "hint": "Considere estratégia de indexação, otimização de busca de texto, seleção de colunas, e estrutura de query. Qual combinação resolve todos os gargalos de desempenho?",
       "difficulty": "intermediate",
       "points": 20
     },
     {
       "id": "transaction-data-integrity",
-      "title": "Financial Transaction Integrity",
-      "description": "Ensure data consistency in a money transfer operation.",
-      "situation": "You're implementing a money transfer feature between user accounts. The operation must be atomic - either both accounts are updated or neither, even if the system crashes mid-operation.",
+      "title": "Integridade de Transação Financeira",
+      "description": "Garanta a consistência dos dados em uma operação de transferência de dinheiro.",
+      "situation": "Você está implementando um recurso de transferência de dinheiro entre contas de usuário. A operação precisa ser atômica - ou ambas as contas são atualizadas ou nenhuma delas, mesmo que o sistema trave no meio da operação.",
       "codeExample": "Tables:\naccounts: id, user_id, balance, currency\ntransactions: id, from_account, to_account, amount, status, created_at\n\nTransfer $100 from Account A (ID: 123) to Account B (ID: 456)\nCurrent balances: A=$500, B=$200",
       "options": [
         "UPDATE accounts SET balance = balance - 100 WHERE id = 123;\nUPDATE accounts SET balance = balance + 100 WHERE id = 456;\nINSERT INTO transactions (from_account, to_account, amount, status) VALUES (123, 456, 100, 'completed');",
@@ -159,62 +159,62 @@
         "LOCK TABLES accounts WRITE;\nUPDATE accounts SET balance = balance - 100 WHERE id = 123;\nUPDATE accounts SET balance = balance + 100 WHERE id = 456;\nUNLOCK TABLES;"
       ],
       "correctAnswer": 2,
-      "explanation": "This solution uses proper transaction control with balance validation, row locking to prevent concurrent modifications, error handling for insufficient funds, and proper rollback mechanisms. It ensures both atomicity and business rule enforcement.",
-      "hint": "Consider ACID properties, concurrent access, business rule validation, and error handling. Which approach ensures complete data integrity?",
+      "explanation": "Essa solução usa controle de transação adequado com validação de saldo, bloqueio de linha para prevenir modificações concorrentes, tratamento de erro para saldo insuficiente, e mecanismos de rollback adequados. Ela garante tanto a atomicidade quanto a aplicação das regras de negócio.",
+      "hint": "Considere as propriedades ACID, acesso concorrente, validação de regras de negócio, e tratamento de erros. Qual abordagem garante integridade completa dos dados?",
       "difficulty": "intermediate",
       "points": 17
     },
     {
       "id": "nosql-vs-sql-decision",
-      "title": "Database Technology Selection",
-      "description": "Choose the right database technology for different application requirements.",
-      "situation": "Your company is building three new features: user activity tracking (millions of events/day), product catalog (complex relationships), and real-time chat (low latency). Choose the best database approach for each.",
+      "title": "Seleção de Tecnologia de Banco de Dados",
+      "description": "Escolha a tecnologia de banco de dados certa para diferentes requisitos de aplicação.",
+      "situation": "Sua empresa está construindo três novos recursos: rastreamento de atividade de usuário (milhões de eventos/dia), catálogo de produtos (relacionamentos complexos), e chat em tempo real (baixa latência). Escolha a melhor abordagem de banco de dados para cada um.",
       "codeExample": "Requirements:\n1. Activity Tracking: 5M events/day, append-only, analytics queries\n2. Product Catalog: Complex relationships, ACID compliance, reporting\n3. Real-time Chat: Sub-100ms latency, horizontal scaling, simple queries\n\nBudget allows for multiple database technologies",
       "options": [
-        "Use MySQL for everything to keep it simple",
-        "Use PostgreSQL for all three with different schemas",
+        "Usar MySQL para tudo para manter a simplicidade",
+        "Usar PostgreSQL para os três com schemas diferentes",
         "Activity Tracking: Time-series DB (InfluxDB/TimescaleDB)\nProduct Catalog: PostgreSQL with proper indexing\nReal-time Chat: Redis with persistence + MongoDB for history",
         "Activity Tracking: MongoDB\nProduct Catalog: Neo4j graph database\nReal-time Chat: Cassandra"
       ],
       "correctAnswer": 2,
-      "explanation": "This approach matches each use case to optimal technology: time-series DB for high-volume analytics data, PostgreSQL for complex relational data requiring ACID compliance, and Redis for ultra-low latency with MongoDB for chat history persistence.",
-      "hint": "Consider the specific requirements of each use case: volume, relationships, consistency needs, and performance requirements. Which combination optimizes for each scenario?",
+      "explanation": "Essa abordagem combina cada caso de uso com a tecnologia ideal: banco de séries temporais para dados de análise de alto volume, PostgreSQL para dados relacionais complexos que exigem conformidade ACID, e Redis para latência ultrabaixa com MongoDB para persistência do histórico de chat.",
+      "hint": "Considere os requisitos específicos de cada caso de uso: volume, relacionamentos, necessidades de consistência, e requisitos de desempenho. Qual combinação otimiza cada cenário?",
       "difficulty": "advanced",
       "points": 22
     },
     {
       "id": "data-warehouse-design",
-      "title": "Analytics Data Warehouse Design",
-      "description": "Design a data warehouse schema for business intelligence and reporting.",
-      "situation": "Your company needs a data warehouse to analyze sales performance across multiple dimensions: time, geography, products, customers, and sales channels. The data comes from multiple operational systems.",
+      "title": "Design de Data Warehouse Analítico",
+      "description": "Projete um schema de data warehouse para business intelligence e relatórios.",
+      "situation": "Sua empresa precisa de um data warehouse para analisar o desempenho de vendas em múltiplas dimensões: tempo, geografia, produtos, clientes, e canais de venda. Os dados vêm de múltiplos sistemas operacionais.",
       "codeExample": "Source systems:\n• E-commerce platform (orders, customers)\n• POS systems (in-store sales)\n• Inventory management (products, categories)\n• CRM (customer segments, campaigns)\n\nAnalytics needs: Sales trends, customer behavior, product performance, regional analysis",
       "options": [
-        "Copy all operational tables directly into the warehouse",
+        "Copiar todas as tabelas operacionais diretamente para o warehouse",
         "CREATE TABLE sales_fact (\n  sale_id BIGINT PRIMARY KEY,\n  date_key INT,\n  customer_key INT,\n  product_key INT,\n  store_key INT,\n  channel_key INT,\n  quantity INT,\n  unit_price DECIMAL(10,2),\n  total_amount DECIMAL(12,2),\n  cost_amount DECIMAL(12,2),\n  profit_amount DECIMAL(12,2)\n);\n\n-- Dimension tables\nCREATE TABLE dim_date (\n  date_key INT PRIMARY KEY,\n  full_date DATE,\n  year INT,\n  quarter INT,\n  month INT,\n  week INT,\n  day_of_week INT,\n  is_weekend BOOLEAN,\n  is_holiday BOOLEAN\n);\n\nCREATE TABLE dim_customer (\n  customer_key INT PRIMARY KEY,\n  customer_id VARCHAR(50),\n  segment VARCHAR(50),\n  acquisition_channel VARCHAR(50),\n  lifetime_value_bucket VARCHAR(20)\n);\n\nCREATE TABLE dim_product (\n  product_key INT PRIMARY KEY,\n  product_id VARCHAR(50),\n  category VARCHAR(100),\n  subcategory VARCHAR(100),\n  brand VARCHAR(100),\n  price_tier VARCHAR(20)\n);",
-        "Use a single flat table with all columns for easy querying",
+        "Usar uma única tabela plana com todas as colunas para facilitar as queries",
         "CREATE VIEW analytics_view AS SELECT * FROM orders JOIN customers JOIN products"
       ],
       "correctAnswer": 1,
-      "explanation": "This star schema design optimizes for analytical queries with a central fact table containing metrics and foreign keys to dimension tables. It supports efficient aggregation, filtering, and drilling down across multiple business dimensions.",
-      "hint": "Consider analytical query patterns, aggregation performance, and dimensional analysis needs. Which schema design optimizes for business intelligence queries?",
+      "explanation": "Esse design de star schema otimiza para queries analíticas com uma tabela fato central contendo métricas e chaves estrangeiras para tabelas de dimensão. Ele suporta agregação eficiente, filtragem, e detalhamento (drill-down) em múltiplas dimensões de negócio.",
+      "hint": "Considere os padrões de query analítica, o desempenho de agregação, e as necessidades de análise dimensional. Qual design de schema otimiza para queries de business intelligence?",
       "difficulty": "advanced",
       "points": 25
     },
     {
       "id": "scaling-database-architecture",
-      "title": "Database Scaling Strategy",
-      "description": "Design a scaling solution for a rapidly growing application.",
-      "situation": "Your social media app has grown from 100K to 10M users. The main database is struggling with read queries (70% of traffic), writes are manageable, but response times are degrading during peak hours.",
+      "title": "Estratégia de Escalonamento de Banco de Dados",
+      "description": "Projete uma solução de escalonamento para uma aplicação em rápido crescimento.",
+      "situation": "Seu aplicativo de rede social cresceu de 100 mil para 10 milhões de usuários. O banco de dados principal está com dificuldades com queries de leitura (70% do tráfego), as escritas são gerenciáveis, mas os tempos de resposta estão piorando nos horários de pico.",
       "codeExample": "Current issues:\n• Read queries taking 2-5 seconds during peak\n• 70% read traffic, 30% write traffic\n• Peak: 50K concurrent users\n• Main bottlenecks: user feeds, search, analytics\n• Budget allows infrastructure investment",
       "options": [
-        "Upgrade to a larger database server with more CPU and RAM",
-        "Implement vertical partitioning by splitting tables across databases",
-        "Read Replicas + Caching Strategy:\n- Master-slave replication with 3 read replicas\n- Redis cache for user sessions and hot data\n- CDN for static content\n- Application-level read/write splitting\n- Eventual consistency acceptable for feeds\n\nLong-term: Horizontal sharding by user_id ranges",
-        "Move everything to NoSQL to handle the scale"
+        "Fazer upgrade para um servidor de banco de dados maior com mais CPU e RAM",
+        "Implementar particionamento vertical dividindo tabelas entre bancos de dados",
+        "Read Replicas + Estratégia de Cache:\n- Replicação master-slave com 3 réplicas de leitura\n- Cache Redis para sessões de usuário e dados quentes\n- CDN para conteúdo estático\n- Divisão de leitura/escrita no nível da aplicação\n- Consistência eventual aceitável para feeds\n\nLongo prazo: sharding horizontal por faixas de user_id",
+        "Migrar tudo para NoSQL para lidar com a escala"
       ],
       "correctAnswer": 2,
-      "explanation": "This comprehensive scaling strategy addresses the read-heavy workload with read replicas, implements caching for frequently accessed data, and plans for future horizontal scaling. It's cost-effective and addresses the specific 70/30 read/write pattern.",
-      "hint": "Consider the read-heavy workload pattern, acceptable consistency models, and cost-effective scaling approaches. Which strategy best addresses the specific bottlenecks?",
+      "explanation": "Essa estratégia abrangente de escalonamento resolve a carga de trabalho com predominância de leitura usando réplicas de leitura, implementa cache para dados acessados com frequência, e planeja o escalonamento horizontal futuro. É econômica e resolve o padrão específico de 70/30 de leitura/escrita.",
+      "hint": "Considere o padrão de carga de trabalho com predominância de leitura, os modelos de consistência aceitáveis, e as abordagens de escalonamento econômicas. Qual estratégia resolve melhor os gargalos específicos?",
       "difficulty": "advanced",
       "points": 28
     }

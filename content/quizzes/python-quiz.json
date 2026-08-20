@@ -1,7 +1,7 @@
 {
   "id": "python-quiz",
   "title": "Python Fundamentals Quiz",
-  "description": "Master Python through real-world scenarios covering syntax, data structures, OOP, and advanced concepts",
+  "description": "Domine Python através de cenários do mundo real cobrindo sintaxe, estruturas de dados, OOP e conceitos avançados",
   "category": "Python",
   "icon": "Code",
   "totalPoints": 148,
@@ -11,7 +11,7 @@
     "gradientTo": "to-emerald-600"
   },
   "metadata": {
-    "estimatedTime": "20-25 minutes",
+    "estimatedTime": "20-25 minutos",
     "difficultyLevels": {
       "beginner": 4,
       "intermediate": 4,
@@ -23,8 +23,8 @@
     {
       "id": "list-comprehension-basics",
       "title": "List Comprehensions vs Loops",
-      "description": "Choose the most Pythonic way to filter and transform data.",
-      "situation": "You have a list of numbers and need to create a new list containing only the squares of even numbers.",
+      "description": "Escolha a forma mais Pythônica de filtrar e transformar dados.",
+      "situation": "Você tem uma lista de números e precisa criar uma nova lista contendo apenas os quadrados dos números pares.",
       "codeExample": "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n# Goal: [4, 16, 36, 64, 100]",
       "options": [
         "result = [num ** 2 for num in numbers if num % 2 == 0]",
@@ -33,16 +33,16 @@
         "result = []\nfor i in range(len(numbers)):\n    if numbers[i] % 2 == 0:\n        result.append(numbers[i] ** 2)"
       ],
       "correctAnswer": 0,
-      "explanation": "List comprehensions are the most Pythonic way to create lists. They're readable, efficient, and concise while maintaining clarity about the operation being performed.",
-      "hint": "Think about Python's philosophy: 'Simple is better than complex.' Which approach is most readable and concise?",
+      "explanation": "List comprehensions são a forma mais Pythônica de criar listas. Elas são legíveis, eficientes e concisas, mantendo a clareza sobre a operação sendo realizada.",
+      "hint": "Pense na filosofia do Python: 'Simples é melhor que complexo.' Qual abordagem é mais legível e concisa?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "dictionary-methods",
-      "title": "Safe Dictionary Access",
-      "description": "How do you safely access dictionary values that might not exist?",
-      "situation": "You're processing user data where some users might not have an 'email' field, and you want to avoid KeyError exceptions.",
+      "title": "Acesso Seguro a Dicionários",
+      "description": "Como você acessa com segurança valores de dicionário que podem não existir?",
+      "situation": "Você está processando dados de usuário onde alguns usuários podem não ter um campo 'email', e você quer evitar exceções KeyError.",
       "codeExample": "user_data = {'name': 'Alice', 'age': 30}\n# Need to get email safely, return 'No email' if missing",
       "options": [
         "email = user_data['email'] if 'email' in user_data else 'No email'",
@@ -51,16 +51,16 @@
         "email = user_data.get('email', 'No email')"
       ],
       "correctAnswer": 3,
-      "explanation": "The .get() method is the most Pythonic way to safely access dictionary values with a default fallback. It's concise, readable, and handles missing keys gracefully.",
-      "hint": "What dictionary method is specifically designed for safe key access with default values?",
+      "explanation": "O método .get() é a forma mais Pythônica de acessar valores de dicionário com segurança usando um valor padrão de fallback. É conciso, legível, e lida com chaves ausentes de forma graciosa.",
+      "hint": "Qual método de dicionário é especificamente projetado para acesso seguro de chaves com valores padrão?",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "string-formatting",
-      "title": "Modern String Formatting",
-      "description": "What's the best way to format strings in modern Python?",
-      "situation": "You need to create a user greeting message with their name and account balance formatted as currency.",
+      "title": "Formatação Moderna de Strings",
+      "description": "Qual é a melhor forma de formatar strings no Python moderno?",
+      "situation": "Você precisa criar uma mensagem de saudação para o usuário com seu nome e saldo de conta formatado como moeda.",
       "codeExample": "name = \"Bob\"\nbalance = 1234.56\n# Goal: \"Hello Bob, your balance is $1,234.56\"",
       "options": [
         "message = \"Hello \" + name + \", your balance is $\" + str(balance)",
@@ -69,16 +69,16 @@
         "message = f\"Hello {name}, your balance is ${balance:,.2f}\""
       ],
       "correctAnswer": 3,
-      "explanation": "F-strings (formatted string literals) are the most modern, readable, and efficient way to format strings in Python 3.6+. They allow inline expressions and formatting specifiers.",
-      "hint": "Which formatting method was introduced in Python 3.6 and is considered the most readable?",
+      "explanation": "F-strings (formatted string literals) são a forma mais moderna, legível e eficiente de formatar strings no Python 3.6+. Elas permitem expressões inline e especificadores de formatação.",
+      "hint": "Qual método de formatação foi introduzido no Python 3.6 e é considerado o mais legível?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "exception-handling",
-      "title": "Proper Exception Handling",
-      "description": "How should you handle exceptions when reading a file?",
-      "situation": "You need to read a configuration file, but it might not exist or be corrupted. You want to handle errors gracefully.",
+      "title": "Tratamento Adequado de Exceções",
+      "description": "Como você deveria tratar exceções ao ler um arquivo?",
+      "situation": "Você precisa ler um arquivo de configuração, mas ele pode não existir ou estar corrompido. Você quer lidar com erros de forma graciosa.",
       "codeExample": "# Need to read 'config.json' safely\n# Return empty dict if file issues occur",
       "options": [
         "try:\n    with open('config.json') as f:\n        return json.load(f)\nexcept:\n    return {}",
@@ -87,16 +87,16 @@
         "if os.path.exists('config.json'):\n    with open('config.json') as f:\n        return json.load(f)\nelse:\n    return {}"
       ],
       "correctAnswer": 2,
-      "explanation": "Catch specific exceptions rather than using bare 'except' clauses. This allows for proper error handling while not masking unexpected errors. Using logging is also a best practice.",
-      "hint": "It's better to catch specific exceptions rather than all exceptions. What could go wrong when reading and parsing a JSON file?",
+      "explanation": "Capture exceções específicas em vez de usar cláusulas 'except' genéricas. Isso permite um tratamento de erro adequado sem mascarar erros inesperados. Usar logging também é uma boa prática.",
+      "hint": "É melhor capturar exceções específicas do que todas as exceções. O que poderia dar errado ao ler e analisar um arquivo JSON?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "class-design",
-      "title": "Object-Oriented Design",
-      "description": "Design a class for representing a bank account with proper encapsulation.",
-      "situation": "You need a BankAccount class that protects the balance from direct modification and validates transactions.",
+      "title": "Design Orientado a Objetos",
+      "description": "Projete uma classe para representar uma conta bancária com encapsulamento adequado.",
+      "situation": "Você precisa de uma classe BankAccount que proteja o saldo de modificação direta e valide as transações.",
       "codeExample": "# Requirements:\n# - Private balance attribute\n# - Deposit/withdraw methods with validation\n# - Read-only balance property",
       "options": [
         "class BankAccount:\n    def __init__(self, initial_balance=0):\n        self.balance = initial_balance\n    \n    def deposit(self, amount):\n        self.balance += amount\n    \n    def withdraw(self, amount):\n        self.balance -= amount",
@@ -105,16 +105,16 @@
         "class BankAccount:\n    balance = 0\n    \n    def deposit(self, amount):\n        BankAccount.balance += amount"
       ],
       "correctAnswer": 1,
-      "explanation": "This design uses a protected attribute (_balance), a property for read-only access, and proper validation in methods. It follows Python conventions and encapsulation principles.",
-      "hint": "Consider encapsulation, validation, and Python property decorators. How do you make an attribute read-only while keeping methods safe?",
+      "explanation": "Esse design usa um atributo protegido (_balance), uma property para acesso somente leitura, e validação adequada nos métodos. Ele segue as convenções do Python e os princípios de encapsulamento.",
+      "hint": "Considere encapsulamento, validação, e os property decorators do Python. Como você torna um atributo somente leitura mantendo os métodos seguros?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "generator-usage",
-      "title": "Memory-Efficient Data Processing",
-      "description": "How do you process a large file without loading it entirely into memory?",
-      "situation": "You need to process a 10GB log file line by line, extracting error messages, without consuming excessive memory.",
+      "title": "Processamento de Dados com Eficiência de Memória",
+      "description": "Como você processa um arquivo grande sem carregá-lo inteiramente na memória?",
+      "situation": "Você precisa processar um arquivo de log de 10GB linha por linha, extraindo mensagens de erro, sem consumir memória excessiva.",
       "codeExample": "# Large file: server.log (10GB)\n# Goal: Extract lines containing 'ERROR' efficiently",
       "options": [
         "with open('server.log') as f:\n    lines = f.readlines()\n    errors = [line for line in lines if 'ERROR' in line]\n    return errors",
@@ -123,16 +123,16 @@
         "import pandas as pd\ndf = pd.read_csv('server.log', sep='\\n')\nerrors = df[df[0].str.contains('ERROR')]"
       ],
       "correctAnswer": 2,
-      "explanation": "Using a generator function with yield creates a memory-efficient iterator that processes one line at a time. This approach can handle files of any size without memory issues.",
-      "hint": "Think about memory usage. Which approach processes data one piece at a time rather than loading everything into memory?",
+      "explanation": "Usar uma função geradora com yield cria um iterador eficiente em memória que processa uma linha por vez. Essa abordagem consegue lidar com arquivos de qualquer tamanho sem problemas de memória.",
+      "hint": "Pense no uso de memória. Qual abordagem processa os dados uma peça de cada vez em vez de carregar tudo na memória?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "context-managers",
-      "title": "Resource Management",
-      "description": "How do you ensure a database connection is closed even if an error occurs?",
-      "situation": "You need to connect to a database, perform operations, and guarantee the connection is closed. The database library's connection object does not document that its context manager closes the connection.",
+      "title": "Gerenciamento de Recursos",
+      "description": "Como você garante que uma conexão de banco de dados seja fechada mesmo que ocorra um erro?",
+      "situation": "Você precisa se conectar a um banco de dados, realizar operações, e garantir que a conexão seja fechada. A biblioteca de banco de dados não documenta que seu context manager fecha a conexão.",
       "codeExample": "# Need to:\n# 1. Connect to database\n# 2. Execute queries\n# 3. Ensure connection closes properly",
       "options": [
         "conn = database.connect()\ntry:\n    result = conn.execute(query)\n    return result\nfinally:\n    conn.close()",
@@ -141,16 +141,16 @@
         "try:\n    conn = database.connect()\n    result = conn.execute(query)\n    conn.close()\n    return result\nexcept Exception:\n    conn.close()\n    raise"
       ],
       "correctAnswer": 0,
-      "explanation": "A try/finally block guarantees conn.close() runs after the operation, even when an exception is raised. A with statement is ideal only when the object's context manager is documented to close the resource. Some database connections, such as sqlite3.Connection, use the context manager for transaction handling but do not close the connection automatically.",
-      "hint": "Do not assume every database connection context manager closes the underlying connection. Which option explicitly closes it no matter how the query exits?",
+      "explanation": "Um bloco try/finally garante que conn.close() execute após a operação, mesmo quando uma exceção é lançada. Uma instrução with é ideal apenas quando o context manager do objeto é documentado como fechando o recurso. Algumas conexões de banco de dados, como sqlite3.Connection, usam o context manager para tratamento de transação, mas não fecham a conexão automaticamente.",
+      "hint": "Não assuma que todo context manager de conexão de banco de dados fecha a conexão subjacente. Qual opção fecha explicitamente a conexão, não importa como a query termine?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "decorators-practical",
-      "title": "Function Decorators",
-      "description": "How do you add timing functionality to multiple functions without repeating code?",
-      "situation": "You want to measure execution time for several functions in your application for performance monitoring.",
+      "title": "Decorators de Função",
+      "description": "Como você adiciona funcionalidade de medição de tempo a múltiplas funções sem repetir código?",
+      "situation": "Você quer medir o tempo de execução de várias funções na sua aplicação para monitoramento de desempenho.",
       "codeExample": "# Need to time these functions:\ndef calculate_stats(data): ...\ndef process_data(data): ...\ndef generate_report(data): ...",
       "options": [
         "import time\n\ndef calculate_stats(data):\n    start = time.time()\n    # function logic\n    end = time.time()\n    print(f\"Took {end-start:.2f}s\")",
@@ -159,16 +159,16 @@
         "def time_function(func, *args):\n    start = time.time()\n    result = func(*args)\n    end = time.time()\n    return result, end-start"
       ],
       "correctAnswer": 1,
-      "explanation": "Decorators provide a clean, reusable way to add functionality to functions. Using @wraps preserves the original function's metadata, and the decorator can be applied to any function.",
-      "hint": "What Python feature allows you to modify or extend function behavior without changing the function itself?",
+      "explanation": "Decorators oferecem uma forma limpa e reutilizável de adicionar funcionalidade a funções. Usar @wraps preserva os metadados da função original, e o decorator pode ser aplicado a qualquer função.",
+      "hint": "Qual recurso do Python permite modificar ou estender o comportamento de uma função sem alterar a função em si?",
       "difficulty": "intermediate",
       "points": 18
     },
     {
       "id": "async-programming",
-      "title": "Asynchronous Programming",
-      "description": "How do you efficiently handle multiple concurrent API calls?",
-      "situation": "You need to fetch data from 10 different APIs. Sequential calls take 20 seconds total, but you want to make them concurrent.",
+      "title": "Programação Assíncrona",
+      "description": "Como você lida com eficiência com múltiplas chamadas de API concorrentes?",
+      "situation": "Você precisa buscar dados de 10 APIs diferentes. Chamadas sequenciais levam 20 segundos no total, mas você quer torná-las concorrentes.",
       "codeExample": "import asyncio\nimport aiohttp\n\nurls = ['api1.com', 'api2.com', ...] # 10 URLs\n# Goal: Fetch all concurrently",
       "options": [
         "import requests\n\nresults = []\nfor url in urls:\n    response = requests.get(url)\n    results.append(response.json())",
@@ -177,16 +177,16 @@
         "import multiprocessing\n\ndef fetch_url(url):\n    return requests.get(url).json()\n\nwith multiprocessing.Pool() as pool:\n    results = pool.map(fetch_url, urls)"
       ],
       "correctAnswer": 2,
-      "explanation": "Async/await with aiohttp is ideal for I/O-bound operations like API calls. It's more efficient than threading for this use case and handles concurrency elegantly with asyncio.gather().",
-      "hint": "For I/O-bound operations like network requests, which concurrency approach is most efficient and doesn't create new threads or processes?",
+      "explanation": "Async/await com aiohttp é ideal para operações limitadas por I/O, como chamadas de API. É mais eficiente do que threading para esse caso de uso e lida com a concorrência de forma elegante com asyncio.gather().",
+      "hint": "Para operações limitadas por I/O, como requisições de rede, qual abordagem de concorrência é mais eficiente e não cria novas threads ou processos?",
       "difficulty": "advanced",
       "points": 22
     },
     {
       "id": "metaclass-usage",
-      "title": "Advanced Class Behavior",
-      "description": "How do you automatically track all instances of a class?",
-      "situation": "You want to keep track of all User objects created in your application for debugging purposes, without modifying each User instantiation.",
+      "title": "Comportamento Avançado de Classe",
+      "description": "Como você rastreia automaticamente todas as instâncias de uma classe?",
+      "situation": "Você quer manter o rastreamento de todos os objetos User criados na sua aplicação para fins de depuração, sem modificar cada instanciação de User.",
       "codeExample": "# Goal: Automatically track all User instances\n# Without adding tracking code to each User() call",
       "options": [
         "class User:\n    instances = []\n    \n    def __init__(self, name):\n        self.name = name\n        User.instances.append(self)",
@@ -195,8 +195,8 @@
         "import weakref\n\nclass User:\n    _instances = weakref.WeakSet()\n    \n    def __init__(self, name):\n        self.name = name\n        self.__class__._instances.add(self)"
       ],
       "correctAnswer": 1,
-      "explanation": "Using __new__ method provides clean automatic instance tracking without requiring metaclasses. It intercepts object creation and is simpler than metaclasses for this use case.",
-      "hint": "Think about the object creation process. Which special method is called before __init__ and can intercept instance creation?",
+      "explanation": "Usar o método __new__ fornece um rastreamento automático de instâncias limpo, sem exigir metaclasses. Ele intercepta a criação do objeto e é mais simples do que metaclasses para esse caso de uso.",
+      "hint": "Pense no processo de criação de objetos. Qual método especial é chamado antes de __init__ e pode interceptar a criação de instâncias?",
       "difficulty": "advanced",
       "points": 25
     }

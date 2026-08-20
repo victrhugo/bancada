@@ -1,7 +1,7 @@
 {
   "id": "terraform-quiz",
   "title": "Terraform Fundamentals Quiz",
-  "description": "Test your Infrastructure as Code knowledge with practical Terraform scenarios and best practices",
+  "description": "Teste seu conhecimento de Infrastructure as Code com cenários práticos de Terraform e melhores práticas",
   "category": "Terraform",
   "icon": "Terminal",
   "totalPoints": 88,
@@ -11,7 +11,7 @@
     "gradientTo": "to-pink-600"
   },
   "metadata": {
-    "estimatedTime": "15-18 minutes",
+    "estimatedTime": "15-18 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 3,
@@ -22,9 +22,9 @@
   "questions": [
     {
       "id": "basic-resource-creation",
-      "title": "Creating Your First Resource",
-      "description": "What's the correct way to create an AWS EC2 instance with Terraform?",
-      "situation": "You need to create a basic EC2 instance named 'web-server' using the t2.micro instance type.",
+      "title": "Criando Seu Primeiro Recurso",
+      "description": "Qual é a forma correta de criar uma instância EC2 da AWS com Terraform?",
+      "situation": "Você precisa criar uma instância EC2 básica chamada 'web-server' usando o tipo de instância t2.micro.",
       "codeExample": "# Goal: Create t2.micro EC2 instance\n# Instance should be tagged with Name: web-server",
       "options": [
         "resource \"aws_instance\" \"web_server\" {\n  ami           = \"ami-12345678\"\n  instance_type = \"t2.micro\"\n  tags = {\n    Name = \"web-server\"\n  }\n}",
@@ -33,115 +33,115 @@
         "aws_instance \"web_server\" {\n  ami           = \"ami-12345678\"\n  instance_type = \"t2.micro\"\n  tags = [\"Name: web-server\"]\n}"
       ],
       "correctAnswer": 0,
-      "explanation": "The correct Terraform syntax uses 'resource' followed by the resource type and name. AWS provider uses 'aws_instance' as the resource type, and tags are specified as a map.",
-      "hint": "Think about the basic Terraform resource syntax: resource \"type\" \"name\" { ... }",
+      "explanation": "A sintaxe correta do Terraform usa 'resource' seguido do tipo de recurso e do nome. O provider da AWS usa 'aws_instance' como tipo de recurso, e as tags são especificadas como um mapa.",
+      "hint": "Pense na sintaxe básica de recurso do Terraform: resource \"type\" \"name\" { ... }",
       "difficulty": "beginner",
       "points": 8
     },
     {
       "id": "variables-usage",
-      "title": "Using Variables",
-      "description": "How do you make your Terraform configuration reusable across environments?",
-      "situation": "You want to use different instance types for development (t2.micro) and production (t2.large) environments.",
+      "title": "Usando Variáveis",
+      "description": "Como você torna sua configuração Terraform reutilizável entre ambientes?",
+      "situation": "Você quer usar tipos de instância diferentes para os ambientes de desenvolvimento (t2.micro) e produção (t2.large).",
       "codeExample": "# Need: Configurable instance type\n# Dev: t2.micro\n# Prod: t2.large",
       "options": [
-        "Use environment variables like $INSTANCE_TYPE",
+        "Usar variáveis de ambiente como $INSTANCE_TYPE",
         "variable \"instance_type\" {\n  description = \"EC2 instance type\"\n  type        = string\n  default     = \"t2.micro\"\n}\n\nresource \"aws_instance\" \"web\" {\n  instance_type = var.instance_type\n}",
-        "Create separate .tf files for each environment",
-        "Use conditional statements: instance_type = env == \"prod\" ? \"t2.large\" : \"t2.micro\""
+        "Criar arquivos .tf separados para cada ambiente",
+        "Usar declarações condicionais: instance_type = env == \"prod\" ? \"t2.large\" : \"t2.micro\""
       ],
       "correctAnswer": 1,
-      "explanation": "Terraform variables are the proper way to make configurations reusable. They support types, descriptions, defaults, and validation, making your infrastructure code more maintainable.",
-      "hint": "What Terraform feature is specifically designed for parameterizing configurations?",
+      "explanation": "Variáveis do Terraform são a forma correta de tornar configurações reutilizáveis. Elas suportam tipos, descrições, valores padrão e validação, tornando seu código de infraestrutura mais fácil de manter.",
+      "hint": "Qual recurso do Terraform é especificamente projetado para parametrizar configurações?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "state-management",
-      "title": "State File Management",
-      "description": "What's the best practice for storing Terraform state in a team environment?",
-      "situation": "Multiple team members need to work on the same Terraform configuration without conflicts.",
+      "title": "Gerenciamento do Arquivo de Estado",
+      "description": "Qual é a melhor prática para armazenar o estado do Terraform em um ambiente de equipe?",
+      "situation": "Múltiplos membros da equipe precisam trabalhar na mesma configuração Terraform sem conflitos.",
       "options": [
-        "Use remote backend like S3 with state locking via DynamoDB",
-        "Each team member keeps their own local state file",
-        "Store state file in version control (Git)",
-        "Share state file via email or file sharing service"
+        "Usar um backend remoto como o S3 com state locking via DynamoDB",
+        "Cada membro da equipe mantém seu próprio arquivo de estado local",
+        "Armazenar o arquivo de estado no controle de versão (Git)",
+        "Compartilhar o arquivo de estado por e-mail ou serviço de compartilhamento de arquivos"
       ],
       "correctAnswer": 0,
-      "explanation": "Remote backends like S3 with DynamoDB locking prevent conflicts, provide state history, and enable team collaboration. Local state files cause conflicts and version control storage exposes sensitive data.",
-      "hint": "Consider security, collaboration, and conflict prevention. What approach handles all these concerns?",
+      "explanation": "Backends remotos como o S3 com locking via DynamoDB previnem conflitos, fornecem histórico de estado e permitem colaboração em equipe. Arquivos de estado locais causam conflitos, e armazenar no controle de versão expõe dados sensíveis.",
+      "hint": "Considere segurança, colaboração e prevenção de conflitos. Qual abordagem lida com todas essas preocupações?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "modules-organization",
-      "title": "Code Organization with Modules",
-      "description": "How should you structure reusable Terraform code?",
-      "situation": "You need to create VPCs with subnets and security groups across multiple projects with slight variations.",
+      "title": "Organização de Código com Módulos",
+      "description": "Como você deveria estruturar código Terraform reutilizável?",
+      "situation": "Você precisa criar VPCs com subnets e security groups em múltiplos projetos com pequenas variações.",
       "codeExample": "# Common pattern:\n# - VPC with public/private subnets\n# - Security groups for web/app/db tiers\n# - Used across 5+ projects",
       "options": [
-        "Copy and paste the configuration for each project",
-        "Create a Terraform module with configurable parameters:\nmodule \"vpc\" {\n  source = \"./modules/vpc\"\n  \n  vpc_cidr = var.vpc_cidr\n  environment = var.environment\n  project_name = var.project_name\n}",
-        "Use a single large configuration file for all projects",
-        "Create shell scripts to generate Terraform files"
+        "Copiar e colar a configuração para cada projeto",
+        "Criar um módulo Terraform com parâmetros configuráveis:\nmodule \"vpc\" {\n  source = \"./modules/vpc\"\n  \n  vpc_cidr = var.vpc_cidr\n  environment = var.environment\n  project_name = var.project_name\n}",
+        "Usar um único arquivo de configuração grande para todos os projetos",
+        "Criar scripts shell para gerar arquivos Terraform"
       ],
       "correctAnswer": 1,
-      "explanation": "Terraform modules promote reusability, maintainability, and consistency. They encapsulate related resources and can be parameterized for different use cases while maintaining DRY principles.",
-      "hint": "What Terraform feature is designed for creating reusable, configurable infrastructure components?",
+      "explanation": "Módulos do Terraform promovem reutilização, facilidade de manutenção e consistência. Eles encapsulam recursos relacionados e podem ser parametrizados para diferentes casos de uso, mantendo os princípios DRY.",
+      "hint": "Qual recurso do Terraform é projetado para criar componentes de infraestrutura reutilizáveis e configuráveis?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "data-sources",
-      "title": "Using Existing Resources",
-      "description": "How do you reference existing AWS resources in your Terraform configuration?",
-      "situation": "You need to launch EC2 instances in an existing VPC that was created outside of Terraform.",
+      "title": "Usando Recursos Existentes",
+      "description": "Como você referencia recursos AWS existentes na sua configuração Terraform?",
+      "situation": "Você precisa lançar instâncias EC2 em uma VPC existente que foi criada fora do Terraform.",
       "codeExample": "# Existing VPC: vpc-12345678\n# Need: Reference existing VPC to create subnets",
       "options": [
-        "Hard-code the VPC ID: vpc_id = \"vpc-12345678\"",
-        "Import the VPC into Terraform state first",
+        "Fixar o ID da VPC diretamente no código: vpc_id = \"vpc-12345678\"",
+        "Importar a VPC para o estado do Terraform primeiro",
         "data \"aws_vpc\" \"existing\" {\n  filter {\n    name = \"tag:Name\"\n    values = [\"production-vpc\"]\n  }\n}\n\nresource \"aws_subnet\" \"app\" {\n  vpc_id = data.aws_vpc.existing.id\n}",
-        "Create a new VPC instead of using the existing one"
+        "Criar uma nova VPC em vez de usar a existente"
       ],
       "correctAnswer": 2,
-      "explanation": "Data sources allow you to query and reference existing resources without managing them in Terraform. This enables integration with existing infrastructure while maintaining clean separation of concerns.",
-      "hint": "What Terraform feature lets you query existing resources without managing them?",
+      "explanation": "Data sources permitem consultar e referenciar recursos existentes sem gerenciá-los no Terraform. Isso permite integração com infraestrutura existente mantendo uma separação limpa de responsabilidades.",
+      "hint": "Qual recurso do Terraform permite consultar recursos existentes sem gerenciá-los?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "lifecycle-management",
-      "title": "Resource Lifecycle Control",
-      "description": "How do you prevent accidental deletion of critical resources?",
-      "situation": "You have a production database that should never be accidentally destroyed during terraform apply.",
+      "title": "Controle de Ciclo de Vida de Recursos",
+      "description": "Como você previne a exclusão acidental de recursos críticos?",
+      "situation": "Você tem um banco de dados de produção que nunca deveria ser destruído acidentalmente durante um terraform apply.",
       "codeExample": "resource \"aws_db_instance\" \"production\" {\n  # Database configuration\n  # Need: Prevent accidental deletion\n}",
       "options": [
-        "Add a comment: # DO NOT DELETE",
+        "Adicionar um comentário: # DO NOT DELETE",
         "lifecycle {\n  prevent_destroy = true\n}",
-        "Use separate Terraform workspace for production",
+        "Usar um workspace Terraform separado para produção",
         "create_before_destroy = false"
       ],
       "correctAnswer": 1,
-      "explanation": "The lifecycle.prevent_destroy meta-argument prevents Terraform from destroying the resource, even if the configuration is removed. This is essential for protecting critical resources like databases.",
-      "hint": "What Terraform meta-argument is specifically designed to prevent resource destruction?",
+      "explanation": "O meta-argumento lifecycle.prevent_destroy impede que o Terraform destrua o recurso, mesmo que a configuração seja removida. Isso é essencial para proteger recursos críticos como bancos de dados.",
+      "hint": "Qual meta-argumento do Terraform é especificamente projetado para prevenir a destruição de recursos?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "advanced-provisioning",
-      "title": "Complex Provisioning Scenario",
-      "description": "How do you handle dependencies between resources that Terraform can't automatically detect?",
-      "situation": "Your application servers need to start only after the database is fully initialized and ready to accept connections.",
+      "title": "Cenário de Provisionamento Complexo",
+      "description": "Como você lida com dependências entre recursos que o Terraform não consegue detectar automaticamente?",
+      "situation": "Seus servidores de aplicação precisam iniciar apenas depois que o banco de dados estiver totalmente inicializado e pronto para aceitar conexões.",
       "codeExample": "# Database takes 5+ minutes to initialize\n# App servers should wait for DB to be ready\n# Terraform doesn't know about the initialization delay",
       "options": [
-        "Use time_sleep resource or null_resource with local-exec provisioner",
+        "Usar o recurso time_sleep ou null_resource com o provisioner local-exec",
         "depends_on = [aws_db_instance.database]",
-        "Run terraform apply twice",
-        "Use separate terraform configurations"
+        "Rodar terraform apply duas vezes",
+        "Usar configurações Terraform separadas"
       ],
       "correctAnswer": 0,
-      "explanation": "While depends_on handles resource creation order, it doesn't wait for service readiness. time_sleep or null_resource with local-exec can implement custom waiting logic or health checks before proceeding.",
-      "hint": "Sometimes you need to wait for more than just resource creation. What options handle custom timing or health checks?",
+      "explanation": "Embora o depends_on controle a ordem de criação de recursos, ele não espera a prontidão do serviço. time_sleep ou null_resource com local-exec podem implementar lógica de espera personalizada ou health checks antes de prosseguir.",
+      "hint": "Às vezes você precisa esperar por mais do que apenas a criação do recurso. Quais opções lidam com temporização personalizada ou health checks?",
       "difficulty": "advanced",
       "points": 18
     }

@@ -1,7 +1,7 @@
 {
   "id": "system-design-quiz",
   "title": "System Design Fundamentals Quiz",
-  "description": "Test your system design skills with questions on load balancing, caching, sharding, replication, queues, consistency models, and distributed system tradeoffs.",
+  "description": "Teste suas habilidades de system design com questões sobre load balancing, cache, sharding, replicação, filas, modelos de consistência e trade-offs de sistemas distribuídos.",
   "category": "System Design",
   "icon": "Code",
   "totalPoints": 118,
@@ -11,7 +11,7 @@
     "gradientTo": "to-purple-600"
   },
   "metadata": {
-    "estimatedTime": "18-22 minutes",
+    "estimatedTime": "18-22 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 4,
@@ -22,160 +22,160 @@
   "questions": [
     {
       "id": "load-balancing-basics",
-      "title": "Distributing Traffic",
-      "description": "Your web application receives 10,000 requests per second. How do you distribute traffic across multiple servers?",
-      "situation": "You have 5 application servers and need to ensure even traffic distribution while handling server failures gracefully.",
+      "title": "Distribuindo Tráfego",
+      "description": "Sua aplicação web recebe 10.000 requisições por segundo. Como você distribui o tráfego entre múltiplos servidores?",
+      "situation": "Você tem 5 servidores de aplicação e precisa garantir uma distribuição uniforme de tráfego enquanto lida com falhas de servidor de forma graciosa.",
       "codeExample": "# Current setup:\n# - 5 web servers\n# - 10,000 req/s\n# - Need: High availability and even distribution",
       "options": [
-        "Use a load balancer (like NGINX or AWS ALB) with health checks and round-robin or least-connections algorithm",
-        "Use DNS round-robin to distribute traffic",
-        "Hard-code different server IPs in the client application",
-        "Have users manually choose which server to connect to"
+        "Usar um load balancer (como NGINX ou AWS ALB) com health checks e algoritmo round-robin ou least-connections",
+        "Usar DNS round-robin para distribuir o tráfego",
+        "Fixar diferentes IPs de servidor na aplicação cliente",
+        "Fazer os usuários escolherem manualmente a qual servidor se conectar"
       ],
       "correctAnswer": 0,
-      "explanation": "Load balancers provide health checking, session persistence, SSL termination, and intelligent routing algorithms. They can automatically remove failed servers from rotation and distribute traffic based on current load, unlike DNS round-robin which caches IPs and can't react to failures quickly.",
-      "hint": "What solution provides automatic health checking and can instantly route around failures?",
+      "explanation": "Load balancers fornecem verificação de saúde, persistência de sessão, terminação SSL e algoritmos de roteamento inteligentes. Eles podem remover automaticamente servidores com falha da rotação e distribuir o tráfego com base na carga atual, ao contrário do DNS round-robin, que faz cache de IPs e não consegue reagir rapidamente a falhas.",
+      "hint": "Qual solução fornece verificação automática de saúde e pode redirecionar instantaneamente em torno de falhas?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "caching-strategy",
-      "title": "Reducing Database Load",
-      "description": "Your database is overwhelmed with read queries. 80% of queries request the same data repeatedly.",
-      "situation": "Product catalog data changes infrequently but is read thousands of times per minute. Database CPU is at 95%.",
+      "title": "Reduzindo a Carga do Banco de Dados",
+      "description": "Seu banco de dados está sobrecarregado com queries de leitura. 80% das queries pedem os mesmos dados repetidamente.",
+      "situation": "Os dados do catálogo de produtos mudam pouco, mas são lidos milhares de vezes por minuto. A CPU do banco de dados está em 95%.",
       "codeExample": "# Problem:\n# - 5,000 reads/min to product_catalog table\n# - Data changes once per hour\n# - DB CPU at 95%",
       "options": [
-        "Add more database replicas",
-        "Upgrade to a larger database server",
-        "Denormalize all database tables",
-        "Implement Redis or Memcached cache layer with TTL-based expiration for frequently accessed data"
+        "Adicionar mais réplicas de banco de dados",
+        "Fazer upgrade para um servidor de banco de dados maior",
+        "Desnormalizar todas as tabelas do banco de dados",
+        "Implementar uma camada de cache Redis ou Memcached com expiração baseada em TTL para dados acessados com frequência"
       ],
       "correctAnswer": 3,
-      "explanation": "Caching frequently accessed, infrequently changing data dramatically reduces database load. Redis/Memcached can serve thousands of requests per second from memory, reducing database queries by 80-90%. This is more cost-effective than adding replicas or upgrading hardware for read-heavy workloads.",
-      "hint": "What's the most cost-effective solution for data that's read often but changes rarely?",
+      "explanation": "Fazer cache de dados acessados com frequência e que mudam raramente reduz drasticamente a carga do banco de dados. Redis/Memcached podem atender milhares de requisições por segundo a partir da memória, reduzindo as queries ao banco de dados em 80-90%. Isso é mais econômico do que adicionar réplicas ou fazer upgrade de hardware para cargas de trabalho com predominância de leitura.",
+      "hint": "Qual é a solução mais econômica para dados que são lidos com frequência mas mudam raramente?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "database-scaling",
-      "title": "Scaling Your Database",
-      "description": "Your application database has grown to handle millions of users. Write performance is degrading.",
-      "situation": "Single PostgreSQL instance handling both reads and writes. Write latency increasing as data grows.",
+      "title": "Escalando Seu Banco de Dados",
+      "description": "O banco de dados da sua aplicação cresceu para atender milhões de usuários. O desempenho de escrita está degradando.",
+      "situation": "Uma única instância PostgreSQL lidando tanto com leituras quanto com escritas. A latência de escrita está aumentando conforme os dados crescem.",
       "options": [
-        "Keep everything in one database and upgrade hardware",
-        "Delete old data to keep database small",
-        "Use read replicas for read traffic and implement database sharding for write scalability across multiple database nodes",
-        "Switch to NoSQL and hope it scales better"
+        "Manter tudo em um único banco de dados e fazer upgrade de hardware",
+        "Excluir dados antigos para manter o banco de dados pequeno",
+        "Usar réplicas de leitura para o tráfego de leitura e implementar sharding de banco de dados para escalabilidade de escrita entre múltiplos nós de banco de dados",
+        "Migrar para NoSQL e torcer para que escale melhor"
       ],
       "correctAnswer": 2,
-      "explanation": "Read replicas handle read traffic, reducing load on the primary database. Sharding distributes write load across multiple databases by partitioning data (e.g., by user ID ranges or geographic region). This horizontal scaling approach handles growth better than vertical scaling (hardware upgrades) alone.",
-      "hint": "How can you distribute both read and write load across multiple database instances?",
+      "explanation": "Réplicas de leitura lidam com o tráfego de leitura, reduzindo a carga sobre o banco de dados primário. O sharding distribui a carga de escrita entre múltiplos bancos de dados particionando os dados (por exemplo, por faixas de ID de usuário ou região geográfica). Essa abordagem de escalonamento horizontal lida melhor com o crescimento do que o escalonamento vertical (upgrades de hardware) sozinho.",
+      "hint": "Como você pode distribuir tanto a carga de leitura quanto a de escrita entre múltiplas instâncias de banco de dados?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "cap-theorem",
-      "title": "Understanding CAP Theorem",
-      "description": "You're designing a global e-commerce platform. During a network partition, what can you guarantee?",
-      "situation": "Your system spans multiple data centers. Network issues between data centers occur occasionally.",
+      "title": "Entendendo o Teorema CAP",
+      "description": "Você está projetando uma plataforma de e-commerce global. Durante uma partição de rede, o que você consegue garantir?",
+      "situation": "Seu sistema abrange múltiplos data centers. Problemas de rede entre data centers ocorrem ocasionalmente.",
       "codeExample": "# CAP Theorem states you can only have 2 of 3:\n# - Consistency (all nodes see same data)\n# - Availability (system always responds)\n# - Partition Tolerance (works despite network failures)",
       "options": [
-        "During a partition, choose between Consistency (reject requests to maintain data consistency) or Availability (serve potentially stale data)",
-        "You can have all three: Consistency, Availability, and Partition Tolerance",
-        "CAP theorem doesn't apply to modern systems",
-        "Use blockchain to solve the CAP theorem"
+        "Durante uma partição, escolha entre Consistência (rejeitar requisições para manter a consistência dos dados) ou Disponibilidade (servir dados potencialmente desatualizados)",
+        "Você pode ter os três: Consistência, Disponibilidade e Tolerância a Partições",
+        "O teorema CAP não se aplica a sistemas modernos",
+        "Usar blockchain para resolver o teorema CAP"
       ],
       "correctAnswer": 0,
-      "explanation": "CAP theorem proves you can only achieve 2 of 3 guarantees. During a network partition (which you must tolerate in distributed systems), you must choose: either maintain consistency and reject some requests (CP), or remain available but risk serving stale data (AP). E-commerce often chooses AP for shopping cart, CP for payments.",
-      "hint": "During a network split, what tradeoff must you make?",
+      "explanation": "O teorema CAP prova que você só consegue alcançar 2 das 3 garantias. Durante uma partição de rede (que você precisa tolerar em sistemas distribuídos), você precisa escolher: ou manter a consistência e rejeitar algumas requisições (CP), ou permanecer disponível mas correr o risco de servir dados desatualizados (AP). O e-commerce frequentemente escolhe AP para o carrinho de compras, e CP para pagamentos.",
+      "hint": "Durante uma divisão de rede, qual trade-off você precisa fazer?",
       "difficulty": "intermediate",
       "points": 14
     },
     {
       "id": "message-queues",
-      "title": "Asynchronous Processing",
-      "description": "Users upload videos that need processing. Processing takes 10 minutes but users expect immediate response.",
-      "situation": "Video processing is CPU-intensive and slow. Users should get immediate feedback, and the system must handle traffic spikes.",
+      "title": "Processamento Assíncrono",
+      "description": "Usuários fazem upload de vídeos que precisam de processamento. O processamento leva 10 minutos, mas os usuários esperam uma resposta imediata.",
+      "situation": "O processamento de vídeo consome muita CPU e é lento. Os usuários deveriam receber feedback imediato, e o sistema precisa lidar com picos de tráfego.",
       "options": [
-        "Make users wait 10 minutes for processing to complete",
-        "Process videos on the web server synchronously",
-        "Reject uploads during high traffic periods",
-        "Use a message queue (RabbitMQ, SQS, Kafka) to accept uploads immediately, process asynchronously, and notify users when complete"
+        "Fazer os usuários esperarem 10 minutos até o processamento terminar",
+        "Processar os vídeos no servidor web de forma síncrona",
+        "Rejeitar uploads durante períodos de alto tráfego",
+        "Usar uma fila de mensagens (RabbitMQ, SQS, Kafka) para aceitar uploads imediatamente, processar de forma assíncrona e notificar os usuários quando concluído"
       ],
       "correctAnswer": 3,
-      "explanation": "Message queues decouple request acceptance from processing. Users get immediate confirmation, uploads are queued, and worker processes handle them asynchronously. This provides better UX, handles traffic spikes gracefully (queue absorbs bursts), and allows independent scaling of web and worker tiers.",
-      "hint": "How do you provide immediate response while handling slow background processing?",
+      "explanation": "Filas de mensagens desacoplam a aceitação da requisição do processamento. Os usuários recebem confirmação imediata, os uploads são enfileirados, e processos worker lidam com eles de forma assíncrona. Isso proporciona uma UX melhor, lida bem com picos de tráfego (a fila absorve os picos) e permite escalonamento independente das camadas web e worker.",
+      "hint": "Como você fornece resposta imediata enquanto lida com processamento lento em segundo plano?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "microservices-vs-monolith",
-      "title": "Architecture Decision",
-      "description": "You're starting a new project with a team of 5 developers. Should you use microservices?",
-      "situation": "Early-stage startup, small team, requirements are still evolving rapidly.",
+      "title": "Decisão de Arquitetura",
+      "description": "Você está iniciando um novo projeto com uma equipe de 5 desenvolvedores. Você deveria usar microsserviços?",
+      "situation": "Startup em estágio inicial, equipe pequena, requisitos ainda mudando rapidamente.",
       "codeExample": "# Context:\n# - Team: 5 developers\n# - Stage: MVP development\n# - Requirements: Changing frequently\n# - Timeline: 3 months to launch",
       "options": [
-        "Use microservices from day one to ensure scalability",
-        "Start with a well-structured monolith, split into microservices later when team size and complexity justify it",
-        "Use serverless functions for everything",
-        "Build a distributed monolith (worst of both worlds)"
+        "Usar microsserviços desde o primeiro dia para garantir escalabilidade",
+        "Começar com um monólito bem estruturado, e dividir em microsserviços mais tarde, quando o tamanho da equipe e a complexidade justificarem",
+        "Usar funções serverless para tudo",
+        "Construir um monólito distribuído (o pior dos dois mundos)"
       ],
       "correctAnswer": 1,
-      "explanation": "Monoliths are simpler to develop, test, and deploy initially. With a small team and evolving requirements, microservices add complexity without benefits: more deployment overhead, distributed debugging, network latency, and unclear service boundaries. Start monolithic with clean module boundaries, then split when organizational or technical needs justify the complexity.",
-      "hint": "What's the practical choice for a small team building an MVP?",
+      "explanation": "Monólitos são mais simples de desenvolver, testar e implantar inicialmente. Com uma equipe pequena e requisitos em constante mudança, microsserviços adicionam complexidade sem benefícios: mais overhead de deployment, depuração distribuída, latência de rede e limites de serviço pouco claros. Comece com um monólito com limites de módulo bem definidos, e divida depois, quando necessidades organizacionais ou técnicas justificarem a complexidade.",
+      "hint": "Qual é a escolha prática para uma equipe pequena construindo um MVP?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "cdn-usage",
-      "title": "Global Content Delivery",
-      "description": "Your application serves users worldwide. Users in Asia experience slow page loads.",
-      "situation": "Web servers are in US-East. Asian users see 2-3 second page load times. Static assets (images, JS, CSS) are 5MB total.",
+      "title": "Entrega Global de Conteúdo",
+      "description": "Sua aplicação atende usuários no mundo todo. Usuários na Ásia experimentam carregamentos de página lentos.",
+      "situation": "Os servidores web estão na região US-East. Usuários asiáticos veem tempos de carregamento de página de 2-3 segundos. Os assets estáticos (imagens, JS, CSS) somam 5MB no total.",
       "options": [
-        "Deploy servers in every country",
-        "Tell users to upgrade their internet connection",
-        "Use a CDN (CloudFront, Cloudflare) to cache static assets globally and serve from edge locations near users",
-        "Compress all files and hope it's enough"
+        "Implantar servidores em todos os países",
+        "Dizer aos usuários para fazerem upgrade da conexão de internet",
+        "Usar um CDN (CloudFront, Cloudflare) para fazer cache de assets estáticos globalmente e servi-los a partir de localizações de borda próximas aos usuários",
+        "Comprimir todos os arquivos e torcer para que seja suficiente"
       ],
       "correctAnswer": 2,
-      "explanation": "CDNs cache static content at edge locations worldwide, serving users from nearby servers. This dramatically reduces latency by minimizing distance data travels. CDNs also offload traffic from origin servers, provide DDoS protection, and handle traffic spikes. This is far more cost-effective than deploying infrastructure globally.",
-      "hint": "What service specializes in serving content from locations near your users worldwide?",
+      "explanation": "CDNs fazem cache de conteúdo estático em localizações de borda ao redor do mundo, atendendo usuários a partir de servidores próximos. Isso reduz drasticamente a latência ao minimizar a distância que os dados percorrem. CDNs também descarregam tráfego dos servidores de origem, fornecem proteção contra DDoS e lidam com picos de tráfego. Isso é muito mais econômico do que implantar infraestrutura globalmente.",
+      "hint": "Qual serviço se especializa em servir conteúdo a partir de localizações próximas aos seus usuários no mundo todo?",
       "difficulty": "intermediate",
       "points": 11
     },
     {
       "id": "rate-limiting",
-      "title": "API Protection",
-      "description": "How do you protect your API from abuse while allowing legitimate users full access?",
-      "situation": "Public API is being hammered by a few users making excessive requests, degrading service for others.",
+      "title": "Proteção de API",
+      "description": "Como você protege sua API contra abuso enquanto permite acesso total a usuários legítimos?",
+      "situation": "Uma API pública está sendo martelada por alguns usuários fazendo requisições excessivas, degradando o serviço para os demais.",
       "codeExample": "# Problem:\n# - Some users: 1000s of requests/minute\n# - Normal users: 10-20 requests/minute\n# - API performance degrading",
       "options": [
-        "Block all users making more than 10 requests per minute",
-        "Implement rate limiting with token bucket or sliding window algorithm, return 429 status codes, and provide clear limits in documentation",
-        "Remove API documentation so fewer people can use it",
-        "Add CAPTCHA to every API request"
+        "Bloquear todos os usuários que fizerem mais de 10 requisições por minuto",
+        "Implementar rate limiting com algoritmo token bucket ou sliding window, retornar códigos de status 429 e fornecer limites claros na documentação",
+        "Remover a documentação da API para que menos pessoas consigam usá-la",
+        "Adicionar CAPTCHA a cada requisição da API"
       ],
       "correctAnswer": 1,
-      "explanation": "Rate limiting with token bucket or sliding window algorithms allows burst traffic while preventing sustained abuse. Return HTTP 429 with Retry-After headers to inform clients. Implement tiered limits (per user, per IP, per API key) and document limits clearly. This protects infrastructure while allowing legitimate high-volume users to request limit increases.",
-      "hint": "What's the industry-standard approach for controlling API request rates?",
+      "explanation": "Rate limiting com algoritmos token bucket ou sliding window permite tráfego em pico enquanto previne abuso sustentado. Retorne HTTP 429 com headers Retry-After para informar os clientes. Implemente limites em camadas (por usuário, por IP, por chave de API) e documente os limites claramente. Isso protege a infraestrutura enquanto permite que usuários legítimos de alto volume solicitem aumentos de limite.",
+      "hint": "Qual é a abordagem padrão da indústria para controlar taxas de requisição de API?",
       "difficulty": "advanced",
       "points": 16
     },
     {
       "id": "data-consistency",
-      "title": "Handling Distributed Transactions",
-      "description": "In your e-commerce system, an order involves multiple services: inventory, payment, shipping. How do you ensure consistency?",
-      "situation": "Order creation must: deduct inventory, charge payment, create shipping label. Any failure should roll back all changes.",
+      "title": "Lidando com Transações Distribuídas",
+      "description": "No seu sistema de e-commerce, um pedido envolve múltiplos serviços: inventário, pagamento, envio. Como você garante consistência?",
+      "situation": "A criação de um pedido precisa: deduzir estoque, cobrar o pagamento, criar etiqueta de envio. Qualquer falha deveria reverter todas as mudanças.",
       "codeExample": "# Distributed transaction across:\n# - Inventory Service (deduct stock)\n# - Payment Service (charge card)\n# - Shipping Service (create label)\n# Need: All succeed or all fail",
       "options": [
-        "Use two-phase commit (2PC) across all services",
-        "Hope all services succeed and manually fix inconsistencies",
-        "Use Saga pattern with compensating transactions or event-driven eventual consistency with idempotent operations",
-        "Put all services in one database to use local transactions"
+        "Usar commit em duas fases (2PC) entre todos os serviços",
+        "Torcer para que todos os serviços tenham sucesso e corrigir inconsistências manualmente",
+        "Usar o padrão Saga com transações compensatórias ou consistência eventual orientada a eventos com operações idempotentes",
+        "Colocar todos os serviços em um único banco de dados para usar transações locais"
       ],
       "correctAnswer": 2,
-      "explanation": "In microservices, distributed transactions are challenging. The Saga pattern orchestrates a sequence of local transactions, each with compensating transactions for rollback (e.g., refund payment if shipping fails). Event-driven approaches use message queues for reliability and idempotency for retries. 2PC has poor performance and availability. Avoid distributed transactions when possible through careful service boundary design.",
-      "hint": "What pattern handles multi-service transactions with compensating actions for failures?",
+      "explanation": "Em microsserviços, transações distribuídas são desafiadoras. O padrão Saga orquestra uma sequência de transações locais, cada uma com transações compensatórias para rollback (por exemplo, reembolsar o pagamento se o envio falhar). Abordagens orientadas a eventos usam filas de mensagens para confiabilidade e idempotência para retentativas. O 2PC tem desempenho e disponibilidade ruins. Evite transações distribuídas quando possível, através de um design cuidadoso dos limites de serviço.",
+      "hint": "Qual padrão lida com transações multi-serviço com ações compensatórias para falhas?",
       "difficulty": "advanced",
       "points": 18
     }

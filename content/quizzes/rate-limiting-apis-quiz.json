@@ -1,7 +1,7 @@
 {
   "id": "rate-limiting-apis-quiz",
   "title": "Rate Limiting for APIs Quiz",
-  "description": "Test how you would design and run API rate limiting in production: token bucket, leaky bucket, fixed and sliding windows, distributed counters, response headers, and the failure modes that bite at scale.",
+  "description": "Teste como você projetaria e operaria rate limiting de APIs em produção: token bucket, leaky bucket, janelas fixas e deslizantes, contadores distribuídos, headers de resposta e os modos de falha que pegam em escala.",
   "category": "API Design",
   "icon": "Gauge",
   "totalPoints": 195,
@@ -11,7 +11,7 @@
     "gradientTo": "to-blue-600"
   },
   "metadata": {
-    "estimatedTime": "18-22 minutes",
+    "estimatedTime": "18-22 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 7,
@@ -23,237 +23,237 @@
   "questions": [
     {
       "id": "token-bucket-burst-allowance",
-      "title": "Letting Bursts Through Without Losing Control",
-      "description": "You need an algorithm that lets clients make a short burst of requests but still caps their sustained rate. Which one fits?",
-      "situation": "Your mobile app stays quiet most of the time, then fires off 15 requests in a second when someone opens it to sync. The product team is fine with those short bursts. What they do not want is one client pulling 50 requests per second for minutes on end. You need a limiter that tolerates the burst but holds the long-run average down.",
+      "title": "Deixando Picos Passarem Sem Perder o Controle",
+      "description": "Você precisa de um algoritmo que permita aos clientes fazer um pico curto de requisições, mas ainda assim limite sua taxa sustentada. Qual deles se encaixa?",
+      "situation": "Seu aplicativo mobile fica quieto na maior parte do tempo, e então dispara 15 requisições em um segundo quando alguém o abre para sincronizar. O time de produto está de acordo com esses picos curtos. O que eles não querem é um cliente puxando 50 requisições por segundo durante minutos seguidos. Você precisa de um limitador que tolere o pico, mas segure a média de longo prazo.",
       "codeExample": "# Traffic shape per client:\n#   idle ... then 15 requests in ~1s on app open ... idle\n#   sustained abuse: 50 req/s for several minutes  <-- block this\n#\n# Goal: allow short bursts, cap the average rate",
       "options": [
-        "Token bucket: tokens refill at a steady rate and a full bucket lets a burst through, but sustained traffic can only go as fast as the refill rate",
-        "Fixed window counter: count requests in each one second window and reject anything over the limit",
-        "Leaky bucket: process requests at a constant rate and drop anything that arrives faster",
-        "A simple per-client request counter that resets every hour"
+        "Token bucket: os tokens se reabastecem a uma taxa constante e um bucket cheio deixa um pico passar, mas o tráfego sustentado só pode ir tão rápido quanto a taxa de reabastecimento",
+        "Fixed window counter: contar requisições em cada janela de um segundo e rejeitar tudo acima do limite",
+        "Leaky bucket: processar requisições a uma taxa constante e descartar tudo que chegar mais rápido",
+        "Um contador de requisições simples por cliente que reseta a cada hora"
       ],
       "correctAnswer": 0,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "Token bucket is the standard pick when you want to allow bursts but bound the average. The bucket holds up to N tokens, each request spends one, and tokens drip back in at a fixed rate. A client that has been idle has a full bucket, so the 15-request sync goes straight through. Once the bucket drains, they can only go as fast as tokens refill, which caps sustained abuse. Fixed window rejects the burst the moment it crosses the per-second count even though the client has been quiet. Leaky bucket forces a constant output rate and would smooth away the burst you actually want to allow. An hourly counter is too coarse to stop a 50 req/s flood within the hour.",
-      "hint": "Which algorithm rewards a client for having been idle by letting saved-up capacity fund a short burst?"
+      "explanation": "Token bucket é a escolha padrão quando você quer permitir picos, mas limitar a média. O bucket comporta até N tokens, cada requisição gasta um, e os tokens voltam a pingar a uma taxa fixa. Um cliente que estava ocioso tem o bucket cheio, então a sincronização de 15 requisições passa direto. Uma vez que o bucket esvazia, ele só pode ir tão rápido quanto os tokens se reabastecem, o que limita o abuso sustentado. A fixed window rejeita o pico no momento em que ele ultrapassa a contagem por segundo, mesmo que o cliente estivesse quieto antes. A leaky bucket força uma taxa de saída constante e suavizaria justamente o pico que você quer permitir. Um contador por hora é grosseiro demais para impedir uma inundação de 50 req/s dentro daquela hora.",
+      "hint": "Qual algoritmo recompensa um cliente por ter ficado ocioso, deixando a capacidade acumulada financiar um pico curto?"
     },
     {
       "id": "fixed-window-boundary-burst",
-      "title": "Twice the Limit at the Window Edge",
-      "description": "Your fixed window rate limiter is set to 100 requests per minute, but a client somehow pushed through 200 requests in a few seconds. How?",
-      "situation": "You set a limit of 100 requests per minute per API key using a counter that resets at the top of each minute. A client sent 100 requests at 11:00:59 and another 100 at 11:01:01. Both batches were allowed. Your dashboards show 200 requests in about two seconds, double the limit you thought you enforced.",
+      "title": "O Dobro do Limite na Borda da Janela",
+      "description": "Seu rate limiter de fixed window está configurado para 100 requisições por minuto, mas um cliente de alguma forma conseguiu passar 200 requisições em poucos segundos. Como?",
+      "situation": "Você definiu um limite de 100 requisições por minuto por chave de API usando um contador que reseta no início de cada minuto. Um cliente enviou 100 requisições às 11:00:59 e outras 100 às 11:01:01. Ambos os lotes foram permitidos. Seus dashboards mostram 200 requisições em cerca de dois segundos, o dobro do limite que você pensava estar aplicando.",
       "codeExample": "counter[key] window 11:00:00-11:00:59  -> 100 requests at 11:00:59  (allowed)\ncounter resets at 11:01:00\ncounter[key] window 11:01:00-11:01:59  -> 100 requests at 11:01:01  (allowed)\n\nObserved: 200 requests in ~2 seconds",
       "options": [
-        "The counter reset failed and let extra requests leak through",
-        "Fixed windows are fine; the client must have been using two API keys",
-        "Fixed window counters reset on a hard clock boundary, so a client can spend a full window at the end of one minute and another full window at the start of the next",
-        "100 requests per minute always means up to 200 in any 60 second span by design"
+        "O reset do contador falhou e deixou requisições extras vazarem",
+        "Fixed windows estão corretas; o cliente deve ter usado duas chaves de API",
+        "Contadores de fixed window resetam em um marco fixo do relógio, então um cliente pode gastar uma janela inteira no final de um minuto e outra janela inteira no início do próximo",
+        "100 requisições por minuto sempre significa até 200 em qualquer período de 60 segundos, por design"
       ],
       "correctAnswer": 2,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "This is the classic boundary burst problem with fixed windows. The counter resets at a fixed clock boundary, so requests bunched at the end of one window and the start of the next both count as under the limit for their own window, even though they land within a couple of seconds of each other. The net effect is up to 2x your intended rate across any window boundary. The fix is a sliding window (log or counter) that measures the trailing 60 seconds instead of snapping to clock minutes. It was not a reset bug or a second key, and getting 200 in any 60s span is the bug, not the design goal.",
-      "hint": "Think about what happens to requests that cluster right before and right after the moment the counter snaps back to zero."
+      "explanation": "Esse é o clássico problema de pico na borda (boundary burst) de fixed windows. O contador reseta em um marco fixo do relógio, então requisições agrupadas no final de uma janela e no início da próxima contam como dentro do limite para sua própria janela, mesmo que caiam a poucos segundos uma da outra. O efeito líquido é até 2x sua taxa pretendida em qualquer borda de janela. A correção é uma sliding window (log ou contador) que mede os 60 segundos anteriores em vez de se ajustar aos minutos do relógio. Não foi um bug de reset nem uma segunda chave, e obter 200 em qualquer período de 60s é o bug, não o objetivo do design.",
+      "hint": "Pense no que acontece com requisições que se agrupam bem antes e bem depois do momento em que o contador volta a zero."
     },
     {
       "id": "too-many-requests-status",
-      "title": "The Right Status Code for a Throttled Client",
-      "description": "A client has blown past its rate limit and keeps calling. What HTTP status code should the API return, and what should it include?",
-      "situation": "Your API enforces 1000 requests per hour per key. A client hits the cap and keeps calling. Right now your code returns 403 Forbidden with no extra headers, and client developers are confused because 403 looks like an auth problem. They keep retrying immediately, which makes things worse.",
+      "title": "O Código de Status Certo para um Cliente Limitado",
+      "description": "Um cliente ultrapassou seu rate limit e continua chamando. Qual código de status HTTP a API deveria retornar, e o que deveria incluir?",
+      "situation": "Sua API aplica um limite de 1000 requisições por hora por chave. Um cliente atinge o teto e continua chamando. No momento, seu código retorna 403 Forbidden sem headers extras, e os desenvolvedores clientes ficam confusos porque 403 parece um problema de autenticação. Eles continuam tentando de novo imediatamente, o que piora as coisas.",
       "codeExample": "$ curl -i https://api.example.com/v1/orders\nHTTP/1.1 403 Forbidden\ncontent-type: application/json\n\n{\"error\": \"rate limited\"}",
       "options": [
-        "200 OK with an empty body so clients quietly back off on their own",
-        "429 Too Many Requests, with a Retry-After header telling the client how long to wait",
-        "503 Service Unavailable, since the server cannot serve the request right now",
-        "403 Forbidden is correct because the client is not allowed to make the request"
+        "200 OK com corpo vazio para que os clientes recuem silenciosamente por conta própria",
+        "429 Too Many Requests, com um header Retry-After informando ao cliente quanto tempo esperar",
+        "503 Service Unavailable, já que o servidor não consegue atender a requisição agora",
+        "403 Forbidden está correto porque o cliente não tem permissão para fazer a requisição"
       ],
       "correctAnswer": 1,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "429 Too Many Requests is the status code defined for rate limiting. Pairing it with a Retry-After header (seconds to wait, or an HTTP date) tells a well-behaved client exactly when to come back instead of guessing or hammering. 403 signals an authorization failure, which sends client developers down the wrong debugging path. 503 implies the whole service is down and often triggers aggressive retry logic and on-call alerts. Returning 200 with no body is the worst option: clients have no signal anything is wrong and keep calling at full speed.",
-      "hint": "There is a status code named for exactly this situation, and a response header that answers 'when can I try again?'"
+      "explanation": "429 Too Many Requests é o código de status definido para rate limiting. Combiná-lo com um header Retry-After (segundos a esperar, ou uma data HTTP) diz exatamente a um cliente bem-comportado quando voltar, em vez de ele adivinhar ou insistir sem parar. 403 sinaliza uma falha de autorização, o que leva os desenvolvedores clientes pelo caminho errado de depuração. 503 sugere que o serviço inteiro está fora do ar e frequentemente dispara lógica de retentativa agressiva e alertas de plantão. Retornar 200 sem corpo é a pior opção: os clientes não têm nenhum sinal de que algo está errado e continuam chamando a toda velocidade.",
+      "hint": "Existe um código de status nomeado exatamente para essa situação, e um header de resposta que responde 'quando posso tentar de novo?'"
     },
     {
       "id": "leaky-bucket-smoothing",
-      "title": "Protecting a Downstream That Hates Bursts",
-      "description": "You are putting a limiter in front of a downstream that can only handle a steady, constant request rate. Which algorithm should you choose?",
-      "situation": "Your service forwards payment captures to a legacy processor that accepts at most 10 requests per second and starts erroring the moment you exceed that, even briefly. Your own incoming traffic is spiky. You need to feed the processor a smooth, constant stream no matter how bursty the input is.",
+      "title": "Protegendo um Downstream que Odeia Picos",
+      "description": "Você está colocando um limitador na frente de um downstream que só consegue lidar com uma taxa de requisições constante e estável. Qual algoritmo você deveria escolher?",
+      "situation": "Seu serviço encaminha capturas de pagamento para um processador legado que aceita no máximo 10 requisições por segundo e começa a dar erro no instante em que você excede isso, mesmo que brevemente. Seu próprio tráfego de entrada é irregular. Você precisa alimentar o processador com um fluxo suave e constante, não importa o quão irregular seja a entrada.",
       "codeExample": "incoming:   ||||      ||||||||        ||      (bursty, uneven)\n              |\n              v   rate limiter\n              |\ndownstream: | | | | | | | | | |   <- must be a steady 10 req/s, no spikes",
       "options": [
-        "Token bucket with a capacity of 100, so it can absorb the bursts",
-        "Fixed window counter set to 10 requests per second",
-        "Sliding window log keyed on the downstream's hostname",
-        "Leaky bucket: queue incoming requests and release them at a constant rate of 10 per second"
+        "Token bucket com capacidade de 100, para que possa absorver os picos",
+        "Fixed window counter configurado para 10 requisições por segundo",
+        "Sliding window log baseado no hostname do downstream",
+        "Leaky bucket: enfileirar requisições de entrada e liberá-las a uma taxa constante de 10 por segundo"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Leaky bucket is the right tool when the goal is a smooth, constant output rate. Requests enter a queue (the bucket) and leak out at a fixed rate, so the downstream sees an even 10 req/s no matter how spiky the input was. Token bucket is the opposite: a full bucket deliberately lets a burst through, which is exactly what this fragile downstream cannot take. Fixed window allows all 10 to fire in the same instant at the window start, producing a spike. A sliding window log limits how many requests happen but does not pace them out evenly, so bunched arrivals still hit the downstream together.",
-      "hint": "One bucket algorithm allows bursts on purpose; its cousin exists specifically to flatten them into a constant drip."
+      "explanation": "Leaky bucket é a ferramenta certa quando o objetivo é uma taxa de saída suave e constante. As requisições entram em uma fila (o bucket) e vazam a uma taxa fixa, então o downstream vê um fluxo constante de 10 req/s, não importa o quão irregular fosse a entrada. Token bucket é o oposto: um bucket cheio deliberadamente deixa um pico passar, que é exatamente o que esse downstream frágil não consegue suportar. Fixed window permite que todas as 10 disparem no mesmo instante no início da janela, produzindo um pico. Um sliding window log limita quantas requisições acontecem, mas não as espaça uniformemente, então chegadas agrupadas ainda atingem o downstream juntas.",
+      "hint": "Um algoritmo de bucket permite picos de propósito; seu primo existe especificamente para achatá-los em um gotejamento constante."
     },
     {
       "id": "sliding-window-counter",
-      "title": "Sliding Window Without the Memory Bill",
-      "description": "You want sliding-window accuracy but cannot afford to store a timestamp for every request. What is the common middle-ground approach?",
-      "situation": "A sliding window log gives you exact rate limiting, but storing one timestamp per request per key blows up memory at your traffic levels. A fixed window is cheap but has the boundary burst problem. You want something close to sliding window accuracy that only keeps a couple of counters per key.",
+      "title": "Sliding Window Sem a Conta de Memória",
+      "description": "Você quer a precisão de uma sliding window, mas não pode arcar com armazenar um timestamp para cada requisição. Qual é a abordagem intermediária comum?",
+      "situation": "Um sliding window log te dá rate limiting exato, mas armazenar um timestamp por requisição por chave explode a memória nos seus níveis de tráfego. Uma fixed window é barata, mas tem o problema de pico na borda. Você quer algo próximo da precisão de uma sliding window que mantenha apenas alguns contadores por chave.",
       "codeExample": "limit = 100 / minute\nprev_window_count = 80     # requests in 11:00:00-11:00:59\ncurr_window_count = 30     # requests so far in 11:01:00-11:01:59\nelapsed_in_curr = 15s  ->  75% of the previous minute still in view\n\nestimate = ?",
       "options": [
-        "Sliding window counter: weight the previous window's count by how much of it still overlaps the trailing window, then add the current window's count (0.75 * 80 + 30 = 90)",
-        "Just use the current window count (30) and ignore the previous window entirely",
-        "Add both windows raw (80 + 30 = 110) and reject when over the limit",
-        "Store every request timestamp anyway; there is no cheaper accurate option"
+        "Sliding window counter: ponderar a contagem da janela anterior pela fração dela que ainda se sobrepõe à janela final, e então somar a contagem da janela atual (0,75 * 80 + 30 = 90)",
+        "Simplesmente usar a contagem da janela atual (30) e ignorar totalmente a janela anterior",
+        "Somar as duas janelas cruas (80 + 30 = 110) e rejeitar quando estiver acima do limite",
+        "Armazenar todo timestamp de requisição mesmo assim; não existe opção precisa mais barata"
       ],
       "correctAnswer": 0,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "The sliding window counter approximates a true sliding window using just two numbers per key: the previous window's count and the current window's count. You weight the previous count by the fraction of it that still falls inside the trailing window. Here 15s into the current minute, 75% of the previous minute still overlaps the last 60 seconds, so the estimate is 0.75 * 80 + 30 = 90, which is under 100, so the request is allowed. Using only the current count ignores recent history and reintroduces boundary bursts. Adding both windows raw double counts and rejects legitimate traffic. Storing every timestamp is the sliding window log you were trying to avoid.",
-      "hint": "If you only keep the previous and current window counts, how could you scale the old count by how much of that window is still in view?"
+      "explanation": "O sliding window counter aproxima uma sliding window verdadeira usando apenas dois números por chave: a contagem da janela anterior e a contagem da janela atual. Você pondera a contagem anterior pela fração dela que ainda cai dentro da janela final. Aqui, 15s dentro do minuto atual, 75% do minuto anterior ainda se sobrepõe aos últimos 60 segundos, então a estimativa é 0,75 * 80 + 30 = 90, que está abaixo de 100, então a requisição é permitida. Usar apenas a contagem atual ignora o histórico recente e reintroduz picos de borda. Somar as duas janelas cruas conta em duplicidade e rejeita tráfego legítimo. Armazenar todo timestamp é o sliding window log que você estava tentando evitar.",
+      "hint": "Se você só guarda as contagens da janela anterior e atual, como você poderia escalar a contagem antiga pela fração daquela janela que ainda está em vista?"
     },
     {
       "id": "redis-atomic-increment",
-      "title": "Two Servers, One Counter, A Race",
-      "description": "Your rate limiter runs on multiple app servers sharing a Redis counter. Under load it lets more requests through than the limit allows. What is wrong with this code?",
-      "situation": "You moved rate limiting to a shared Redis instance so all your app servers agree on the count. The limit is 100 per minute, but during traffic spikes you see 130+ getting through. Each server reads the counter, checks it, then writes the incremented value back.",
+      "title": "Dois Servidores, Um Contador, Uma Corrida",
+      "description": "Seu rate limiter roda em múltiplos servidores de aplicação compartilhando um contador Redis. Sob carga, ele deixa passar mais requisições do que o limite permite. O que está errado nesse código?",
+      "situation": "Você moveu o rate limiting para uma instância Redis compartilhada para que todos os seus servidores de aplicação concordem com a contagem. O limite é de 100 por minuto, mas durante picos de tráfego você vê mais de 130 passando. Cada servidor lê o contador, verifica, e então escreve o valor incrementado de volta.",
       "codeExample": "# runs on every app server\ncount = redis.get(key) or 0          # server A reads 99, server B reads 99\nif int(count) >= LIMIT:\n    return reject()\nredis.set(key, int(count) + 1)       # both write 100; two requests allowed\nredis.expire(key, 60)",
       "options": [
-        "Redis is too slow under load and is dropping writes; switch to a faster store",
-        "The expire call is being reset on every request, so the window never closes",
-        "GET-check-SET is not atomic, so concurrent servers read the same value and both pass the check. Use INCR (or a Lua script) so the read-modify-write happens atomically",
-        "The limit should be stored as a float so partial counts are tracked correctly"
+        "O Redis está lento demais sob carga e está descartando escritas; migre para um armazenamento mais rápido",
+        "A chamada expire está sendo resetada a cada requisição, então a janela nunca fecha",
+        "GET-check-SET não é atômico, então servidores concorrentes leem o mesmo valor e ambos passam na verificação. Use INCR (ou um script Lua) para que o read-modify-write aconteça atomicamente",
+        "O limite deveria ser armazenado como float para que contagens parciais sejam rastreadas corretamente"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "This is a read-modify-write race. Two servers both GET 99, both see they are under 100, and both SET 100, so two requests slip through on what should have been the last slot. Multiply that across many concurrent servers and you overshoot the limit. The fix is to make the increment atomic: redis.incr(key) returns the new value in a single atomic operation, so you increment first and reject if the result exceeds the limit. For multi-step logic (like checking and conditionally setting a TTL) wrap it in a Lua script, which Redis runs atomically. Redis is not dropping writes, and the problem has nothing to do with float counts. Resetting expire on every call is a separate bug worth fixing, but it is not what lets extra requests through.",
-      "hint": "Look at the gap between reading the count and writing it back. What can another server do in that gap?"
+      "explanation": "Essa é uma corrida de read-modify-write. Dois servidores fazem GET e ambos leem 99, ambos veem que estão abaixo de 100, e ambos fazem SET para 100, então duas requisições escapam no que deveria ter sido o último slot. Multiplique isso por muitos servidores concorrentes e você ultrapassa o limite. A correção é tornar o incremento atômico: redis.incr(key) retorna o novo valor em uma única operação atômica, então você incrementa primeiro e rejeita se o resultado exceder o limite. Para lógica de múltiplas etapas (como verificar e condicionalmente definir um TTL), envolva em um script Lua, que o Redis executa atomicamente. O Redis não está descartando escritas, e o problema não tem nada a ver com contagens em float. Resetar o expire a cada chamada é um bug separado que vale a pena corrigir, mas não é o que deixa requisições extras passarem.",
+      "hint": "Observe o intervalo entre ler a contagem e escrevê-la de volta. O que outro servidor pode fazer nesse intervalo?"
     },
     {
       "id": "rate-limit-key-behind-proxy",
-      "title": "Every Request Looks Like the Load Balancer",
-      "description": "Your per-IP rate limiter is throttling all users at once. Looking at the data, every request seems to come from a handful of IPs. Why, and how do you fix it?",
-      "situation": "You rate limit by client IP address, reading the TCP source address of the connection. Since moving behind a load balancer and a CDN, the limiter sees only a few IPs (the proxies), so once they hit the limit, every one of your users gets throttled together. Legitimate users are getting 429s they did not earn.",
+      "title": "Toda Requisição Parece Vir do Load Balancer",
+      "description": "Seu rate limiter por IP está limitando todos os usuários de uma vez. Olhando os dados, toda requisição parece vir de um punhado de IPs. Por quê, e como você corrige isso?",
+      "situation": "Você limita a taxa por endereço IP do cliente, lendo o endereço de origem TCP da conexão. Desde que você migrou para trás de um load balancer e um CDN, o limitador vê apenas alguns IPs (os proxies), então assim que eles atingem o limite, todos os seus usuários são limitados juntos. Usuários legítimos estão recebendo 429s que não mereceram.",
       "codeExample": "client (1.2.3.4) -> CDN (203.0.113.10) -> load balancer (10.0.0.5) -> app\n\napp sees remote_addr = 10.0.0.5 for ALL users\nX-Forwarded-For: 1.2.3.4, 203.0.113.10",
       "options": [
-        "Rate limit by the load balancer IP but raise the limit to a very high number",
-        "Key the limiter on the real client IP from a trusted proxy header like X-Forwarded-For, parsing it carefully and only trusting hops you control",
-        "Disable rate limiting whenever traffic arrives from a known proxy IP",
-        "Move rate limiting into the database layer so it sees the original client IP"
+        "Limitar a taxa pelo IP do load balancer, mas elevar o limite para um número bem alto",
+        "Definir a chave do limitador com o IP real do cliente a partir de um header de proxy confiável como X-Forwarded-For, analisando-o com cuidado e confiando apenas nos saltos que você controla",
+        "Desativar o rate limiting sempre que o tráfego chegar de um IP de proxy conhecido",
+        "Mover o rate limiting para a camada de banco de dados, para que ela veja o IP original do cliente"
       ],
       "correctAnswer": 1,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Behind a proxy, the TCP source address is the proxy, not the user, so keying on it lumps everyone into one bucket. The real client IP is carried in a forwarding header such as X-Forwarded-For (or Forwarded). Key the limiter on that, but parse it safely: the header is a comma separated list that clients can spoof, so only trust the entries added by proxies you actually control, typically by counting a known number of trusted hops from the right. Just raising the limit on the proxy IP still throttles everyone together once it is hit. Disabling limits for proxy traffic removes protection entirely, and the database does not see the original IP any more than the app does.",
-      "hint": "The TCP connection now terminates at your proxy. Where did the proxy put the address of the user who actually connected to it?"
+      "explanation": "Atrás de um proxy, o endereço de origem TCP é o proxy, não o usuário, então basear a chave nele agrupa todo mundo em um único bucket. O IP real do cliente é carregado em um header de encaminhamento como X-Forwarded-For (ou Forwarded). Defina a chave do limitador com base nisso, mas analise com segurança: o header é uma lista separada por vírgulas que os clientes podem falsificar, então confie apenas nas entradas adicionadas pelos proxies que você realmente controla, tipicamente contando um número conhecido de saltos confiáveis a partir da direita. Apenas elevar o limite no IP do proxy ainda limita todo mundo junto assim que é atingido. Desativar limites para tráfego de proxy remove a proteção por completo, e o banco de dados não vê o IP original mais do que a aplicação vê.",
+      "hint": "A conexão TCP agora termina no seu proxy. Onde o proxy colocou o endereço do usuário que de fato se conectou a ele?"
     },
     {
       "id": "ratelimit-response-headers",
-      "title": "Clients Flying Blind Into the Limit",
-      "description": "Well-behaved clients keep slamming into your rate limit because they have no idea how much budget they have left. What do you add to the response?",
-      "situation": "Your API returns a clean 429 when clients exceed their quota, but partners complain they cannot tell they are getting close until they are already blocked. They want to throttle themselves proactively instead of discovering the limit by hitting it.",
+      "title": "Clientes Voando às Cegas Direto para o Limite",
+      "description": "Clientes bem-comportados continuam esbarrando no seu rate limit porque não têm ideia de quanto orçamento lhes resta. O que você adiciona à resposta?",
+      "situation": "Sua API retorna um 429 limpo quando os clientes excedem sua cota, mas os parceiros reclamam que não conseguem perceber que estão perto até já estarem bloqueados. Eles querem se limitar proativamente em vez de descobrir o limite ao atingi-lo.",
       "codeExample": "$ curl -i https://api.example.com/v1/search\nHTTP/1.1 200 OK\ncontent-type: application/json\n# no rate limit information anywhere in the response",
       "options": [
-        "Nothing; clients should track their own request counts locally",
-        "Put the remaining quota in the JSON response body only, so it does not clutter the headers",
-        "Email partners a weekly report of their API usage",
-        "Return RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset headers on every response so clients can see their budget and self-throttle"
+        "Nada; os clientes deveriam rastrear suas próprias contagens de requisições localmente",
+        "Colocar a cota restante apenas no corpo JSON da resposta, para não poluir os headers",
+        "Enviar por e-mail aos parceiros um relatório semanal do uso da API",
+        "Retornar os headers RateLimit-Limit, RateLimit-Remaining e RateLimit-Reset em toda resposta, para que os clientes possam ver seu orçamento e se autolimitar"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Surfacing the limit, remaining budget, and reset time on every response (commonly RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset, plus Retry-After on a 429) lets good clients pace themselves before they ever get blocked. Headers are the right place because they ride along with every response without the client having to parse the body of each call, and existing tooling and SDKs already look for them. Telling clients to track their own counts is fragile, because they cannot see server-side state like shared quotas or other instances. Burying the data in the body only works if every endpoint returns it consistently and the client parses every response. A weekly email is far too slow to drive real-time throttling.",
-      "hint": "How can the server tell the client 'you have 12 calls left and the window resets in 30 seconds' on the very response before the one that would be blocked?"
+      "explanation": "Expor o limite, o orçamento restante e o horário de reset em toda resposta (geralmente RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset, mais Retry-After em um 429) permite que bons clientes se ritmem antes mesmo de serem bloqueados. Headers são o lugar certo porque acompanham toda resposta sem o cliente precisar analisar o corpo de cada chamada, e ferramentas e SDKs existentes já procuram por eles. Dizer aos clientes para rastrearem suas próprias contagens é frágil, porque eles não conseguem ver estado do lado do servidor, como cotas compartilhadas ou outras instâncias. Enterrar o dado apenas no corpo só funciona se todo endpoint o retornar de forma consistente e o cliente analisar toda resposta. Um e-mail semanal é lento demais para guiar limitação em tempo real.",
+      "hint": "Como o servidor pode dizer ao cliente 'você tem 12 chamadas restantes e a janela reseta em 30 segundos' já na resposta anterior àquela que seria bloqueada?"
     },
     {
       "id": "limiter-fail-open-closed",
-      "title": "When the Rate Limiter's Backend Goes Down",
-      "description": "Your Redis-backed limiter cannot reach Redis and right now every API request fails. What is usually the better default, and what is the tradeoff?",
-      "situation": "Your rate limiter checks a shared Redis cluster on every request. Redis has a blip and the limiter code throws an exception, which bubbles up and turns into a 500 for the caller. A short Redis hiccup just took your entire public API down, even though the backends were healthy.",
+      "title": "Quando o Backend do Rate Limiter Cai",
+      "description": "Seu limitador baseado em Redis não consegue alcançar o Redis e, agora, toda requisição de API falha. Qual costuma ser o melhor padrão, e qual é a contrapartida?",
+      "situation": "Seu rate limiter verifica um cluster Redis compartilhado em toda requisição. O Redis tem uma instabilidade e o código do limitador lança uma exceção, que se propaga e vira um 500 para quem chamou. Uma pequena instabilidade do Redis acabou de derrubar toda a sua API pública, mesmo com os backends saudáveis.",
       "codeExample": "try:\n    allowed = limiter.check(key)   # talks to Redis\nexcept RedisError:\n    raise                          # -> 500 to the client, API is down\nif not allowed:\n    return reject()",
       "options": [
-        "Fail open: if the limiter backend is unreachable, allow the request (but log and alarm on it) so a limiter outage does not take down the whole API",
-        "Fail closed: reject every request until Redis recovers, because the correctness of the limit matters most",
-        "Retry the Redis call in a tight loop until it finally succeeds",
-        "Cache the last known counter in memory forever and never expire it"
+        "Fail open: se o backend do limitador estiver inacessível, permitir a requisição (mas registrar e alarmar sobre isso), para que uma indisponibilidade do limitador não derrube toda a API",
+        "Fail closed: rejeitar toda requisição até o Redis se recuperar, porque a exatidão do limite é o que mais importa",
+        "Tentar novamente a chamada ao Redis em um loop apertado até finalmente ter sucesso",
+        "Cachear o último contador conhecido em memória para sempre e nunca expirá-lo"
       ],
       "correctAnswer": 0,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "For most public APIs the rate limiter is a guardrail, not the product, so the common default is to fail open: if you cannot reach the backend, allow the request but log and alert loudly so you know you are running unprotected. The tradeoff is that during the outage clients can exceed their limits, so you pair it with small local in-process fallback limits to cap the blast radius. Failing closed turns a dependency blip into a full outage, which is usually worse than briefly under-enforcing limits. A tight retry loop ties up workers and can make the Redis incident worse. Caching a counter forever drifts out of sync and silently mis-enforces limits. The right choice does depend on context: a limiter guarding a paid metering boundary or an abuse-prone endpoint may deliberately fail closed.",
-      "hint": "Decide which is worse for your API: briefly letting clients over their limit, or returning errors to everyone because a side dependency hiccuped."
+      "explanation": "Para a maioria das APIs públicas, o rate limiter é uma proteção, não o produto, então o padrão comum é fail open: se você não consegue alcançar o backend, permita a requisição, mas registre e alerte com força para saber que está rodando desprotegido. A contrapartida é que, durante a indisponibilidade, os clientes podem exceder seus limites, então você combina isso com pequenos limites locais em memória, no próprio processo, para limitar o raio de impacto. Fail closed transforma uma instabilidade de dependência em uma indisponibilidade completa, o que geralmente é pior do que aplicar os limites de forma insuficiente por um curto período. Um loop de retentativa apertado consome workers e pode piorar o incidente do Redis. Cachear um contador para sempre desalinha com o tempo e aplica os limites incorretamente de forma silenciosa. A escolha certa depende do contexto: um limitador protegendo um limite de faturamento pago ou um endpoint propenso a abuso pode deliberadamente fazer fail closed.",
+      "hint": "Decida o que é pior para sua API: deixar clientes brevemente acima do limite, ou retornar erros para todo mundo porque uma dependência lateral teve uma instabilidade."
     },
     {
       "id": "distributed-global-limit",
-      "title": "Ten Nodes, Ten Limiters, One Big Overshoot",
-      "description": "Each API node enforces the limit locally, and together they allow far more than you intended. How should global rate limiting actually work?",
-      "situation": "You run 10 API nodes behind a load balancer. Each one keeps its own in-memory token bucket of 100 requests per minute per key, because in-memory is fast and simple. A single client whose requests spread across all 10 nodes can now do 1000 per minute, 10x your intended global limit.",
+      "title": "Dez Nós, Dez Limitadores, Um Grande Estouro",
+      "description": "Cada nó da API aplica o limite localmente, e juntos eles permitem muito mais do que você pretendia. Como o rate limiting global deveria realmente funcionar?",
+      "situation": "Você roda 10 nós de API atrás de um load balancer. Cada um mantém seu próprio token bucket em memória de 100 requisições por minuto por chave, porque em memória é rápido e simples. Um único cliente cujas requisições se espalham pelos 10 nós agora consegue fazer 1000 por minuto, 10x o seu limite global pretendido.",
       "codeExample": "intended global limit: 100 req/min per key\n\nnode-1  local bucket: 100/min\nnode-2  local bucket: 100/min\n...\nnode-10 local bucket: 100/min\n-------------------------------\neffective limit a client can reach: ~1000/min",
       "options": [
-        "Lower each node's local limit to 100 divided by the node count and never touch it again",
-        "Pin every client to a single node with sticky sessions so only one limiter ever counts",
-        "Track the count in a shared store (like Redis) so all nodes enforce one global counter, accepting the added latency, or hand each node a slice of a global budget and rebalance",
-        "Accept the 10x overshoot; accurate distributed rate limiting is impossible"
+        "Reduzir o limite local de cada nó para 100 dividido pelo número de nós e nunca mais mexer nisso",
+        "Fixar cada cliente a um único nó com sticky sessions, para que apenas um limitador conte",
+        "Rastrear a contagem em um armazenamento compartilhado (como o Redis) para que todos os nós apliquem um contador global único, aceitando a latência adicional, ou distribuir uma fatia de um orçamento global para cada nó e rebalancear",
+        "Aceitar o estouro de 10x; rate limiting distribuído preciso é impossível"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Local-only limiters multiply by the number of nodes, so a per-node limit of 100 across 10 nodes is really a 1000 global limit. The straightforward fix is a shared counter in a fast central store such as Redis, so every node increments and checks the same number and the global limit holds, at the cost of a network round trip per request. At very high scale, teams instead distribute the global budget across nodes (each gets a slice) and rebalance periodically to cut that round trip. Dividing the static limit by node count breaks the moment you autoscale and assumes traffic splits perfectly evenly, which it never does. Sticky sessions hurt load balancing and still miss requests that land elsewhere on failover. The overshoot is very much solvable, just not with independent local counters.",
-      "hint": "If each node only knows its own slice of the traffic, what do all the nodes need to share so the limit means something globally?"
+      "explanation": "Limitadores apenas locais multiplicam pelo número de nós, então um limite de 100 por nó em 10 nós é na verdade um limite global de 1000. A correção direta é um contador compartilhado em um armazenamento central rápido como o Redis, para que todo nó incremente e verifique o mesmo número e o limite global se sustente, ao custo de uma ida e volta de rede por requisição. Em escala muito alta, as equipes em vez disso distribuem o orçamento global entre os nós (cada um recebe uma fatia) e rebalanceiam periodicamente para cortar essa ida e volta. Dividir o limite estático pelo número de nós quebra no momento em que você faz autoscaling e assume que o tráfego se divide perfeitamente de forma uniforme, o que nunca acontece. Sticky sessions prejudicam o balanceamento de carga e ainda assim perdem requisições que caem em outro lugar durante um failover. O estouro é perfeitamente resolvível, só não com contadores locais independentes.",
+      "hint": "Se cada nó só conhece sua própria fatia do tráfego, o que todos os nós precisam compartilhar para que o limite signifique algo globalmente?"
     },
     {
       "id": "token-bucket-lazy-refill",
-      "title": "A Token Bucket That Refills on a Timer",
-      "description": "This token bucket refills with a background thread, but it leaks capacity and behaves oddly after idle periods. What is the better refill design?",
-      "situation": "A teammate implemented a token bucket with a background thread that adds tokens on a timer. Under load it sometimes refills late, clients see uneven behavior after idle gaps, and the background thread does not scale to millions of keys. You want a refill approach that needs no timer thread and stays exact.",
+      "title": "Um Token Bucket que Reabastece em um Timer",
+      "description": "Esse token bucket reabastece com uma thread em segundo plano, mas vaza capacidade e se comporta de forma estranha após períodos ociosos. Qual é o design de reabastecimento melhor?",
+      "situation": "Um colega implementou um token bucket com uma thread em segundo plano que adiciona tokens em um timer. Sob carga, às vezes ele reabastece atrasado, os clientes veem comportamento inconsistente após lacunas ociosas, e a thread em segundo plano não escala para milhões de chaves. Você quer uma abordagem de reabastecimento que não precise de uma thread de timer e permaneça exata.",
       "codeExample": "# current approach: background thread per process\ndef refill_loop():\n    while True:\n        for key in all_buckets:        # does not scale to millions of keys\n            buckets[key] = min(CAP, buckets[key] + REFILL_PER_TICK)\n        sleep(1)                       # refill is coupled to wall-clock ticks",
       "options": [
-        "Add more refill threads and shard the keys across them",
-        "Refill lazily on read: store tokens plus a last-updated timestamp, and on each request compute tokens = min(capacity, tokens + (now - last_updated) * rate) before spending one",
-        "Refill the bucket back to full on every request so clients never run dry",
-        "Drop the timestamp and just decrement a fixed counter that resets every minute"
+        "Adicionar mais threads de reabastecimento e particionar as chaves entre elas",
+        "Reabastecer de forma preguiçosa (lazy) na leitura: armazenar os tokens mais um timestamp da última atualização, e em cada requisição calcular tokens = min(capacity, tokens + (now - last_updated) * rate) antes de gastar um",
+        "Reabastecer o bucket até o topo em toda requisição para que os clientes nunca fiquem sem tokens",
+        "Descartar o timestamp e simplesmente decrementar um contador fixo que reseta a cada minuto"
       ],
       "correctAnswer": 1,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "The scalable, exact way to run a token bucket is lazy refill: store the current token count and the timestamp of the last update, and whenever a request arrives, compute how many tokens should have accrued in the elapsed time, cap at the bucket size, then try to spend one. No background thread, no per-key timer, and it stays correct across long idle gaps because the math is based on real elapsed time rather than how often a thread happened to run. Adding more threads just scales the broken design and still drifts when ticks run late. Refilling to full on every request removes the limit entirely. Resetting a fixed counter each minute is a fixed window wearing a token bucket costume and brings back the boundary burst problem. In Redis this lazy computation is typically done inside a Lua script so the read, refill, and spend are atomic.",
-      "hint": "Instead of pushing tokens in on a schedule, what if each request pulled forward the right number of tokens using the time elapsed since the last one?"
+      "explanation": "A forma escalável e exata de operar um token bucket é o reabastecimento preguiçoso (lazy refill): armazene a contagem atual de tokens e o timestamp da última atualização, e sempre que uma requisição chegar, calcule quantos tokens deveriam ter se acumulado no tempo decorrido, limite ao tamanho do bucket, e então tente gastar um. Sem thread em segundo plano, sem timer por chave, e permanece correto mesmo em longas lacunas ociosas porque a matemática se baseia no tempo real decorrido, não em quantas vezes uma thread aconteceu de rodar. Adicionar mais threads apenas escala o design quebrado e ainda assim desvia quando os ticks atrasam. Reabastecer até o topo em toda requisição remove o limite por completo. Resetar um contador fixo a cada minuto é uma fixed window disfarçada de token bucket e traz de volta o problema de pico na borda. No Redis, esse cálculo preguiçoso é tipicamente feito dentro de um script Lua para que a leitura, o reabastecimento e o gasto sejam atômicos.",
+      "hint": "Em vez de empurrar tokens para dentro em um cronograma, e se cada requisição puxasse o número certo de tokens usando o tempo decorrido desde a última?"
     },
     {
       "id": "retry-after-thundering-herd",
-      "title": "Everyone Retries at the Exact Same Second",
-      "description": "After a burst of 429s, all your clients come back at once the instant the window resets, spiking load. What fixes this retry storm?",
-      "situation": "Your limiter returns Retry-After with the exact seconds until the fixed window resets. Thousands of clients get throttled in the same window, all read the same Retry-After value, and all retry at the same instant when it elapses. The result is a synchronized thundering herd that spikes load every reset and can knock the service over.",
+      "title": "Todo Mundo Tenta de Novo no Exato Mesmo Segundo",
+      "description": "Depois de um pico de 429s, todos os seus clientes voltam de uma vez no instante em que a janela reseta, gerando um pico de carga. O que corrige essa tempestade de retentativas?",
+      "situation": "Seu limitador retorna Retry-After com o número exato de segundos até a fixed window resetar. Milhares de clientes são limitados na mesma janela, todos leem o mesmo valor de Retry-After, e todos tentam de novo no mesmo instante quando ele expira. O resultado é uma manada sincronizada (thundering herd) que gera um pico de carga a cada reset e pode derrubar o serviço.",
       "codeExample": "11:00:30  3000 clients get 429, Retry-After: 30\n11:01:00  window resets\n11:01:00  all 3000 clients retry simultaneously   <-- synchronized spike\n11:01:00  load spike -> more 429s -> repeat next window",
       "options": [
-        "Lower the rate limit so fewer clients get 429s in the first place",
-        "Remove the Retry-After header so clients stop synchronizing on the same value",
-        "Switch the server from a fixed window to a leaky bucket and change nothing else",
-        "Add randomized jitter to Retry-After, and have clients retry with exponential backoff plus jitter, so retries spread out instead of landing on the same instant"
+        "Reduzir o rate limit para que menos clientes recebam 429 desde o início",
+        "Remover o header Retry-After para que os clientes parem de sincronizar no mesmo valor",
+        "Trocar o servidor de fixed window para leaky bucket e não mudar mais nada",
+        "Adicionar jitter aleatório ao Retry-After, e fazer os clientes tentarem de novo com backoff exponencial mais jitter, para que as retentativas se espalhem em vez de caírem no mesmo instante"
       ],
       "correctAnswer": 3,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "The herd is synchronized because every client receives the same reset time and retries at that exact moment. Spreading the retries out breaks the synchronization: add random jitter to the Retry-After you return (for example the base wait plus a random spread), and on the client side use exponential backoff with jitter rather than retrying at a fixed instant. Lowering the limit does not unsynchronize anything; the survivors still retry together. Removing Retry-After makes clients guess, and many HTTP libraries then retry immediately, which is worse. Moving to a leaky bucket changes how the server admits traffic but does nothing about thousands of clients all waking up on the same second unless you also de-synchronize the retries. Jitter is the cheap, standard fix for thundering herds.",
-      "hint": "If every client is told to come back at the same moment, what small change to that wait time keeps them from all arriving together?"
+      "explanation": "A manada está sincronizada porque todo cliente recebe o mesmo horário de reset e tenta de novo exatamente nesse momento. Espalhar as retentativas quebra a sincronização: adicione jitter aleatório ao Retry-After que você retorna (por exemplo, a espera base mais uma variação aleatória), e do lado do cliente use backoff exponencial com jitter em vez de tentar de novo em um instante fixo. Reduzir o limite não dessincroniza nada; os sobreviventes ainda tentam de novo juntos. Remover o Retry-After faz os clientes adivinharem, e muitas bibliotecas HTTP então tentam de novo imediatamente, o que é pior. Migrar para leaky bucket muda como o servidor admite tráfego, mas não faz nada quanto a milhares de clientes acordando todos no mesmo segundo, a menos que você também dessincronize as retentativas. Jitter é a correção barata e padrão para thundering herds.",
+      "hint": "Se todo cliente é instruído a voltar no mesmo momento, que pequena mudança nesse tempo de espera evita que todos cheguem juntos?"
     },
     {
       "id": "weighted-cost-based-limiting",
-      "title": "One Limit for Cheap and Expensive Calls Alike",
-      "description": "A flat request-per-minute limit treats a trivial lookup and an expensive report the same. How do you limit by actual cost instead?",
-      "situation": "Your API has a 600 requests-per-minute limit per key. One endpoint is a cached key lookup that costs almost nothing; another runs a heavy aggregation that pegs a database CPU for a second. Clients hammering the expensive endpoint stay under 600/min but still overload the backend, while clients doing cheap lookups feel unfairly restricted by the same number.",
+      "title": "Um Limite Só para Chamadas Baratas e Caras",
+      "description": "Um limite fixo de requisições por minuto trata uma consulta trivial e um relatório caro da mesma forma. Como você limita pelo custo real em vez disso?",
+      "situation": "Sua API tem um limite de 600 requisições por minuto por chave. Um endpoint é uma busca em cache que quase não custa nada; outro executa uma agregação pesada que trava a CPU do banco de dados por um segundo. Clientes martelando o endpoint caro ficam abaixo de 600/min mas ainda assim sobrecarregam o backend, enquanto clientes fazendo buscas baratas se sentem injustamente restringidos pelo mesmo número.",
       "codeExample": "GET  /v1/lookup     -> cheap   (cost: 1 token)\nPOST /v1/report     -> heavy   (cost: 25 tokens)\n\nflat limit: 600 requests/min, every endpoint counted equally\nproblem: 600 heavy reports/min melts the DB; 600 cheap lookups/min is nothing",
       "options": [
-        "Add a separate fixed window counter for every endpoint and tune them independently forever",
-        "Rate limit only the expensive endpoint and leave everything else unlimited",
-        "Use weighted (cost-based) rate limiting: give each key a token budget and charge each endpoint a number of tokens proportional to its real cost, so one budget reflects actual load",
-        "Raise the global limit so cheap-endpoint users stop hitting it, and accept the database risk from the heavy calls"
+        "Adicionar um contador de fixed window separado para cada endpoint e ajustá-los independentemente para sempre",
+        "Limitar a taxa apenas do endpoint caro e deixar tudo o mais sem limite",
+        "Usar rate limiting ponderado (baseado em custo): dar a cada chave um orçamento de tokens e cobrar de cada endpoint um número de tokens proporcional ao seu custo real, para que um único orçamento reflita a carga real",
+        "Elevar o limite global para que os usuários do endpoint barato parem de esbarrar nele, e aceitar o risco ao banco de dados vindo das chamadas caras"
       ],
       "correctAnswer": 2,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "A flat request count is the wrong unit when requests vary wildly in cost. Weighted or cost-based rate limiting fixes the unit: each key gets a budget of tokens per window, and every endpoint deducts an amount proportional to the work it causes (1 for a cached lookup, 25 for a heavy aggregation). Now a single budget protects the backend by actual load while still letting clients make thousands of cheap calls. This maps cleanly onto a token bucket where different requests spend different numbers of tokens. Per-endpoint counters multiply your configuration surface and still do not stop a client from hitting many expensive endpoints at once. Limiting only the costly endpoint leaves gaps and is brittle as the API grows. Raising the global limit makes the database risk worse, not better.",
-      "hint": "What if a single request could spend more than one token from the bucket, in proportion to how much work it actually triggers?"
+      "explanation": "Uma contagem fixa de requisições é a unidade errada quando as requisições variam muito em custo. O rate limiting ponderado ou baseado em custo corrige a unidade: cada chave recebe um orçamento de tokens por janela, e cada endpoint deduz uma quantidade proporcional ao trabalho que causa (1 para uma busca em cache, 25 para uma agregação pesada). Agora um único orçamento protege o backend pela carga real, enquanto ainda permite que os clientes façam milhares de chamadas baratas. Isso se encaixa perfeitamente em um token bucket em que requisições diferentes gastam números diferentes de tokens. Contadores por endpoint multiplicam sua superfície de configuração e ainda assim não impedem um cliente de atingir muitos endpoints caros ao mesmo tempo. Limitar apenas o endpoint custoso deixa brechas e é frágil conforme a API cresce. Elevar o limite global piora o risco ao banco de dados, não melhora.",
+      "hint": "E se uma única requisição pudesse gastar mais de um token do bucket, na proporção de quanto trabalho ela realmente dispara?"
     }
   ]
 }

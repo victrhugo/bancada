@@ -1,7 +1,7 @@
 {
   "id": "monitoring-observability-quiz",
   "title": "Monitoring & Observability Quiz",
-  "description": "Master application monitoring, metrics collection, logging, and observability best practices",
+  "description": "Domine o monitoramento de aplicações, coleta de métricas, logging e as melhores práticas de observabilidade",
   "category": "Monitoring",
   "icon": "Code",
   "totalPoints": 126,
@@ -11,7 +11,7 @@
     "gradientTo": "to-orange-600"
   },
   "metadata": {
-    "estimatedTime": "18-23 minutes",
+    "estimatedTime": "18-23 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 4,
@@ -22,160 +22,160 @@
   "questions": [
     {
       "id": "metrics-collection",
-      "title": "Collecting Application Metrics",
-      "description": "Your application needs to track response times, error rates, and throughput. What's the best approach?",
-      "situation": "You're running a Node.js web application and need visibility into performance metrics.",
+      "title": "Coletando Métricas de Aplicação",
+      "description": "Sua aplicação precisa rastrear tempos de resposta, taxas de erro e throughput. Qual é a melhor abordagem?",
+      "situation": "Você está rodando uma aplicação web Node.js e precisa de visibilidade sobre métricas de desempenho.",
       "codeExample": "# Metrics needed:\n# - Request rate (requests/second)\n# - Response time (p50, p95, p99)\n# - Error rate (%)\n# - Active connections",
       "options": [
-        "Use console.log() to print metrics and grep the logs",
-        "Manually track metrics in a spreadsheet",
-        "Only monitor when problems occur",
-        "Instrument code with Prometheus client library, expose /metrics endpoint, and scrape with Prometheus server"
+        "Usar console.log() para imprimir métricas e fazer grep nos logs",
+        "Rastrear métricas manualmente em uma planilha",
+        "Monitorar apenas quando ocorrem problemas",
+        "Instrumentar o código com a biblioteca cliente do Prometheus, expor um endpoint /metrics e fazer scrape com o servidor Prometheus"
       ],
       "correctAnswer": 3,
-      "explanation": "Prometheus is the industry standard for metrics collection. Instrument your code with client libraries to expose metrics at /metrics, then Prometheus scrapes and stores time-series data. This enables powerful querying with PromQL, alerting, and visualization with Grafana. It's designed for high-cardinality metrics and dynamic environments.",
-      "hint": "What's the industry-standard time-series database designed specifically for metrics?",
+      "explanation": "O Prometheus é o padrão da indústria para coleta de métricas. Instrumente seu código com bibliotecas cliente para expor métricas em /metrics, e o Prometheus faz o scrape e armazena os dados como séries temporais. Isso permite consultas poderosas com PromQL, alertas e visualização com Grafana. É projetado para métricas de alta cardinalidade e ambientes dinâmicos.",
+      "hint": "Qual é o banco de dados de séries temporais padrão da indústria, projetado especificamente para métricas?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "log-aggregation",
-      "title": "Centralizing Logs",
-      "description": "Your microservices architecture has 50 containers across 10 servers. How do you search logs?",
-      "situation": "Developers need to search logs across all services to debug issues. Currently, they SSH into each server.",
+      "title": "Centralizando Logs",
+      "description": "Sua arquitetura de microsserviços tem 50 containers em 10 servidores. Como você pesquisa logs?",
+      "situation": "Os desenvolvedores precisam pesquisar logs em todos os serviços para depurar problemas. Atualmente, eles fazem SSH em cada servidor.",
       "options": [
-        "SSH into each container and use grep",
-        "Email logs to developers daily",
-        "Use centralized logging with ELK Stack (Elasticsearch, Logstash, Kibana) or Loki for aggregation, indexing, and search",
-        "Store logs only on local disk"
+        "Fazer SSH em cada container e usar grep",
+        "Enviar logs por e-mail para os desenvolvedores diariamente",
+        "Usar logging centralizado com ELK Stack (Elasticsearch, Logstash, Kibana) ou Loki para agregação, indexação e busca",
+        "Armazenar logs apenas no disco local"
       ],
       "correctAnswer": 2,
-      "explanation": "Centralized logging solutions like ELK Stack or Loki aggregate logs from all services into a searchable system. Logs are shipped (via Filebeat, Fluentd, or Promtail), indexed, and made searchable through a web UI. This enables correlation across services, retention policies, and eliminates the need to SSH into individual servers.",
-      "hint": "What solution aggregates logs from distributed systems into a central searchable location?",
+      "explanation": "Soluções de logging centralizado como ELK Stack ou Loki agregam logs de todos os serviços em um sistema pesquisável. Os logs são enviados (via Filebeat, Fluentd ou Promtail), indexados e disponibilizados para busca por meio de uma interface web. Isso permite correlação entre serviços, políticas de retenção e elimina a necessidade de fazer SSH em servidores individuais.",
+      "hint": "Qual solução agrega logs de sistemas distribuídos em um local centralizado e pesquisável?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "alerting-strategy",
-      "title": "Setting Up Effective Alerts",
-      "description": "What's the best strategy for alerting on application issues?",
-      "situation": "Your team gets too many alerts (50+ per day), causing alert fatigue. Critical issues are being missed.",
+      "title": "Configurando Alertas Eficazes",
+      "description": "Qual é a melhor estratégia para alertar sobre problemas em aplicações?",
+      "situation": "Sua equipe recebe alertas demais (mais de 50 por dia), causando fadiga de alertas. Problemas críticos estão sendo perdidos.",
       "codeExample": "# Current alerts:\n# - Disk usage > 50% (fires constantly)\n# - Any HTTP 404 error\n# - CPU > 30%\n# - Memory usage increases\n# Result: Alert fatigue, missed critical issues",
       "options": [
-        "Alert on symptoms (user-facing issues like high error rates, slow response times) not causes, use severity levels, and set meaningful thresholds",
-        "Send all alerts to everyone on the team",
-        "Disable all alerts to reduce noise",
-        "Only alert during business hours"
+        "Alertar sobre sintomas (problemas visíveis ao usuário, como altas taxas de erro e respostas lentas) e não sobre causas, usar níveis de severidade e definir limites significativos",
+        "Enviar todos os alertas para todos na equipe",
+        "Desativar todos os alertas para reduzir o ruído",
+        "Alertar apenas durante o horário comercial"
       ],
       "correctAnswer": 0,
-      "explanation": "Effective alerting focuses on symptoms users experience (errors, latency) rather than low-level metrics (CPU, memory). Use severity levels (critical, warning, info), set thresholds based on SLOs, and alert on rate of change rather than absolute values. Implement on-call rotations with escalation policies. This reduces noise while catching real issues.",
-      "hint": "What approach reduces alert fatigue while ensuring critical issues are caught?",
+      "explanation": "Alertas eficazes focam em sintomas que os usuários vivenciam (erros, latência) em vez de métricas de baixo nível (CPU, memória). Use níveis de severidade (crítico, aviso, informativo), defina limites com base em SLOs e alerte sobre taxa de variação em vez de valores absolutos. Implemente escalas de plantão com políticas de escalonamento. Isso reduz o ruído garantindo que problemas reais sejam capturados.",
+      "hint": "Qual abordagem reduz a fadiga de alertas garantindo que problemas críticos sejam capturados?",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "distributed-tracing",
-      "title": "Debugging Microservices",
-      "description": "A user request touches 8 microservices. One service is slow. How do you identify the bottleneck?",
-      "situation": "Request latency is 5 seconds, but you don't know which of the 8 services in the call chain is slow.",
+      "title": "Depurando Microsserviços",
+      "description": "Uma requisição de usuário passa por 8 microsserviços. Um serviço está lento. Como identificar o gargalo?",
+      "situation": "A latência da requisição é de 5 segundos, mas você não sabe qual dos 8 serviços na cadeia de chamadas está lento.",
       "codeExample": "# Request flow:\n# API Gateway → Auth → UserService → \n# ProductService → InventoryService → \n# PricingService → CartService → PaymentService\n# Total: 5 seconds (expected: 500ms)",
       "options": [
-        "Add timing logs to every service and correlate them manually",
-        "Restart all services and hope the issue resolves",
-        "Implement distributed tracing with OpenTelemetry, Jaeger, or Zipkin to track requests across services with trace IDs",
-        "Check each service individually until you find the slow one"
+        "Adicionar logs de tempo em cada serviço e correlacioná-los manualmente",
+        "Reiniciar todos os serviços e torcer para que o problema se resolva",
+        "Implementar tracing distribuído com OpenTelemetry, Jaeger ou Zipkin para rastrear requisições entre serviços com trace IDs",
+        "Verificar cada serviço individualmente até encontrar o que está lento"
       ],
       "correctAnswer": 2,
-      "explanation": "Distributed tracing instruments each service to propagate trace IDs through the request chain. Tools like Jaeger or Zipkin visualize the entire request flow, showing time spent in each service, dependencies, and bottlenecks. This is essential for debugging microservices architectures where requests span multiple services.",
-      "hint": "What technology tracks a single request across multiple services with correlated IDs?",
+      "explanation": "O tracing distribuído instrumenta cada serviço para propagar trace IDs ao longo da cadeia de requisições. Ferramentas como Jaeger ou Zipkin visualizam todo o fluxo da requisição, mostrando o tempo gasto em cada serviço, dependências e gargalos. Isso é essencial para depurar arquiteturas de microsserviços em que as requisições atravessam múltiplos serviços.",
+      "hint": "Qual tecnologia rastreia uma única requisição em múltiplos serviços com IDs correlacionados?",
       "difficulty": "intermediate",
       "points": 14
     },
     {
       "id": "slo-sli-sla",
-      "title": "Understanding Service Levels",
-      "description": "What's the difference between SLI, SLO, and SLA?",
-      "situation": "You need to define reliability targets for your API service.",
+      "title": "Entendendo Níveis de Serviço",
+      "description": "Qual é a diferença entre SLI, SLO e SLA?",
+      "situation": "Você precisa definir metas de confiabilidade para seu serviço de API.",
       "codeExample": "# Your API:\n# - Current uptime: 99.5%\n# - Customer contract requires 99.9%\n# - You want to track availability",
       "options": [
-        "SLI is what you measure (availability %), SLO is your internal target (99.95%), SLA is contractual commitment to customers (99.9%)",
-        "They're all the same thing with different names",
-        "SLA is more important, ignore SLI and SLO",
-        "Only enterprise companies need these, startups don't"
+        "SLI é o que você mede (% de disponibilidade), SLO é sua meta interna (99,95%), SLA é o compromisso contratual com os clientes (99,9%)",
+        "São todos a mesma coisa com nomes diferentes",
+        "SLA é mais importante, ignore SLI e SLO",
+        "Só empresas grandes precisam disso, startups não"
       ],
       "correctAnswer": 0,
-      "explanation": "SLI (Service Level Indicator) is the actual measurement (e.g., % of successful requests). SLO (Service Level Objective) is your internal target (99.95% success rate). SLA (Service Level Agreement) is the contractual commitment to customers (99.9%) with penalties if missed. SLOs should be stricter than SLAs to provide a buffer. These form the foundation of site reliability engineering.",
-      "hint": "Think about measurements, internal goals, and external commitments. What's the hierarchy?",
+      "explanation": "SLI (Service Level Indicator) é a medição real (ex.: % de requisições bem-sucedidas). SLO (Service Level Objective) é sua meta interna (99,95% de taxa de sucesso). SLA (Service Level Agreement) é o compromisso contratual com os clientes (99,9%) com penalidades caso não seja cumprido. Os SLOs devem ser mais rígidos que os SLAs para oferecer uma margem de segurança. Esses conceitos formam a base da engenharia de confiabilidade de sites (SRE).",
+      "hint": "Pense em medições, metas internas e compromissos externos. Qual é a hierarquia?",
       "difficulty": "intermediate",
       "points": 13
     },
     {
       "id": "golden-signals",
-      "title": "The Four Golden Signals",
-      "description": "Which metrics are most important for monitoring a web service?",
-      "situation": "You can only monitor 4 metric categories for your web application. Which should you choose?",
+      "title": "Os Quatro Sinais de Ouro",
+      "description": "Quais métricas são mais importantes para monitorar um serviço web?",
+      "situation": "Você só pode monitorar 4 categorias de métricas para sua aplicação web. Quais você deveria escolher?",
       "options": [
-        "CPU, Memory, Disk, Network",
-        "Number of users, Revenue, Conversions, Bounce rate",
-        "Server count, Container count, Pod count, Node count",
-        "Latency, Traffic, Errors, Saturation (The Four Golden Signals)"
+        "CPU, Memória, Disco, Rede",
+        "Número de usuários, Receita, Conversões, Taxa de rejeição",
+        "Contagem de servidores, Contagem de containers, Contagem de pods, Contagem de nós",
+        "Latência, Tráfego, Erros, Saturação (Os Quatro Sinais de Ouro)"
       ],
       "correctAnswer": 3,
-      "explanation": "The Four Golden Signals from Google's SRE book are: Latency (response time), Traffic (requests/second), Errors (error rate), and Saturation (resource utilization). These metrics indicate user experience and system health better than infrastructure metrics alone. They apply to almost any service and help identify issues quickly.",
-      "hint": "What monitoring framework does Google SRE recommend for any service?",
+      "explanation": "Os Quatro Sinais de Ouro do livro de SRE do Google são: Latência (tempo de resposta), Tráfego (requisições/segundo), Erros (taxa de erro) e Saturação (utilização de recursos). Essas métricas indicam a experiência do usuário e a saúde do sistema melhor do que apenas métricas de infraestrutura. Elas se aplicam a praticamente qualquer serviço e ajudam a identificar problemas rapidamente.",
+      "hint": "Qual framework de monitoramento o Google SRE recomenda para qualquer serviço?",
       "difficulty": "intermediate",
       "points": 12
     },
     {
       "id": "alert-fatigue",
-      "title": "Preventing Alert Fatigue",
-      "description": "Your on-call engineer receives 100 alerts per week. Most aren't actionable. How do you fix this?",
-      "situation": "Team morale is low due to constant alerts. Many alerts auto-resolve before anyone can investigate.",
+      "title": "Prevenindo a Fadiga de Alertas",
+      "description": "Seu engenheiro de plantão recebe 100 alertas por semana. A maioria não é acionável. Como resolver isso?",
+      "situation": "O moral da equipe está baixo devido aos alertas constantes. Muitos alertas se autorresolvem antes que alguém consiga investigar.",
       "codeExample": "# Alert problems:\n# - 60% auto-resolve within 5 minutes\n# - 30% require no action\n# - 10% are actionable issues\n# On-call engineers burning out",
       "options": [
-        "Increase alert thresholds so they fire less often",
-        "Ignore alerts that auto-resolve",
-        "Implement alert aggregation, set minimum duration before alerting, use warning vs critical severity, and create runbooks for each alert",
-        "Hire more engineers to handle the alerts"
+        "Aumentar os limites de alerta para que disparem com menos frequência",
+        "Ignorar alertas que se autorresolvem",
+        "Implementar agregação de alertas, definir uma duração mínima antes de alertar, usar severidade de aviso vs. crítico e criar runbooks para cada alerta",
+        "Contratar mais engenheiros para lidar com os alertas"
       ],
       "correctAnswer": 2,
-      "explanation": "Combat alert fatigue by: aggregating related alerts, requiring issues persist for minimum duration (e.g., 5 minutes) before alerting, using severity levels appropriately, creating clear runbooks for each alert, and regularly reviewing/removing noisy alerts. Every alert should be actionable and require human intervention. Auto-resolving alerts indicate improper thresholds.",
-      "hint": "What combination of techniques makes each alert meaningful and actionable?",
+      "explanation": "Combata a fadiga de alertas: agregando alertas relacionados, exigindo que problemas persistam por uma duração mínima (ex.: 5 minutos) antes de alertar, usando níveis de severidade adequadamente, criando runbooks claros para cada alerta e revisando/removendo regularmente alertas ruidosos. Todo alerta deve ser acionável e exigir intervenção humana. Alertas que se autorresolvem indicam limites configurados incorretamente.",
+      "hint": "Qual combinação de técnicas torna cada alerta significativo e acionável?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "observability-pillars",
-      "title": "The Three Pillars of Observability",
-      "description": "How do metrics, logs, and traces work together in observability?",
-      "situation": "You're implementing a complete observability stack. How should you use each pillar?",
+      "title": "Os Três Pilares da Observabilidade",
+      "description": "Como métricas, logs e traces funcionam juntos na observabilidade?",
+      "situation": "Você está implementando uma stack de observabilidade completa. Como você deveria usar cada pilar?",
       "options": [
-        "Only use metrics, logs and traces are redundant",
-        "Use metrics to identify WHEN issues occur, logs to understand WHAT happened, traces to see WHERE in distributed systems. Correlate all three for complete observability",
-        "Use logs for everything, they contain all information",
-        "Metrics, logs, and traces are competing solutions, choose one"
+        "Usar apenas métricas, logs e traces são redundantes",
+        "Usar métricas para identificar QUANDO os problemas ocorrem, logs para entender O QUE aconteceu, traces para ver ONDE nos sistemas distribuídos. Correlacionar os três para uma observabilidade completa",
+        "Usar logs para tudo, eles contêm todas as informações",
+        "Métricas, logs e traces são soluções concorrentes, escolha uma"
       ],
       "correctAnswer": 1,
-      "explanation": "The three pillars complement each other: Metrics show trends and trigger alerts (WHEN), Logs provide detailed context and error messages (WHAT), Traces show request flows through distributed systems (WHERE). Modern observability correlates all three using common identifiers (trace IDs, user IDs) to enable drilling down from high-level metrics to specific log entries and traces.",
-      "hint": "How do these three different data types complement each other rather than compete?",
+      "explanation": "Os três pilares se complementam: Métricas mostram tendências e disparam alertas (QUANDO), Logs fornecem contexto detalhado e mensagens de erro (O QUE), Traces mostram os fluxos de requisições em sistemas distribuídos (ONDE). A observabilidade moderna correlaciona os três usando identificadores comuns (trace IDs, IDs de usuário) para permitir aprofundar-se de métricas de alto nível até entradas de log e traces específicos.",
+      "hint": "Como esses três tipos de dados diferentes se complementam em vez de competir entre si?",
       "difficulty": "advanced",
       "points": 18
     },
     {
       "id": "cardinality-explosion",
-      "title": "Managing High-Cardinality Metrics",
-      "description": "You want to track request latency by user ID (10 million users). What's the problem?",
-      "situation": "Your monitoring system is slow and expensive. You're tracking metrics with high-cardinality labels like user_id, session_id, and request_id.",
+      "title": "Gerenciando Métricas de Alta Cardinalidade",
+      "description": "Você quer rastrear a latência de requisições por ID de usuário (10 milhões de usuários). Qual é o problema?",
+      "situation": "Seu sistema de monitoramento está lento e caro. Você está rastreando métricas com labels de alta cardinalidade como user_id, session_id e request_id.",
       "codeExample": "# Metric:\n# http_request_duration{user_id=\"...\", endpoint=\"...\", method=\"...\"}\n# - 10M users\n# - 100 endpoints  \n# - 4 HTTP methods\n# = 4 billion time series!",
       "options": [
-        "This is fine, track everything with maximum detail",
-        "Use sampling and exemplars for high-cardinality data, keep metrics aggregated, use logs or traces for individual request details",
-        "Delete old metrics to save space",
-        "Switch to a more expensive monitoring solution"
+        "Está tudo bem, rastrear tudo com o máximo de detalhe",
+        "Usar amostragem e exemplars para dados de alta cardinalidade, manter as métricas agregadas, usar logs ou traces para detalhes de requisições individuais",
+        "Excluir métricas antigas para economizar espaço",
+        "Migrar para uma solução de monitoramento mais cara"
       ],
       "correctAnswer": 1,
-      "explanation": "High-cardinality labels create massive numbers of time series, crushing performance and costs. Instead: keep metrics aggregated by low-cardinality labels (endpoint, status code), use sampling for high-cardinality data, use exemplars (links from metrics to traces), and store detailed per-request data in logs or traces. This provides necessary detail without overwhelming the metrics system.",
-      "hint": "What's the cost-effective way to handle detailed per-request data without creating billions of time series?",
+      "explanation": "Labels de alta cardinalidade criam um número massivo de séries temporais, comprometendo o desempenho e os custos. Em vez disso: mantenha as métricas agregadas por labels de baixa cardinalidade (endpoint, código de status), use amostragem para dados de alta cardinalidade, use exemplars (links de métricas para traces) e armazene dados detalhados por requisição em logs ou traces. Isso fornece o detalhe necessário sem sobrecarregar o sistema de métricas.",
+      "hint": "Qual é a forma econômica de lidar com dados detalhados por requisição sem criar bilhões de séries temporais?",
       "difficulty": "advanced",
       "points": 20
     }
