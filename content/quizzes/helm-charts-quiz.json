@@ -1,7 +1,7 @@
 {
   "id": "helm-charts-quiz",
-  "title": "Helm Charts & Package Management Quiz",
-  "description": "Master Kubernetes app deployment through real-world Helm scenarios covering chart creation, dependency management, and complex templating challenges",
+  "title": "Quiz de Helm Charts e Gerenciamento de Pacotes",
+  "description": "Domine o deploy de aplicações Kubernetes através de cenários reais com Helm, cobrindo criação de charts, gerenciamento de dependências e desafios complexos de templating",
   "category": "Helm",
   "icon": "Package",
   "totalPoints": 147,
@@ -11,7 +11,7 @@
     "gradientTo": "to-indigo-600"
   },
   "metadata": {
-    "estimatedTime": "22-28 minutes",
+    "estimatedTime": "22-28 minutos",
     "difficultyLevels": {
       "beginner": 4,
       "intermediate": 4,
@@ -22,181 +22,181 @@
   "questions": [
     {
       "id": "first-chart-creation",
-      "title": "Creating Your First Production Chart",
-      "description": "You need to Helm-ify a microservice that's currently deployed with raw YAML manifests.",
-      "situation": "Your team wants to move from kubectl apply -f to Helm for better release management. You have a Node.js API with deployment, service, and ingress that needs to work across dev, staging, and prod environments.",
+      "title": "Criando Seu Primeiro Chart de Produção",
+      "description": "Você precisa 'helmificar' um microsserviço que atualmente é implantado com manifests YAML puros.",
+      "situation": "Sua equipe quer migrar do kubectl apply -f para o Helm em busca de um gerenciamento de releases melhor. Você tem uma API Node.js com deployment, service e ingress que precisa funcionar nos ambientes de dev, staging e prod.",
       "codeExample": "Current YAML structure:\n- deployment.yaml (hardcoded image: myapp:v1.2.3)\n- service.yaml (hardcoded name: myapp-service)\n- ingress.yaml (hardcoded host: api.company.com)\n\nEnvironment differences:\n- Dev: 1 replica, no ingress, local image\n- Staging: 2 replicas, staging.company.com\n- Prod: 5 replicas, api.company.com, resource limits",
       "options": [
         "helm create myapp && replace templates with your YAML files",
-        "Copy YAML files to templates/ folder and add {{ .Values.image.tag }} variables for differences",
-        "Use helm create myapp, then systematically template image tags, replica counts, hostnames, and environment-specific configurations with proper values.yaml structure",
-        "Create separate charts for each environment"
+        "Copiar os arquivos YAML para a pasta templates/ e adicionar variáveis {{ .Values.image.tag }} para as diferenças",
+        "Usar helm create myapp e, em seguida, transformar sistematicamente em template as tags de imagem, contagem de réplicas, hostnames e configurações específicas de ambiente, com uma estrutura adequada de values.yaml",
+        "Criar charts separados para cada ambiente"
       ],
       "correctAnswer": 2,
-      "explanation": "Proper chart creation starts with helm create for structure, then systematically templates all environment-specific values. This includes image tags, replica counts, resource limits, and ingress hosts with a well-organized values.yaml hierarchy.",
-      "hint": "Think about what changes between environments and how to make those configurable through values.",
+      "explanation": "A criação adequada de um chart começa com helm create para a estrutura, seguida da transformação sistemática em template de todos os valores específicos de ambiente. Isso inclui tags de imagem, contagem de réplicas, limites de recursos e hosts de ingress, com uma hierarquia de values.yaml bem organizada.",
+      "hint": "Pense no que muda entre os ambientes e como tornar isso configurável através de values.",
       "difficulty": "beginner",
       "points": 12
     },
     {
       "id": "values-override-chaos",
-      "title": "Values File Override Nightmare",
-      "description": "Your Helm deployment is picking up wrong values and you can't figure out the precedence.",
-      "situation": "You deployed to staging but it's using production database settings. Multiple values files and command-line overrides are conflicting, and the application is connecting to the wrong environment.",
+      "title": "O Pesadelo de Sobrescrita de Arquivos de Values",
+      "description": "Seu deployment do Helm está pegando os valores errados e você não consegue entender a precedência.",
+      "situation": "Você fez o deploy em staging, mas ele está usando as configurações de banco de dados de produção. Múltiplos arquivos de values e sobrescritas de linha de comando estão em conflito, e a aplicação está se conectando ao ambiente errado.",
       "codeExample": "Values hierarchy confusion:\n\nvalues.yaml:\ndatabase:\n  host: localhost\n  port: 5432\n\nvalues-staging.yaml:\ndatabase:\n  host: staging-db.internal\n\nvalues-prod.yaml:\ndatabase:\n  host: prod-db.internal\n\nDeployment command:\nhelm upgrade myapp ./mychart \\\n  --values values-staging.yaml \\\n  --set database.host=debug-db.local \\\n  --values values-prod.yaml\n\nActual result: Connecting to prod-db.internal",
       "options": [
-        "Remove all --set parameters and use only values files",
-        "The last --values file (values-prod.yaml) overrides previous values, so reorder to put values-staging.yaml last",
-        "Use --values values-staging.yaml only and remove conflicting files",
-        "Set higher priority with --set-string instead of --set"
+        "Remover todos os parâmetros --set e usar apenas arquivos de values",
+        "O último arquivo --values (values-prod.yaml) sobrescreve os valores anteriores, então reordene para colocar values-staging.yaml por último",
+        "Usar apenas --values values-staging.yaml e remover os arquivos conflitantes",
+        "Definir prioridade maior com --set-string em vez de --set"
       ],
       "correctAnswer": 1,
-      "explanation": "Helm values precedence: values.yaml < --values file1 < --values file2 < --set. The values-prod.yaml file loaded last overrides staging values. Reorder files so staging values load last, or use --set to override with highest precedence.",
-      "hint": "Look at the order of the --values flags. Which file is loaded last and therefore has highest precedence?",
+      "explanation": "Precedência de values no Helm: values.yaml < --values arquivo1 < --values arquivo2 < --set. O arquivo values-prod.yaml, carregado por último, sobrescreve os valores de staging. Reordene os arquivos para que os valores de staging sejam carregados por último, ou use --set para sobrescrever com a maior precedência.",
+      "hint": "Observe a ordem das flags --values. Qual arquivo é carregado por último e, portanto, tem maior precedência?",
       "difficulty": "beginner",
       "points": 10
     },
     {
       "id": "dependency-hell",
-      "title": "Dependency Management Disaster",
-      "description": "Your application depends on PostgreSQL and Redis charts, but version conflicts are breaking deployments.",
-      "situation": "Your main application chart depends on bitnami/postgresql and bitnami/redis, but different versions have incompatible APIs and your staging environment is broken after a helm dependency update.",
+      "title": "Desastre no Gerenciamento de Dependências",
+      "description": "Sua aplicação depende dos charts do PostgreSQL e do Redis, mas conflitos de versão estão quebrando os deployments.",
+      "situation": "O chart principal da sua aplicação depende de bitnami/postgresql e bitnami/redis, mas versões diferentes têm APIs incompatíveis, e seu ambiente de staging está quebrado após um helm dependency update.",
       "codeExample": "Chart.yaml dependencies:\ndependencies:\n- name: postgresql\n  version: \"^12.0.0\"\n  repository: https://charts.bitnami.com/bitnami\n- name: redis\n  version: \"~17.0.0\"\n  repository: https://charts.bitnami.com/bitnami\n\nError after helm dependency update:\nError: failed to download \"bitnami/postgresql\" at version \"12.8.2\"\nError: found in Chart.yaml, but missing in charts/ directory\n\nhelm dependency list shows:\npostgresql  12.8.2  https://charts.bitnami.com/bitnami  missing\nredis       17.3.1  https://charts.bitnami.com/bitnami  ok",
       "options": [
-        "Run helm dependency build to download missing charts",
-        "Remove the postgresql dependency and install it separately",
-        "Change postgresql version to exact version: \"12.8.2\"",
-        "Update repository cache with helm repo update, then run helm dependency update"
+        "Executar helm dependency build para baixar os charts que faltam",
+        "Remover a dependência do postgresql e instalá-lo separadamente",
+        "Alterar a versão do postgresql para a versão exata: \"12.8.2\"",
+        "Atualizar o cache do repositório com helm repo update e, em seguida, executar helm dependency update"
       ],
       "correctAnswer": 3,
-      "explanation": "The repository cache is stale and doesn't know about newer chart versions. Update the repo cache first with helm repo update, then helm dependency update will find and download the correct chart versions.",
-      "hint": "The chart exists but Helm can't find it. What needs to be refreshed before downloading dependencies?",
+      "explanation": "O cache do repositório está desatualizado e não conhece as versões mais novas do chart. Atualize primeiro o cache do repositório com helm repo update; em seguida, o helm dependency update encontrará e baixará as versões corretas do chart.",
+      "hint": "O chart existe, mas o Helm não consegue encontrá-lo. O que precisa ser atualizado antes de baixar as dependências?",
       "difficulty": "intermediate",
       "points": 15
     },
     {
       "id": "failed-upgrade-rollback",
-      "title": "Production Upgrade Gone Wrong",
-      "description": "Your Helm upgrade failed in production and you need to rollback immediately while preserving data.",
-      "situation": "A Helm upgrade to v2.1.0 failed during deployment, leaving your production app in a broken state. Users are getting 500 errors, but you need to rollback without losing recent data in persistent volumes.",
+      "title": "Upgrade de Produção que Deu Errado",
+      "description": "Seu upgrade do Helm falhou em produção e você precisa fazer rollback imediatamente, preservando os dados.",
+      "situation": "Um upgrade do Helm para a v2.1.0 falhou durante o deployment, deixando sua aplicação de produção em um estado quebrado. Os usuários estão recebendo erros 500, mas você precisa fazer rollback sem perder os dados recentes nos volumes persistentes.",
       "codeExample": "helm upgrade myapp ./myapp-chart --version 2.1.0\n\nError: UPGRADE FAILED: failed to create resource: \nservices \"myapp-service\" already exists\n\nhelm list shows:\nNAME   REVISION  STATUS  CHART        APP VERSION\nmyapp  3         FAILED  myapp-2.1.0  2.1.0\n\nhelm history myapp:\nREVISION  STATUS     CHART        APP VERSION  DESCRIPTION\n1         DEPLOYED   myapp-1.8.0  1.8.0       Install complete\n2         DEPLOYED   myapp-2.0.0  2.0.0       Upgrade complete  \n3         FAILED     myapp-2.1.0  2.1.0       Upgrade failed\n\nPersistent data: PostgreSQL with 2GB of production data",
       "options": [
-        "helm rollback myapp 2 to return to last working version",
+        "helm rollback myapp 2 para voltar à última versão funcional",
         "helm uninstall myapp && helm install myapp ./myapp-chart --version 2.0.0",
         "kubectl delete all --selector=app=myapp && helm upgrade myapp",
         "helm upgrade myapp ./myapp-chart --version 2.0.0 --force"
       ],
       "correctAnswer": 0,
-      "explanation": "helm rollback is designed exactly for this scenario. It safely reverts to a previous working revision while preserving persistent volumes and data. It's faster and safer than uninstall/reinstall which could cause data loss.",
-      "hint": "What Helm command is specifically designed to safely return to a previous working state?",
+      "explanation": "O helm rollback foi projetado exatamente para esse cenário. Ele reverte com segurança para uma revisão anterior que funcionava, preservando volumes persistentes e dados. É mais rápido e seguro do que desinstalar/reinstalar, o que poderia causar perda de dados.",
+      "hint": "Qual comando do Helm foi projetado especificamente para retornar com segurança a um estado anterior que funcionava?",
       "difficulty": "intermediate",
       "points": 14
     },
     {
       "id": "multi-environment-templating",
-      "title": "Complex Environment Configuration",
-      "description": "You need to deploy the same application across 5 environments with drastically different configurations.",
-      "situation": "Your application needs to run in local, dev, staging, prod, and dr (disaster recovery) environments. Each has different resource requirements, external services, security settings, and ingress configurations.",
+      "title": "Configuração Complexa de Ambientes",
+      "description": "Você precisa implantar a mesma aplicação em 5 ambientes com configurações drasticamente diferentes.",
+      "situation": "Sua aplicação precisa rodar nos ambientes local, dev, staging, prod e dr (disaster recovery). Cada um tem requisitos de recursos, serviços externos, configurações de segurança e configurações de ingress diferentes.",
       "codeExample": "Environment requirements:\n\nLocal: No ingress, minimal resources, mock external services\nDev: Basic ingress, shared external services, no TLS\nStaging: Production-like, staging external services, Let's Encrypt TLS  \nProd: Full resources, production external services, commercial TLS cert\nDR: Same as prod but different region and scaled down\n\nCurrent template chaos:\n{{- if eq .Values.environment \"local\" }}\n  {{- if eq .Values.region \"us-east\" }}\n    {{- if .Values.security.enabled }}\n      # Nested conditional nightmare\n    {{- end }}\n  {{- end }}\n{{- end }}",
       "options": [
-        "Use nested if statements for all conditional logic",
-        "Create separate charts for each environment",
-        "Use Kustomize instead of Helm for environment differences",
-        "Structure values.yaml with environment-specific sections and use template functions like default, required, and include for cleaner conditionals"
+        "Usar declarações if aninhadas para toda a lógica condicional",
+        "Criar charts separados para cada ambiente",
+        "Usar Kustomize em vez do Helm para as diferenças de ambiente",
+        "Estruturar o values.yaml com seções específicas por ambiente e usar funções de template como default, required e include para condicionais mais limpas"
       ],
       "correctAnswer": 3,
-      "explanation": "Well-structured values.yaml with environment-specific sections, combined with Helm template functions like default, required, and include, creates maintainable templates. This avoids nested conditionals while providing flexibility.",
-      "hint": "Complex nested conditionals become unmaintainable. What Helm features help organize configuration cleanly?",
+      "explanation": "Um values.yaml bem estruturado, com seções específicas por ambiente, combinado com funções de template do Helm como default, required e include, cria templates fáceis de manter. Isso evita condicionais aninhadas e ainda oferece flexibilidade.",
+      "hint": "Condicionais aninhadas complexas se tornam difíceis de manter. Quais recursos do Helm ajudam a organizar a configuração de forma limpa?",
       "difficulty": "intermediate",
       "points": 16
     },
     {
       "id": "helm-hooks-deployment",
-      "title": "Database Migration with Helm Hooks",
-      "description": "You need to run database migrations before your application starts but after the database is ready.",
-      "situation": "Your application deployment includes a database migration job that must run after PostgreSQL is ready but before the main application pods start. The migration sometimes fails and should block the deployment.",
+      "title": "Migração de Banco de Dados com Helm Hooks",
+      "description": "Você precisa executar migrações de banco de dados antes que sua aplicação inicie, mas depois que o banco de dados estiver pronto.",
+      "situation": "O deployment da sua aplicação inclui um job de migração de banco de dados que precisa rodar depois que o PostgreSQL estiver pronto, mas antes que os pods principais da aplicação iniciem. A migração às vezes falha e deve bloquear o deployment.",
       "codeExample": "Deployment order needed:\n1. PostgreSQL database starts\n2. Database migration job runs (and must succeed)\n3. Application pods start\n4. If migration fails, deployment should fail\n\nCurrent problem:\n- Application starts before migration completes\n- Race conditions cause connection errors\n- Failed migrations don't stop deployment",
       "options": [
-        "Use Helm pre-upgrade and pre-install hooks with migration job, add hook-weight for ordering, and configure hook-delete-policy",
-        "Use initContainers in the main deployment",
-        "Create a separate Job and run it manually before Helm upgrade",
-        "Add sleep commands to delay application startup"
+        "Usar os hooks pre-upgrade e pre-install do Helm com o job de migração, adicionar hook-weight para ordenação e configurar hook-delete-policy",
+        "Usar initContainers no deployment principal",
+        "Criar um Job separado e executá-lo manualmente antes do helm upgrade",
+        "Adicionar comandos sleep para atrasar a inicialização da aplicação"
       ],
       "correctAnswer": 0,
-      "explanation": "Helm hooks provide the exact control needed: pre-install/pre-upgrade hooks run before main resources, hook-weight controls execution order, and proper hook policies ensure migrations complete successfully before application deployment.",
-      "hint": "What Helm feature is designed to run jobs at specific points in the deployment lifecycle?",
+      "explanation": "Os hooks do Helm fornecem exatamente o controle necessário: os hooks pre-install/pre-upgrade rodam antes dos recursos principais, o hook-weight controla a ordem de execução, e políticas de hook adequadas garantem que as migrações sejam concluídas com sucesso antes do deployment da aplicação.",
+      "hint": "Qual recurso do Helm foi projetado para executar jobs em pontos específicos do ciclo de vida do deployment?",
       "difficulty": "intermediate",
       "points": 17
     },
     {
       "id": "chart-repository-management",
-      "title": "Private Chart Repository Setup",
-      "description": "Your team needs a private Helm repository for proprietary charts with proper versioning and access control.",
-      "situation": "You're building internal charts that can't be public. You need proper versioning, easy sharing across teams, and integration with your CI/CD pipeline for automated chart publishing.",
+      "title": "Configuração de Repositório Privado de Charts",
+      "description": "Sua equipe precisa de um repositório Helm privado para charts proprietários, com versionamento adequado e controle de acesso.",
+      "situation": "Você está construindo charts internos que não podem ser públicos. Você precisa de versionamento adequado, compartilhamento fácil entre equipes e integração com seu pipeline de CI/CD para publicação automatizada dos charts.",
       "codeExample": "Requirements:\n- Store proprietary application charts\n- Version control and automated publishing\n- Team access control\n- CI/CD integration for chart releases\n- Easy helm repo add for developers\n\nOptions being considered:\n- Git repository with GitHub Pages\n- Artifactory/Nexus repository\n- Cloud storage (S3/GCS) with repo index\n- Container registry with OCI support",
       "options": [
-        "Set up GitHub Pages with manual index.yaml management",
-        "Use container registry with helm push/pull OCI support for native integration",
-        "Store charts directly in application repositories",
-        "Use shared file system accessible to all developers"
+        "Configurar o GitHub Pages com gerenciamento manual do index.yaml",
+        "Usar um container registry com suporte a OCI para helm push/pull, garantindo integração nativa",
+        "Armazenar os charts diretamente nos repositórios das aplicações",
+        "Usar um sistema de arquivos compartilhado acessível a todos os desenvolvedores"
       ],
       "correctAnswer": 1,
-      "explanation": "Modern container registries with OCI support provide native Helm chart storage, integrated access control, automated CI/CD publishing, and seamless helm push/pull workflows. This is the current best practice for private charts.",
-      "hint": "What modern approach leverages existing container infrastructure and provides native Helm integration?",
+      "explanation": "Registries de contêiner modernos com suporte a OCI oferecem armazenamento nativo de charts do Helm, controle de acesso integrado, publicação automatizada via CI/CD e fluxos de helm push/pull perfeitamente integrados. Essa é a prática recomendada atual para charts privados.",
+      "hint": "Qual abordagem moderna aproveita a infraestrutura de contêineres existente e oferece integração nativa com o Helm?",
       "difficulty": "beginner",
       "points": 11
     },
     {
       "id": "template-debugging-nightmare",
-      "title": "Template Rendering Debug Session",
-      "description": "Your Helm template is producing invalid YAML and you can't figure out why.",
-      "situation": "After adding conditional logic for different environments, your Helm chart fails to deploy with YAML parsing errors. The template looks correct but something is wrong with the rendering.",
+      "title": "Sessão de Debug de Renderização de Template",
+      "description": "Seu template do Helm está gerando YAML inválido e você não consegue descobrir o motivo.",
+      "situation": "Depois de adicionar lógica condicional para diferentes ambientes, seu chart do Helm falha ao ser implantado com erros de parsing de YAML. O template parece correto, mas algo está errado com a renderização.",
       "codeExample": "Template snippet causing issues:\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: {{ .Values.app.name }}\n  {{- if .Values.environment.production }}\n  annotations:\n    production: \"true\"\n  {{- end }}\nspec:\n  replicas: {{ .Values.replicas | default 1 }}\n  {{- if .Values.autoscaling.enabled }}\n  # HPA will manage replicas\n  {{- else }}\n  replicas: {{ .Values.replicas }}\n  {{- end }}\n\nError: error parsing YAML: yaml: line 12: found duplicate key \"replicas\"",
       "options": [
-        "Remove all conditional logic and use simple values",
-        "Use helm template command to debug rendered output, fix duplicate keys, and validate YAML structure",
-        "Switch to Kustomize for conditional configuration",
-        "Add more spacing between template blocks"
+        "Remover toda a lógica condicional e usar valores simples",
+        "Usar o comando helm template para depurar a saída renderizada, corrigir chaves duplicadas e validar a estrutura do YAML",
+        "Migrar para o Kustomize para configuração condicional",
+        "Adicionar mais espaçamento entre os blocos de template"
       ],
       "correctAnswer": 1,
-      "explanation": "helm template renders the chart locally without deploying, showing exactly what YAML will be generated. This reveals issues like duplicate keys, invalid syntax, or logic errors before deployment fails.",
-      "hint": "What Helm command lets you see the exact YAML that will be generated without actually deploying?",
+      "explanation": "O helm template renderiza o chart localmente sem fazer deploy, mostrando exatamente qual YAML será gerado. Isso revela problemas como chaves duplicadas, sintaxe inválida ou erros de lógica antes que o deployment falhe.",
+      "hint": "Qual comando do Helm permite ver exatamente o YAML que será gerado, sem de fato fazer o deploy?",
       "difficulty": "beginner",
       "points": 9
     },
     {
       "id": "chart-security-scanning",
-      "title": "Chart Security and Compliance",
-      "description": "Your security team requires all Helm charts to be scanned for vulnerabilities and policy compliance.",
-      "situation": "Before production deployment, charts must pass security scans for container vulnerabilities, Kubernetes security policies, and configuration best practices. Your current charts are failing these checks.",
+      "title": "Segurança e Conformidade de Charts",
+      "description": "Sua equipe de segurança exige que todos os charts do Helm sejam escaneados em busca de vulnerabilidades e conformidade com políticas.",
+      "situation": "Antes do deploy em produção, os charts precisam passar em scans de segurança para vulnerabilidades de contêiner, políticas de segurança do Kubernetes e boas práticas de configuração. Seus charts atuais estão falhando nessas verificações.",
       "codeExample": "Security scan failures:\n- Container images: 15 HIGH vulnerabilities\n- Pod Security Standards: Privileged containers detected\n- Network policies: Missing network isolation\n- Resource limits: Unlimited memory/CPU usage\n- Secrets: Hardcoded passwords in values.yaml\n- RBAC: Overly permissive service accounts\n\nCompliance requirements:\n- All images must be vulnerability-free\n- Pod Security Standards: Restricted profile\n- Network segmentation required\n- Resource limits mandatory\n- No secrets in values files",
       "options": [
-        "Ignore security requirements and deploy anyway",
-        "Request security team to lower the requirements",
-        "Use only official charts from public repositories",
-        "Implement image scanning in CI/CD, use Pod Security Standards, add NetworkPolicies, set resource limits, and move secrets to external secret management"
+        "Ignorar os requisitos de segurança e fazer o deploy mesmo assim",
+        "Pedir à equipe de segurança para reduzir os requisitos",
+        "Usar apenas charts oficiais de repositórios públicos",
+        "Implementar scan de imagens no CI/CD, usar Pod Security Standards, adicionar NetworkPolicies, definir limites de recursos e mover os secrets para um gerenciamento externo de secrets"
       ],
       "correctAnswer": 3,
-      "explanation": "Enterprise security requires comprehensive measures: automated image scanning in CI/CD pipelines, Pod Security Standards for runtime security, NetworkPolicies for segmentation, mandatory resource limits, and external secret management systems.",
-      "hint": "Security can't be compromised. What systematic approach addresses all the compliance requirements?",
+      "explanation": "A segurança corporativa exige medidas abrangentes: scan automatizado de imagens nos pipelines de CI/CD, Pod Security Standards para segurança em tempo de execução, NetworkPolicies para segmentação, limites de recursos obrigatórios e sistemas externos de gerenciamento de secrets.",
+      "hint": "A segurança não pode ser comprometida. Qual abordagem sistemática atende a todos os requisitos de conformidade?",
       "difficulty": "advanced",
       "points": 20
     },
     {
       "id": "complex-release-management",
-      "title": "Multi-Service Release Orchestration",
-      "description": "You need to coordinate the deployment of 8 microservices with complex dependencies and shared resources.",
-      "situation": "Your application consists of 8 microservices, shared databases, message queues, and monitoring services. They have specific deployment order requirements and shared configuration that must be synchronized across services.",
+      "title": "Orquestração de Release Multi-Serviço",
+      "description": "Você precisa coordenar o deployment de 8 microsserviços com dependências complexas e recursos compartilhados.",
+      "situation": "Sua aplicação é composta por 8 microsserviços, bancos de dados compartilhados, filas de mensagens e serviços de monitoramento. Eles têm requisitos específicos de ordem de deployment e configurações compartilhadas que precisam estar sincronizadas entre os serviços.",
       "codeExample": "Service dependency chain:\n1. postgres, redis (shared infrastructure)\n2. auth-service (other services depend on it)\n3. user-service, order-service (depend on auth)\n4. payment-service (depends on user, order)\n5. notification-service (depends on all above)\n6. frontend (depends on all APIs)\n7. monitoring (observes all services)\n\nChallenges:\n- Shared config maps and secrets\n- Database migration coordination\n- Rolling updates without breaking dependencies\n- Environment-specific service mesh configuration",
       "options": [
-        "Deploy everything in a single massive Helm chart",
-        "Use umbrella chart with subcharts, implement proper dependency management, coordinate releases with hooks, and use shared chart libraries for common resources",
-        "Deploy each service manually in the correct order",
-        "Create shell scripts to orchestrate individual helm commands"
+        "Fazer deploy de tudo em um único chart gigante do Helm",
+        "Usar um umbrella chart com subcharts, implementar um gerenciamento adequado de dependências, coordenar releases com hooks e usar bibliotecas de charts compartilhadas para recursos comuns",
+        "Fazer deploy de cada serviço manualmente na ordem correta",
+        "Criar scripts shell para orquestrar comandos individuais do helm"
       ],
       "correctAnswer": 1,
-      "explanation": "Umbrella charts with subcharts provide proper dependency management, shared libraries enable common resource reuse, hooks coordinate complex deployment sequences, and subchart dependency declarations ensure correct ordering.",
-      "hint": "What Helm pattern is designed for managing multiple related charts with dependencies and shared resources?",
+      "explanation": "Umbrella charts com subcharts fornecem um gerenciamento adequado de dependências, bibliotecas compartilhadas permitem a reutilização de recursos comuns, hooks coordenam sequências complexas de deployment, e as declarações de dependência dos subcharts garantem a ordem correta.",
+      "hint": "Qual padrão do Helm foi projetado para gerenciar múltiplos charts relacionados com dependências e recursos compartilhados?",
       "difficulty": "advanced",
       "points": 23
     }

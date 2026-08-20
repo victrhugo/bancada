@@ -1,10 +1,10 @@
 {
   "id": "idp-service-catalog-design",
   "slug": "idp-service-catalog-design",
-  "title": "Service Catalog and Ownership",
-  "question": "You are building a service catalog for your IDP. Your company has 200 microservices, and nobody knows who owns half of them. How do you fix this, and what does a good service catalog look like?",
-  "answer": "A service catalog is the single source of truth for 'what do we run, and who owns it?' Without one, every incident starts with 20 minutes of Slack threads asking 'does anyone know who owns this service?'\n\nHere is how I would fix the ownership mess:\n\nFirst, require every service to have a catalog-info.yaml in its repo. This file declares the service name, owning team, dependencies, and API specs. If a repo does not have one, it shows up as 'unowned' in the catalog, which creates social pressure to fix it.\n\nSecond, automate catalog discovery. Do not rely on people manually registering services. Scan your GitHub org, pull in metadata from Kubernetes (what is actually running), and cross-reference with your cloud provider. If a service is running in production but is not in the catalog, flag it.\n\nThird, make the catalog useful, not just a registry. A good service catalog shows: who owns this, what it depends on, its current health, recent deployments, on-call rotation, API docs, and cost. If the catalog is just a list of names, nobody will maintain it.\n\nThe ownership model matters too. Use team ownership, not individual ownership. People leave. Teams persist. And every service must have exactly one owning team. Shared ownership means no ownership.\n\nTools like Backstage, Cortex, or OpsLevel do this well, but you can start with a simple YAML file per repo and a script that aggregates them.",
-  "explanation": "This question tests real operational experience. Anyone who has dealt with a microservices mess knows that the catalog is the foundation of everything else in an IDP. Without knowing what you run and who owns it, you cannot build self-service, you cannot route incidents, and you cannot track costs. Listen for whether the candidate talks about keeping the catalog accurate over time, not just the initial setup.",
+  "title": "Catálogo de Serviços e Propriedade (Ownership)",
+  "question": "Você está construindo um catálogo de serviços para a sua IDP. Sua empresa tem 200 microsserviços, e ninguém sabe quem é dono de metade deles. Como você resolveria isso, e como seria um bom catálogo de serviços?",
+  "answer": "Um catálogo de serviços é a fonte única da verdade para 'o que estamos rodando, e quem é dono disso?' Sem um, todo incidente começa com 20 minutos de threads no Slack perguntando 'alguém sabe quem é dono desse serviço?'\n\nAqui está como eu resolveria essa bagunça de ownership:\n\nPrimeiro, exija que todo serviço tenha um catalog-info.yaml no seu repositório. Esse arquivo declara o nome do serviço, o time responsável, as dependências e as especificações de API. Se um repositório não tiver um, ele aparece como 'sem dono' no catálogo, o que cria pressão social para corrigir isso.\n\nSegundo, automatize a descoberta do catálogo. Não dependa de pessoas registrando serviços manualmente. Faça scan da sua organização no GitHub, puxe metadados do Kubernetes (o que está realmente rodando) e cruze com o seu provedor de nuvem. Se um serviço está rodando em produção, mas não está no catálogo, sinalize isso.\n\nTerceiro, torne o catálogo útil, não apenas um registro. Um bom catálogo de serviços mostra: quem é o dono, do que ele depende, sua saúde atual, deploys recentes, escala de plantão (on-call), documentação de API e custo. Se o catálogo é apenas uma lista de nomes, ninguém vai mantê-lo.\n\nO modelo de ownership também importa. Use ownership por time, não por indivíduo. Pessoas saem. Times permanecem. E todo serviço deve ter exatamente um time responsável. Ownership compartilhado significa nenhum ownership.\n\nFerramentas como Backstage, Cortex ou OpsLevel fazem isso bem, mas você pode começar com um simples arquivo YAML por repositório e um script que os agrega.",
+  "explanation": "Essa pergunta testa experiência operacional real. Qualquer um que já lidou com uma bagunça de microsserviços sabe que o catálogo é a base de tudo mais em uma IDP. Sem saber o que você roda e quem é dono disso, você não consegue construir self-service, não consegue rotear incidentes e não consegue rastrear custos. Preste atenção se o candidato fala sobre manter o catálogo preciso ao longo do tempo, e não apenas sobre a configuração inicial.",
   "category": "Platform Engineering",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,24 +18,24 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "catalog-info.yaml that lives in each service repo",
+      "label": "catalog-info.yaml presente em cada repositório de serviço",
       "code": "# catalog-info.yaml - every repo gets one of these\napiVersion: backstage.io/v1alpha1\nkind: Component\nmetadata:\n  name: payments-api\n  description: Handles payment processing and refunds\n  annotations:\n    github.com/project-slug: myorg/payments-api\n    backstage.io/techdocs-ref: dir:.\n    pagerduty.com/service-id: P1234ABC\n    grafana/dashboard-selector: \"payments-api\"\n  tags:\n    - python\n    - fastapi\n    - tier-1\n  links:\n    - url: https://grafana.internal/d/payments-api\n      title: Grafana Dashboard\n    - url: https://myorg.atlassian.net/wiki/spaces/PAY\n      title: Team Wiki\nspec:\n  type: service\n  lifecycle: production\n  owner: team-payments\n  system: checkout\n  providesApis:\n    - payments-api\n  consumesApis:\n    - stripe-gateway\n    - notifications-api\n  dependsOn:\n    - resource:payments-db\n    - resource:payments-redis"
     },
     {
       "language": "bash",
-      "label": "Script to find unowned services running in production",
+      "label": "Script para encontrar serviços sem dono rodando em produção",
       "code": "#!/bin/bash\n# Find services running in Kubernetes that are not in the catalog\n\necho \"=== Services in Kubernetes but NOT in catalog ===\"\n\n# Get all deployments from Kubernetes\nk8s_services=$(kubectl get deployments -A \\\n  -o jsonpath='{range .items[*]}{.metadata.name}{\"\\n\"}{end}' \\\n  | sort -u)\n\n# Get all services registered in Backstage catalog\ncatalog_services=$(curl -s \\\n  'https://backstage.internal/api/catalog/entities?filter=kind=component' \\\n  | jq -r '.[].metadata.name' \\\n  | sort -u)\n\n# Find the diff\ncomm -23 <(echo \"$k8s_services\") <(echo \"$catalog_services\")\n\n# Example output:\n# legacy-auth-proxy\n# temp-data-migrator\n# unknown-cronjob-handler\n# ^^^ These 3 services are running but nobody claimed them"
     }
   ],
   "followUpQuestions": [
-    "How do you keep the catalog accurate when teams forget to update their catalog-info.yaml?",
-    "How would you handle the 100 services that currently have no owner? You cannot just assign them randomly.",
-    "What is the difference between a service catalog and a CMDB?"
+    "Como você mantém o catálogo preciso quando os times esquecem de atualizar o catalog-info.yaml deles?",
+    "Como você lidaria com os 100 serviços que atualmente não têm dono? Você não pode simplesmente atribuí-los aleatoriamente.",
+    "Qual é a diferença entre um catálogo de serviços e um CMDB?"
   ],
   "commonMistakes": [
-    "Building a catalog that requires manual registration and then wondering why it is always out of date",
-    "Assigning ownership to individuals instead of teams, so it breaks when someone leaves",
-    "Treating the catalog as a one-time project instead of something that needs ongoing data quality checks"
+    "Construir um catálogo que exige registro manual e depois se perguntar por que ele está sempre desatualizado",
+    "Atribuir ownership a indivíduos em vez de times, o que quebra quando alguém sai",
+    "Tratar o catálogo como um projeto pontual em vez de algo que precisa de verificações contínuas de qualidade dos dados"
   ],
   "relatedTopics": [
     "backstage",

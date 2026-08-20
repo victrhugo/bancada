@@ -1,10 +1,10 @@
 {
   "id": "argocd-bootstrapping-self-management",
   "slug": "argocd-bootstrapping-self-management",
-  "title": "Bootstrapping Argo CD and Letting It Manage Itself",
-  "question": "Argo CD manages your apps. Who manages Argo CD? Walk me through how you would bootstrap it from a fresh cluster and where its own config lives in your repo.",
-  "answer": "Argo CD has a chicken-and-egg problem on day one. The cluster has nothing in it, so kubectl is the only tool that can install the first thing. After that, you want Argo CD to manage itself the same way it manages everything else.\n\nThe flow I use:\n\n1. One bootstrap kubectl apply puts Argo CD into the cluster. I use the upstream install manifest pinned to a version, not latest. That gets you the namespace, the CRDs, the controller, the repo server, the API server.\n2. Once Argo CD is up, I apply one Application CR by hand. This Application points at a directory in the manifests repo, something like argocd/bootstrap. That directory contains another Application that points at Argo CD's own Helm chart or Kustomize overlay. So Argo CD starts syncing itself.\n3. The same bootstrap directory contains AppProjects, repository credentials (as sealed secrets or external secrets), and a parent Application that points at argocd/applications, which holds every other Application CR for the cluster.\n\nAfter that initial kubectl apply, you never touch Argo CD with kubectl again. Bumping the Argo CD version is a Git commit changing the chart version or image tag in argocd/bootstrap. Adding a new app to the cluster is a Git commit dropping a new Application YAML into argocd/applications.\n\nRepo layout I keep for this:\n\nargocd/\n  bootstrap/         # Argo CD itself, plus the root app-of-apps\n    kustomization.yaml\n    values.yaml      # Helm values for the argo-cd chart\n    root-app.yaml    # the parent Application that points at applications/\n  projects/          # AppProjects: per-team or per-environment\n  applications/      # one Application YAML per workload or per env\n\nOne gotcha. Argo CD syncing itself can lock you out if a bad change rolls in. If the controller fails to start because of a config change you just merged, no controller means no reconcile, which means no rollback through Git. Keep the bootstrap Application on manual sync, or at minimum keep a tested rollback commit ready. Some teams keep a separate management cluster running its own Argo CD that watches the workload clusters' Argo CDs, so a broken self-managed instance can still be repaired through GitOps.",
-  "explanation": "Most junior candidates can install Argo CD. Fewer can explain how it ends up managing itself, and even fewer have thought about what happens when self-management goes wrong. This question separates someone who has watched a tutorial from someone who has set up Argo CD in a real environment. Listen for the bootstrap kubectl apply being acknowledged as a one-time thing, a clear repo location for Argo CD's own config, and any awareness of the self-lockout risk.",
+  "title": "Fazendo o Bootstrap do Argo CD e Deixando Ele se Gerenciar Sozinho",
+  "question": "O Argo CD gerencia suas aplicações. Quem gerencia o Argo CD? Explique como você faria o bootstrap dele a partir de um cluster novo e onde a configuração dele mesmo vive no seu repositório.",
+  "answer": "O Argo CD tem um problema de ovo e galinha no primeiro dia. O cluster não tem nada nele, então o kubectl é a única ferramenta capaz de instalar a primeira coisa. Depois disso, você quer que o Argo CD se gerencie da mesma forma que gerencia tudo o mais.\n\nO fluxo que eu uso:\n\n1. Um único kubectl apply de bootstrap coloca o Argo CD no cluster. Eu uso o manifest de instalação oficial fixado em uma versão, não o latest. Isso te dá o namespace, os CRDs, o controller, o repo server, o API server.\n2. Assim que o Argo CD está de pé, eu aplico manualmente uma Application CR. Essa Application aponta para um diretório no repositório de manifests, algo como argocd/bootstrap. Esse diretório contém outra Application que aponta para o próprio Helm chart ou overlay do Kustomize do Argo CD. Então o Argo CD começa a sincronizar a si mesmo.\n3. O mesmo diretório de bootstrap contém AppProjects, credenciais de repositório (como sealed secrets ou external secrets) e uma Application pai que aponta para argocd/applications, que guarda todas as outras Application CRs do cluster.\n\nDepois desse kubectl apply inicial, você nunca mais toca no Argo CD com kubectl. Atualizar a versão do Argo CD vira um commit no Git mudando a versão do chart ou a tag da imagem em argocd/bootstrap. Adicionar uma nova aplicação ao cluster vira um commit no Git colocando uma nova Application YAML em argocd/applications.\n\nO layout de repositório que eu mantenho para isso:\n\nargocd/\n  bootstrap/         # Argo CD itself, plus the root app-of-apps\n    kustomization.yaml\n    values.yaml      # Helm values for the argo-cd chart\n    root-app.yaml    # the parent Application that points at applications/\n  projects/          # AppProjects: per-team or per-environment\n  applications/      # one Application YAML per workload or per env\n\nUma pegadinha. O Argo CD sincronizando a si mesmo pode te trancar para fora se uma mudança ruim entrar. Se o controller falhar ao subir por causa de uma mudança de configuração que você acabou de mesclar, sem controller não há reconciliação, o que significa que não há rollback via Git. Mantenha a Application de bootstrap em sync manual, ou pelo menos mantenha um commit de rollback testado à disposição. Alguns times mantêm um cluster de gerenciamento separado rodando seu próprio Argo CD que observa os Argo CDs dos clusters de carga de trabalho, para que uma instância autogerenciada quebrada ainda possa ser reparada via GitOps.",
+  "explanation": "A maioria dos candidatos juniores consegue instalar o Argo CD. Poucos conseguem explicar como ele acaba se gerenciando sozinho, e menos ainda pensaram sobre o que acontece quando a autogestão dá errado. Essa pergunta separa quem assistiu a um tutorial de quem configurou o Argo CD em um ambiente real. Preste atenção se o kubectl apply de bootstrap é reconhecido como algo único, se há um local claro no repositório para a configuração do próprio Argo CD, e se há alguma consciência do risco de autotravamento.",
   "category": "GitOps",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,30 +18,30 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "One-time bootstrap commands",
+      "label": "Comandos de bootstrap únicos",
       "code": "# 1. Install Argo CD itself with kubectl (one time only)\nkubectl create namespace argocd\nkubectl apply -n argocd \\\n  -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.0/manifests/install.yaml\n\n# Wait for the controller to be ready\nkubectl wait --for=condition=available --timeout=300s \\\n  deployment/argocd-server -n argocd\n\n# 2. Apply the root Application that makes Argo CD self-manage\nkubectl apply -f argocd/bootstrap/root-app.yaml\n\n# After this point, no more kubectl. Everything is Git."
     },
     {
       "language": "yaml",
-      "label": "Root Application that bootstraps the rest",
+      "label": "Application raiz que faz o bootstrap do resto",
       "code": "apiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: root\n  namespace: argocd\n  finalizers:\n    - resources-finalizer.argocd.argoproj.io\nspec:\n  project: default\n  source:\n    repoURL: https://github.com/org/manifests\n    targetRevision: main\n    path: argocd/applications\n  destination:\n    server: https://kubernetes.default.svc\n    namespace: argocd\n  syncPolicy:\n    automated:\n      prune: true\n      selfHeal: true"
     },
     {
       "language": "yaml",
-      "label": "Argo CD managing its own install via Helm",
+      "label": "Argo CD gerenciando sua própria instalação via Helm",
       "code": "# argocd/applications/argocd-self.yaml\napiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: argocd\n  namespace: argocd\nspec:\n  project: platform\n  source:\n    repoURL: https://argoproj.github.io/argo-helm\n    chart: argo-cd\n    targetRevision: 7.3.0\n    helm:\n      valueFiles:\n        - $values/argocd/bootstrap/values.yaml\n  sources:\n    - repoURL: https://github.com/org/manifests\n      targetRevision: main\n      ref: values\n  destination:\n    server: https://kubernetes.default.svc\n    namespace: argocd\n  syncPolicy:\n    # No automated sync: a bad change to Argo CD itself should not auto-deploy\n    syncOptions:\n      - ServerSideApply=true"
     }
   ],
   "followUpQuestions": [
-    "What happens if you merge a bad change to the Argo CD chart values and the controller crashloops? How do you recover?",
-    "Would you put Argo CD on auto-sync for itself? Why or why not?",
-    "How do you handle Argo CD version upgrades across many clusters?",
-    "Where do the credentials that Argo CD uses to read your private manifests repo come from? They cannot be in the same repo in plaintext."
+    "O que acontece se você mesclar uma mudança ruim nos values do chart do Argo CD e o controller entrar em crashloop? Como você se recupera?",
+    "Você deixaria o Argo CD em auto-sync para si mesmo? Por quê ou por que não?",
+    "Como você lida com upgrades de versão do Argo CD em muitos clusters?",
+    "De onde vêm as credenciais que o Argo CD usa para ler seu repositório de manifests privado? Elas não podem estar em texto puro no mesmo repositório."
   ],
   "commonMistakes": [
-    "Installing Argo CD with kubectl, then continuing to use kubectl for every config change instead of having it manage itself",
-    "Putting Argo CD's own Application on the same auto-sync settings as workloads, then getting locked out when a bad chart bump crashes the controller",
-    "Forgetting about the repository credentials problem and hard-coding tokens into Git on day one"
+    "Instalar o Argo CD com kubectl e continuar usando kubectl para toda mudança de configuração em vez de deixá-lo se gerenciar",
+    "Colocar a própria Application do Argo CD nas mesmas configurações de auto-sync das cargas de trabalho, e depois ficar trancado para fora quando um bump ruim de chart derruba o controller",
+    "Esquecer o problema das credenciais de repositório e colocar tokens direto no Git no primeiro dia"
   ],
   "relatedTopics": [
     "argocd",

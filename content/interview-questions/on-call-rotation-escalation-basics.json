@@ -1,10 +1,10 @@
 {
   "id": "on-call-rotation-escalation-basics",
   "slug": "on-call-rotation-escalation-basics",
-  "title": "On-Call Rotation and Escalation Basics",
-  "question": "You're about to go on-call for the first time. In your own words, what is an on-call rotation, and why do teams bother setting up a formal escalation policy instead of just pinging whoever happens to be online when something breaks?",
-  "answer": "An on-call rotation is a schedule that decides who is responsible for responding to production alerts at any given moment. Instead of \"everyone is sort of responsible,\" one named person owns the pager for a defined window, then it rotates to the next person.\n\nAn escalation policy is the set of rules for what happens when that person doesn't respond. A normal policy looks like: page the primary, wait a few minutes for an acknowledgement, and if nothing comes back, page the secondary. Still nothing? Page the on-call manager.\n\nWhy formalize it instead of pinging whoever's around? A few reasons.\n\nFirst, it removes the bystander problem. If you message a busy channel at 3am, everyone assumes someone else has it and nobody picks it up. A rotation makes one person clearly accountable.\n\nSecond, it removes a single point of failure. People sleep, lose signal, or are mid-flight. The escalation chain guarantees that if the first responder is unreachable, the alert still reaches a human instead of dying silently.\n\nThird, it protects people. A defined schedule means you know exactly when you're responsible and when you're truly off. Ad-hoc \"just ping someone\" means everyone is always a little bit on-call, which burns people out.\n\nThe one distinction worth knowing on day one: acknowledging an alert means \"I've got this, stop escalating.\" Resolving it means \"the problem is actually fixed.\" New people forget to ack, the system thinks nobody responded, and it escalates to their manager at 3am. Don't be that person.",
-  "explanation": "This is a warm-up question to confirm a junior candidate actually understands the basics before going on-call. You want to hear the two core concepts (rotation = who responds, escalation = what happens if they don't) and at least one reason the structure exists beyond \"so we know who to call.\" The strongest junior answers mention the ack-vs-resolve distinction or the single-point-of-failure angle without being prompted. If they think on-call means they personally have to fix everything, that's a coaching flag, not a disqualifier.",
+  "title": "Fundamentos de Escala de Plantão e Escalonamento",
+  "question": "Você está prestes a entrar de plantão pela primeira vez. Com suas próprias palavras, o que é uma escala de plantão, e por que os times se preocupam em montar uma política formal de escalonamento em vez de simplesmente chamar quem estiver online quando algo quebra?",
+  "answer": "Uma escala de plantão é um cronograma que define quem é responsável por responder a alertas de produção em um determinado momento. Em vez de \"todo mundo é meio responsável\", uma pessoa nomeada assume o pager por uma janela definida, e depois passa a vez para a próxima pessoa.\n\nUma política de escalonamento é o conjunto de regras que define o que acontece quando essa pessoa não responde. Uma política normal é mais ou menos assim: chama o titular, espera alguns minutos por uma confirmação e, se nada acontecer, chama o suplente. Ainda nada? Chama o gestor de plantão.\n\nPor que formalizar isso em vez de simplesmente chamar quem estiver por perto? Alguns motivos.\n\nPrimeiro, isso elimina o efeito espectador. Se você manda mensagem num canal cheio de gente às 3 da manhã, todo mundo assume que outra pessoa vai resolver e ninguém assume o problema. Uma escala deixa uma pessoa claramente responsável.\n\nSegundo, isso elimina um ponto único de falha. As pessoas dormem, perdem sinal ou estão voando. A cadeia de escalonamento garante que, se o primeiro respondente estiver inacessível, o alerta ainda chegue a um humano em vez de morrer em silêncio.\n\nTerceiro, isso protege as pessoas. Uma escala definida significa que você sabe exatamente quando é responsável e quando está realmente de folga. O \"chama alguém aí\" informal faz com que todo mundo esteja sempre um pouco de plantão, o que esgota as pessoas.\n\nUma distinção que vale a pena conhecer logo no primeiro dia: confirmar um alerta (ack) significa \"estou cuidando disso, pare de escalonar\". Resolver significa \"o problema foi realmente corrigido\". Gente nova esquece de dar o ack, o sistema entende que ninguém respondeu, e escalona para o gestor às 3 da manhã. Não seja essa pessoa.",
+  "explanation": "Esta é uma pergunta de aquecimento para confirmar que um candidato júnior realmente entende o básico antes de entrar de plantão. Você quer ouvir os dois conceitos centrais (escala = quem responde, escalonamento = o que acontece se não responder) e pelo menos um motivo para essa estrutura existir além de \"para sabermos a quem ligar\". As respostas júnior mais fortes mencionam a distinção entre ack e resolução, ou o ângulo do ponto único de falha, sem serem provocadas. Se a pessoa acha que estar de plantão significa que ela mesma tem que consertar tudo, isso é um sinal para orientação, não um motivo de desqualificação.",
   "category": "Incident Management",
   "difficulty": "beginner",
   "tier": "junior",
@@ -17,19 +17,19 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "A basic escalation policy expressed as tiers and timeouts",
+      "label": "Uma política de escalonamento básica expressa em níveis e prazos",
       "code": "# What \"page the next person if nobody answers\" actually means\nescalation_policy:\n  name: payments-team\n  rules:\n    - level: 1\n      notify: primary_on_call\n      escalate_after: 5m   # no ack in 5 min -> go to level 2\n    - level: 2\n      notify: secondary_on_call\n      escalate_after: 5m\n    - level: 3\n      notify: engineering_manager\n      escalate_after: 10m\n  # If level 3 still doesn't ack, loop back to level 1 once,\n  # then open a major incident. Never let an alert dead-end."
     }
   ],
   "followUpQuestions": [
-    "What's the difference between acknowledging an alert and resolving it, and why does it matter?",
-    "It's the end of your shift and there's still an open incident. How do you hand off cleanly?",
-    "What would you want in place before you ever get your first page?"
+    "Qual é a diferença entre confirmar (ack) um alerta e resolvê-lo, e por que isso importa?",
+    "É o fim do seu turno e ainda há um incidente aberto. Como você faz a transferência de forma limpa?",
+    "O que você gostaria de ter em vigor antes mesmo de receber sua primeira chamada?"
   ],
   "commonMistakes": [
-    "Thinking on-call means you personally fix every problem. The job is to respond, triage, and pull in the right people. Escalating to someone who knows the system is a correct move, not a failure.",
-    "Not acknowledging alerts. If you don't ack, the system assumes you're unreachable and escalates up the chain, often waking up your manager for something you were already handling.",
-    "Confusing severity with escalation. Severity is how bad it is; escalation is who gets contacted and when. A low-severity alert shouldn't page the whole chain."
+    "Achar que estar de plantão significa que você mesmo resolve todos os problemas. O trabalho é responder, triar e trazer as pessoas certas. Escalonar para alguém que conhece o sistema é uma atitude correta, não uma falha.",
+    "Não confirmar os alertas. Se você não der o ack, o sistema assume que você está inacessível e escalona pela cadeia acima, muitas vezes acordando seu gestor por algo que você já estava resolvendo.",
+    "Confundir severidade com escalonamento. Severidade é o quão grave é o problema; escalonamento é quem é contatado e quando. Um alerta de baixa severidade não deveria chamar toda a cadeia."
   ],
   "relatedTopics": [
     "incident-response",

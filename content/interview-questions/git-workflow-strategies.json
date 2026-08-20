@@ -1,10 +1,10 @@
 {
   "id": "git-workflow-strategies",
   "slug": "git-workflow-strategies",
-  "title": "Git Workflow Strategies",
-  "question": "Describe some common Git workflows used in team environments. What are the pros and cons of each?",
-  "answer": "Common workflows: 1) Feature Branch - each feature in its own branch, merged via PR. Simple and widely used. 2) GitFlow - uses develop, feature, release, and hotfix branches. More structured but complex. 3) Trunk-Based - short-lived branches merged frequently to main. Requires good CI/CD and testing. 4) Forking - contributors fork the repo, used in open source. Choose based on team size, release cadence, and CI/CD maturity.",
-  "explanation": "There's no universally 'best' workflow - it depends on your team's needs. Trunk-based development is trending in DevOps-mature organizations because it encourages frequent integration and reduces merge conflicts. Feature branching is great for teams needing code review gates. GitFlow suits projects with scheduled releases.",
+  "title": "Estratégias de Workflow no Git",
+  "question": "Descreva alguns workflows do Git comuns usados em ambientes de equipe. Quais são as vantagens e desvantagens de cada um?",
+  "answer": "Workflows comuns: 1) Feature Branch - cada feature em sua própria branch, mesclada via PR. Simples e amplamente usado. 2) GitFlow - usa branches de develop, feature, release e hotfix. Mais estruturado, porém mais complexo. 3) Trunk-Based - branches de curta duração mescladas com frequência na main. Exige boa maturidade de CI/CD e testes. 4) Forking - contribuidores fazem fork do repositório, usado em projetos open source. A escolha depende do tamanho do time, da cadência de releases e da maturidade de CI/CD.",
+  "explanation": "Não existe um workflow universalmente 'melhor' - depende das necessidades do seu time. O trunk-based development está em alta em organizações maduras em DevOps porque incentiva integrações frequentes e reduz conflitos de merge. O feature branching é ótimo para times que precisam de gates de code review. O GitFlow é adequado para projetos com releases programadas.",
   "category": "Git",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,7 +18,7 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Feature branch workflow",
+      "label": "Workflow de feature branch",
       "code": "# Start new feature\ngit checkout main\ngit pull origin main\ngit checkout -b feature/add-login\n\n# Work on feature, commit changes\ngit add .\ngit commit -m \"Add login form\"\n\n# Push and create PR\ngit push origin feature/add-login\n# Create PR on GitHub/GitLab\n\n# After PR approved and merged\ngit checkout main\ngit pull origin main\ngit branch -d feature/add-login"
     },
     {
@@ -28,14 +28,14 @@
     }
   ],
   "followUpQuestions": [
-    "How do you handle merge conflicts in a team environment?",
-    "What is the role of code review in these workflows?",
-    "How does CI/CD integrate with different Git workflows?"
+    "Como lidar com conflitos de merge em um ambiente de equipe?",
+    "Qual é o papel do code review nesses workflows?",
+    "Como o CI/CD se integra com os diferentes workflows do Git?"
   ],
   "commonMistakes": [
-    "Keeping feature branches open too long, leading to painful merges",
-    "Not pulling from main regularly to stay up-to-date",
-    "Using complex workflows (like GitFlow) for small teams or simple projects"
+    "Manter branches de feature abertas por tempo demais, causando merges dolorosos",
+    "Não puxar (pull) da main regularmente para se manter atualizado",
+    "Usar workflows complexos (como o GitFlow) em times pequenos ou projetos simples"
   ],
   "relatedTopics": [
     "pull-requests",

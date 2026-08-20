@@ -1,10 +1,10 @@
 {
   "id": "git-basics",
   "slug": "git-basics",
-  "title": "Git Staging and Committing",
-  "question": "Explain the Git staging area. What is the difference between git add, git commit, and git push?",
-  "answer": "Git has three states: working directory (untracked changes), staging area (changes ready to commit), and repository (committed history). 'git add' moves changes to staging, 'git commit' saves staged changes to local repository, 'git push' uploads commits to remote. This workflow allows selective commits and careful change management.",
-  "explanation": "The staging area is Git's key feature that separates it from older version control systems. It lets you prepare commits with exactly the changes you want, review before committing, and create atomic commits that represent single logical changes.",
+  "title": "Staging e Commits no Git",
+  "question": "Explique a área de staging do Git. Qual é a diferença entre git add, git commit e git push?",
+  "answer": "O Git tem três estados: diretório de trabalho (mudanças não rastreadas), área de staging (mudanças prontas para commit) e repositório (histórico commitado). O 'git add' move as mudanças para a staging, o 'git commit' salva as mudanças em staging no repositório local, e o 'git push' envia os commits para o remoto. Esse fluxo permite commits seletivos e um gerenciamento cuidadoso das mudanças.",
+  "explanation": "A área de staging é o recurso central que diferencia o Git de sistemas de controle de versão mais antigos. Ela permite preparar commits exatamente com as mudanças que você quer, revisar antes de commitar e criar commits atômicos que representam uma única mudança lógica.",
   "category": "Git",
   "difficulty": "beginner",
   "tier": "junior",
@@ -17,24 +17,24 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Basic Git workflow",
+      "label": "Fluxo básico do Git",
       "code": "# Check status (see staged/unstaged changes)\ngit status\n\n# Stage specific file\ngit add app.js\n\n# Stage all changes\ngit add .\n\n# Commit staged changes\ngit commit -m \"Add user authentication feature\"\n\n# Push to remote\ngit push origin main"
     },
     {
       "language": "bash",
-      "label": "Viewing changes",
+      "label": "Visualizando mudanças",
       "code": "# View unstaged changes\ngit diff\n\n# View staged changes\ngit diff --staged\n\n# View commit history\ngit log --oneline -10\n\n# Unstage a file\ngit reset HEAD file.txt"
     }
   ],
   "followUpQuestions": [
-    "How do you undo the last commit without losing changes?",
-    "What is the difference between git reset and git revert?",
-    "How do you stage only part of a file's changes?"
+    "Como desfazer o último commit sem perder as mudanças?",
+    "Qual é a diferença entre git reset e git revert?",
+    "Como colocar em staging apenas parte das mudanças de um arquivo?"
   ],
   "commonMistakes": [
-    "Committing without meaningful commit messages",
-    "Using 'git add .' without checking what's being staged",
-    "Not pulling latest changes before pushing"
+    "Fazer commits sem mensagens significativas",
+    "Usar 'git add .' sem verificar o que está sendo colocado em staging",
+    "Não puxar as últimas mudanças antes de fazer push"
   ],
   "relatedTopics": [
     "branching",

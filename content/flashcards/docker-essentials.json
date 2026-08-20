@@ -1,11 +1,11 @@
 {
   "id": "docker-essentials",
-  "title": "Docker Essentials",
-  "description": "Flashcards covering core Docker concepts: containers vs images, layers, volumes, networks, build cache, registries, and the day-to-day Docker CLI.",
+  "title": "Essenciais de Docker",
+  "description": "Flashcards cobrindo os conceitos centrais de Docker: containers vs imagens, camadas, volumes, redes, cache de build, registries e o dia a dia com a CLI do Docker.",
   "category": "Docker",
   "icon": "Container",
   "difficulty": "beginner",
-  "estimatedTime": "12 minutes",
+  "estimatedTime": "12 minutos",
   "cardCount": 15,
   "theme": {
     "primaryColor": "blue",
@@ -15,106 +15,106 @@
   "cards": [
     {
       "id": "container-vs-vm",
-      "front": "What's the key difference between containers and VMs?",
-      "back": "Containers share the host OS kernel and isolate at the process level, making them lightweight and fast to start. VMs include a full OS copy and hardware virtualization, consuming more resources.",
+      "front": "Qual é a diferença principal entre containers e VMs?",
+      "back": "Containers compartilham o kernel do sistema operacional do host e isolam no nível de processo, o que os torna leves e rápidos para iniciar. VMs incluem uma cópia completa do sistema operacional e virtualização de hardware, consumindo mais recursos.",
       "category": "Fundamentals",
       "tags": ["containers", "vm", "basics"]
     },
     {
       "id": "docker-image",
-      "front": "What is a Docker Image?",
-      "back": "A Docker image is a read-only template containing the application code, runtime, libraries, and dependencies. Images are built from Dockerfiles and stored in registries.",
+      "front": "O que é uma Imagem Docker?",
+      "back": "Uma imagem Docker é um template somente leitura contendo o código da aplicação, runtime, bibliotecas e dependências. As imagens são construídas a partir de Dockerfiles e armazenadas em registries.",
       "category": "Core Concepts",
       "tags": ["image", "basics"]
     },
     {
       "id": "docker-container",
-      "front": "What is a Docker Container?",
-      "back": "A container is a runnable instance of an image. It includes the application and its dependencies, isolated from other containers and the host system.",
+      "front": "O que é um Container Docker?",
+      "back": "Um container é uma instância executável de uma imagem. Ele inclui a aplicação e suas dependências, isolado de outros containers e do sistema host.",
       "category": "Core Concepts",
       "tags": ["container", "basics"]
     },
     {
       "id": "dockerfile",
-      "front": "What is a Dockerfile?",
-      "back": "A Dockerfile is a text file containing instructions to build a Docker image. It defines the base image, commands to run, files to copy, and configuration settings.",
+      "front": "O que é um Dockerfile?",
+      "back": "Um Dockerfile é um arquivo de texto contendo instruções para construir uma imagem Docker. Ele define a imagem base, comandos a executar, arquivos a copiar e configurações.",
       "category": "Building Images",
       "tags": ["dockerfile", "build"]
     },
     {
       "id": "docker-volume",
-      "front": "What is a Docker Volume?",
-      "back": "A volume is a persistent data storage mechanism managed by Docker. Unlike bind mounts, volumes work across different systems and are the preferred way to persist data.",
+      "front": "O que é um Volume Docker?",
+      "back": "Um volume é um mecanismo de armazenamento persistente gerenciado pelo Docker. Diferente dos bind mounts, os volumes funcionam entre sistemas diferentes e são a forma preferida de persistir dados.",
       "category": "Storage",
       "tags": ["volume", "storage", "persistence"]
     },
     {
       "id": "docker-network",
-      "front": "What is a Docker Network?",
-      "back": "A Docker network allows containers to communicate with each other and external systems. Docker provides bridge, host, overlay, and none network drivers.",
+      "front": "O que é uma Rede Docker?",
+      "back": "Uma rede Docker permite que containers se comuniquem entre si e com sistemas externos. O Docker oferece os drivers de rede bridge, host, overlay e none.",
       "category": "Networking",
       "tags": ["network", "networking"]
     },
     {
       "id": "docker-compose",
-      "front": "What is Docker Compose?",
-      "back": "Docker Compose is a tool for defining and running multi-container applications using a YAML file. It simplifies orchestrating multiple services, networks, and volumes.",
+      "front": "O que é o Docker Compose?",
+      "back": "Docker Compose é uma ferramenta para definir e executar aplicações com múltiplos containers usando um arquivo YAML. Ele simplifica a orquestração de vários serviços, redes e volumes.",
       "category": "Orchestration",
       "tags": ["compose", "multi-container"]
     },
     {
       "id": "layer-caching",
-      "front": "What is Docker layer caching?",
-      "back": "Docker caches each instruction in a Dockerfile as a layer. If a layer hasn't changed, Docker reuses the cached version, speeding up builds. Order matters for optimal caching.",
+      "front": "O que é o cache de camadas do Docker?",
+      "back": "O Docker armazena em cache cada instrução de um Dockerfile como uma camada. Se uma camada não mudou, o Docker reaproveita a versão em cache, acelerando os builds. A ordem das instruções importa para um cache eficiente.",
       "category": "Best Practices",
       "tags": ["caching", "layers", "optimization"]
     },
     {
       "id": "multi-stage-build",
-      "front": "What is a multi-stage build?",
-      "back": "Multi-stage builds use multiple FROM statements in a Dockerfile. You can copy artifacts from earlier stages to later ones, creating smaller final images by excluding build tools.",
+      "front": "O que é um build multi-stage?",
+      "back": "Builds multi-stage usam múltiplas instruções FROM em um Dockerfile. Você pode copiar artefatos de estágios anteriores para estágios posteriores, criando imagens finais menores ao excluir as ferramentas de build.",
       "category": "Best Practices",
       "tags": ["multi-stage", "optimization", "dockerfile"]
     },
     {
       "id": "docker-registry",
-      "front": "What is a Docker Registry?",
-      "back": "A Docker registry stores and distributes Docker images. Docker Hub is the public registry, but you can run private registries for internal images.",
+      "front": "O que é um Registry Docker?",
+      "back": "Um registry Docker armazena e distribui imagens Docker. O Docker Hub é o registry público, mas você também pode rodar registries privados para imagens internas.",
       "category": "Distribution",
       "tags": ["registry", "docker-hub"]
     },
     {
       "id": "entrypoint-vs-cmd",
-      "front": "What's the difference between ENTRYPOINT and CMD?",
-      "back": "ENTRYPOINT defines the executable that runs when the container starts. CMD provides default arguments for ENTRYPOINT or the command to run if ENTRYPOINT isn't set.",
+      "front": "Qual é a diferença entre ENTRYPOINT e CMD?",
+      "back": "ENTRYPOINT define o executável que roda quando o container inicia. CMD fornece argumentos padrão para o ENTRYPOINT, ou o comando a executar caso o ENTRYPOINT não esteja definido.",
       "category": "Dockerfile Instructions",
       "tags": ["entrypoint", "cmd", "dockerfile"]
     },
     {
       "id": "healthcheck",
-      "front": "What is a Docker HEALTHCHECK?",
-      "back": "HEALTHCHECK instruction tells Docker how to test if a container is working correctly. It runs a command periodically and marks the container as healthy or unhealthy.",
+      "front": "O que é um HEALTHCHECK do Docker?",
+      "back": "A instrução HEALTHCHECK diz ao Docker como testar se um container está funcionando corretamente. Ela executa um comando periodicamente e marca o container como healthy ou unhealthy.",
       "category": "Monitoring",
       "tags": ["healthcheck", "monitoring"]
     },
     {
       "id": "bind-mount",
-      "front": "What is a bind mount?",
-      "back": "A bind mount links a host directory or file into a container. Unlike volumes, bind mounts depend on the host's filesystem structure and aren't managed by Docker.",
+      "front": "O que é um bind mount?",
+      "back": "Um bind mount liga um diretório ou arquivo do host a um container. Diferente dos volumes, os bind mounts dependem da estrutura do sistema de arquivos do host e não são gerenciados pelo Docker.",
       "category": "Storage",
       "tags": ["bind-mount", "storage"]
     },
     {
       "id": "container-security",
-      "front": "What are key Docker security best practices?",
-      "back": "Run as non-root user, use specific image tags (not 'latest'), scan images for vulnerabilities, minimize image layers, and follow the principle of least privilege.",
+      "front": "Quais são as principais boas práticas de segurança no Docker?",
+      "back": "Rode como usuário non-root, use tags de imagem específicas (não 'latest'), escaneie imagens em busca de vulnerabilidades, minimize o número de camadas da imagem e siga o princípio do menor privilégio.",
       "category": "Security",
       "tags": ["security", "best-practices"]
     },
     {
       "id": "docker-exec",
-      "front": "What does 'docker exec' do?",
-      "back": "'docker exec' runs a command in a running container. Commonly used with -it flags to open an interactive shell for debugging or maintenance tasks.",
+      "front": "O que o comando 'docker exec' faz?",
+      "back": "'docker exec' executa um comando em um container em execução. É comumente usado com as flags -it para abrir um shell interativo para depuração ou tarefas de manutenção.",
       "category": "Commands",
       "tags": ["exec", "cli", "debugging"]
     }

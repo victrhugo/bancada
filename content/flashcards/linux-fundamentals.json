@@ -1,11 +1,11 @@
 {
   "id": "linux-fundamentals",
-  "title": "Linux Fundamentals",
-  "description": "Essential Linux knowledge covering file system hierarchy, process management, permissions, common commands, and system monitoring.",
+  "title": "Fundamentos de Linux",
+  "description": "Conhecimento essencial de Linux cobrindo a hierarquia do sistema de arquivos, gerenciamento de processos, permissões, comandos comuns e monitoramento do sistema.",
   "category": "Operating Systems",
   "icon": "Terminal",
   "difficulty": "beginner",
-  "estimatedTime": "20 minutes",
+  "estimatedTime": "20 minutos",
   "cardCount": 20,
   "theme": {
     "primaryColor": "green",
@@ -15,141 +15,141 @@
   "cards": [
     {
       "id": "fhs-root",
-      "front": "What is the Linux Filesystem Hierarchy Standard (FHS)?",
-      "back": "FHS defines the directory structure and contents in Linux. Key directories: /bin (essential binaries), /etc (config files), /home (user homes), /var (variable data), /tmp (temp files), /usr (user programs), /opt (optional software).",
+      "front": "O que é o Filesystem Hierarchy Standard (FHS) do Linux?",
+      "back": "O FHS define a estrutura e o conteúdo dos diretórios no Linux. Diretórios principais: /bin (binários essenciais), /etc (arquivos de configuração), /home (diretórios dos usuários), /var (dados variáveis), /tmp (arquivos temporários), /usr (programas de usuário), /opt (software opcional).",
       "category": "File System",
       "tags": ["fhs", "filesystem", "directories"]
     },
     {
       "id": "permissions-basics",
-      "front": "What do Linux file permissions mean?",
-      "back": "Permissions use rwx format: r=read (4), w=write (2), x=execute (1). Three sets: owner, group, others. Example: rwxr-xr-- (754) = owner can read/write/execute, group can read/execute, others can only read.",
+      "front": "O que significam as permissões de arquivo no Linux?",
+      "back": "As permissões usam o formato rwx: r=leitura (4), w=escrita (2), x=execução (1). Três grupos: dono (owner), grupo (group) e outros (others). Exemplo: rwxr-xr-- (754) = o dono pode ler/escrever/executar, o grupo pode ler/executar, os outros só podem ler.",
       "category": "Permissions",
       "tags": ["permissions", "chmod", "security"]
     },
     {
       "id": "chmod-command",
-      "front": "How do you change file permissions?",
-      "back": "Use chmod: Numeric (chmod 755 file) or symbolic (chmod u+x file). u=user, g=group, o=others, a=all. +/- to add/remove, = to set exactly. Example: chmod g+w,o-r file.",
+      "front": "Como você altera as permissões de um arquivo?",
+      "back": "Use o chmod: no formato numérico (chmod 755 file) ou simbólico (chmod u+x file). u=user (dono), g=group (grupo), o=others (outros), a=all (todos). +/- para adicionar/remover, = para definir exatamente. Exemplo: chmod g+w,o-r file.",
       "category": "Commands",
       "tags": ["chmod", "permissions", "commands"]
     },
     {
       "id": "chown-command",
-      "front": "What does chown do?",
-      "back": "chown changes file ownership. Syntax: chown user:group file. Examples: chown alice file.txt (change owner), chown :developers file.txt (change group), chown alice:developers file.txt (change both).",
+      "front": "O que o chown faz?",
+      "back": "chown altera o dono (ownership) de um arquivo. Sintaxe: chown user:group file. Exemplos: chown alice file.txt (muda o dono), chown :developers file.txt (muda o grupo), chown alice:developers file.txt (muda os dois).",
       "category": "Commands",
       "tags": ["chown", "ownership", "commands"]
     },
     {
       "id": "process-definition",
-      "front": "What is a process in Linux?",
-      "back": "A process is a running instance of a program with its own memory space and resources. Each has a unique Process ID (PID). Parent processes spawn child processes. Init/systemd (PID 1) is the ancestor of all processes.",
+      "front": "O que é um processo no Linux?",
+      "back": "Um processo é uma instância em execução de um programa, com seu próprio espaço de memória e recursos. Cada um tem um Process ID (PID) único. Processos pai criam processos filho. O init/systemd (PID 1) é o ancestral de todos os processos.",
       "category": "Processes",
       "tags": ["process", "pid", "basics"]
     },
     {
       "id": "ps-command",
-      "front": "How do you view running processes?",
-      "back": "Use ps command: ps aux (all processes, detailed), ps -ef (full format), ps -u username (user's processes). Shows PID, CPU%, memory%, command. Combine with grep for filtering: ps aux | grep nginx.",
+      "front": "Como você visualiza os processos em execução?",
+      "back": "Use o comando ps: ps aux (todos os processos, detalhado), ps -ef (formato completo), ps -u username (processos de um usuário). Mostra PID, %CPU, %memória e comando. Combine com grep para filtrar: ps aux | grep nginx.",
       "category": "Commands",
       "tags": ["ps", "processes", "monitoring"]
     },
     {
       "id": "top-command",
-      "front": "What does the top command do?",
-      "back": "top displays real-time system resource usage and running processes. Shows CPU, memory, load average, and process list sorted by resource usage. Press 'q' to quit, 'k' to kill process, 'M' to sort by memory.",
+      "front": "O que o comando top faz?",
+      "back": "top exibe em tempo real o uso de recursos do sistema e os processos em execução. Mostra CPU, memória, load average e a lista de processos ordenada pelo uso de recursos. Pressione 'q' para sair, 'k' para matar um processo, 'M' para ordenar por memória.",
       "category": "Monitoring",
       "tags": ["top", "monitoring", "performance"]
     },
     {
       "id": "kill-signals",
-      "front": "What are common kill signals?",
-      "back": "SIGTERM (15): graceful shutdown (default), SIGKILL (9): force kill (cannot be caught), SIGHUP (1): reload config, SIGINT (2): interrupt (Ctrl+C). Usage: kill -15 PID or kill -TERM PID.",
+      "front": "Quais são os sinais de kill mais comuns?",
+      "back": "SIGTERM (15): encerramento gracioso (padrão), SIGKILL (9): término forçado (não pode ser capturado), SIGHUP (1): recarrega a configuração, SIGINT (2): interrupção (Ctrl+C). Uso: kill -15 PID ou kill -TERM PID.",
       "category": "Processes",
       "tags": ["kill", "signals", "processes"]
     },
     {
       "id": "systemctl-basics",
-      "front": "What is systemctl?",
-      "back": "systemctl manages systemd services. Common commands: start, stop, restart, status, enable (start on boot), disable. Example: systemctl status nginx. View logs with journalctl -u service-name.",
+      "front": "O que é o systemctl?",
+      "back": "systemctl gerencia serviços do systemd. Comandos comuns: start, stop, restart, status, enable (inicia no boot), disable. Exemplo: systemctl status nginx. Veja os logs com journalctl -u service-name.",
       "category": "System Management",
       "tags": ["systemctl", "systemd", "services"]
     },
     {
       "id": "grep-command",
-      "front": "How do you search text with grep?",
-      "back": "grep searches for patterns in files. grep 'pattern' file (basic search), grep -r 'pattern' dir (recursive), grep -i (case-insensitive), grep -n (line numbers), grep -v (invert match). Supports regex.",
+      "front": "Como você pesquisa texto com o grep?",
+      "back": "grep procura padrões em arquivos. grep 'pattern' file (busca básica), grep -r 'pattern' dir (recursiva), grep -i (ignora maiúsculas/minúsculas), grep -n (números de linha), grep -v (inverte o match). Suporta regex.",
       "category": "Commands",
       "tags": ["grep", "search", "text"]
     },
     {
       "id": "pipe-redirect",
-      "front": "What are pipes and redirects in Linux?",
-      "back": "Pipe (|) sends output of one command to another: ls | grep txt. Redirect: > overwrites file, >> appends, < reads from file, 2> redirects stderr, &> redirects both stdout and stderr. Example: command > output.txt 2>&1.",
+      "front": "O que são pipes e redirecionamentos no Linux?",
+      "back": "O pipe (|) envia a saída de um comando para outro: ls | grep txt. Redirecionamento: > sobrescreve o arquivo, >> anexa ao final, < lê a partir de um arquivo, 2> redireciona o stderr, &> redireciona tanto o stdout quanto o stderr. Exemplo: command > output.txt 2>&1.",
       "category": "Shell",
       "tags": ["pipe", "redirect", "shell"]
     },
     {
       "id": "find-command",
-      "front": "How do you find files in Linux?",
-      "back": "find searches filesystem: find /path -name 'pattern' (by name), find . -type f (files only), find . -mtime -7 (modified last 7 days), find . -size +100M (larger than 100MB). Can execute commands: find . -name '*.log' -delete.",
+      "front": "Como você encontra arquivos no Linux?",
+      "back": "find pesquisa no sistema de arquivos: find /path -name 'pattern' (por nome), find . -type f (só arquivos), find . -mtime -7 (modificados nos últimos 7 dias), find . -size +100M (maiores que 100MB). Pode executar comandos: find . -name '*.log' -delete.",
       "category": "Commands",
       "tags": ["find", "search", "files"]
     },
     {
       "id": "tar-command",
-      "front": "How do you use tar for archiving?",
-      "back": "tar creates/extracts archives. Create: tar -czf archive.tar.gz files (c=create, z=gzip, f=file). Extract: tar -xzf archive.tar.gz (x=extract). View: tar -tzf archive.tar.gz (t=list). Add v for verbose.",
+      "front": "Como você usa o tar para criar arquivos compactados?",
+      "back": "tar cria/extrai arquivos compactados. Criar: tar -czf archive.tar.gz files (c=create, z=gzip, f=file). Extrair: tar -xzf archive.tar.gz (x=extract). Visualizar: tar -tzf archive.tar.gz (t=list). Adicione v para modo verboso.",
       "category": "Commands",
       "tags": ["tar", "archive", "compression"]
     },
     {
       "id": "df-du-commands",
-      "front": "What's the difference between df and du?",
-      "back": "df shows disk space of filesystems: df -h (human-readable). du shows disk usage of directories/files: du -sh /path (s=summary, h=human-readable). df for overall space, du for specific directory usage.",
+      "front": "Qual é a diferença entre df e du?",
+      "back": "df mostra o espaço em disco dos sistemas de arquivos: df -h (formato legível). du mostra o uso de disco de diretórios/arquivos: du -sh /path (s=summary, h=formato legível). Use df para o espaço geral e du para o uso de um diretório específico.",
       "category": "Monitoring",
       "tags": ["df", "du", "disk", "storage"]
     },
     {
       "id": "ssh-basics",
-      "front": "What is SSH?",
-      "back": "Secure Shell (SSH) provides encrypted remote access to systems. ssh user@host connects to remote server. Use ssh-keygen to generate keys, ssh-copy-id to install public key. Config in ~/.ssh/config. Default port 22.",
+      "front": "O que é SSH?",
+      "back": "O Secure Shell (SSH) fornece acesso remoto criptografado a sistemas. ssh user@host conecta a um servidor remoto. Use ssh-keygen para gerar chaves e ssh-copy-id para instalar a chave pública. A configuração fica em ~/.ssh/config. Porta padrão: 22.",
       "category": "Networking",
       "tags": ["ssh", "remote", "security"]
     },
     {
       "id": "environment-variables",
-      "front": "What are environment variables?",
-      "back": "Environment variables store system-wide or user settings. View with env or echo $VAR. Set with export VAR=value (current session) or add to ~/.bashrc (permanent). Common: PATH, HOME, USER, SHELL. Accessed with $ prefix.",
+      "front": "O que são variáveis de ambiente?",
+      "back": "Variáveis de ambiente armazenam configurações do sistema ou do usuário. Visualize com env ou echo $VAR. Defina com export VAR=value (sessão atual) ou adicione ao ~/.bashrc (permanente). Comuns: PATH, HOME, USER, SHELL. Acessadas com o prefixo $.",
       "category": "Shell",
       "tags": ["environment", "variables", "shell"]
     },
     {
       "id": "cron-basics",
-      "front": "What is cron?",
-      "back": "cron schedules recurring tasks. Edit with crontab -e. Format: minute hour day month weekday command. Example: 0 2 * * * /backup.sh (runs daily at 2 AM). Special: @reboot, @daily, @weekly. View with crontab -l.",
+      "front": "O que é o cron?",
+      "back": "cron agenda tarefas recorrentes. Edite com crontab -e. Formato: minuto hora dia mês dia-da-semana comando. Exemplo: 0 2 * * * /backup.sh (roda todo dia às 2h). Especiais: @reboot, @daily, @weekly. Visualize com crontab -l.",
       "category": "Automation",
       "tags": ["cron", "scheduling", "automation"]
     },
     {
       "id": "package-managers",
-      "front": "What are Linux package managers?",
-      "back": "Package managers install/update software. Debian/Ubuntu: apt (apt install pkg, apt update, apt upgrade). RHEL/CentOS: yum/dnf (dnf install pkg). Both handle dependencies automatically. Also snap and flatpak for universal packages.",
+      "front": "O que são os gerenciadores de pacotes do Linux?",
+      "back": "Gerenciadores de pacotes instalam/atualizam software. Debian/Ubuntu: apt (apt install pkg, apt update, apt upgrade). RHEL/CentOS: yum/dnf (dnf install pkg). Ambos cuidam das dependências automaticamente. Há também o snap e o flatpak para pacotes universais.",
       "category": "System Management",
       "tags": ["package-manager", "apt", "yum"]
     },
     {
       "id": "log-files",
-      "front": "Where are Linux system logs located?",
-      "back": "Main logs in /var/log: syslog/messages (general system), auth.log/secure (authentication), kern.log (kernel), dmesg (boot messages). Modern systems use journalctl for systemd logs. Use tail -f to follow live logs.",
+      "front": "Onde ficam os logs do sistema no Linux?",
+      "back": "Os principais logs ficam em /var/log: syslog/messages (sistema geral), auth.log/secure (autenticação), kern.log (kernel), dmesg (mensagens de boot). Sistemas modernos usam journalctl para os logs do systemd. Use tail -f para acompanhar os logs em tempo real.",
       "category": "Monitoring",
       "tags": ["logs", "monitoring", "troubleshooting"]
     },
     {
       "id": "symbolic-links",
-      "front": "What are symbolic links?",
-      "back": "Symbolic (soft) links are pointers to files/directories. Create with ln -s target linkname. If target deleted, link breaks. Hard links (ln target link) reference same inode, both must be deleted to remove file. Symlinks can cross filesystems.",
+      "front": "O que são links simbólicos?",
+      "back": "Links simbólicos (soft links) são ponteiros para arquivos/diretórios. Crie com ln -s target linkname. Se o alvo for excluído, o link quebra. Hard links (ln target link) referenciam o mesmo inode, e ambos precisam ser excluídos para remover o arquivo. Symlinks podem atravessar sistemas de arquivos diferentes.",
       "category": "File System",
       "tags": ["symlink", "links", "filesystem"]
     }

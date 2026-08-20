@@ -1,34 +1,34 @@
 {
   "id": "ci-cd-github-actions",
-  "title": "Complete CI/CD Pipeline with GitHub Actions",
-  "description": "Hands-on lab: build a production CI/CD pipeline with GitHub Actions, including tests, security scanning, container builds, and automated deployment.",
+  "title": "Pipeline Completo de CI/CD com GitHub Actions",
+  "description": "Laboratório prático: construa um pipeline de CI/CD de produção com GitHub Actions, incluindo testes, varredura de segurança, builds de container e implantação automatizada.",
   "category": {
     "name": "CI/CD",
     "slug": "ci-cd"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "90 minutes",
+  "estimatedTime": "90 minutos",
   "technologies": ["GitHub Actions", "Docker", "Testing", "Security Scanning", "Node.js"],
-  "prerequisites": ["GitHub repository", "Docker Hub account", "Basic Git knowledge"],
+  "prerequisites": ["Repositório no GitHub", "Conta no Docker Hub", "Conhecimento básico de Git"],
   "learningObjectives": [
-    "Design comprehensive CI/CD workflow",
-    "Implement automated testing",
-    "Add security scanning",
-    "Configure deployment automation"
+    "Projetar um workflow completo de CI/CD",
+    "Implementar testes automatizados",
+    "Adicionar varredura de segurança",
+    "Configurar automação de implantação"
   ],
   "environment": "cloud",
   "icon": "Workflow",
   "publishedAt": "2024-11-20T11:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["GitHub Actions", "CI/CD", "Automation", "Testing", "Security"],
   "steps": [
     {
       "id": "setup-repository",
-      "title": "Repository Setup and Basic Workflow",
-      "description": "Create a sample Node.js project and set up the basic GitHub Actions workflow structure.",
+      "title": "Configuração do Repositório e Workflow Básico",
+      "description": "Crie um projeto Node.js de exemplo e configure a estrutura básica do workflow do GitHub Actions.",
       "commands": [
         "mkdir ci-cd-demo",
         "cd ci-cd-demo",
@@ -39,48 +39,48 @@
       ],
       "codeExample": "// src/app.js\nconst express = require('express');\nconst app = express();\nconst port = process.env.PORT || 3000;\n\napp.get('/', (req, res) => {\n  res.json({ message: 'Hello CI/CD World!', timestamp: new Date().toISOString() });\n});\n\napp.get('/health', (req, res) => {\n  res.json({ status: 'healthy' });\n});\n\nmodule.exports = app;\n\nif (require.main === module) {\n  app.listen(port, () => {\n    console.log(`Server running on port ${port}`);\n  });\n}",
       "hints": [
-        "Create a simple Express app with health endpoint",
-        "Ensure the app exports properly for testing"
+        "Crie um app Express simples com um endpoint de health check",
+        "Garanta que o app exporte corretamente para os testes"
       ],
       "validationCriteria": [
-        "Repository structure is created",
-        "Basic Express app is set up",
-        "package.json contains required dependencies"
+        "A estrutura do repositório foi criada",
+        "O app Express básico está configurado",
+        "O package.json contém as dependências necessárias"
       ]
     },
     {
       "id": "create-tests",
-      "title": "Add Comprehensive Testing",
-      "description": "Create unit tests and integration tests for the application.",
+      "title": "Adicionar Testes Abrangentes",
+      "description": "Crie testes unitários e de integração para a aplicação.",
       "codeExample": "// tests/app.test.js\nconst request = require('supertest');\nconst app = require('../src/app');\n\ndescribe('API Endpoints', () => {\n  test('GET / should return welcome message', async () => {\n    const response = await request(app)\n      .get('/')\n      .expect(200);\n    \n    expect(response.body.message).toBe('Hello CI/CD World!');\n    expect(response.body.timestamp).toBeDefined();\n  });\n\n  test('GET /health should return healthy status', async () => {\n    const response = await request(app)\n      .get('/health')\n      .expect(200);\n    \n    expect(response.body.status).toBe('healthy');\n  });\n\n  test('GET /nonexistent should return 404', async () => {\n    await request(app)\n      .get('/nonexistent')\n      .expect(404);\n  });\n});",
       "commands": ["npm test"],
       "expectedOutput": "All tests should pass successfully",
       "validationCriteria": [
-        "Test file is created",
-        "All tests pass locally",
-        "Test coverage includes main endpoints"
+        "O arquivo de testes foi criado",
+        "Todos os testes passam localmente",
+        "A cobertura de testes inclui os principais endpoints"
       ]
     },
     {
       "id": "workflow-setup",
-      "title": "Create Complete CI/CD Workflow",
-      "description": "Set up a comprehensive GitHub Actions workflow with multiple jobs, testing, security scanning, and deployment.",
+      "title": "Criar o Workflow Completo de CI/CD",
+      "description": "Configure um workflow completo do GitHub Actions com múltiplos jobs, testes, varredura de segurança e implantação.",
       "codeExample": "# .github/workflows/ci-cd.yml\nname: Complete CI/CD Pipeline\n\non:\n  push:\n    branches: [ main, develop ]\n  pull_request:\n    branches: [ main ]\n\nenv:\n  REGISTRY: docker.io\n  IMAGE_NAME: ci-cd-demo\n  NODE_VERSION: '18'\n\njobs:\n  # Job 1: Code Quality and Testing\n  test:\n    name: Test & Code Quality\n    runs-on: ubuntu-latest\n    \n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v4\n\n      - name: Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: ${{ env.NODE_VERSION }}\n          cache: 'npm'\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Run linting\n        run: npm run lint || echo \"Add linting script to package.json\"\n\n      - name: Run tests\n        run: npm test\n\n      - name: Generate test coverage\n        run: npm run test:coverage || npm test -- --coverage\n\n      - name: Upload coverage to Codecov\n        uses: codecov/codecov-action@v3\n        with:\n          fail_ci_if_error: false\n\n  # Job 2: Security Scanning\n  security:\n    name: Security Scan\n    runs-on: ubuntu-latest\n    needs: test\n    \n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v4\n\n      - name: Run Trivy vulnerability scanner\n        uses: aquasecurity/trivy-action@master\n        with:\n          scan-type: 'fs'\n          scan-ref: '.'\n          format: 'sarif'\n          output: 'trivy-results.sarif'\n\n      - name: Upload Trivy scan results\n        uses: github/codeql-action/upload-sarif@v2\n        if: always()\n        with:\n          sarif_file: 'trivy-results.sarif'\n\n      - name: npm audit\n        run: npm audit --audit-level=high\n\n  # Job 3: Build and Push Docker Image\n  build:\n    name: Build & Push Docker Image\n    runs-on: ubuntu-latest\n    needs: [test, security]\n    if: github.ref == 'refs/heads/main'\n    \n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v4\n\n      - name: Set up Docker Buildx\n        uses: docker/setup-buildx-action@v3\n\n      - name: Log in to Docker Hub\n        uses: docker/login-action@v3\n        with:\n          username: ${{ secrets.DOCKER_USERNAME }}\n          password: ${{ secrets.DOCKER_PASSWORD }}\n\n      - name: Extract metadata\n        id: meta\n        uses: docker/metadata-action@v5\n        with:\n          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\n          tags: |\n            type=ref,event=branch\n            type=ref,event=pr\n            type=sha,prefix={{branch}}-\n            type=raw,value=latest,enable={{is_default_branch}}\n\n      - name: Build and push Docker image\n        uses: docker/build-push-action@v5\n        with:\n          context: .\n          push: true\n          tags: ${{ steps.meta.outputs.tags }}\n          labels: ${{ steps.meta.outputs.labels }}\n          cache-from: type=gha\n          cache-to: type=gha,mode=max\n\n  # Job 4: Deploy (example deployment)\n  deploy:\n    name: Deploy to Staging\n    runs-on: ubuntu-latest\n    needs: build\n    if: github.ref == 'refs/heads/main'\n    environment: staging\n    \n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v4\n        \n      - name: Deploy to staging\n        run: |\n          echo \"🚀 Deploying to staging environment...\"\n          echo \"Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\"\n          # Add your deployment commands here\n          # kubectl apply -f k8s/\n          # or helm upgrade --install myapp ./helm-chart\n          \n      - name: Run smoke tests\n        run: |\n          echo \"🧪 Running smoke tests...\"\n          # Add smoke test commands here\n          # curl -f http://staging-url/health || exit 1",
       "hints": [
-        "Create secrets in GitHub repository settings",
-        "Add DOCKER_USERNAME and DOCKER_PASSWORD secrets",
-        "Customize deployment step for your infrastructure"
+        "Crie secrets nas configurações do repositório no GitHub",
+        "Adicione os secrets DOCKER_USERNAME e DOCKER_PASSWORD",
+        "Personalize a etapa de implantação para a sua infraestrutura"
       ],
       "validationCriteria": [
-        "Workflow file is created in correct location",
-        "All jobs are properly defined",
-        "Secrets are configured in repository"
+        "O arquivo de workflow foi criado no local correto",
+        "Todos os jobs estão devidamente definidos",
+        "Os secrets estão configurados no repositório"
       ]
     },
     {
       "id": "dockerfile-optimization",
-      "title": "Create Optimized Dockerfile",
-      "description": "Create a multi-stage Dockerfile for optimal production deployment.",
+      "title": "Criar um Dockerfile Otimizado",
+      "description": "Crie um Dockerfile multi-stage para uma implantação de produção otimizada.",
       "codeExample": "# Dockerfile\n# Multi-stage build for optimal size and security\n\n# Build stage\nFROM node:18-alpine AS builder\nWORKDIR /app\n\n# Copy package files\nCOPY package*.json ./\n\n# Install dependencies (including dev dependencies for build)\nRUN npm ci --only=production && npm cache clean --force\n\n# Production stage\nFROM node:18-alpine AS production\n\n# Create non-root user\nRUN addgroup -g 1001 -S nodejs && \\\n    adduser -S appuser -u 1001\n\n# Set working directory\nWORKDIR /app\n\n# Copy production dependencies\nCOPY --from=builder /app/node_modules ./node_modules\n\n# Copy application code\nCOPY --chown=appuser:nodejs src/ ./src/\nCOPY --chown=appuser:nodejs package*.json ./\n\n# Switch to non-root user\nUSER appuser\n\n# Expose port\nEXPOSE 3000\n\n# Health check\nHEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \\\n  CMD node -e \"require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1))\"\n\n# Start application\nCMD [\"node\", \"src/app.js\"]",
       "commands": [
         "docker build -t ci-cd-demo:latest .",
@@ -90,17 +90,17 @@
       ],
       "expectedOutput": "Docker container runs successfully and responds to health checks",
       "validationCriteria": [
-        "Dockerfile builds successfully",
-        "Container starts and runs properly",
-        "Health endpoint returns 200 status",
-        "Container uses non-root user"
+        "O Dockerfile é buildado com sucesso",
+        "O container inicia e executa corretamente",
+        "O endpoint de health check retorna status 200",
+        "O container usa um usuário não-root"
       ]
     }
   ],
   "completionCriteria": [
-    "CI/CD pipeline runs successfully",
-    "All tests pass",
-    "Security scans complete without critical issues",
-    "Deployment succeeds"
+    "O pipeline de CI/CD é executado com sucesso",
+    "Todos os testes passam",
+    "As varreduras de segurança são concluídas sem problemas críticos",
+    "A implantação é bem-sucedida"
   ]
 }

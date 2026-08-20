@@ -1,7 +1,7 @@
 {
   "id": "github-actions-quiz",
-  "title": "GitHub Actions Workflows Quiz",
-  "description": "Master GitHub Actions workflows, YAML syntax, marketplace actions, and modern CI/CD automation",
+  "title": "Quiz de Workflows do GitHub Actions",
+  "description": "Domine workflows do GitHub Actions, sintaxe YAML, actions do marketplace e automação moderna de CI/CD",
   "category": "CI/CD",
   "icon": "GitBranch",
   "theme": {
@@ -10,7 +10,7 @@
     "gradientTo": "to-gray-900"
   },
   "metadata": {
-    "estimatedTime": "20-25 minutes",
+    "estimatedTime": "20-25 minutos",
     "difficultyLevels": {
       "beginner": 4,
       "intermediate": 8,
@@ -22,8 +22,8 @@
   "questions": [
     {
       "id": 1,
-      "title": "Workflow Trigger Events",
-      "description": "Which trigger event allows you to manually run a GitHub Actions workflow from the Actions tab?",
+      "title": "Eventos de Disparo de Workflow",
+      "description": "Qual evento de disparo permite executar manualmente um workflow do GitHub Actions a partir da aba Actions?",
       "difficulty": "beginner",
       "points": 10,
       "options": [
@@ -33,29 +33,29 @@
         "manual_dispatch"
       ],
       "correctAnswer": 3,
-      "explanation": "The `workflow_dispatch` event allows manual workflow execution from the GitHub Actions UI. It can accept input parameters for customization.",
-      "hint": "The keyword includes 'dispatch' for sending workflows on demand."
+      "explanation": "O evento `workflow_dispatch` permite a execução manual do workflow pela interface do GitHub Actions. Ele pode aceitar parâmetros de entrada para personalização.",
+      "hint": "A palavra-chave inclui 'dispatch', de enviar workflows sob demanda."
     },
     {
       "id": 2,
-      "title": "GitHub-Hosted Runners",
-      "description": "What is the default runner operating system if no `runs-on` is specified in a GitHub Actions workflow?",
+      "title": "Runners Hospedados pelo GitHub",
+      "description": "Qual é o sistema operacional padrão do runner se nenhum `runs-on` for especificado em um workflow do GitHub Actions?",
       "difficulty": "beginner",
       "points": 10,
       "options": [
         "ubuntu-latest",
-        "There is no default, it must be specified",
+        "Não há padrão, é obrigatório especificar",
         "windows-latest",
         "macos-latest"
       ],
       "correctAnswer": 1,
-      "explanation": "GitHub Actions requires an explicit `runs-on` specification. There is no default runner. Common choices are ubuntu-latest, windows-latest, or macos-latest.",
-      "hint": "GitHub enforces explicit runner selection for clarity."
+      "explanation": "O GitHub Actions exige que `runs-on` seja especificado explicitamente. Não existe um runner padrão. As opções mais comuns são ubuntu-latest, windows-latest ou macos-latest.",
+      "hint": "O GitHub exige a seleção explícita do runner para maior clareza."
     },
     {
       "id": 3,
-      "title": "Secrets Management",
-      "description": "How do you access a repository secret named `API_KEY` in a GitHub Actions workflow?",
+      "title": "Gerenciamento de Secrets",
+      "description": "Como você acessa um secret do repositório chamado `API_KEY` em um workflow do GitHub Actions?",
       "difficulty": "beginner",
       "points": 12,
       "options": [
@@ -65,29 +65,29 @@
         "${{ vars.API_KEY }}"
       ],
       "correctAnswer": 2,
-      "explanation": "Repository secrets are accessed via the `secrets` context: `${{ secrets.SECRET_NAME }}`. Secrets are encrypted and masked in logs.",
-      "hint": "Secrets have their own dedicated context namespace."
+      "explanation": "Os secrets do repositório são acessados pelo contexto `secrets`: `${{ secrets.SECRET_NAME }}`. Os secrets são criptografados e mascarados nos logs.",
+      "hint": "Os secrets têm seu próprio namespace de contexto dedicado."
     },
     {
       "id": 4,
-      "title": "Matrix Strategy Basics",
-      "description": "What does a matrix strategy in GitHub Actions allow you to do?",
+      "title": "Fundamentos da Estratégia de Matriz",
+      "description": "O que uma estratégia de matriz (matrix strategy) no GitHub Actions permite fazer?",
       "difficulty": "beginner",
       "points": 12,
       "options": [
-        "Run jobs in a specific order",
-        "Run the same job with different configurations in parallel",
-        "Create dependencies between workflows",
-        "Schedule workflows at different times"
+        "Executar jobs em uma ordem específica",
+        "Executar o mesmo job com configurações diferentes em paralelo",
+        "Criar dependências entre workflows",
+        "Agendar workflows em horários diferentes"
       ],
       "correctAnswer": 1,
-      "explanation": "Matrix strategies run the same job multiple times in parallel with different variable combinations (e.g., testing across Node 14, 16, 18).",
-      "hint": "Think of testing across multiple versions or environments simultaneously."
+      "explanation": "Estratégias de matriz executam o mesmo job várias vezes em paralelo com combinações diferentes de variáveis (por exemplo, testando nas versões 14, 16 e 18 do Node).",
+      "hint": "Pense em testar várias versões ou ambientes simultaneamente."
     },
     {
       "id": 5,
-      "title": "Popular Marketplace Action",
-      "description": "Which action is required as the first step in most GitHub Actions workflows to access repository code?",
+      "title": "Action Popular do Marketplace",
+      "description": "Qual action é necessária como primeiro passo na maioria dos workflows do GitHub Actions para acessar o código do repositório?",
       "difficulty": "intermediate",
       "points": 14,
       "options": [
@@ -97,29 +97,29 @@
         "actions/checkout@v4"
       ],
       "correctAnswer": 3,
-      "explanation": "The `actions/checkout` action clones your repository to the runner, giving subsequent steps access to your code. It's almost always the first step.",
-      "hint": "This action 'checks out' your code to the runner."
+      "explanation": "A action `actions/checkout` clona seu repositório no runner, dando aos passos seguintes acesso ao seu código. Ela é quase sempre o primeiro passo.",
+      "hint": "Essa action 'faz o checkout' do seu código para o runner."
     },
     {
       "id": 6,
-      "title": "Action Versioning Best Practice",
-      "description": "What is the recommended way to version actions in production workflows?",
+      "title": "Boas Práticas de Versionamento de Actions",
+      "description": "Qual é a forma recomendada de versionar actions em workflows de produção?",
       "difficulty": "intermediate",
       "points": 14,
       "options": [
-        "Always use @latest",
-        "Pin to a specific commit SHA",
-        "Use @main or @master branch",
-        "Don't specify a version"
+        "Sempre usar @latest",
+        "Fixar (pin) em um SHA de commit específico",
+        "Usar a branch @main ou @master",
+        "Não especificar uma versão"
       ],
       "correctAnswer": 1,
-      "explanation": "Pinning to a commit SHA (e.g., `actions/checkout@a12b3c4`) ensures immutability and prevents breaking changes. For convenience, major version tags (e.g., @v4) are also acceptable.",
-      "hint": "The most immutable versioning approach uses the git commit hash."
+      "explanation": "Fixar em um SHA de commit (por exemplo, `actions/checkout@a12b3c4`) garante imutabilidade e evita mudanças que quebrem o workflow. Por conveniência, tags de versão principal (por exemplo, @v4) também são aceitáveis.",
+      "hint": "A abordagem de versionamento mais imutável usa o hash do commit do git."
     },
     {
       "id": 7,
-      "title": "Reusable Workflows",
-      "description": "How do you call a reusable workflow from another workflow?",
+      "title": "Workflows Reutilizáveis",
+      "description": "Como você chama um workflow reutilizável a partir de outro workflow?",
       "difficulty": "intermediate",
       "points": 16,
       "options": [
@@ -129,13 +129,13 @@
         "uses: ./.github/workflows/reusable.yml"
       ],
       "correctAnswer": 0,
-      "explanation": "Reusable workflows are called using `uses:` with the full path including repository, file path, and ref: `owner/repo/.github/workflows/file.yml@ref`.",
-      "hint": "The syntax is similar to calling marketplace actions, but points to a workflow file."
+      "explanation": "Workflows reutilizáveis são chamados usando `uses:` com o caminho completo, incluindo repositório, caminho do arquivo e ref: `owner/repo/.github/workflows/file.yml@ref`.",
+      "hint": "A sintaxe é parecida com a de chamar actions do marketplace, mas aponta para um arquivo de workflow."
     },
     {
       "id": 8,
-      "title": "Conditional Job Execution",
-      "description": "Which expression would run a job only on push to the main branch?",
+      "title": "Execução Condicional de Jobs",
+      "description": "Qual expressão executaria um job apenas em push para a branch main?",
       "difficulty": "intermediate",
       "points": 16,
       "options": [
@@ -145,45 +145,45 @@
         "if: github.ref == 'refs/heads/main'"
       ],
       "correctAnswer": 3,
-      "explanation": "The `github.ref` context contains the fully qualified ref (e.g., 'refs/heads/main' for branches, 'refs/tags/v1.0' for tags). Always use the full ref path.",
-      "hint": "GitHub uses fully qualified references like 'refs/heads/' for branches."
+      "explanation": "O contexto `github.ref` contém a referência totalmente qualificada (por exemplo, 'refs/heads/main' para branches, 'refs/tags/v1.0' para tags). Sempre use o caminho completo da referência.",
+      "hint": "O GitHub usa referências totalmente qualificadas como 'refs/heads/' para branches."
     },
     {
       "id": 9,
-      "title": "Concurrency Control",
-      "description": "What does the `concurrency` key in a workflow do?",
+      "title": "Controle de Concorrência",
+      "description": "O que a chave `concurrency` em um workflow faz?",
       "difficulty": "intermediate",
       "points": 16,
       "options": [
-        "Limits how many jobs run simultaneously",
-        "Controls how many runners can execute the workflow",
-        "Prevents multiple workflow runs from executing concurrently for the same concurrency group",
-        "Sets the maximum number of matrix jobs"
+        "Limita quantos jobs são executados simultaneamente",
+        "Controla quantos runners podem executar o workflow",
+        "Evita que múltiplas execuções do workflow rodem simultaneamente para o mesmo grupo de concorrência",
+        "Define o número máximo de jobs de matriz"
       ],
       "correctAnswer": 2,
-      "explanation": "The `concurrency` key groups workflow runs. When a new run starts, previous runs in the same group can be canceled (with `cancel-in-progress: true`) or queued.",
-      "hint": "It prevents overlapping deployments or concurrent runs of the same workflow."
+      "explanation": "A chave `concurrency` agrupa as execuções do workflow. Quando uma nova execução começa, execuções anteriores no mesmo grupo podem ser canceladas (com `cancel-in-progress: true`) ou colocadas em fila.",
+      "hint": "Ela evita deploys sobrepostos ou execuções concorrentes do mesmo workflow."
     },
     {
       "id": 10,
-      "title": "Environment Protection Rules",
-      "description": "What can you configure with GitHub environment protection rules?",
+      "title": "Regras de Proteção de Ambiente",
+      "description": "O que você pode configurar com as regras de proteção de ambiente do GitHub?",
       "difficulty": "intermediate",
       "points": 16,
       "options": [
-        "Required reviewers and wait timers before deployment",
-        "The operating system for the runner",
-        "Which branches can trigger workflows",
-        "Maximum workflow execution time"
+        "Revisores obrigatórios e temporizadores de espera antes do deploy",
+        "O sistema operacional do runner",
+        "Quais branches podem disparar workflows",
+        "Tempo máximo de execução do workflow"
       ],
       "correctAnswer": 0,
-      "explanation": "Environment protection rules allow you to require manual approvals from specific reviewers and add wait timers before deploying to environments like production.",
-      "hint": "Protection rules add gates before deploying to sensitive environments."
+      "explanation": "As regras de proteção de ambiente permitem exigir aprovações manuais de revisores específicos e adicionar temporizadores de espera antes de fazer deploy em ambientes como produção.",
+      "hint": "As regras de proteção adicionam barreiras antes do deploy em ambientes sensíveis."
     },
     {
       "id": 11,
-      "title": "Docker Container Jobs",
-      "description": "How do you run a job in a custom Docker container?",
+      "title": "Jobs em Contêiner Docker",
+      "description": "Como você executa um job em um contêiner Docker customizado?",
       "difficulty": "intermediate",
       "points": 14,
       "options": [
@@ -193,13 +193,13 @@
         "docker: myimage:latest"
       ],
       "correctAnswer": 2,
-      "explanation": "The `container:` key specifies a Docker image for the job. Steps run inside this container instead of directly on the runner.",
-      "hint": "The keyword is the same as what Docker uses to describe images."
+      "explanation": "A chave `container:` especifica uma imagem Docker para o job. Os passos são executados dentro desse contêiner, em vez de diretamente no runner.",
+      "hint": "A palavra-chave é a mesma que o Docker usa para descrever imagens."
     },
     {
       "id": 12,
-      "title": "Dependency Caching",
-      "description": "Which action is commonly used to cache dependencies and speed up workflows?",
+      "title": "Cache de Dependências",
+      "description": "Qual action é comumente usada para armazenar em cache dependências e acelerar workflows?",
       "difficulty": "intermediate",
       "points": 14,
       "options": [
@@ -209,56 +209,56 @@
         "actions/persist@v3"
       ],
       "correctAnswer": 0,
-      "explanation": "The `actions/cache` action stores and restores dependencies (like npm packages, pip packages) between workflow runs to reduce build time.",
-      "hint": "The action name directly describes its function."
+      "explanation": "A action `actions/cache` armazena e restaura dependências (como pacotes npm, pacotes pip) entre execuções do workflow para reduzir o tempo de build.",
+      "hint": "O nome da action descreve diretamente sua função."
     },
     {
       "id": 13,
-      "title": "Artifact Management",
-      "description": "What is the retention period for artifacts uploaded with `actions/upload-artifact`?",
+      "title": "Gerenciamento de Artefatos",
+      "description": "Qual é o período de retenção para artefatos enviados com `actions/upload-artifact`?",
       "difficulty": "advanced",
       "points": 18,
       "options": [
-        "7 days",
-        "90 days (default, configurable per repository)",
-        "30 days",
-        "Unlimited"
+        "7 dias",
+        "90 dias (padrão, configurável por repositório)",
+        "30 dias",
+        "Ilimitado"
       ],
       "correctAnswer": 1,
-      "explanation": "By default, artifacts are retained for 90 days, but this can be configured at the repository level. You can also specify retention per artifact using the `retention-days` parameter.",
-      "hint": "The default is longer than a month but less than a year."
+      "explanation": "Por padrão, os artefatos são retidos por 90 dias, mas isso pode ser configurado no nível do repositório. Você também pode especificar a retenção por artefato usando o parâmetro `retention-days`.",
+      "hint": "O padrão é maior que um mês, mas menor que um ano."
     },
     {
       "id": 14,
-      "title": "Workflow Debugging",
-      "description": "How do you enable debug logging for a workflow run?",
+      "title": "Depuração de Workflow",
+      "description": "Como você habilita o log de depuração para uma execução de workflow?",
       "difficulty": "advanced",
       "points": 18,
       "options": [
-        "Run workflow with --debug flag",
-        "Enable in repository settings",
-        "Add debug: true to the workflow YAML",
-        "Set repository secret ACTIONS_STEP_DEBUG to true"
+        "Executar o workflow com a flag --debug",
+        "Habilitar nas configurações do repositório",
+        "Adicionar debug: true ao YAML do workflow",
+        "Definir o secret do repositório ACTIONS_STEP_DEBUG como true"
       ],
       "correctAnswer": 3,
-      "explanation": "Setting the `ACTIONS_STEP_DEBUG` repository secret to `true` enables debug logging, showing additional diagnostic information for troubleshooting workflow issues.",
-      "hint": "Debug mode is enabled via a special repository secret."
+      "explanation": "Definir o secret do repositório `ACTIONS_STEP_DEBUG` como `true` habilita o log de depuração, exibindo informações adicionais de diagnóstico para solucionar problemas no workflow.",
+      "hint": "O modo de depuração é habilitado por meio de um secret especial do repositório."
     },
     {
       "id": 15,
       "title": "Composite Actions",
-      "description": "What is the main advantage of composite actions over JavaScript or Docker actions?",
+      "description": "Qual é a principal vantagem das composite actions em relação às actions em JavaScript ou Docker?",
       "difficulty": "advanced",
       "points": 18,
       "options": [
-        "They execute faster",
-        "They can combine multiple steps into a single reusable action without requiring code",
-        "They have access to more GitHub contexts",
-        "They can run on all platforms"
+        "Elas executam mais rápido",
+        "Elas podem combinar múltiplos passos em uma única action reutilizável sem exigir código",
+        "Elas têm acesso a mais contextos do GitHub",
+        "Elas podem rodar em todas as plataformas"
       ],
       "correctAnswer": 1,
-      "explanation": "Composite actions let you bundle multiple workflow steps into a single action using YAML, without writing JavaScript or building Docker images. They're simpler to create and maintain.",
-      "hint": "Composite actions are defined purely in YAML, combining existing steps."
+      "explanation": "As composite actions permitem agrupar múltiplos passos de workflow em uma única action usando YAML, sem escrever JavaScript ou criar imagens Docker. Elas são mais simples de criar e manter.",
+      "hint": "As composite actions são definidas puramente em YAML, combinando passos existentes."
     }
   ]
 }

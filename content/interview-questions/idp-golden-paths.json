@@ -1,10 +1,10 @@
 {
   "id": "idp-golden-paths",
   "slug": "idp-golden-paths",
-  "title": "Designing Golden Paths",
-  "question": "We want our developers to follow best practices, but we do not want to slow them down with mandatory reviews for every infrastructure change. How would you design 'golden paths' in an internal developer platform?",
-  "answer": "Golden paths are pre-approved, opinionated templates that let developers build things the 'right way' by default. The trick is making the golden path the easiest path, not just the compliant one.\n\nStart by looking at what your teams build most often. If 80% of new services are REST APIs with a PostgreSQL database, build a template for exactly that. It should include the Dockerfile, CI/CD pipeline, Terraform for the database, monitoring dashboards, and alerting rules. A developer runs one command and gets a working, production-ready service in minutes.\n\nThe key design principles:\n\n1. Golden paths are optional, not mandatory. If a team needs something custom, they can go off-path. But going off-path should require more effort, not less.\n\n2. Encode your standards into the template. Do not write a doc that says 'all services must have health checks.' Instead, bake the health check endpoint into the template so it exists from day one.\n\n3. Keep templates versioned and upgradeable. When you update the base template (say, to add OpenTelemetry tracing), teams on older versions should be able to pull in the update without rewriting their service.\n\n4. Use policy-as-code (OPA, Kyverno) as the safety net for off-path cases. If someone deploys without a health check, the admission controller catches it.\n\nThe goal is that following best practices requires zero extra effort. Breaking them requires a deliberate choice.",
-  "explanation": "This question gets at a fundamental platform engineering tension: how do you provide guardrails without creating bottlenecks? Candidates who have actually built platforms will talk about making the right thing easy, not making the wrong thing hard. Listen for whether they understand the difference between a template and a mandate. The best answers reference real trade-offs, like how to handle template versioning when you have 50 services on v3 of your template and you just shipped v5.",
+  "title": "Projetando Golden Paths",
+  "question": "Queremos que nossos desenvolvedores sigam boas práticas, mas não queremos deixá-los mais lentos com revisões obrigatórias para cada mudança de infraestrutura. Como você projetaria 'golden paths' (caminhos dourados) em uma plataforma interna para desenvolvedores?",
+  "answer": "Golden paths são templates pré-aprovados e opinativos que permitem aos desenvolvedores construir as coisas do 'jeito certo' por padrão. O truque é fazer do golden path o caminho mais fácil, não apenas o caminho conforme.\n\nComece observando o que os seus times constroem com mais frequência. Se 80% dos novos serviços são APIs REST com um banco de dados PostgreSQL, construa um template exatamente para isso. Ele deve incluir o Dockerfile, o pipeline de CI/CD, o Terraform para o banco de dados, os dashboards de monitoramento e as regras de alerta. Um desenvolvedor roda um comando e obtém, em minutos, um serviço funcional e pronto para produção.\n\nOs principais princípios de design:\n\n1. Golden paths são opcionais, não obrigatórios. Se um time precisa de algo customizado, pode sair do caminho padrão. Mas sair do caminho deve exigir mais esforço, não menos.\n\n2. Incorpore seus padrões no template. Não escreva um documento dizendo 'todos os serviços devem ter health checks.' Em vez disso, embuta o endpoint de health check no template para que ele já exista desde o primeiro dia.\n\n3. Mantenha os templates versionados e atualizáveis. Quando você atualizar o template base (digamos, para adicionar tracing com OpenTelemetry), os times que estão em versões mais antigas devem conseguir incorporar a atualização sem reescrever o serviço.\n\n4. Use policy-as-code (OPA, Kyverno) como rede de segurança para os casos fora do caminho padrão. Se alguém fizer deploy sem um health check, o admission controller detecta isso.\n\nO objetivo é que seguir as boas práticas não exija esforço extra algum. Descumpri-las deve exigir uma escolha deliberada.",
+  "explanation": "Essa pergunta aborda uma tensão fundamental da engenharia de plataforma: como fornecer guardrails sem criar gargalos? Candidatos que já construíram plataformas de verdade vão falar sobre tornar o caminho certo fácil, e não sobre tornar o caminho errado difícil. Preste atenção se eles entendem a diferença entre um template e um mandato. As melhores respostas mencionam trade-offs reais, como lidar com o versionamento de templates quando você tem 50 serviços na v3 do seu template e acabou de lançar a v5.",
   "category": "Platform Engineering",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,25 +18,25 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Backstage scaffolder template for a golden path microservice",
+      "label": "Template do scaffolder do Backstage para um microsserviço golden path",
       "code": "apiVersion: scaffolder.backstage.io/v1beta3\nkind: Template\nmetadata:\n  name: golden-path-rest-api\n  title: REST API Service (Golden Path)\n  description: Production-ready REST API with database, CI/CD, and monitoring\nspec:\n  owner: platform-team\n  type: service\n  parameters:\n    - title: Service Details\n      required: [name, team, database]\n      properties:\n        name:\n          title: Service Name\n          type: string\n          pattern: '^[a-z][a-z0-9-]*$'\n        team:\n          title: Owning Team\n          type: string\n          ui:field: OwnerPicker\n        database:\n          title: Database Type\n          type: string\n          enum: [postgres, mysql, none]\n          default: postgres\n  steps:\n    - id: fetch-skeleton\n      name: Fetch service skeleton\n      action: fetch:template\n      input:\n        url: ./skeleton\n        values:\n          name: ${{ parameters.name }}\n          team: ${{ parameters.team }}\n    - id: create-repo\n      name: Create GitHub repo\n      action: publish:github\n      input:\n        repoUrl: github.com?owner=myorg&repo=${{ parameters.name }}\n        defaultBranch: main\n        protectDefaultBranch: true\n    - id: provision-infra\n      name: Provision infrastructure\n      action: custom:terraform-apply\n      input:\n        module: modules/service-infra\n        vars:\n          service_name: ${{ parameters.name }}\n          database_type: ${{ parameters.database }}\n    - id: register\n      name: Register in catalog\n      action: catalog:register"
     },
     {
       "language": "yaml",
-      "label": "OPA policy catching services that skip the golden path health check",
+      "label": "Política OPA detectando serviços que pulam o health check do golden path",
       "code": "# policy/require-healthcheck.rego\npackage kubernetes.admission\n\nimport data.kubernetes.deployments\n\n# Deny deployments without a readiness probe\ndeny[msg] {\n  input.request.kind.kind == \"Deployment\"\n  container := input.request.object.spec.template.spec.containers[_]\n  not container.readinessProbe\n  msg := sprintf(\n    \"Container '%s' in Deployment '%s' has no readiness probe. \"\n    \"Use the golden path template or add one manually. \"\n    \"Docs: https://platform.internal/docs/health-checks\",\n    [container.name, input.request.object.metadata.name]\n  )\n}"
     }
   ],
   "followUpQuestions": [
-    "How do you handle upgrading 50 services from template v3 to v5 without breaking them?",
-    "A team says the golden path does not fit their use case. What do you do?",
-    "How do you decide when a one-off request should become a new golden path?",
-    "What metrics tell you whether your golden paths are actually being adopted?"
+    "Como você lida com a atualização de 50 serviços da v3 para a v5 do template sem quebrá-los?",
+    "Um time diz que o golden path não se encaixa no caso de uso dele. O que você faz?",
+    "Como você decide quando um pedido pontual deve virar um novo golden path?",
+    "Quais métricas mostram se os seus golden paths estão realmente sendo adotados?"
   ],
   "commonMistakes": [
-    "Making golden paths mandatory and creating a bottleneck when teams need something the template does not support",
-    "Building templates that are too rigid - every field hardcoded, no room for customization",
-    "Not versioning templates, so updates to the golden path break existing services"
+    "Tornar os golden paths obrigatórios e criar um gargalo quando os times precisam de algo que o template não suporta",
+    "Construir templates rígidos demais - todo campo fixo, sem espaço para customização",
+    "Não versionar os templates, fazendo com que atualizações no golden path quebrem serviços já existentes"
   ],
   "relatedTopics": [
     "backstage-scaffolder",

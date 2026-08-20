@@ -1,7 +1,7 @@
 {
   "id": "ansible-quiz",
-  "title": "Ansible Configuration Management Quiz",
-  "description": "Test your Ansible skills with playbooks, roles, inventory management, and automation scenarios for infrastructure configuration",
+  "title": "Quiz de Gerenciamento de Configuração com Ansible",
+  "description": "Teste suas habilidades em Ansible com playbooks, roles, gerenciamento de inventário e cenários de automação para configuração de infraestrutura",
   "category": "Configuration Management",
   "icon": "Settings",
   "totalPoints": 217,
@@ -11,7 +11,7 @@
     "gradientTo": "to-pink-600"
   },
   "metadata": {
-    "estimatedTime": "20-25 minutes",
+    "estimatedTime": "20-25 minutos",
     "difficultyLevels": {
       "beginner": 3,
       "intermediate": 8,
@@ -22,273 +22,273 @@
   "questions": [
     {
       "id": "playbook-structure",
-      "title": "Playbook YAML Structure",
-      "description": "Which of the following is the correct minimal structure for an Ansible playbook?",
-      "situation": "You're creating your first Ansible playbook to configure web servers. Understanding the basic structure is essential.",
+      "title": "Estrutura YAML de um Playbook",
+      "description": "Qual das opções a seguir é a estrutura mínima correta para um playbook do Ansible?",
+      "situation": "Você está criando seu primeiro playbook do Ansible para configurar servidores web. Entender a estrutura básica é essencial.",
       "codeExample": "Option A:\n- hosts: webservers\n  tasks:\n    - name: Install nginx\n      apt: name=nginx state=present\n\nOption B:\n---\n- name: Configure webservers\n  hosts: webservers\n  tasks:\n    - name: Install nginx\n      apt:\n        name: nginx\n        state: present",
       "options": [
-        "Option A - hosts and tasks are the only required keys",
-        "Option B - must start with --- and include name for the play",
-        "Both are valid - name is optional but --- is best practice",
-        "Neither - ansible_connection and become are required"
+        "Opção A - hosts e tasks são as únicas chaves obrigatórias",
+        "Opção B - deve começar com --- e incluir name para o play",
+        "Ambas são válidas - name é opcional, mas --- é uma boa prática",
+        "Nenhuma - ansible_connection e become são obrigatórios"
       ],
       "correctAnswer": 2,
       "points": 12,
       "difficulty": "beginner",
-      "explanation": "Both structures are technically valid. The YAML document marker (---) is optional but recommended for clarity. The play name is also optional but helpful for readability. The minimal structure only requires 'hosts' and 'tasks'. However, Option B follows best practices with the document marker and descriptive play name.",
-      "hint": "Ansible is flexible about required vs optional keys in playbooks."
+      "explanation": "Ambas as estruturas são tecnicamente válidas. O marcador de documento YAML (---) é opcional, mas recomendado para clareza. O nome do play também é opcional, mas ajuda na legibilidade. A estrutura mínima exige apenas 'hosts' e 'tasks'. Porém, a Opção B segue as boas práticas ao incluir o marcador de documento e um nome descritivo para o play.",
+      "hint": "O Ansible é flexível quanto a chaves obrigatórias e opcionais em playbooks."
     },
     {
       "id": "idempotency",
-      "title": "Idempotency in Ansible",
-      "description": "What does idempotency mean in the context of Ansible?",
-      "situation": "Your team runs the same playbook multiple times per day. Understanding idempotency ensures safe, predictable automation.",
+      "title": "Idempotência no Ansible",
+      "description": "O que significa idempotência no contexto do Ansible?",
+      "situation": "Sua equipe executa o mesmo playbook várias vezes por dia. Entender idempotência garante uma automação segura e previsível.",
       "codeExample": "# Running this playbook twice:\n- name: Ensure nginx is installed\n  apt:\n    name: nginx\n    state: present\n\nFirst run: Changes made\nSecond run: ?",
       "options": [
-        "The playbook will fail on the second run because nginx is already installed",
-        "The playbook will skip all tasks on subsequent runs for performance",
-        "The playbook produces the same result regardless of how many times it's run",
-        "The playbook requires a --force flag to run multiple times"
+        "O playbook falhará na segunda execução porque o nginx já está instalado",
+        "O playbook pulará todas as tasks nas execuções seguintes por questão de desempenho",
+        "O playbook produz o mesmo resultado independentemente de quantas vezes for executado",
+        "O playbook exige a flag --force para ser executado mais de uma vez"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "beginner",
-      "explanation": "Idempotency means that running a playbook multiple times produces the same result as running it once. Ansible modules are designed to be idempotent - they check current state and only make changes if needed. In this example, the second run would show 'ok' (no change) rather than 'changed' because nginx is already installed.",
-      "hint": "Think about the desired end state, not the actions taken to get there."
+      "explanation": "Idempotência significa que executar um playbook várias vezes produz o mesmo resultado que executá-lo uma única vez. Os módulos do Ansible são projetados para ser idempotentes - eles verificam o estado atual e só fazem alterações quando necessário. Nesse exemplo, a segunda execução mostraria 'ok' (sem mudança) em vez de 'changed', pois o nginx já está instalado.",
+      "hint": "Pense no estado final desejado, não nas ações realizadas para chegar até ele."
     },
     {
       "id": "handlers",
-      "title": "Handlers and Notify",
-      "description": "When do handlers execute in an Ansible playbook?",
-      "situation": "You're configuring nginx and need to restart the service only when the configuration file changes.",
+      "title": "Handlers e Notify",
+      "description": "Quando os handlers são executados em um playbook do Ansible?",
+      "situation": "Você está configurando o nginx e precisa reiniciar o serviço apenas quando o arquivo de configuração for alterado.",
       "codeExample": "- name: Update nginx config\n  template:\n    src: nginx.conf.j2\n    dest: /etc/nginx/nginx.conf\n  notify: restart nginx\n\nhandlers:\n  - name: restart nginx\n    service:\n      name: nginx\n      state: restarted",
       "options": [
-        "Handlers run at the end of the play, only if notified and only once",
-        "Handlers run immediately when notify is called",
-        "Handlers run before each task that notifies them",
-        "Handlers run at the beginning of the playbook execution"
+        "Handlers são executados no final do play, somente se notificados e apenas uma vez",
+        "Handlers são executados imediatamente quando o notify é chamado",
+        "Handlers são executados antes de cada task que os notifica",
+        "Handlers são executados no início da execução do playbook"
       ],
       "correctAnswer": 0,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Handlers are special tasks that run at the end of a play (after all tasks complete), but only if they were notified by a task that reported 'changed'. Even if multiple tasks notify the same handler, it only runs once. This is perfect for restarting services - you want to restart nginx once after all configuration changes, not after each individual change.",
-      "hint": "Handlers are designed to run once at the end, even if notified multiple times."
+      "explanation": "Handlers são tasks especiais executadas no final de um play (depois que todas as tasks são concluídas), mas apenas se forem notificados por uma task que reportou 'changed'. Mesmo que várias tasks notifiquem o mesmo handler, ele só é executado uma vez. Isso é perfeito para reiniciar serviços - você quer reiniciar o nginx uma única vez após todas as mudanças de configuração, não após cada mudança individual.",
+      "hint": "Handlers são projetados para rodar uma única vez no final, mesmo se notificados várias vezes."
     },
     {
       "id": "inventory-patterns",
-      "title": "Inventory Host Patterns",
-      "description": "Which hosts will the pattern 'webservers:&production' target?",
-      "situation": "You have inventory groups for different server types and environments. You need to target only production web servers.",
+      "title": "Padrões de Hosts no Inventário",
+      "description": "Quais hosts o padrão 'webservers:&production' vai atingir?",
+      "situation": "Você tem grupos de inventário para diferentes tipos de servidor e ambientes. Você precisa atingir apenas os servidores web de produção.",
       "codeExample": "[webservers]\nweb1.example.com\nweb2.example.com\nweb3.example.com\n\n[production]\nweb1.example.com\ndb1.example.com\n\n[staging]\nweb2.example.com\ndb2.example.com",
       "options": [
-        "All hosts in webservers group OR production group (union)",
-        "All hosts in webservers group EXCEPT production group (difference)",
-        "Invalid syntax - will cause an error",
-        "All hosts in webservers group AND production group (intersection)"
+        "Todos os hosts do grupo webservers OU do grupo production (união)",
+        "Todos os hosts do grupo webservers EXCETO os do grupo production (diferença)",
+        "Sintaxe inválida - vai causar um erro",
+        "Todos os hosts do grupo webservers E do grupo production (interseção)"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "The '&' operator performs an intersection - it targets hosts that are in BOTH groups. In this case, only web1.example.com is in both webservers AND production, so only that host will be targeted. The ':' operator is union (OR), '&' is intersection (AND), and '!' is exclusion (NOT).",
-      "hint": "The '&' symbol in inventory patterns means 'AND' or intersection."
+      "explanation": "O operador '&' realiza uma interseção - ele atinge hosts que estão em AMBOS os grupos. Nesse caso, apenas web1.example.com está tanto em webservers quanto em production, então somente esse host será atingido. O operador ':' é união (OU), '&' é interseção (E), e '!' é exclusão (NÃO).",
+      "hint": "O símbolo '&' em padrões de inventário significa 'E' ou interseção."
     },
     {
       "id": "ansible-vault",
-      "title": "Ansible Vault for Secrets",
-      "description": "What is the recommended way to use Ansible Vault in a CI/CD pipeline?",
-      "situation": "Your playbook contains encrypted passwords using Ansible Vault. You need to run it in GitLab CI without exposing the vault password.",
+      "title": "Ansible Vault para Segredos",
+      "description": "Qual é a forma recomendada de usar o Ansible Vault em um pipeline de CI/CD?",
+      "situation": "Seu playbook contém senhas criptografadas usando o Ansible Vault. Você precisa executá-lo no GitLab CI sem expor a senha do vault.",
       "codeExample": "# Encrypted vars file\n$ANSIBLE_VAULT;1.1;AES256\n303233...encrypted content...\n\n# How to decrypt in CI?",
       "options": [
-        "Store vault password in git repository with playbook",
-        "Use --ask-vault-pass flag and enter password interactively",
-        "Store vault password in CI environment variable and use --vault-password-file",
-        "Commit decrypted files to repository for CI use"
+        "Armazenar a senha do vault no repositório git junto com o playbook",
+        "Usar a flag --ask-vault-pass e digitar a senha interativamente",
+        "Armazenar a senha do vault em uma variável de ambiente do CI e usar --vault-password-file",
+        "Commitar os arquivos descriptografados no repositório para uso no CI"
       ],
       "correctAnswer": 2,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "The secure approach is: 1) Store vault password in CI/CD secret environment variable (e.g., VAULT_PASSWORD), 2) Create a temporary password file from the env var, 3) Use ansible-playbook --vault-password-file=/tmp/vault_pass. Never commit vault passwords or decrypted secrets to git. Interactive prompts don't work in CI. Modern alternative: use cloud provider secret managers (AWS Secrets Manager, HashiCorp Vault) instead of Ansible Vault.",
-      "hint": "Use CI/CD secret management features to securely inject the vault password."
+      "explanation": "A abordagem segura é: 1) armazenar a senha do vault em uma variável de ambiente secreta do CI/CD (por exemplo, VAULT_PASSWORD), 2) criar um arquivo de senha temporário a partir dessa variável de ambiente, 3) usar ansible-playbook --vault-password-file=/tmp/vault_pass. Nunca commite senhas de vault ou segredos descriptografados no git. Prompts interativos não funcionam em CI. Alternativa moderna: usar gerenciadores de segredos de provedores de nuvem (AWS Secrets Manager, HashiCorp Vault) em vez do Ansible Vault.",
+      "hint": "Use os recursos de gerenciamento de segredos do CI/CD para injetar a senha do vault com segurança."
     },
     {
       "id": "role-structure",
-      "title": "Ansible Role Directory Structure",
-      "description": "Which directories are automatically loaded when using an Ansible role?",
-      "situation": "You're creating a reusable role for nginx deployment and need to understand the standard directory structure.",
+      "title": "Estrutura de Diretórios de uma Role do Ansible",
+      "description": "Quais diretórios são carregados automaticamente ao usar uma role do Ansible?",
+      "situation": "Você está criando uma role reutilizável para implantação do nginx e precisa entender a estrutura de diretórios padrão.",
       "codeExample": "roles/nginx/\n├── tasks/main.yml\n├── handlers/main.yml\n├── templates/\n├── files/\n├── vars/main.yml\n├── defaults/main.yml\n├── meta/main.yml\n└── README.md",
       "options": [
-        "All main.yml files in standard directories are automatically included",
-        "Only tasks/main.yml is required; all other directories are optional",
-        "You must explicitly import each directory in tasks/main.yml",
-        "The role will fail if any standard directory is missing"
+        "Todos os arquivos main.yml em diretórios padrão são incluídos automaticamente",
+        "Apenas tasks/main.yml é obrigatório; todos os outros diretórios são opcionais",
+        "Você deve importar explicitamente cada diretório em tasks/main.yml",
+        "A role vai falhar se algum diretório padrão estiver faltando"
       ],
       "correctAnswer": 0,
       "points": 12,
       "difficulty": "intermediate",
-      "explanation": "Ansible automatically loads main.yml from standard directories (tasks, handlers, vars, defaults, meta) if they exist. You don't need to explicitly import them. Only tasks/main.yml is technically required for a role to function. The vars/ and defaults/ difference: vars have higher precedence and can't be overridden easily, while defaults have lowest precedence and are meant to be overridden.",
-      "hint": "Ansible follows convention over configuration for role structure."
+      "explanation": "O Ansible carrega automaticamente o main.yml dos diretórios padrão (tasks, handlers, vars, defaults, meta) se eles existirem. Você não precisa importá-los explicitamente. Apenas tasks/main.yml é tecnicamente obrigatório para uma role funcionar. A diferença entre vars/ e defaults/: vars tem precedência mais alta e não pode ser facilmente sobrescrita, enquanto defaults tem a precedência mais baixa e é feito para ser sobrescrito.",
+      "hint": "O Ansible segue o princípio de convenção sobre configuração para a estrutura de roles."
     },
     {
       "id": "dynamic-inventory",
-      "title": "Dynamic Inventory Sources",
-      "description": "What is the primary benefit of using dynamic inventory over static inventory?",
-      "situation": "Your infrastructure uses AWS auto-scaling groups. Instances are constantly created and destroyed based on demand.",
+      "title": "Fontes de Inventário Dinâmico",
+      "description": "Qual é o principal benefício de usar inventário dinâmico em vez de inventário estático?",
+      "situation": "Sua infraestrutura usa grupos de auto scaling da AWS. As instâncias são constantemente criadas e destruídas de acordo com a demanda.",
       "codeExample": "# Static inventory\n[webservers]\n10.0.1.10\n10.0.1.11\n\n# Dynamic inventory script\n#!/usr/bin/env python3\nimport boto3\n# Query AWS for current instances...",
       "options": [
-        "Dynamic inventory is faster because it caches results",
-        "Dynamic inventory allows grouping hosts by arbitrary attributes",
-        "Dynamic inventory is required for Ansible to work with cloud instances",
-        "Dynamic inventory automatically discovers current infrastructure state from cloud providers"
+        "O inventário dinâmico é mais rápido porque armazena resultados em cache",
+        "O inventário dinâmico permite agrupar hosts por atributos arbitrários",
+        "O inventário dinâmico é obrigatório para o Ansible funcionar com instâncias de nuvem",
+        "O inventário dinâmico descobre automaticamente o estado atual da infraestrutura a partir dos provedores de nuvem"
       ],
       "correctAnswer": 3,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "Dynamic inventory scripts query infrastructure in real-time (AWS, Azure, GCP, VMware, etc.) to get the current list of hosts, eliminating manual inventory maintenance. This is critical for auto-scaling environments where instances come and go. Modern approach: use inventory plugins (aws_ec2, azure_rm, gcp_compute) which are more efficient than custom scripts. You can also group by tags, regions, etc.",
-      "hint": "Think about infrastructure that changes frequently without manual intervention."
+      "explanation": "Scripts de inventário dinâmico consultam a infraestrutura em tempo real (AWS, Azure, GCP, VMware, etc.) para obter a lista atual de hosts, eliminando a manutenção manual do inventário. Isso é fundamental em ambientes de auto scaling, onde instâncias surgem e desaparecem constantemente. Abordagem moderna: usar plugins de inventário (aws_ec2, azure_rm, gcp_compute), que são mais eficientes do que scripts personalizados. Você também pode agrupar por tags, regiões, etc.",
+      "hint": "Pense em infraestrutura que muda com frequência sem intervenção manual."
     },
     {
       "id": "privilege-escalation",
-      "title": "Privilege Escalation (become)",
-      "description": "What is the difference between 'become: yes' at play level vs task level?",
-      "situation": "Some tasks in your playbook need root privileges (installing packages), while others should run as the normal user (cloning git repos).",
+      "title": "Escalonamento de Privilégios (become)",
+      "description": "Qual é a diferença entre 'become: yes' no nível do play e no nível da task?",
+      "situation": "Algumas tasks do seu playbook precisam de privilégios de root (instalar pacotes), enquanto outras devem rodar como o usuário normal (clonar repositórios git).",
       "codeExample": "---\n- hosts: webservers\n  become: yes\n  tasks:\n    - name: Install nginx\n      apt: name=nginx\n    \n    - name: Clone app repo\n      git:\n        repo: https://github.com/app.git\n        dest: /home/deploy/app\n      become: no",
       "options": [
-        "Task-level become always takes precedence, overriding play-level setting",
-        "Play-level become cannot be overridden at task level",
-        "Both settings must match or Ansible will error",
-        "become is only valid at play level, not task level"
+        "O become no nível da task sempre tem precedência, sobrescrevendo a configuração do play",
+        "O become no nível do play não pode ser sobrescrito no nível da task",
+        "As duas configurações devem coincidir, ou o Ansible vai gerar erro",
+        "become só é válido no nível do play, não no nível da task"
       ],
       "correctAnswer": 0,
       "points": 12,
       "difficulty": "intermediate",
-      "explanation": "Task-level become overrides play-level become. This allows you to set become: yes for the entire play (convenient for system administration tasks), then selectively use become: no for specific tasks that should run as the regular user. Best practice: set become at the most appropriate level (play, block, or task) to minimize privilege scope.",
-      "hint": "More specific settings override general settings in Ansible."
+      "explanation": "O become no nível da task sobrescreve o become no nível do play. Isso permite definir become: yes para o play inteiro (conveniente para tarefas de administração de sistema) e depois usar become: no seletivamente em tasks específicas que devem rodar como o usuário comum. Boa prática: defina o become no nível mais apropriado (play, block ou task) para minimizar o escopo de privilégios.",
+      "hint": "Configurações mais específicas sobrescrevem configurações mais gerais no Ansible."
     },
     {
       "id": "loops-iteration",
-      "title": "Loops and Iteration",
-      "description": "Which is the modern, recommended way to loop over items in Ansible?",
-      "situation": "You need to install multiple packages in a single task instead of writing separate tasks for each package.",
+      "title": "Loops e Iteração",
+      "description": "Qual é a forma moderna e recomendada de iterar sobre itens no Ansible?",
+      "situation": "Você precisa instalar vários pacotes em uma única task, em vez de escrever tasks separadas para cada pacote.",
       "codeExample": "# Old way (deprecated):\n- name: Install packages\n  apt:\n    name: \"{{ item }}\"\n  with_items:\n    - nginx\n    - git\n    - curl\n\n# New way:\n- name: Install packages\n  apt:\n    name: \"{{ item }}\"\n  loop:\n    - nginx\n    - git\n    - curl",
       "options": [
-        "with_items - it's the original and most stable syntax",
-        "loop - it's the modern, unified syntax replacing with_* lookups",
-        "for_each - consistent with Terraform syntax",
-        "Both with_items and loop are equally recommended"
+        "with_items - é a sintaxe original e mais estável",
+        "loop - é a sintaxe moderna e unificada que substitui os lookups with_*",
+        "for_each - consistente com a sintaxe do Terraform",
+        "with_items e loop são igualmente recomendados"
       ],
       "correctAnswer": 1,
       "points": 10,
       "difficulty": "beginner",
-      "explanation": "'loop' is the modern, recommended way to iterate in Ansible (introduced in 2.5). It replaces the many with_* lookup plugins (with_items, with_dict, with_fileglob, etc.) with a single, consistent syntax. with_items still works but is considered legacy. For the package use case, many modules now accept lists directly: apt: name=['nginx', 'git', 'curl'], which is even better.",
-      "hint": "Ansible is moving toward a single, consistent loop keyword."
+      "explanation": "'loop' é a forma moderna e recomendada de iterar no Ansible (introduzida na versão 2.5). Ela substitui os diversos plugins de lookup with_* (with_items, with_dict, with_fileglob, etc.) por uma sintaxe única e consistente. with_items ainda funciona, mas é considerado legado. Para o caso de instalação de pacotes, muitos módulos já aceitam listas diretamente: apt: name=['nginx', 'git', 'curl'], o que é ainda melhor.",
+      "hint": "O Ansible está caminhando para uma única palavra-chave de loop consistente."
     },
     {
       "id": "conditionals",
-      "title": "Conditional Execution (when)",
-      "description": "When is the when clause evaluated in a task?",
-      "situation": "You have a task that should only run on Ubuntu systems, not CentOS. The condition checks ansible_facts['distribution'].",
+      "title": "Execução Condicional (when)",
+      "description": "Quando a cláusula when é avaliada em uma task?",
+      "situation": "Você tem uma task que deve rodar apenas em sistemas Ubuntu, não no CentOS. A condição verifica ansible_facts['distribution'].",
       "codeExample": "- name: Install nginx on Ubuntu\n  apt:\n    name: nginx\n    state: present\n  when: ansible_facts['distribution'] == 'Ubuntu'",
       "options": [
-        "Before connecting to the host - if false, the host is skipped entirely",
-        "After connecting but before gathering facts",
-        "After facts are gathered but before the task module executes",
-        "After the task runs - determines if changes are applied"
+        "Antes de conectar ao host - se falso, o host é ignorado por completo",
+        "Depois de conectar, mas antes de coletar os facts",
+        "Depois que os facts são coletados, mas antes do módulo da task ser executado",
+        "Depois que a task roda - determina se as mudanças são aplicadas"
       ],
       "correctAnswer": 2,
       "points": 15,
       "difficulty": "intermediate",
-      "explanation": "The 'when' clause is evaluated after facts are gathered (assuming gather_facts: yes) but before the task module executes. If the condition is false, the task is skipped and marked as 'skipped' in output. This is why you can use ansible_facts in when clauses. The task module is never invoked if when evaluates to false, saving time and avoiding potential errors.",
-      "hint": "Conditions are checked before doing work, after gathering information."
+      "explanation": "A cláusula 'when' é avaliada depois que os facts são coletados (assumindo gather_facts: yes), mas antes do módulo da task ser executado. Se a condição for falsa, a task é ignorada e marcada como 'skipped' na saída. É por isso que você pode usar ansible_facts em cláusulas when. O módulo da task nunca é chamado se when for avaliado como falso, economizando tempo e evitando erros potenciais.",
+      "hint": "As condições são verificadas antes de executar o trabalho, depois de coletar as informações."
     },
     {
       "id": "error-handling",
-      "title": "Error Handling and Recovery",
-      "description": "How can you continue playbook execution even if a task fails?",
-      "situation": "You're running a playbook that attempts to stop a service that might not exist on all hosts. You don't want the playbook to abort if the service doesn't exist.",
+      "title": "Tratamento de Erros e Recuperação",
+      "description": "Como você pode continuar a execução do playbook mesmo se uma task falhar?",
+      "situation": "Você está executando um playbook que tenta parar um serviço que pode não existir em todos os hosts. Você não quer que o playbook aborte se o serviço não existir.",
       "codeExample": "- name: Stop legacy service if it exists\n  service:\n    name: old-app\n    state: stopped\n  # This might fail on some hosts",
       "options": [
-        "Use failed_when: false to never consider the task failed",
-        "Use ignore_errors: yes to continue despite failures",
-        "Use rescue blocks to handle errors gracefully",
-        "All of the above are valid approaches depending on the scenario"
+        "Usar failed_when: false para nunca considerar a task como falha",
+        "Usar ignore_errors: yes para continuar apesar das falhas",
+        "Usar blocos rescue para tratar erros de forma elegante",
+        "Todas as opções acima são válidas dependendo do cenário"
       ],
       "correctAnswer": 3,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "All three approaches are valid for different scenarios: 1) ignore_errors: yes continues execution but still logs the failure, 2) failed_when: false redefines what constitutes failure (e.g., failed_when: result.rc != 0 and result.rc != 2), 3) block/rescue/always provides try-catch-finally logic for complex error handling. For this specific scenario, checking if the service exists first with a stat task is even better.",
-      "hint": "Ansible provides multiple error handling strategies for different needs."
+      "explanation": "As três abordagens são válidas para cenários diferentes: 1) ignore_errors: yes continua a execução, mas ainda registra a falha, 2) failed_when: false redefine o que constitui uma falha (por exemplo, failed_when: result.rc != 0 and result.rc != 2), 3) block/rescue/always fornece uma lógica try-catch-finally para tratamento de erros mais complexo. Para esse cenário específico, verificar antes se o serviço existe com uma task stat é ainda melhor.",
+      "hint": "O Ansible oferece várias estratégias de tratamento de erros para necessidades diferentes."
     },
     {
       "id": "ansible-galaxy",
-      "title": "Ansible Galaxy and Role Dependencies",
-      "description": "What is the purpose of the requirements.yml file in an Ansible project?",
-      "situation": "Your playbook depends on several community roles from Ansible Galaxy. You want to ensure all team members use the same role versions.",
+      "title": "Ansible Galaxy e Dependências de Roles",
+      "description": "Qual é o propósito do arquivo requirements.yml em um projeto Ansible?",
+      "situation": "Seu playbook depende de várias roles da comunidade obtidas no Ansible Galaxy. Você quer garantir que todos os membros da equipe usem as mesmas versões das roles.",
       "codeExample": "# requirements.yml\n---\nroles:\n  - name: geerlingguy.nginx\n    version: 3.1.4\n  - name: geerlingguy.docker\n    version: 6.1.0\n\n# Install with:\nansible-galaxy install -r requirements.yml",
       "options": [
-        "Lists system package requirements that must be installed before running playbooks",
-        "Specifies Ansible roles to download from Galaxy or git repos with version pinning",
-        "Defines Python library dependencies for custom Ansible modules",
-        "Contains inventory requirements for the playbook to run"
+        "Lista requisitos de pacotes do sistema que devem ser instalados antes de rodar os playbooks",
+        "Especifica roles do Ansible para baixar do Galaxy ou de repositórios git, com versionamento fixo",
+        "Define dependências de bibliotecas Python para módulos Ansible personalizados",
+        "Contém requisitos de inventário para o playbook rodar"
       ],
       "correctAnswer": 1,
       "points": 12,
       "difficulty": "intermediate",
-      "explanation": "requirements.yml specifies external roles (from Ansible Galaxy, GitHub, or other sources) that your playbook depends on. It supports version pinning to ensure reproducible deployments. You can also specify collections: in the same file (Ansible 2.9+). This is similar to package.json for Node.js or requirements.txt for Python. Always commit requirements.yml to version control and run ansible-galaxy install before running playbooks.",
-      "hint": "Think of it like a dependency manifest file for external Ansible content."
+      "explanation": "requirements.yml especifica roles externas (do Ansible Galaxy, GitHub ou outras fontes) das quais o seu playbook depende. Ele oferece suporte a versionamento fixo para garantir implantações reproduzíveis. Você também pode especificar collections: no mesmo arquivo (Ansible 2.9+). Isso é semelhante ao package.json do Node.js ou ao requirements.txt do Python. Sempre commite o requirements.yml no controle de versão e rode ansible-galaxy install antes de executar os playbooks.",
+      "hint": "Pense nele como um manifesto de dependências para conteúdo externo do Ansible."
     },
     {
       "id": "template-filters",
-      "title": "Jinja2 Templates and Filters",
-      "description": "What will be the output of {{ my_list | length }} if my_list contains ['a', 'b', 'c']?",
-      "situation": "You're creating a dynamic configuration file that needs to adjust based on the number of items in a list.",
+      "title": "Templates e Filtros do Jinja2",
+      "description": "Qual será o resultado de {{ my_list | length }} se my_list contiver ['a', 'b', 'c']?",
+      "situation": "Você está criando um arquivo de configuração dinâmico que precisa se ajustar de acordo com o número de itens de uma lista.",
       "codeExample": "# In playbook vars:\nmy_list:\n  - a\n  - b\n  - c\n\n# In template:\nTotal items: {{ my_list | length }}\nFirst item: {{ my_list | first }}\nUppercase: {{ my_list | map('upper') | list }}",
       "options": [
         "3",
         "['a', 'b', 'c']",
-        "Error - length filter doesn't exist",
+        "Erro - o filtro length não existe",
         "'abc'"
       ],
       "correctAnswer": 0,
       "points": 10,
       "difficulty": "intermediate",
-      "explanation": "The length filter returns the number of items in a list, string, or dictionary. In this case, it returns 3. Jinja2 provides many useful filters: default (set default values), regex_replace (pattern matching), to_json/to_yaml (format conversion), join (concatenate), and more. Filters are chained with the | operator. Understanding filters is crucial for effective Ansible templating.",
-      "hint": "Filters transform or extract information from variables."
+      "explanation": "O filtro length retorna o número de itens de uma lista, string ou dicionário. Nesse caso, retorna 3. O Jinja2 oferece diversos filtros úteis: default (define valores padrão), regex_replace (correspondência de padrões), to_json/to_yaml (conversão de formato), join (concatenar) e muitos outros. Os filtros são encadeados com o operador |. Entender os filtros é essencial para criar templates eficazes no Ansible.",
+      "hint": "Filtros transformam ou extraem informações de variáveis."
     },
     {
       "id": "performance-optimization",
-      "title": "Performance Optimization Strategies",
-      "description": "Which strategy provides the biggest performance improvement for large inventories?",
-      "situation": "Your playbook runs against 500 servers and takes 45 minutes. You need to reduce execution time significantly.",
+      "title": "Estratégias de Otimização de Desempenho",
+      "description": "Qual estratégia proporciona a maior melhoria de desempenho para inventários grandes?",
+      "situation": "Seu playbook roda em 500 servidores e leva 45 minutos. Você precisa reduzir significativamente o tempo de execução.",
       "codeExample": "# Current ansible.cfg:\n[defaults]\nforks = 5\ngathering = implicit\nhost_key_checking = True\n\n# Optimization options?",
       "options": [
-        "Increase forks to 50-100 for parallel execution across more hosts",
-        "Use gathering = smart to cache facts between playbook runs",
-        "Enable pipelining to reduce SSH overhead",
-        "All of the above combined provide significant speedup"
+        "Aumentar forks para 50-100 para execução paralela em mais hosts",
+        "Usar gathering = smart para armazenar em cache os facts entre execuções do playbook",
+        "Habilitar pipelining para reduzir a sobrecarga de SSH",
+        "Todas as opções acima combinadas geram uma melhora significativa"
       ],
       "correctAnswer": 3,
       "points": 20,
       "difficulty": "advanced",
-      "explanation": "Performance optimization requires multiple strategies: 1) Increase forks (default 5) to parallelize across more hosts - try 50-100 for large inventories, 2) Use gathering = smart to cache facts between runs, 3) Enable pipelining = True to reduce SSH connections, 4) Disable host_key_checking in controlled environments, 5) Use async for long-running tasks, 6) Use strategy = free to not wait for all hosts per task. Combined, these can reduce runtime by 70-90%.",
-      "hint": "Multiple optimizations compound for maximum performance gains."
+      "explanation": "A otimização de desempenho exige várias estratégias combinadas: 1) aumentar forks (padrão 5) para paralelizar em mais hosts - tente 50-100 para inventários grandes, 2) usar gathering = smart para armazenar em cache os facts entre execuções, 3) habilitar pipelining = True para reduzir conexões SSH, 4) desabilitar host_key_checking em ambientes controlados, 5) usar async para tasks de longa duração, 6) usar strategy = free para não esperar todos os hosts em cada task. Combinadas, essas mudanças podem reduzir o tempo de execução em 70-90%.",
+      "hint": "Várias otimizações se somam para o máximo ganho de desempenho."
     },
     {
       "id": "testing-molecule",
-      "title": "Testing Roles with Molecule",
-      "description": "What is the primary purpose of Molecule in Ansible development?",
-      "situation": "Your team is developing custom Ansible roles and needs a standardized way to test them before deploying to production.",
+      "title": "Testando Roles com Molecule",
+      "description": "Qual é o principal propósito do Molecule no desenvolvimento com Ansible?",
+      "situation": "Sua equipe está desenvolvendo roles personalizadas do Ansible e precisa de uma forma padronizada de testá-las antes de implantar em produção.",
       "codeExample": "# Molecule test sequence:\nmolecule create   # Create test instance\nmolecule converge # Run the role\nmolecule verify   # Run verification tests\nmolecule destroy  # Cleanup\n\n# Or simply:\nmolecule test",
       "options": [
-        "Molecule generates Ansible roles from templates",
-        "Molecule provides automated testing framework for Ansible roles with multiple drivers (Docker, Vagrant, EC2)",
-        "Molecule is a GUI tool for visualizing playbook execution",
-        "Molecule converts Ansible playbooks to other IaC tools like Terraform"
+        "O Molecule gera roles do Ansible a partir de templates",
+        "O Molecule fornece um framework de testes automatizados para roles do Ansible com múltiplos drivers (Docker, Vagrant, EC2)",
+        "O Molecule é uma ferramenta gráfica para visualizar a execução de playbooks",
+        "O Molecule converte playbooks do Ansible para outras ferramentas de IaC, como o Terraform"
       ],
       "correctAnswer": 1,
       "points": 18,
       "difficulty": "advanced",
-      "explanation": "Molecule is a testing framework for Ansible roles. It automates the testing lifecycle: create test environment (Docker, Vagrant, cloud), apply the role, run verification tests (using TestInfra, Ansible itself, or other tools), and cleanup. This enables test-driven development (TDD) for infrastructure code. Molecule supports multiple scenarios, different platforms, and integrates with CI/CD. Essential for maintaining reliable, reusable Ansible roles.",
-      "hint": "Think of Molecule as a complete testing framework for infrastructure code."
+      "explanation": "O Molecule é um framework de testes para roles do Ansible. Ele automatiza o ciclo de testes: criar o ambiente de teste (Docker, Vagrant, nuvem), aplicar a role, rodar testes de verificação (usando TestInfra, o próprio Ansible ou outras ferramentas) e limpar o ambiente. Isso possibilita o desenvolvimento orientado a testes (TDD) para código de infraestrutura. O Molecule suporta múltiplos cenários, diferentes plataformas e se integra com CI/CD. É essencial para manter roles do Ansible confiáveis e reutilizáveis.",
+      "hint": "Pense no Molecule como um framework de testes completo para código de infraestrutura."
     }
   ]
 }

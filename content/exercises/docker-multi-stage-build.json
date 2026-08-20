@@ -1,34 +1,34 @@
 {
   "id": "docker-multi-stage-build",
-  "title": "Docker Multi-Stage Build Optimization",
-  "description": "Learn to create efficient Docker images using multi-stage builds to reduce image size and improve security.",
+  "title": "Otimização de Build Multi-Stage no Docker",
+  "description": "Aprenda a criar imagens Docker eficientes usando builds multi-stage para reduzir o tamanho da imagem e melhorar a segurança.",
   "category": {
     "name": "Docker",
     "slug": "docker"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "60 minutes",
+  "estimatedTime": "60 minutos",
   "technologies": ["Docker", "Node.js", "Alpine Linux"],
-  "prerequisites": ["Basic Docker knowledge", "Understanding of Dockerfile syntax"],
+  "prerequisites": ["Conhecimento básico de Docker", "Compreensão da sintaxe do Dockerfile"],
   "learningObjectives": [
-    "Understand multi-stage build concepts",
-    "Reduce Docker image size by 70%+",
-    "Implement security best practices",
-    "Optimize build caching"
+    "Entender os conceitos de build multi-stage",
+    "Reduzir o tamanho da imagem Docker em mais de 70%",
+    "Implementar boas práticas de segurança",
+    "Otimizar o cache de build"
   ],
   "environment": "local",
   "icon": "Container",
   "publishedAt": "2024-12-01T10:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": ["Docker", "Optimization", "Security", "Best Practices"],
   "steps": [
     {
       "id": "setup",
-      "title": "Project Setup",
-      "description": "Create a sample Node.js application for containerization.",
+      "title": "Configuração do Projeto",
+      "description": "Crie uma aplicação Node.js de exemplo para conteinerização.",
       "commands": [
         "mkdir docker-optimization-lab",
         "cd docker-optimization-lab",
@@ -36,24 +36,24 @@
         "npm install express"
       ],
       "codeExample": "// app.js\nconst express = require('express');\nconst app = express();\nconst port = 3000;\n\napp.get('/', (req, res) => {\n  res.json({ message: 'Hello from optimized container!' });\n});\n\napp.listen(port, () => {\n  console.log(`Server running on port ${port}`);\n});",
-      "hints": ["Create a simple Express server", "Keep dependencies minimal for this exercise"]
+      "hints": ["Crie um servidor Express simples", "Mantenha as dependências mínimas para este exercício"]
     },
     {
       "id": "basic-dockerfile",
-      "title": "Create Basic Dockerfile",
-      "description": "Start with a simple, unoptimized Dockerfile to establish baseline.",
+      "title": "Criar um Dockerfile Básico",
+      "description": "Comece com um Dockerfile simples e não otimizado para estabelecer uma linha de base.",
       "codeExample": "# Dockerfile.basic\nFROM node:16\nWORKDIR /app\nCOPY . .\nRUN npm install\nEXPOSE 3000\nCMD [\"node\", \"app.js\"]",
       "commands": ["docker build -f Dockerfile.basic -t app:basic .", "docker images app:basic"],
       "expectedOutput": "Image size should be around 900MB+",
       "validationCriteria": [
-        "Docker image builds successfully",
-        "Image size is recorded for comparison"
+        "A imagem Docker é buildada com sucesso",
+        "O tamanho da imagem é registrado para comparação"
       ]
     },
     {
       "id": "multi-stage-dockerfile",
-      "title": "Implement Multi-Stage Build",
-      "description": "Create an optimized Dockerfile using multi-stage builds.",
+      "title": "Implementar um Build Multi-Stage",
+      "description": "Crie um Dockerfile otimizado usando builds multi-stage.",
       "codeExample": "# Dockerfile.optimized\n# Build stage\nFROM node:16-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\n\n# Production stage\nFROM node:16-alpine AS production\nRUN addgroup -g 1001 -S nodejs\nRUN adduser -S nextjs -u 1001\nWORKDIR /app\nCOPY --from=builder /app/node_modules ./node_modules\nCOPY --chown=nextjs:nodejs . .\nUSER nextjs\nEXPOSE 3000\nCMD [\"node\", \"app.js\"]",
       "commands": [
         "docker build -f Dockerfile.optimized -t app:optimized .",
@@ -61,26 +61,26 @@
       ],
       "expectedOutput": "Optimized image should be 70-80% smaller",
       "validationCriteria": [
-        "Multi-stage build completes successfully",
-        "Final image size is significantly reduced",
-        "Application runs with non-root user"
+        "O build multi-stage é concluído com sucesso",
+        "O tamanho final da imagem é significativamente reduzido",
+        "A aplicação roda com um usuário não-root"
       ]
     },
     {
       "id": "security-scan",
-      "title": "Security Analysis",
-      "description": "Scan both images for vulnerabilities and compare results.",
+      "title": "Análise de Segurança",
+      "description": "Faça a varredura de vulnerabilidades em ambas as imagens e compare os resultados.",
       "commands": [
         "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy app:basic",
         "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy app:optimized"
       ],
-      "hints": ["Install Trivy if not available", "Compare vulnerability counts between images"],
-      "validationCriteria": ["Security scan completes", "Vulnerability comparison documented"]
+      "hints": ["Instale o Trivy se ele não estiver disponível", "Compare a quantidade de vulnerabilidades entre as imagens"],
+      "validationCriteria": ["A varredura de segurança é concluída", "A comparação de vulnerabilidades está documentada"]
     },
     {
       "id": "production-optimization",
-      "title": "Production-Ready Optimization",
-      "description": "Implement advanced optimization techniques including distroless images, build caching, and health checks.",
+      "title": "Otimização Pronta para Produção",
+      "description": "Implemente técnicas avançadas de otimização, incluindo imagens distroless, cache de build e health checks.",
       "codeExample": "# Dockerfile.production\n# Build stage\nFROM node:16-alpine AS dependencies\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production && npm cache clean --force\n\n# Build stage\nFROM node:16-alpine AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build 2>/dev/null || echo \"No build script found\"\n\n# Production stage with distroless\nFROM gcr.io/distroless/nodejs16-debian11 AS production\nWORKDIR /app\nCOPY --from=dependencies /app/node_modules ./node_modules\nCOPY --from=build /app/app.js ./\nCOPY --from=build /app/package.json ./\nUSER 1001\nEXPOSE 3000\nHEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \\\n  CMD [\"node\", \"-e\", \"require('http').get('http://localhost:3000/', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))\"]\nCMD [\"app.js\"]\n\n# .dockerignore\nnode_modules\nnpm-debug.log\nDockerfile*\n.dockerignore\n.git\n.gitignore\nREADME.md\n.env\n.nyc_output\ncoverage\n.cache",
       "commands": [
         "docker build -f Dockerfile.production -t app:production .",
@@ -92,47 +92,47 @@
         "docker stop app-prod && docker rm app-prod"
       ],
       "validationCriteria": [
-        "Distroless image builds successfully",
-        "Image size is minimal (under 50MB)",
-        "Health check passes",
-        "Application runs as non-root user",
-        "Build cache is optimized"
+        "A imagem distroless é buildada com sucesso",
+        "O tamanho da imagem é mínimo (abaixo de 50MB)",
+        "O health check passa",
+        "A aplicação roda como um usuário não-root",
+        "O cache de build está otimizado"
       ],
       "expectedOutput": "Ultra-minimal production image with advanced security and optimization features",
       "hints": [
-        "Distroless images contain only your application and runtime dependencies",
-        "Use .dockerignore to exclude unnecessary files",
-        "Layer caching improves build performance"
+        "Imagens distroless contêm apenas a sua aplicação e as dependências de runtime",
+        "Use o .dockerignore para excluir arquivos desnecessários",
+        "O cache de camadas melhora o desempenho do build"
       ]
     }
   ],
   "completionCriteria": [
-    "Both Docker images build successfully",
-    "Optimized image is at least 50% smaller",
-    "Security scan shows improvement",
-    "Application runs correctly in both containers"
+    "Ambas as imagens Docker são buildadas com sucesso",
+    "A imagem otimizada é pelo menos 50% menor",
+    "A varredura de segurança mostra melhoria",
+    "A aplicação roda corretamente em ambos os containers"
   ],
   "resources": [
     {
-      "title": "Docker Multi-Stage Builds Documentation",
+      "title": "Documentação de Builds Multi-Stage do Docker",
       "url": "https://docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/",
       "type": "documentation",
       "external": true
     },
     {
-      "title": "Docker Security Best Practices",
+      "title": "Boas Práticas de Segurança do Docker",
       "url": "/posts/docker-security-best-practices",
       "type": "tutorial"
     }
   ],
   "troubleshooting": [
     {
-      "issue": "Build fails at npm install stage",
-      "solution": "Ensure package.json exists and contains valid dependencies"
+      "issue": "O build falha na etapa de npm install",
+      "solution": "Garanta que o package.json exista e contenha dependências válidas"
     },
     {
-      "issue": "Permission denied errors",
-      "solution": "Check file permissions and user configuration in Dockerfile"
+      "issue": "Erros de permissão negada",
+      "solution": "Verifique as permissões de arquivo e a configuração de usuário no Dockerfile"
     }
   ],
   "featured": true

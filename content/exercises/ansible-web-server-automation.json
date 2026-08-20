@@ -1,13 +1,13 @@
 {
   "id": "ansible-web-server-automation",
-  "title": "Complete Web Server Automation with Ansible",
-  "description": "Build a comprehensive Ansible playbook to automate web server deployment, configuration, and security hardening across multiple environments.",
+  "title": "Automação Completa de Servidor Web com Ansible",
+  "description": "Construa um playbook Ansible completo para automatizar a implantação, configuração e hardening de segurança de servidores web em múltiplos ambientes.",
   "category": {
     "name": "DevOps",
     "slug": "devops"
   },
   "difficulty": "intermediate",
-  "estimatedTime": "75 minutes",
+  "estimatedTime": "75 minutos",
   "technologies": [
     "Ansible",
     "Nginx",
@@ -17,23 +17,23 @@
     "CentOS"
   ],
   "prerequisites": [
-    "Basic Ansible knowledge",
-    "SSH access to target servers",
-    "Understanding of web server concepts",
-    "Familiarity with YAML syntax"
+    "Conhecimento básico de Ansible",
+    "Acesso SSH aos servidores de destino",
+    "Compreensão dos conceitos de servidor web",
+    "Familiaridade com a sintaxe YAML"
   ],
   "learningObjectives": [
-    "Create reusable Ansible playbooks",
-    "Implement cross-platform compatibility",
-    "Configure SSL certificates and security",
-    "Use Ansible roles and variables effectively",
-    "Implement idempotent automation"
+    "Criar playbooks Ansible reutilizáveis",
+    "Implementar compatibilidade entre plataformas",
+    "Configurar certificados SSL e segurança",
+    "Usar roles e variáveis do Ansible de forma eficaz",
+    "Implementar automação idempotente"
   ],
   "environment": "cloud",
   "icon": "Server",
   "publishedAt": "2024-12-15T09:00:00Z",
   "author": {
-    "name": "DevOps Daily Team",
+    "name": "Bancada",
     "slug": "devops-daily-team"
   },
   "tags": [
@@ -47,8 +47,8 @@
   "steps": [
     {
       "id": "project-setup",
-      "title": "Project Structure and Inventory Setup",
-      "description": "Create a proper Ansible project structure with inventory files and group variables.",
+      "title": "Estrutura do Projeto e Configuração do Inventário",
+      "description": "Crie uma estrutura de projeto Ansible adequada com arquivos de inventário e variáveis de grupo.",
       "commands": [
         "mkdir ansible-web-automation",
         "cd ansible-web-automation",
@@ -57,21 +57,21 @@
       ],
       "codeExample": "# ansible.cfg\n[defaults]\ninventory = inventory/hosts.yml\nhost_key_checking = False\nremote_user = ubuntu\nprivate_key_file = ~/.ssh/id_rsa\nroles_path = roles\nretry_files_enabled = False\nstdout_callback = yaml\n\n[privilege_escalation]\nbecome = True\nbecome_method = sudo\nbecome_user = root\nbecome_ask_pass = False\n\n# inventory/hosts.yml\nall:\n  children:\n    webservers:\n      hosts:\n        web1:\n          ansible_host: 192.168.1.10\n          server_name: web1.example.com\n        web2:\n          ansible_host: 192.168.1.11\n          server_name: web2.example.com\n    databases:\n      hosts:\n        db1:\n          ansible_host: 192.168.1.20\n  vars:\n    ansible_user: ubuntu\n    ansible_become: yes",
       "hints": [
-        "Adjust IP addresses to match your environment",
-        "Ensure SSH key authentication is set up",
-        "Test connectivity with ansible all -m ping"
+        "Ajuste os endereços IP conforme o seu ambiente",
+        "Garanta que a autenticação por chave SSH esteja configurada",
+        "Teste a conectividade com ansible all -m ping"
       ],
       "validationCriteria": [
-        "Project directory structure is created",
-        "Ansible configuration file is properly set up",
-        "Inventory file contains target hosts",
-        "SSH connectivity to hosts is verified"
+        "A estrutura de diretórios do projeto foi criada",
+        "O arquivo de configuração do Ansible está devidamente configurado",
+        "O arquivo de inventário contém os hosts de destino",
+        "A conectividade SSH com os hosts foi verificada"
       ]
     },
     {
       "id": "group-variables",
-      "title": "Configure Group Variables and Templates",
-      "description": "Set up group variables for different environments and create Nginx configuration templates.",
+      "title": "Configurar Variáveis de Grupo e Templates",
+      "description": "Configure variáveis de grupo para diferentes ambientes e crie templates de configuração do Nginx.",
       "codeExample": "# group_vars/webservers.yml\n---\nnginx_version: latest\nnginx_user: www-data\nnginx_worker_processes: auto\nnginx_worker_connections: 1024\nnginx_keepalive_timeout: 65\nnginx_client_max_body_size: 100M\n\n# SSL Configuration\nssl_cert_path: /etc/ssl/certs\nssl_key_path: /etc/ssl/private\nssl_cert_file: \"{{ server_name }}.crt\"\nssl_key_file: \"{{ server_name }}.key\"\n\n# Security settings\nfirewall_allowed_ports:\n  - 22\n  - 80\n  - 443\n\n# Application settings\napp_user: webuser\napp_group: webuser\napp_directory: /var/www/html\ndocument_root: \"{{ app_directory }}\"\n\n# Environment-specific overrides\nenvironments:\n  production:\n    nginx_worker_processes: 4\n    ssl_protocols: \"TLSv1.2 TLSv1.3\"\n    error_log_level: warn\n  staging:\n    nginx_worker_processes: 2\n    ssl_protocols: \"TLSv1.2 TLSv1.3\"\n    error_log_level: info\n  development:\n    nginx_worker_processes: 1\n    ssl_protocols: \"TLSv1.2 TLSv1.3\"\n    error_log_level: debug",
       "commands": [
         "cat group_vars/webservers.yml",
@@ -79,42 +79,42 @@
         "touch templates/nginx.conf.j2"
       ],
       "hints": [
-        "Use Jinja2 templating for dynamic configuration",
-        "Consider different environments (dev, staging, prod)",
-        "Keep sensitive data in separate encrypted files"
+        "Use templates Jinja2 para configuração dinâmica",
+        "Considere diferentes ambientes (dev, staging, prod)",
+        "Mantenha dados sensíveis em arquivos criptografados separados"
       ],
       "validationCriteria": [
-        "Group variables file is created",
-        "Variables cover nginx, SSL, and security settings",
-        "Environment-specific configurations are defined",
-        "Template directory is prepared"
+        "O arquivo de variáveis de grupo foi criado",
+        "As variáveis cobrem configurações de nginx, SSL e segurança",
+        "As configurações específicas de cada ambiente estão definidas",
+        "O diretório de templates está preparado"
       ]
     },
     {
       "id": "nginx-template",
-      "title": "Create Dynamic Nginx Configuration Template",
-      "description": "Build a comprehensive Nginx configuration template with SSL, security headers, and performance optimizations.",
+      "title": "Criar Template Dinâmico de Configuração do Nginx",
+      "description": "Construa um template completo de configuração do Nginx com SSL, cabeçalhos de segurança e otimizações de desempenho.",
       "codeExample": "# templates/nginx.conf.j2\nuser {{ nginx_user }};\nworker_processes {{ nginx_worker_processes }};\npid /run/nginx.pid;\n\nevents {\n    worker_connections {{ nginx_worker_connections }};\n    use epoll;\n    multi_accept on;\n}\n\nhttp {\n    # Basic Settings\n    sendfile on;\n    tcp_nopush on;\n    tcp_nodelay on;\n    keepalive_timeout {{ nginx_keepalive_timeout }};\n    types_hash_max_size 2048;\n    client_max_body_size {{ nginx_client_max_body_size }};\n    server_tokens off;\n\n    # MIME Types\n    include /etc/nginx/mime.types;\n    default_type application/octet-stream;\n\n    # SSL Settings\n    ssl_protocols {{ environments[ansible_env].ssl_protocols | default('TLSv1.2 TLSv1.3') }};\n    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384;\n    ssl_prefer_server_ciphers off;\n    ssl_session_cache shared:SSL:10m;\n    ssl_session_timeout 10m;\n\n    # Logging\n    log_format main '$remote_addr - $remote_user [$time_local] \"$request\" '\n                    '$status $body_bytes_sent \"$http_referer\" '\n                    '\"$http_user_agent\" \"$http_x_forwarded_for\"';\n\n    access_log /var/log/nginx/access.log main;\n    error_log /var/log/nginx/error.log {{ environments[ansible_env].error_log_level | default('warn') }};\n\n    # Gzip Compression\n    gzip on;\n    gzip_vary on;\n    gzip_min_length 1024;\n    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;\n\n    # Security Headers\n    add_header X-Frame-Options \"SAMEORIGIN\" always;\n    add_header X-XSS-Protection \"1; mode=block\" always;\n    add_header X-Content-Type-Options \"nosniff\" always;\n    add_header Referrer-Policy \"no-referrer-when-downgrade\" always;\n    add_header Content-Security-Policy \"default-src 'self' http: https: data: blob: 'unsafe-inline'\" always;\n\n    # Default server configuration\n    server {\n        listen 80;\n        listen [::]:80;\n        server_name {{ server_name }};\n        \n        # Redirect HTTP to HTTPS\n        location / {\n            return 301 https://$server_name$request_uri;\n        }\n        \n        # Let's Encrypt challenge\n        location /.well-known/acme-challenge/ {\n            root {{ document_root }};\n        }\n    }\n\n    # HTTPS server configuration\n    server {\n        listen 443 ssl http2;\n        listen [::]:443 ssl http2;\n        server_name {{ server_name }};\n\n        # SSL Certificate\n        ssl_certificate {{ ssl_cert_path }}/{{ ssl_cert_file }};\n        ssl_certificate_key {{ ssl_key_path }}/{{ ssl_key_file }};\n\n        # Document root\n        root {{ document_root }};\n        index index.html index.htm index.php;\n\n        # Security headers for HTTPS\n        add_header Strict-Transport-Security \"max-age=31536000; includeSubDomains\" always;\n\n        # Main location block\n        location / {\n            try_files $uri $uri/ =404;\n        }\n\n        # PHP-FPM configuration (if needed)\n        location ~ \\.php$ {\n            include snippets/fastcgi-php.conf;\n            fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;\n        }\n\n        # Static file caching\n        location ~* \\.(jpg|jpeg|png|gif|ico|css|js)$ {\n            expires 1y;\n            add_header Cache-Control \"public, immutable\";\n        }\n\n        # Deny access to hidden files\n        location ~ /\\. {\n            deny all;\n        }\n    }\n}",
       "commands": [
         "cat templates/nginx.conf.j2",
         "ansible-playbook --syntax-check playbooks/web-setup.yml || echo 'Playbook not created yet'"
       ],
       "hints": [
-        "Use Jinja2 variables for dynamic configuration",
-        "Include security best practices",
-        "Consider performance optimizations like gzip and caching"
+        "Use variáveis Jinja2 para configuração dinâmica",
+        "Inclua boas práticas de segurança",
+        "Considere otimizações de desempenho como gzip e cache"
       ],
       "validationCriteria": [
-        "Nginx template includes SSL configuration",
-        "Security headers are properly configured",
-        "Template uses Ansible variables correctly",
-        "Performance optimizations are included"
+        "O template do Nginx inclui configuração SSL",
+        "Os cabeçalhos de segurança estão devidamente configurados",
+        "O template usa as variáveis do Ansible corretamente",
+        "As otimizações de desempenho estão incluídas"
       ]
     },
     {
       "id": "main-playbook",
-      "title": "Create Main Deployment Playbook",
-      "description": "Build the main playbook that orchestrates the entire web server deployment and configuration.",
+      "title": "Criar o Playbook Principal de Implantação",
+      "description": "Construa o playbook principal que orquestra toda a implantação e configuração do servidor web.",
       "codeExample": "# playbooks/web-setup.yml\n---\n- name: Complete Web Server Setup and Configuration\n  hosts: webservers\n  become: yes\n  gather_facts: yes\n  vars:\n    ansible_env: \"{{ env | default('development') }}\"\n\n  pre_tasks:\n    - name: Update package cache (Debian/Ubuntu)\n      apt:\n        update_cache: yes\n        cache_valid_time: 3600\n      when: ansible_os_family == \"Debian\"\n\n    - name: Update package cache (RedHat/CentOS)\n      yum:\n        update_cache: yes\n      when: ansible_os_family == \"RedHat\"\n\n    - name: Install required packages\n      package:\n        name: \"{{ item }}\"\n        state: present\n      loop:\n        - curl\n        - wget\n        - unzip\n        - openssl\n        - ca-certificates\n\n  tasks:\n    - name: Create application user\n      user:\n        name: \"{{ app_user }}\"\n        group: \"{{ app_group }}\"\n        system: yes\n        shell: /bin/false\n        home: \"{{ app_directory }}\"\n        create_home: yes\n\n    - name: Install Nginx\n      package:\n        name: nginx\n        state: present\n\n    - name: Ensure Nginx service is enabled\n      systemd:\n        name: nginx\n        enabled: yes\n\n    - name: Create SSL directories\n      file:\n        path: \"{{ item }}\"\n        state: directory\n        mode: '0755'\n        owner: root\n        group: root\n      loop:\n        - \"{{ ssl_cert_path }}\"\n        - \"{{ ssl_key_path }}\"\n\n    - name: Generate self-signed SSL certificate (for demo)\n      command: >\n        openssl req -new -nodes -x509\n        -subj \"/C=US/ST=CA/L=San Francisco/O=IT/CN={{ server_name }}\"\n        -days 365\n        -keyout {{ ssl_key_path }}/{{ ssl_key_file }}\n        -out {{ ssl_cert_path }}/{{ ssl_cert_file }}\n      args:\n        creates: \"{{ ssl_cert_path }}/{{ ssl_cert_file }}\"\n\n    - name: Set SSL certificate permissions\n      file:\n        path: \"{{ item.path }}\"\n        mode: \"{{ item.mode }}\"\n        owner: root\n        group: root\n      loop:\n        - { path: \"{{ ssl_cert_path }}/{{ ssl_cert_file }}\", mode: '0644' }\n        - { path: \"{{ ssl_key_path }}/{{ ssl_key_file }}\", mode: '0600' }\n\n    - name: Create document root directory\n      file:\n        path: \"{{ document_root }}\"\n        state: directory\n        mode: '0755'\n        owner: \"{{ app_user }}\"\n        group: \"{{ app_group }}\"\n\n    - name: Deploy Nginx configuration\n      template:\n        src: nginx.conf.j2\n        dest: /etc/nginx/nginx.conf\n        backup: yes\n        owner: root\n        group: root\n        mode: '0644'\n      notify: restart nginx\n\n    - name: Create sample index page\n      template:\n        src: index.html.j2\n        dest: \"{{ document_root }}/index.html\"\n        owner: \"{{ app_user }}\"\n        group: \"{{ app_group }}\"\n        mode: '0644'\n\n    - name: Configure UFW firewall\n      ufw:\n        rule: allow\n        port: \"{{ item }}\"\n        proto: tcp\n      loop: \"{{ firewall_allowed_ports }}\"\n      when: ansible_os_family == \"Debian\"\n\n    - name: Enable UFW firewall\n      ufw:\n        state: enabled\n        policy: deny\n        direction: incoming\n      when: ansible_os_family == \"Debian\"\n\n    - name: Validate Nginx configuration\n      command: nginx -t\n      register: nginx_syntax\n      changed_when: false\n      failed_when: nginx_syntax.rc != 0\n\n    - name: Start and enable Nginx\n      systemd:\n        name: nginx\n        state: started\n        enabled: yes\n\n  handlers:\n    - name: restart nginx\n      systemd:\n        name: nginx\n        state: restarted\n\n  post_tasks:\n    - name: Verify web server is responding\n      uri:\n        url: \"https://{{ server_name }}\"\n        method: GET\n        validate_certs: no\n        timeout: 10\n      delegate_to: localhost\n      register: web_response\n      failed_when: web_response.status != 200\n\n    - name: Display deployment summary\n      debug:\n        msg: |\n          =================================\n          Web Server Deployment Complete!\n          =================================\n          Server: {{ inventory_hostname }}\n          URL: https://{{ server_name }}\n          SSL: Enabled (self-signed)\n          Status: {{ web_response.status }}\n          =================================",
       "commands": [
         "ansible-playbook --syntax-check playbooks/web-setup.yml",
@@ -123,38 +123,38 @@
       ],
       "expectedOutput": "Playbook should run successfully and deploy web servers with SSL",
       "hints": [
-        "Run with --check first to see what would change",
-        "Use --limit to target specific hosts",
-        "Monitor task execution with -v for verbose output"
+        "Execute primeiro com --check para ver o que seria alterado",
+        "Use --limit para direcionar hosts específicos",
+        "Acompanhe a execução das tasks com -v para saída detalhada"
       ],
       "validationCriteria": [
-        "Playbook syntax validation passes",
-        "All tasks execute successfully",
-        "Nginx is installed and configured",
-        "SSL certificates are generated and configured",
-        "Firewall rules are applied",
-        "Web server responds to HTTPS requests"
+        "A validação de sintaxe do playbook passa",
+        "Todas as tasks são executadas com sucesso",
+        "O Nginx está instalado e configurado",
+        "Os certificados SSL são gerados e configurados",
+        "As regras de firewall são aplicadas",
+        "O servidor web responde a requisições HTTPS"
       ]
     },
     {
       "id": "index-template",
-      "title": "Create Dynamic Index Page Template",
-      "description": "Build a dynamic index page that displays server information and deployment details.",
+      "title": "Criar Template Dinâmico da Página Inicial",
+      "description": "Construa uma página inicial dinâmica que exibe informações do servidor e detalhes da implantação.",
       "codeExample": "# templates/index.html.j2\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>{{ server_name }} - Deployed with Ansible</title>\n    <style>\n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n            max-width: 800px;\n            margin: 0 auto;\n            padding: 20px;\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            color: white;\n            min-height: 100vh;\n        }\n        .container {\n            background: rgba(255, 255, 255, 0.1);\n            backdrop-filter: blur(10px);\n            border-radius: 15px;\n            padding: 40px;\n            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);\n        }\n        .header {\n            text-align: center;\n            margin-bottom: 40px;\n        }\n        .status {\n            background: rgba(46, 204, 113, 0.2);\n            border: 1px solid #2ecc71;\n            border-radius: 8px;\n            padding: 15px;\n            margin: 20px 0;\n        }\n        .info-grid {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n            gap: 20px;\n            margin: 30px 0;\n        }\n        .info-card {\n            background: rgba(255, 255, 255, 0.1);\n            border-radius: 10px;\n            padding: 20px;\n        }\n        .info-card h3 {\n            margin-top: 0;\n            color: #3498db;\n        }\n        ul {\n            list-style: none;\n            padding: 0;\n        }\n        li {\n            padding: 5px 0;\n            border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n        }\n        .highlight {\n            color: #f39c12;\n            font-weight: bold;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>🚀 Web Server Successfully Deployed!</h1>\n            <p>Automated deployment with Ansible</p>\n        </div>\n\n        <div class=\"status\">\n            <h2>✅ Deployment Status: SUCCESS</h2>\n            <p>Deployed on: <span class=\"highlight\">{{ ansible_date_time.iso8601 }}</span></p>\n        </div>\n\n        <div class=\"info-grid\">\n            <div class=\"info-card\">\n                <h3>🖥️ Server Information</h3>\n                <ul>\n                    <li><strong>Hostname:</strong> {{ inventory_hostname }}</li>\n                    <li><strong>Server Name:</strong> {{ server_name }}</li>\n                    <li><strong>IP Address:</strong> {{ ansible_default_ipv4.address }}</li>\n                    <li><strong>Operating System:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</li>\n                    <li><strong>Architecture:</strong> {{ ansible_architecture }}</li>\n                    <li><strong>CPU Cores:</strong> {{ ansible_processor_vcpus }}</li>\n                    <li><strong>Memory:</strong> {{ (ansible_memtotal_mb / 1024) | round(1) }} GB</li>\n                </ul>\n            </div>\n\n            <div class=\"info-card\">\n                <h3>🌐 Web Server Configuration</h3>\n                <ul>\n                    <li><strong>Web Server:</strong> Nginx {{ nginx_version }}</li>\n                    <li><strong>SSL/TLS:</strong> Enabled ({{ environments[ansible_env].ssl_protocols | default('TLSv1.2 TLSv1.3') }})</li>\n                    <li><strong>Environment:</strong> {{ ansible_env | upper }}</li>\n                    <li><strong>Worker Processes:</strong> {{ nginx_worker_processes }}</li>\n                    <li><strong>Document Root:</strong> {{ document_root }}</li>\n                    <li><strong>App User:</strong> {{ app_user }}</li>\n                </ul>\n            </div>\n\n            <div class=\"info-card\">\n                <h3>🔒 Security Features</h3>\n                <ul>\n                    <li><strong>Firewall:</strong> UFW Enabled</li>\n                    <li><strong>Allowed Ports:</strong> {{ firewall_allowed_ports | join(', ') }}</li>\n                    <li><strong>SSL Certificate:</strong> {{ ssl_cert_file }}</li>\n                    <li><strong>Security Headers:</strong> Enabled</li>\n                    <li><strong>Server Tokens:</strong> Hidden</li>\n                </ul>\n            </div>\n\n            <div class=\"info-card\">\n                <h3>⚡ Performance Settings</h3>\n                <ul>\n                    <li><strong>Gzip Compression:</strong> Enabled</li>\n                    <li><strong>Keep-Alive Timeout:</strong> {{ nginx_keepalive_timeout }}s</li>\n                    <li><strong>Worker Connections:</strong> {{ nginx_worker_connections }}</li>\n                    <li><strong>Client Max Body Size:</strong> {{ nginx_client_max_body_size }}</li>\n                    <li><strong>Static File Caching:</strong> 1 year</li>\n                </ul>\n            </div>\n        </div>\n\n        <div class=\"status\">\n            <h3>🎯 Quick Tests</h3>\n            <p>• SSL Certificate: <a href=\"https://{{ server_name }}\" style=\"color: #3498db;\">https://{{ server_name }}</a></p>\n            <p>• Security Headers: Check with security scanning tools</p>\n            <p>• Performance: Test with tools like GTmetrix or PageSpeed Insights</p>\n        </div>\n\n        <div style=\"text-align: center; margin-top: 40px; font-size: 14px; opacity: 0.8;\">\n            <p>Deployed with ❤️ using Ansible automation</p>\n            <p>Deployment ID: {{ ansible_date_time.epoch }}</p>\n        </div>\n    </div>\n</body>\n</html>",
       "commands": [
         "cat templates/index.html.j2"
       ],
       "validationCriteria": [
-        "Index template is created",
-        "Template uses Ansible facts and variables",
-        "Page displays server and deployment information",
-        "Styling is responsive and professional"
+        "O template da página inicial foi criado",
+        "O template usa facts e variáveis do Ansible",
+        "A página exibe informações do servidor e da implantação",
+        "O estilo é responsivo e profissional"
       ]
     },
     {
       "id": "testing-validation",
-      "title": "Test and Validate Deployment",
-      "description": "Run comprehensive tests to validate the web server deployment and configuration.",
+      "title": "Testar e Validar a Implantação",
+      "description": "Execute testes abrangentes para validar a implantação e configuração do servidor web.",
       "commands": [
         "ansible-playbook playbooks/web-setup.yml --limit web1",
         "curl -I https://web1.example.com",
@@ -166,45 +166,45 @@
       ],
       "expectedOutput": "All tests should pass, showing working HTTPS web servers with proper security configuration",
       "hints": [
-        "Test both HTTP redirect and HTTPS functionality",
-        "Verify SSL certificate is working",
-        "Check firewall rules are applied",
-        "Run idempotency test with --check"
+        "Teste tanto o redirecionamento HTTP quanto a funcionalidade HTTPS",
+        "Verifique se o certificado SSL está funcionando",
+        "Verifique se as regras de firewall foram aplicadas",
+        "Execute o teste de idempotência com --check"
       ],
       "validationCriteria": [
-        "Web servers respond to HTTPS requests",
-        "HTTP requests redirect to HTTPS",
-        "SSL certificates are properly configured",
-        "Nginx configuration is valid",
-        "Firewall rules are active",
-        "Playbook is idempotent (no changes on re-run)"
+        "Os servidores web respondem a requisições HTTPS",
+        "As requisições HTTP são redirecionadas para HTTPS",
+        "Os certificados SSL estão devidamente configurados",
+        "A configuração do Nginx é válida",
+        "As regras de firewall estão ativas",
+        "O playbook é idempotente (sem alterações em novas execuções)"
       ]
     }
   ],
   "completionCriteria": [
-    "Ansible project structure is properly organized",
-    "Playbook deploys web servers successfully",
-    "SSL/TLS encryption is properly configured",
-    "Security headers and firewall are implemented",
-    "Web servers are accessible via HTTPS",
-    "Configuration is idempotent and reusable",
-    "Comprehensive testing validates all components"
+    "A estrutura do projeto Ansible está devidamente organizada",
+    "O playbook implanta os servidores web com sucesso",
+    "A criptografia SSL/TLS está devidamente configurada",
+    "Os cabeçalhos de segurança e o firewall estão implementados",
+    "Os servidores web estão acessíveis via HTTPS",
+    "A configuração é idempotente e reutilizável",
+    "Testes abrangentes validam todos os componentes"
   ],
   "resources": [
     {
-      "title": "Ansible Documentation",
+      "title": "Documentação do Ansible",
       "url": "https://docs.ansible.com/",
       "type": "documentation",
       "external": true
     },
     {
-      "title": "Nginx Configuration Guide",
+      "title": "Guia de Configuração do Nginx",
       "url": "https://nginx.org/en/docs/",
       "type": "documentation",
       "external": true
     },
     {
-      "title": "SSL/TLS Best Practices",
+      "title": "Boas Práticas de SSL/TLS",
       "url": "https://www.ssl.com/guide/ssl-best-practices/",
       "external": true,
       "type": "documentation"
@@ -212,20 +212,20 @@
   ],
   "troubleshooting": [
     {
-      "issue": "SSH connection fails",
-      "solution": "Verify SSH keys are set up and ansible_user is correct in inventory"
+      "issue": "A conexão SSH falha",
+      "solution": "Verifique se as chaves SSH estão configuradas e se o ansible_user está correto no inventário"
     },
     {
-      "issue": "Nginx configuration test fails",
-      "solution": "Check template syntax and ensure all variables are defined"
+      "issue": "O teste de configuração do Nginx falha",
+      "solution": "Verifique a sintaxe do template e garanta que todas as variáveis estejam definidas"
     },
     {
-      "issue": "SSL certificate errors",
-      "solution": "Verify certificate paths and permissions are correct"
+      "issue": "Erros de certificado SSL",
+      "solution": "Verifique se os caminhos e permissões dos certificados estão corretos"
     },
     {
-      "issue": "Firewall blocks connections",
-      "solution": "Ensure UFW rules allow ports 80 and 443"
+      "issue": "O firewall bloqueia conexões",
+      "solution": "Garanta que as regras do UFW permitam as portas 80 e 443"
     }
   ],
   "featured": true

@@ -1,10 +1,10 @@
 {
   "id": "http-basics",
   "slug": "http-basics",
-  "title": "HTTP Methods and Status Codes",
-  "question": "What are the main HTTP methods and what do common status codes like 200, 404, and 500 mean?",
-  "answer": "The main HTTP methods are: GET (retrieve data), POST (create data), PUT (update/replace data), PATCH (partial update), and DELETE (remove data). Status code 200 means success, 201 means created, 301/302 are redirects, 400 is bad request, 401 is unauthorized, 403 is forbidden, 404 is not found, and 500 is internal server error. Understanding these is essential for API troubleshooting.",
-  "explanation": "HTTP is the foundation of web communication. DevOps engineers troubleshoot APIs, configure load balancers, set up monitoring, and read access logs daily. Knowing HTTP methods and status codes helps quickly diagnose issues and communicate with developers effectively.",
+  "title": "Métodos HTTP e Códigos de Status",
+  "question": "Quais são os principais métodos HTTP e o que significam códigos de status comuns como 200, 404 e 500?",
+  "answer": "Os principais métodos HTTP são: GET (buscar dados), POST (criar dados), PUT (atualizar/substituir dados), PATCH (atualização parcial) e DELETE (remover dados). O código de status 200 significa sucesso, 201 significa criado, 301/302 são redirecionamentos, 400 é requisição inválida, 401 é não autorizado, 403 é proibido, 404 é não encontrado e 500 é erro interno do servidor. Entender isso é essencial para diagnosticar problemas em APIs.",
+  "explanation": "O HTTP é a base da comunicação na web. Engenheiros de DevOps diagnosticam APIs, configuram load balancers, montam monitoramento e leem logs de acesso diariamente. Conhecer os métodos HTTP e os códigos de status ajuda a diagnosticar problemas rapidamente e a se comunicar com desenvolvedores de forma eficaz.",
   "category": "Networking",
   "difficulty": "beginner",
   "tier": "junior",
@@ -18,19 +18,19 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Test HTTP endpoints with curl",
+      "label": "Testando endpoints HTTP com curl",
       "code": "# GET request\ncurl -X GET https://api.example.com/users\n\n# POST request with JSON data\ncurl -X POST https://api.example.com/users \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"name\": \"John\"}'\n\n# Check response headers and status\ncurl -I https://example.com\n\n# Verbose output for debugging\ncurl -v https://example.com"
     }
   ],
   "followUpQuestions": [
-    "What is the difference between PUT and PATCH?",
-    "What does a 502 Bad Gateway error typically indicate?",
-    "What is the difference between 401 and 403 status codes?"
+    "Qual é a diferença entre PUT e PATCH?",
+    "O que um erro 502 Bad Gateway costuma indicar?",
+    "Qual é a diferença entre os códigos de status 401 e 403?"
   ],
   "commonMistakes": [
-    "Using GET requests to modify data",
-    "Not checking response status codes in scripts",
-    "Confusing 401 (authentication) with 403 (authorization)"
+    "Usar requisições GET para modificar dados",
+    "Não verificar os códigos de status das respostas em scripts",
+    "Confundir 401 (autenticação) com 403 (autorização)"
   ],
   "relatedTopics": [
     "rest-api",

@@ -1,10 +1,10 @@
 {
   "id": "otel-traces-spans-basics",
   "slug": "otel-traces-spans-basics",
-  "title": "Traces and Spans Explained",
-  "question": "A request hits your API gateway, which calls two backend services, and one of those queries a database. Walk me through what that looks like as a distributed trace. What is a span, and how do spans connect to each other?",
-  "answer": "The whole request is one trace, identified by a single trace ID that follows the request everywhere it goes. Each unit of work along the way is a span: one span for the gateway handling the request, one for each backend call, and one for the database query. Every span records a name, start and end timestamps, a status, and key-value attributes like http.method or db.statement. Spans link together through parent-child relationships: the gateway span is the root, the two backend spans are its children, and the database span is a child of the backend that made the query. The child knows its parent because the parent's span ID travels with the request. When a backend visualizes this, you get a waterfall view showing exactly where the 800ms went: maybe 50ms in the gateway, 100ms in service A, and 650ms stuck in that database query. That is the core value: instead of grepping logs across four services and guessing, you see the full request path and its timing in one place.",
-  "explanation": "This is the entry-level question for any observability conversation. You are checking whether the candidate has the mental model right: trace as the whole journey, span as one hop, parent-child links forming a tree. Strong candidates explain it through a concrete scenario and mention what spans actually contain (attributes, status, timestamps). Weak candidates recite 'tracing tracks requests' without being able to describe how two spans end up connected. If they bring up the waterfall view and what it tells you about latency, that is a good sign they have used tracing, not just read about it.",
+  "title": "Traces e Spans Explicados",
+  "question": "Uma requisição chega ao seu API gateway, que chama dois serviços de backend, e um desses serviços consulta um banco de dados. Me explique como isso fica representado como um trace distribuído. O que é um span, e como os spans se conectam entre si?",
+  "answer": "A requisição inteira é um único trace, identificado por um único trace ID que acompanha a requisição por onde quer que ela vá. Cada unidade de trabalho ao longo do caminho é um span: um span para o gateway tratando a requisição, um para cada chamada de backend, e um para a consulta ao banco de dados. Todo span registra um nome, timestamps de início e fim, um status e atributos chave-valor como http.method ou db.statement. Os spans se conectam por meio de relações pai-filho: o span do gateway é a raiz, os dois spans de backend são seus filhos, e o span do banco de dados é filho do backend que fez a consulta. O filho sabe quem é seu pai porque o span ID do pai viaja junto com a requisição. Quando um backend visualiza isso, você obtém uma visão em cascata mostrando exatamente para onde foram os 800ms: talvez 50ms no gateway, 100ms no serviço A e 650ms travados naquela consulta ao banco. Esse é o valor central: em vez de vasculhar logs em quatro serviços e chutar, você vê o caminho completo da requisição e seu tempo em um único lugar.",
+  "explanation": "Essa é a pergunta de nível inicial para qualquer conversa sobre observabilidade. Você está verificando se o candidato tem o modelo mental correto: trace como a jornada inteira, span como um salto, links pai-filho formando uma árvore. Candidatos fortes explicam isso por meio de um cenário concreto e mencionam o que os spans realmente contêm (atributos, status, timestamps). Candidatos fracos recitam 'tracing rastreia requisições' sem conseguir descrever como dois spans acabam conectados. Se mencionarem a visão em cascata e o que ela revela sobre latência, é um bom sinal de que já usaram tracing, não apenas leram sobre o assunto.",
   "category": "Observability",
   "difficulty": "beginner",
   "tier": "junior",
@@ -17,24 +17,24 @@
   "codeExamples": [
     {
       "language": "python",
-      "label": "Creating a parent and child span manually",
+      "label": "Criando um span pai e um span filho manualmente",
       "code": "from opentelemetry import trace\n\ntracer = trace.get_tracer(\"checkout-service\")\n\nwith tracer.start_as_current_span(\"process_order\") as parent:\n    parent.set_attribute(\"order.id\", order_id)\n    parent.set_attribute(\"order.items\", len(items))\n\n    # Child span is linked automatically via the active context\n    with tracer.start_as_current_span(\"charge_card\") as child:\n        child.set_attribute(\"payment.provider\", \"stripe\")\n        result = charge(order_id)\n        if not result.ok:\n            child.set_status(trace.StatusCode.ERROR, result.error)"
     },
     {
       "language": "json",
-      "label": "Simplified span as exported via OTLP",
+      "label": "Span simplificado exportado via OTLP",
       "code": "{\n  \"traceId\": \"4bf92f3577b34da6a3ce929d0e0e4736\",\n  \"spanId\": \"00f067aa0ba902b7\",\n  \"parentSpanId\": \"b7ad6b7169203331\",\n  \"name\": \"SELECT orders\",\n  \"kind\": \"SPAN_KIND_CLIENT\",\n  \"startTimeUnixNano\": \"1717500000000000000\",\n  \"endTimeUnixNano\": \"1717500000650000000\",\n  \"attributes\": {\n    \"db.system\": \"postgresql\",\n    \"db.statement\": \"SELECT * FROM orders WHERE id = $1\"\n  },\n  \"status\": { \"code\": \"STATUS_CODE_OK\" }\n}"
     }
   ],
   "followUpQuestions": [
-    "How does the trace ID get from service A to service B in the first place?",
-    "What is the difference between a span attribute and a span event, and when would you use each?",
-    "If a service publishes to a queue and a consumer picks it up an hour later, should that be one trace or two?"
+    "Como o trace ID chega do serviço A ao serviço B, para começo de conversa?",
+    "Qual é a diferença entre um atributo de span e um evento de span, e quando você usaria cada um?",
+    "Se um serviço publica em uma fila e um consumidor pega a mensagem uma hora depois, isso deveria ser um trace ou dois?"
   ],
   "commonMistakes": [
-    "Confusing traces with logs, describing tracing as 'centralized logging with request IDs' and missing the timing and hierarchy aspects",
-    "Saying spans connect through the trace ID alone, when the parent-child link comes from the parent span ID",
-    "Not being able to name a single thing a span contains beyond 'the request'"
+    "Confundir traces com logs, descrevendo tracing como 'logging centralizado com IDs de requisição' e deixando de lado os aspectos de tempo e hierarquia",
+    "Dizer que os spans se conectam apenas pelo trace ID, quando o link pai-filho vem do span ID do pai",
+    "Não conseguir nomear uma única coisa que um span contém além de 'a requisição'"
   ],
   "relatedTopics": [
     "observability",

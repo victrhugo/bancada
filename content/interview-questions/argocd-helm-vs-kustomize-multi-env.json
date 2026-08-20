@@ -1,10 +1,10 @@
 {
   "id": "argocd-helm-vs-kustomize-multi-env",
   "slug": "argocd-helm-vs-kustomize-multi-env",
-  "title": "Helm vs Kustomize for Per-Environment Config",
-  "question": "Helm or Kustomize for handling environment differences in an Argo CD repo? Walk me through how you would pick and what the repo layout looks like for each.",
-  "answer": "Default to Kustomize for your own apps. Use Helm for third-party software you do not own. Use both together when you have a Helm chart from a vendor but need environment-specific tweaks the chart does not expose as values.\n\nReasoning. Kustomize patches a flat YAML base. What you see is what gets applied. No templating engine, no Go template debugging, no quoting traps. The downside is no logic, no loops, no conditionals. That is fine for your own apps because you control the base.\n\nHelm shines when you do not own the base. cert-manager, ingress-nginx, kube-prometheus-stack: each ships a chart with hundreds of toggles. Reimplementing that in Kustomize is a waste of time. Pin the chart version, write a values file per environment, done.\n\nRepo layout with Kustomize (your own apps):\n\napps/\n  web/\n    base/\n      deployment.yaml\n      service.yaml\n      kustomization.yaml\n    overlays/\n      dev/\n        kustomization.yaml\n      prod/\n        kustomization.yaml\n\nRepo layout with Helm (third-party):\n\nplatform/\n  ingress-nginx/\n    values-base.yaml\n    values-dev.yaml\n    values-prod.yaml\n  cert-manager/\n    values-base.yaml\n    values-prod.yaml\n\nArgo CD Application points at the chart in its repo (or an OCI registry) and references the right values files from your manifests repo using the multi-source feature.\n\nThe combined pattern, Helm chart rendered by Kustomize, looks like this:\n\nplatform/ingress-nginx/\n  base/\n    kustomization.yaml         # uses helmCharts to pull and render the chart\n    values.yaml                # base values\n  overlays/\n    prod/\n      kustomization.yaml       # patches the rendered output\n      values.yaml              # prod-specific values\n\nKustomize renders the chart with its values, then your overlay patches the rendered output. This is what you reach for when the chart does not let you change something through values and forking the chart is worse than patching the output.\n\nOne thing not to do. Do not build your own apps as a Helm chart just so you can use values files per environment. That is the most common 'we picked Helm and regretted it' story. You will spend weeks debugging Go template indentation. Use Kustomize.",
-  "explanation": "This is a question where opinions matter, and a strong candidate will have one. The instinct to say 'it depends' is fine if it is followed by specific criteria. Listen for the ownership criterion: who controls the base manifests determines whether templating logic earns its keep. Bonus points for awareness of the multi-source Application feature in Argo CD, and for mentioning the combined helmCharts inside Kustomize pattern, which is widely used in production but rarely taught.",
+  "title": "Helm vs Kustomize para Configuração por Ambiente",
+  "question": "Helm ou Kustomize para lidar com diferenças entre ambientes em um repositório do Argo CD? Explique como você escolheria e como fica o layout do repositório em cada caso.",
+  "answer": "Por padrão, use Kustomize para suas próprias aplicações. Use Helm para software de terceiros que você não controla. Use os dois juntos quando você tem um chart Helm de um fornecedor mas precisa de ajustes específicos de ambiente que o chart não expõe como values.\n\nO raciocínio. O Kustomize faz patch em um YAML base simples. O que você vê é o que é aplicado. Sem motor de templates, sem debugar templates Go, sem armadilhas de aspas. A desvantagem é que não há lógica, loops nem condicionais. Tudo bem para suas próprias aplicações porque você controla a base.\n\nO Helm brilha quando você não controla a base. cert-manager, ingress-nginx, kube-prometheus-stack: cada um vem com um chart com centenas de opções. Reimplementar isso em Kustomize é perda de tempo. Fixe a versão do chart, escreva um values file por ambiente, pronto.\n\nLayout de repositório com Kustomize (suas próprias aplicações):\n\napps/\n  web/\n    base/\n      deployment.yaml\n      service.yaml\n      kustomization.yaml\n    overlays/\n      dev/\n        kustomization.yaml\n      prod/\n        kustomization.yaml\n\nLayout de repositório com Helm (terceiros):\n\nplatform/\n  ingress-nginx/\n    values-base.yaml\n    values-dev.yaml\n    values-prod.yaml\n  cert-manager/\n    values-base.yaml\n    values-prod.yaml\n\nA Application do Argo CD aponta para o chart no seu repositório (ou um registro OCI) e referencia os values files certos do seu repositório de manifests usando o recurso multi-source.\n\nO padrão combinado, chart Helm renderizado pelo Kustomize, fica assim:\n\nplatform/ingress-nginx/\n  base/\n    kustomization.yaml         # uses helmCharts to pull and render the chart\n    values.yaml                # base values\n  overlays/\n    prod/\n      kustomization.yaml       # patches the rendered output\n      values.yaml              # prod-specific values\n\nO Kustomize renderiza o chart com seus values, depois seu overlay faz patch na saída renderizada. É para isso que você recorre quando o chart não permite mudar algo via values e fazer fork do chart é pior do que fazer patch na saída.\n\nUma coisa para não fazer. Não construa suas próprias aplicações como um chart Helm só para poder usar values files por ambiente. Essa é a história mais comum de 'escolhemos Helm e nos arrependemos'. Você vai passar semanas debugando indentação de template Go. Use Kustomize.",
+  "explanation": "Essa é uma pergunta em que opiniões importam, e um bom candidato vai ter uma. O instinto de dizer 'depende' está ok se for seguido de critérios específicos. Preste atenção ao critério de propriedade: quem controla os manifests base determina se a lógica de templating vale a pena. Pontos extras por consciência do recurso multi-source de Application no Argo CD, e por mencionar o padrão combinado de helmCharts dentro do Kustomize, que é amplamente usado em produção mas raramente ensinado.",
   "category": "GitOps",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -18,30 +18,30 @@
   "codeExamples": [
     {
       "language": "yaml",
-      "label": "Argo CD Application with multi-source: chart from one repo, values from manifests repo",
+      "label": "Application do Argo CD com multi-source: chart de um repositório, values do repositório de manifests",
       "code": "apiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: ingress-nginx-prod\n  namespace: argocd\nspec:\n  project: platform\n  sources:\n    - repoURL: https://kubernetes.github.io/ingress-nginx\n      chart: ingress-nginx\n      targetRevision: 4.10.0\n      helm:\n        valueFiles:\n          - $values/platform/ingress-nginx/values-base.yaml\n          - $values/platform/ingress-nginx/values-prod.yaml\n    - repoURL: https://github.com/org/manifests\n      targetRevision: main\n      ref: values\n  destination:\n    server: https://kubernetes.default.svc\n    namespace: ingress-nginx\n  syncPolicy:\n    syncOptions:\n      - CreateNamespace=true"
     },
     {
       "language": "yaml",
-      "label": "Kustomize rendering a Helm chart so you can patch the output",
+      "label": "Kustomize renderizando um chart Helm para permitir patch na saída",
       "code": "# platform/ingress-nginx/base/kustomization.yaml\napiVersion: kustomize.config.k8s.io/v1beta1\nkind: Kustomization\nhelmCharts:\n  - name: ingress-nginx\n    repo: https://kubernetes.github.io/ingress-nginx\n    version: 4.10.0\n    releaseName: ingress-nginx\n    namespace: ingress-nginx\n    valuesFile: values.yaml"
     },
     {
       "language": "yaml",
-      "label": "Prod overlay patching the rendered chart output",
+      "label": "Overlay de prod fazendo patch na saída renderizada do chart",
       "code": "# platform/ingress-nginx/overlays/prod/kustomization.yaml\napiVersion: kustomize.config.k8s.io/v1beta1\nkind: Kustomization\nresources:\n  - ../../base\npatches:\n  - target:\n      kind: Deployment\n      name: ingress-nginx-controller\n    patch: |\n      - op: add\n        path: /spec/template/spec/nodeSelector\n        value:\n          workload: ingress\n      - op: add\n        path: /spec/template/spec/tolerations\n        value:\n          - key: workload\n            operator: Equal\n            value: ingress\n            effect: NoSchedule"
     }
   ],
   "followUpQuestions": [
-    "Argo CD needs --enable-helm to render Helm inside Kustomize. Where do you set that, and what is the security trade-off?",
-    "A vendor chart does not expose the setting you need as a value. Helm post-renderer or Kustomize patch on top? Why?",
-    "How do you pin a chart version so a new release does not change behavior under you?",
-    "Same setup but the chart lives in an OCI registry instead of a Helm repo. What changes in the Application spec?"
+    "O Argo CD precisa de --enable-helm para renderizar Helm dentro do Kustomize. Onde você configura isso, e qual é o trade-off de segurança?",
+    "Um chart de fornecedor não expõe a configuração que você precisa como value. Post-renderer do Helm ou patch do Kustomize por cima? Por quê?",
+    "Como você fixa a versão de um chart para que um novo release não mude o comportamento sem você perceber?",
+    "Mesmo setup, mas o chart vive em um registro OCI em vez de um repositório Helm. O que muda na spec da Application?"
   ],
   "commonMistakes": [
-    "Building your own application as a Helm chart so you can have values files, then drowning in Go template debugging for what was supposed to be a simple replica count change",
-    "Pinning a chart to a major version like 4.x and letting Argo CD pull whatever 4.y.z is latest at sync time, so what gets deployed depends on when the sync runs",
-    "Copying entire third-party Kubernetes manifests into your repo because Helm 'feels too complex', then never updating them and falling years behind"
+    "Construir sua própria aplicação como um chart Helm só para ter values files, e depois afogar em debug de indentação de template Go para o que deveria ser uma simples mudança de replica count",
+    "Fixar um chart em uma versão major como 4.x e deixar o Argo CD puxar qualquer 4.y.z que seja o mais recente no momento do sync, de forma que o que é implantado depende de quando o sync roda",
+    "Copiar manifests inteiros do Kubernetes de terceiros para o seu repositório porque o Helm 'parece complexo demais', e depois nunca atualizá-los, ficando anos defasado"
   ],
   "relatedTopics": [
     "argocd",

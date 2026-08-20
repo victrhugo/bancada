@@ -1,11 +1,11 @@
 {
   "id": "ansible-basics",
-  "title": "Ansible Basics",
-  "description": "Learn Ansible automation fundamentals including playbooks, roles, inventory, modules, variables, and configuration management best practices.",
+  "title": "Fundamentos de Ansible",
+  "description": "Aprenda os fundamentos de automação com Ansible, incluindo playbooks, roles, inventário, módulos, variáveis e boas práticas de gerenciamento de configuração.",
   "category": "Automation",
   "icon": "Workflow",
   "difficulty": "beginner",
-  "estimatedTime": "15 minutes",
+  "estimatedTime": "15 minutos",
   "cardCount": 14,
   "theme": {
     "primaryColor": "red",
@@ -15,99 +15,99 @@
   "cards": [
     {
       "id": "ansible-definition",
-      "front": "What is Ansible?",
-      "back": "Ansible is an agentless automation tool for configuration management, application deployment, and orchestration. Uses SSH for Linux/Unix and WinRM for Windows. Written in Python, uses YAML for playbooks. No agents needed on managed nodes.",
+      "front": "O que é o Ansible?",
+      "back": "Ansible é uma ferramenta de automação sem agentes (agentless) para gerenciamento de configuração, deploy de aplicações e orquestração. Usa SSH para Linux/Unix e WinRM para Windows. Escrito em Python, usa YAML para os playbooks. Não é preciso instalar nenhum agente nos hosts gerenciados.",
       "category": "Fundamentals",
       "tags": ["ansible", "basics", "automation"]
     },
     {
       "id": "playbook-definition",
-      "front": "What is an Ansible Playbook?",
-      "back": "A Playbook is a YAML file defining automation tasks. Contains plays (groups of tasks) targeting hosts. Playbooks are idempotent (safe to run multiple times), declarative (describe desired state), and reusable.",
+      "front": "O que é um Playbook do Ansible?",
+      "back": "Um Playbook é um arquivo YAML que define tarefas de automação. Contém plays (grupos de tarefas) direcionados a hosts específicos. Playbooks são idempotentes (seguros para rodar várias vezes), declarativos (descrevem o estado desejado) e reutilizáveis.",
       "category": "Playbooks",
       "tags": ["playbook", "yaml", "basics"]
     },
     {
       "id": "inventory-definition",
-      "front": "What is an Ansible Inventory?",
-      "back": "Inventory lists managed hosts/groups. Format: INI or YAML. Can be static (file) or dynamic (script/plugin generating from cloud APIs). Define variables per host/group. Default: /etc/ansible/hosts. Example groups: [webservers], [databases].",
+      "front": "O que é um Inventory do Ansible?",
+      "back": "O Inventory lista os hosts/grupos gerenciados. Formato: INI ou YAML. Pode ser estático (arquivo) ou dinâmico (script/plugin que gera a lista a partir de APIs de nuvem). Permite definir variáveis por host ou grupo. Padrão: /etc/ansible/hosts. Exemplo de grupos: [webservers], [databases].",
       "category": "Inventory",
       "tags": ["inventory", "hosts", "groups"]
     },
     {
       "id": "modules-definition",
-      "front": "What are Ansible Modules?",
-      "back": "Modules are reusable units executing specific tasks (install package, copy file, manage service). Examples: apt, yum, copy, file, service, user, git, docker_container. Over 3000+ built-in modules. Write custom modules in any language.",
+      "front": "O que são os Módulos do Ansible?",
+      "back": "Módulos são unidades reutilizáveis que executam tarefas específicas (instalar pacote, copiar arquivo, gerenciar serviço). Exemplos: apt, yum, copy, file, service, user, git, docker_container. Mais de 3000 módulos nativos. Também é possível escrever módulos customizados em qualquer linguagem.",
       "category": "Modules",
       "tags": ["modules", "tasks", "basics"]
     },
     {
       "id": "roles-definition",
-      "front": "What are Ansible Roles?",
-      "back": "Roles organize playbooks into reusable, structured components. Standard directory structure: tasks/, handlers/, templates/, files/, vars/, defaults/, meta/. Share via Ansible Galaxy. Roles promote modularity and reusability.",
+      "front": "O que são as Roles do Ansible?",
+      "back": "Roles organizam playbooks em componentes reutilizáveis e estruturados. Estrutura de diretórios padrão: tasks/, handlers/, templates/, files/, vars/, defaults/, meta/. São compartilhadas via Ansible Galaxy. Roles promovem modularidade e reutilização.",
       "category": "Roles",
       "tags": ["roles", "organization", "reusability"]
     },
     {
       "id": "tasks-definition",
-      "front": "What are Tasks in Ansible?",
-      "back": "Tasks are individual actions executed by modules. Each task has name, module, and parameters. Run sequentially. Support conditionals (when:), loops (loop:), error handling (ignore_errors, failed_when), and delegation (delegate_to:).",
+      "front": "O que são Tasks (tarefas) no Ansible?",
+      "back": "Tasks são ações individuais executadas por módulos. Cada task tem um nome, um módulo e parâmetros. São executadas sequencialmente. Suportam condicionais (when:), loops (loop:), tratamento de erros (ignore_errors, failed_when) e delegação (delegate_to:).",
       "category": "Playbooks",
       "tags": ["tasks", "modules", "execution"]
     },
     {
       "id": "handlers-definition",
-      "front": "What are Handlers?",
-      "back": "Handlers are special tasks triggered by notify directive. Run once at play end, even if notified multiple times. Used for service restarts after config changes. Example: notify: restart nginx triggers handler to restart service only if config changed.",
+      "front": "O que são Handlers?",
+      "back": "Handlers são tasks especiais disparadas pela diretiva notify. Rodam apenas uma vez, no fim do play, mesmo que sejam notificados várias vezes. Usados para reiniciar serviços após mudanças de configuração. Exemplo: notify: restart nginx dispara o handler para reiniciar o serviço apenas se a configuração mudou.",
       "category": "Playbooks",
       "tags": ["handlers", "notify", "services"]
     },
     {
       "id": "variables-definition",
-      "front": "What are Ansible Variables?",
-      "back": "Variables store values for reuse in playbooks. Define in playbooks, inventory, roles, command-line (--extra-vars). Access with {{ var_name }}. Precedence order: extra-vars (highest), task vars, role vars, inventory vars, role defaults (lowest).",
+      "front": "O que são as Variáveis do Ansible?",
+      "back": "Variáveis armazenam valores para reutilização nos playbooks. Podem ser definidas em playbooks, inventory, roles ou na linha de comando (--extra-vars). Acessadas com {{ var_name }}. Ordem de precedência: extra-vars (mais alta), variáveis de task, variáveis de role, variáveis de inventory, defaults de role (mais baixa).",
       "category": "Variables",
       "tags": ["variables", "templating", "configuration"]
     },
     {
       "id": "facts-definition",
-      "front": "What are Ansible Facts?",
-      "back": "Facts are system information automatically gathered from managed hosts (OS, IP, memory, disks). Accessed via ansible_facts dictionary. Example: {{ ansible_facts.hostname }}. Gather with setup module. Disable with gather_facts: false for speed.",
+      "front": "O que são os Facts do Ansible?",
+      "back": "Facts são informações do sistema coletadas automaticamente dos hosts gerenciados (SO, IP, memória, discos). Acessados pelo dicionário ansible_facts. Exemplo: {{ ansible_facts.hostname }}. Coletados pelo módulo setup. Desabilite com gather_facts: false para ganhar velocidade.",
       "category": "Variables",
       "tags": ["facts", "system-info", "automation"]
     },
     {
       "id": "templates-jinja2",
-      "front": "What are Ansible Templates?",
-      "back": "Templates use Jinja2 syntax to generate dynamic files. Variables, conditionals, loops in .j2 files. Module template copies rendered file to hosts. Example: Deploy config files with environment-specific values. Common for nginx.conf, application.properties.",
+      "front": "O que são os Templates do Ansible?",
+      "back": "Templates usam a sintaxe Jinja2 para gerar arquivos dinâmicos. Variáveis, condicionais e loops em arquivos .j2. O módulo template copia o arquivo já renderizado para os hosts. Exemplo: gerar arquivos de configuração com valores específicos de cada ambiente. Muito comum para nginx.conf, application.properties.",
       "category": "Templates",
       "tags": ["templates", "jinja2", "configuration"]
     },
     {
       "id": "idempotence",
-      "front": "What is Idempotence in Ansible?",
-      "back": "Idempotence means running playbook multiple times produces same result without unwanted changes. Ansible modules are idempotent by design. Example: package installation checks if already installed. Ensures safe reruns and prevents configuration drift.",
+      "front": "O que é Idempotência no Ansible?",
+      "back": "Idempotência significa que rodar o playbook várias vezes produz o mesmo resultado, sem mudanças indesejadas. Os módulos do Ansible são idempotentes por design. Exemplo: a instalação de um pacote verifica se ele já está instalado. Isso garante reexecuções seguras e evita o drift de configuração.",
       "category": "Best Practices",
       "tags": ["idempotence", "best-practices", "safety"]
     },
     {
       "id": "vault-definition",
-      "front": "What is Ansible Vault?",
-      "back": "Ansible Vault encrypts sensitive data (passwords, keys) in playbooks/variables. Commands: ansible-vault create, encrypt, decrypt, edit. Use --ask-vault-pass or --vault-password-file when running. Encrypted files are safe to commit to Git.",
+      "front": "O que é o Ansible Vault?",
+      "back": "O Ansible Vault criptografa dados sensíveis (senhas, chaves) em playbooks e variáveis. Comandos: ansible-vault create, encrypt, decrypt, edit. Use --ask-vault-pass ou --vault-password-file na execução. Arquivos criptografados podem ser commitados no Git com segurança.",
       "category": "Security",
       "tags": ["vault", "security", "encryption"]
     },
     {
       "id": "ansible-galaxy",
-      "front": "What is Ansible Galaxy?",
-      "back": "Ansible Galaxy is a repository for sharing Ansible roles and collections. Install roles: ansible-galaxy install username.rolename. Collections bundle modules, plugins, roles. Public hub at galaxy.ansible.com. Create requirements.yml for dependencies.",
+      "front": "O que é o Ansible Galaxy?",
+      "back": "O Ansible Galaxy é um repositório para compartilhar roles e collections do Ansible. Instalar roles: ansible-galaxy install username.rolename. Collections agrupam módulos, plugins e roles. Hub público em galaxy.ansible.com. Crie um requirements.yml para gerenciar dependências.",
       "category": "Community",
       "tags": ["galaxy", "roles", "sharing"]
     },
     {
       "id": "ansible-best-practices",
-      "front": "What are Ansible best practices?",
-      "back": "Use roles for organization, name all tasks clearly, use variables for flexibility, encrypt secrets with Vault, use version control, test with --check mode, keep playbooks idempotent, document with comments, use tags for selective execution, follow directory structure conventions.",
+      "front": "Quais são as boas práticas do Ansible?",
+      "back": "Use roles para organização, nomeie todas as tasks de forma clara, use variáveis para ganhar flexibilidade, criptografe segredos com o Vault, use controle de versão, teste com o modo --check, mantenha os playbooks idempotentes, documente com comentários, use tags para execução seletiva e siga as convenções de estrutura de diretórios.",
       "category": "Best Practices",
       "tags": ["best-practices", "guidelines", "quality"]
     }

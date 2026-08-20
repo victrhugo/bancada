@@ -1,10 +1,10 @@
 {
   "id": "otel-auto-vs-manual-instrumentation",
   "slug": "otel-auto-vs-manual-instrumentation",
-  "title": "Auto vs Manual Instrumentation",
-  "question": "You need to roll out tracing across 40 services owned by six different teams. Do you go with auto-instrumentation or manual instrumentation, and how do you decide?",
-  "answer": "Start with auto-instrumentation for breadth, then add manual spans where the business logic lives. Auto-instrumentation hooks into known libraries: HTTP servers and clients, database drivers, gRPC, queue clients. In Java you attach the agent jar with a JVM flag and get traces with zero code changes, in Python you wrap the process with opentelemetry-instrument. That gets all 40 services emitting spans in days, not quarters, and you immediately see the service map and cross-service latency. What auto-instrumentation cannot give you is domain context. It shows 'POST /api/checkout took 2s' but not which step of checkout was slow or which customer tier was affected. So the second phase is manual: teams add spans around meaningful operations and attach attributes like order.value or tenant.id to the spans that auto-instrumentation already created. Language matters too. Java and Python have strong runtime agents. Go has no agent in the traditional sense, so you instrument in code or look at eBPF-based approaches, which means your Go services need more team buy-in up front. The practical rollout: platform team ships a base image or init container with the agent preconfigured, exporting to a standard endpoint, and each team only touches code when they want richer spans. Forcing six teams to hand-instrument everything before seeing any value is how tracing rollouts die.",
-  "explanation": "This question tests judgment, not API knowledge. The trap is treating it as either-or: strong candidates immediately say both, in sequence, and explain why breadth-first wins for adoption. You also learn whether they have dealt with organizational reality: getting six teams to do anything is harder than any technical step, so answers that include a platform-level rollout path (base images, agents injected at deploy time, sane defaults) signal real experience. Bonus points for knowing the per-language differences, especially that Go cannot just attach an agent.",
+  "title": "Instrumentação Automática vs Manual",
+  "question": "Você precisa implantar tracing em 40 serviços mantidos por seis times diferentes. Você opta por instrumentação automática ou instrumentação manual, e como decide isso?",
+  "answer": "Comece com instrumentação automática para ganhar amplitude, depois adicione spans manuais onde está a lógica de negócio. A instrumentação automática se conecta a bibliotecas conhecidas: servidores e clientes HTTP, drivers de banco de dados, gRPC, clientes de fila. Em Java você anexa o agente jar com uma flag da JVM e obtém traces sem nenhuma mudança de código; em Python você envolve o processo com opentelemetry-instrument. Isso faz com que os 40 serviços comecem a emitir spans em dias, não em trimestres, e você já enxerga imediatamente o mapa de serviços e a latência entre eles. O que a instrumentação automática não consegue te dar é contexto de domínio. Ela mostra que 'POST /api/checkout levou 2s', mas não qual etapa do checkout estava lenta ou qual faixa de cliente foi afetada. Então a segunda fase é manual: os times adicionam spans em torno das operações relevantes e anexam atributos como order.value ou tenant.id aos spans que a instrumentação automática já criou. A linguagem também importa. Java e Python têm agentes de runtime robustos. Go não tem um agente no sentido tradicional, então você instrumenta no código ou avalia abordagens baseadas em eBPF, o que significa que seus serviços em Go precisam de mais engajamento do time desde o início. O rollout na prática: o time de plataforma disponibiliza uma imagem base ou init container com o agente pré-configurado, exportando para um endpoint padrão, e cada time só mexe no código quando quer spans mais ricos. Forçar seis times a instrumentar tudo manualmente antes de ver qualquer valor é a receita para o rollout de tracing morrer.",
+  "explanation": "Esta pergunta testa julgamento, não conhecimento de API. A armadilha é tratar isso como uma escolha binária: candidatos fortes dizem imediatamente que são os dois, em sequência, e explicam por que priorizar amplitude vence para efeito de adoção. Você também descobre se a pessoa já lidou com a realidade organizacional: fazer com que seis times façam qualquer coisa é mais difícil do que qualquer etapa técnica, então respostas que incluem um caminho de rollout no nível de plataforma (imagens base, agentes injetados no deploy, padrões sensatos) indicam experiência real. Pontos extras por conhecer as diferenças entre linguagens, especialmente que Go não consegue simplesmente anexar um agente.",
   "category": "Observability",
   "difficulty": "intermediate",
   "tier": "mid",
@@ -17,29 +17,29 @@
   "codeExamples": [
     {
       "language": "bash",
-      "label": "Zero-code instrumentation for Java and Python services",
+      "label": "Instrumentação sem alteração de código para serviços Java e Python",
       "code": "# Java: attach the agent at startup, no code changes\njava -javaagent:/otel/opentelemetry-javaagent.jar \\\n  -Dotel.service.name=payment-service \\\n  -Dotel.exporter.otlp.endpoint=http://otel-collector:4317 \\\n  -jar payment-service.jar\n\n# Python: wrap the entrypoint\npip install opentelemetry-distro opentelemetry-exporter-otlp\nopentelemetry-bootstrap -a install\nOTEL_SERVICE_NAME=order-api \\\nOTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317 \\\nopentelemetry-instrument gunicorn app:app"
     },
     {
       "language": "yaml",
-      "label": "Kubernetes Operator injecting auto-instrumentation via annotation",
+      "label": "Operator do Kubernetes injetando instrumentação automática via anotação",
       "code": "apiVersion: opentelemetry.io/v1alpha1\nkind: Instrumentation\nmetadata:\n  name: platform-defaults\nspec:\n  exporter:\n    endpoint: http://otel-collector.observability:4317\n  propagators:\n    - tracecontext\n    - baggage\n---\n# Teams opt in with one pod annotation, no image changes:\n#   instrumentation.opentelemetry.io/inject-java: \"true\""
     },
     {
       "language": "python",
-      "label": "Enriching auto-created spans with business context",
+      "label": "Enriquecendo spans criados automaticamente com contexto de negócio",
       "code": "from opentelemetry import trace\n\ndef checkout(request):\n    # The HTTP server span already exists, created by\n    # auto-instrumentation. Add domain attributes to it.\n    span = trace.get_current_span()\n    span.set_attribute(\"order.value_usd\", request.total)\n    span.set_attribute(\"customer.tier\", request.user.tier)\n\n    tracer = trace.get_tracer(\"checkout\")\n    # Manual span for the step auto-instrumentation cannot see\n    with tracer.start_as_current_span(\"calculate_discounts\"):\n        apply_discounts(request)"
     }
   ],
   "followUpQuestions": [
-    "How would you handle the Go services in that fleet, where attaching a runtime agent is not an option?",
-    "Auto-instrumentation just doubled your span volume and your tracing bill. What do you do?",
-    "How do you enforce consistent attribute naming, like tenant.id versus tenantId, across six teams?"
+    "Como você trataria os serviços em Go dessa frota, onde anexar um agente de runtime não é uma opção?",
+    "A instrumentação automática acabou de dobrar o volume de spans e sua conta de tracing. O que você faz?",
+    "Como você garante nomenclatura consistente de atributos, como tenant.id versus tenantId, entre seis times?"
   ],
   "commonMistakes": [
-    "Picking one approach for everything: all-manual stalls the rollout for months, all-auto leaves you with traces that lack any business meaning",
-    "Assuming every language works like Java, then discovering the Go services emit nothing because nobody planned for in-code instrumentation",
-    "Ignoring semantic conventions, so every team invents its own attribute names and cross-service queries become impossible"
+    "Escolher uma única abordagem para tudo: só manual trava o rollout por meses, só automática deixa você com traces sem nenhum significado de negócio",
+    "Assumir que toda linguagem funciona como Java, para depois descobrir que os serviços em Go não emitem nada porque ninguém planejou a instrumentação em código",
+    "Ignorar as convenções semânticas, fazendo com que cada time invente seus próprios nomes de atributos e as consultas entre serviços se tornem impossíveis"
   ],
   "relatedTopics": [
     "observability",

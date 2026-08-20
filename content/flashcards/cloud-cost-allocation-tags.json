@@ -1,11 +1,11 @@
 {
   "id": "cloud-cost-allocation-tags",
-  "title": "Cloud Cost Allocation Tags Across AWS, GCP, and Azure",
-  "description": "Learn how to set up consistent cost allocation tagging strategies across multi-cloud environments for accurate chargeback and showback reporting.",
+  "title": "Tags de Alocação de Custos na Nuvem entre AWS, GCP e Azure",
+  "description": "Aprenda a montar estratégias consistentes de tagueamento para alocação de custos em ambientes multi-cloud, garantindo relatórios precisos de chargeback e showback.",
   "category": "FinOps",
   "icon": "Tags",
   "difficulty": "intermediate",
-  "estimatedTime": "20 minutes",
+  "estimatedTime": "20 minutos",
   "cardCount": 16,
   "theme": {
     "primaryColor": "green",
@@ -15,113 +15,113 @@
   "cards": [
     {
       "id": "why-cost-allocation-tags",
-      "front": "Why do teams end up with surprise cloud bills even when they have budgets set up?",
-      "back": "Because without cost allocation tags, you can see total spend but not who or what is driving it. Tags let you break costs down by team, project, environment, or service -- so you can answer 'why did our bill jump 40%?' in minutes instead of days.",
+      "front": "Por que times acabam levando sustos com faturas de nuvem inesperadas, mesmo tendo orçamentos definidos?",
+      "back": "Porque sem tags de alocação de custos, você enxerga o gasto total, mas não quem ou o que está gerando esse gasto. As tags permitem quebrar os custos por time, projeto, ambiente ou serviço -- assim você responde 'por que nossa fatura subiu 40%?' em minutos, não em dias.",
       "category": "Fundamentals",
       "tags": ["finops", "tagging", "cloud-costs"]
     },
     {
       "id": "chargeback-vs-showback",
-      "front": "What is the difference between chargeback and showback in cloud cost management?",
-      "back": "Chargeback actually bills each team or business unit for their cloud usage -- real money moves between budgets. Showback just reports costs per team for visibility without transferring funds. Most orgs start with showback because it is less politically messy.",
+      "front": "Qual é a diferença entre chargeback e showback na gestão de custos de nuvem?",
+      "back": "O chargeback realmente cobra de cada time ou unidade de negócio pelo uso da nuvem -- dinheiro de verdade circula entre orçamentos. O showback apenas reporta os custos por time para dar visibilidade, sem transferir valores. A maioria das empresas começa com showback porque é politicamente menos desgastante.",
       "category": "Fundamentals",
       "tags": ["finops", "chargeback", "showback"]
     },
     {
       "id": "tag-vs-label-terminology",
-      "front": "What do AWS, GCP, and Azure each call their resource metadata key-value pairs for cost tracking?",
-      "back": "AWS and Azure call them **tags**. GCP calls them **labels**. They work the same way -- key-value pairs attached to resources. GCP also has a separate concept called 'tags' used for firewall rules, which is confusing. For cost allocation, use GCP labels.",
+      "front": "Como AWS, GCP e Azure chamam os pares chave-valor de metadados usados para rastrear custos?",
+      "back": "AWS e Azure chamam de **tags**. O GCP chama de **labels**. Funcionam da mesma forma -- pares chave-valor anexados aos recursos. O GCP também tem um conceito separado chamado 'tags', usado para regras de firewall, o que gera confusão. Para alocação de custos, use as labels do GCP.",
       "category": "Fundamentals",
       "tags": ["multi-cloud", "tagging", "terminology"]
     },
     {
       "id": "minimum-tag-set",
-      "front": "What is a good minimum set of cost allocation tags that works across all three major clouds?",
-      "back": "Start with these five:\n- `environment` (prod, staging, dev)\n- `team` or `cost-center` (who owns it)\n- `project` (what initiative)\n- `service` (which application component)\n- `managed-by` (terraform, manual, pulumi)\n\nKeep the list short. Every tag you add is one more thing people forget to apply.",
+      "front": "Qual é um bom conjunto mínimo de tags de alocação de custos que funciona nas três clouds principais?",
+      "back": "Comece com estas cinco:\n- `environment` (prod, staging, dev)\n- `team` ou `cost-center` (quem é o dono)\n- `project` (qual iniciativa)\n- `service` (qual componente da aplicação)\n- `managed-by` (terraform, manual, pulumi)\n\nMantenha a lista curta. Cada tag adicionada é mais uma coisa que as pessoas vão esquecer de aplicar.",
       "category": "Strategy",
       "tags": ["tagging", "best-practices", "multi-cloud"]
     },
     {
       "id": "tag-naming-conventions",
-      "front": "Why should you enforce a strict naming convention for tags across clouds, and what format works best?",
-      "back": "Without a convention, you end up with `Environment`, `env`, `ENV`, and `environment` -- all meaning the same thing but impossible to aggregate. Use lowercase with hyphens: `cost-center`, `managed-by`. Pick one format and enforce it everywhere. AWS tags are case-sensitive, so `Env` and `env` are different tags.",
+      "front": "Por que você deve impor uma convenção rígida de nomenclatura para tags entre clouds, e qual formato funciona melhor?",
+      "back": "Sem uma convenção, você acaba com `Environment`, `env`, `ENV` e `environment` -- todos significando a mesma coisa, mas impossíveis de agregar. Use minúsculas com hífen: `cost-center`, `managed-by`. Escolha um formato e imponha em todo lugar. As tags da AWS diferenciam maiúsculas de minúsculas, então `Env` e `env` são tags diferentes.",
       "category": "Strategy",
       "tags": ["tagging", "naming-conventions", "best-practices"]
     },
     {
       "id": "aws-activate-cost-tags",
-      "front": "You added tags to your AWS resources but they don't show up in Cost Explorer. What did you forget?",
-      "back": "You need to activate tags for cost allocation in the AWS Billing console. Go to **Billing > Cost Allocation Tags** and activate each tag. It takes up to 24 hours for tags to appear in cost reports.\n\n```bash\naws ce list-cost-allocation-tags \\\n  --status Active\n```\n\nOnly activated tags appear in Cost Explorer and CUR (Cost and Usage Reports).",
+      "front": "Você adicionou tags aos seus recursos AWS, mas elas não aparecem no Cost Explorer. O que você esqueceu?",
+      "back": "Você precisa ativar as tags para alocação de custos no console de Billing da AWS. Vá em **Billing > Cost Allocation Tags** e ative cada tag. Pode levar até 24 horas para as tags aparecerem nos relatórios de custo.\n\n```bash\naws ce list-cost-allocation-tags \\\n  --status Active\n```\n\nSó tags ativadas aparecem no Cost Explorer e no CUR (Cost and Usage Reports).",
       "category": "AWS",
       "tags": ["aws", "cost-allocation", "tagging"]
     },
     {
       "id": "aws-tag-policies",
-      "front": "How do you enforce tagging standards across all AWS accounts in an organization?",
-      "back": "Use **AWS Tag Policies** in AWS Organizations. They enforce allowed tag keys and values across member accounts.\n\n```json\n{\n  \"tags\": {\n    \"environment\": {\n      \"tag_key\": { \"@@assign\": \"environment\" },\n      \"tag_value\": {\n        \"@@assign\": [\"prod\", \"staging\", \"dev\"]\n      },\n      \"enforced_for\": {\n        \"@@assign\": [\"ec2:instance\", \"s3:bucket\"]\n      }\n    }\n  }\n}\n```\n\nAttach the policy to the OU or account where you want it enforced.",
+      "front": "Como impor padrões de tagueamento em todas as contas AWS de uma organização?",
+      "back": "Use **AWS Tag Policies** dentro do AWS Organizations. Elas impõem chaves e valores de tag permitidos nas contas membro.\n\n```json\n{\n  \"tags\": {\n    \"environment\": {\n      \"tag_key\": { \"@@assign\": \"environment\" },\n      \"tag_value\": {\n        \"@@assign\": [\"prod\", \"staging\", \"dev\"]\n      },\n      \"enforced_for\": {\n        \"@@assign\": [\"ec2:instance\", \"s3:bucket\"]\n      }\n    }\n  }\n}\n```\n\nAnexe a policy à OU ou conta onde você quer que seja aplicada.",
       "category": "AWS",
       "tags": ["aws", "tag-policies", "enforcement"]
     },
     {
       "id": "gcp-labels-cost",
-      "front": "How do you apply labels in GCP and see them in billing reports?",
-      "back": "Add labels to resources via gcloud:\n\n```bash\ngcloud compute instances update my-vm \\\n  --update-labels=team=platform,environment=prod\n```\n\nLabels appear automatically in BigQuery billing export. No activation step needed (unlike AWS). Export billing to BigQuery, then query:\n\n```sql\nSELECT labels.value AS team,\n       SUM(cost) AS total_cost\nFROM `project.dataset.gcp_billing_export`\nLEFT JOIN UNNEST(labels) AS labels\n  ON labels.key = 'team'\nGROUP BY team\n```",
+      "front": "Como você aplica labels no GCP e as vê nos relatórios de billing?",
+      "back": "Adicione labels aos recursos via gcloud:\n\n```bash\ngcloud compute instances update my-vm \\\n  --update-labels=team=platform,environment=prod\n```\n\nAs labels aparecem automaticamente na exportação de billing para o BigQuery. Não há etapa de ativação (diferente da AWS). Exporte o billing para o BigQuery e depois consulte:\n\n```sql\nSELECT labels.value AS team,\n       SUM(cost) AS total_cost\nFROM `project.dataset.gcp_billing_export`\nLEFT JOIN UNNEST(labels) AS labels\n  ON labels.key = 'team'\nGROUP BY team\n```",
       "category": "GCP",
       "tags": ["gcp", "labels", "billing"]
     },
     {
       "id": "azure-cost-tags",
-      "front": "How do you enforce required tags on Azure resources at the subscription or resource group level?",
-      "back": "Use **Azure Policy** with the built-in 'Require a tag' definition:\n\n```bash\naz policy assignment create \\\n  --name 'require-environment-tag' \\\n  --policy '/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b466-208cb7424adc' \\\n  --params '{\"tagName\": {\"value\": \"environment\"}}' \\\n  --scope '/subscriptions/<sub-id>'\n```\n\nThis blocks resource creation if the tag is missing. Use 'audit' effect first to find untagged resources before switching to 'deny'.",
+      "front": "Como impor tags obrigatórias em recursos do Azure no nível de assinatura ou grupo de recursos?",
+      "back": "Use o **Azure Policy** com a definição integrada 'Require a tag':\n\n```bash\naz policy assignment create \\\n  --name 'require-environment-tag' \\\n  --policy '/providers/Microsoft.Authorization/policyDefinitions/871b6d14-10aa-478d-b466-208cb7424adc' \\\n  --params '{\"tagName\": {\"value\": \"environment\"}}' \\\n  --scope '/subscriptions/<sub-id>'\n```\n\nIsso bloqueia a criação do recurso se a tag estiver faltando. Use o efeito 'audit' primeiro para encontrar recursos sem tag antes de trocar para 'deny'.",
       "category": "Azure",
       "tags": ["azure", "policy", "tagging"]
     },
     {
       "id": "tag-inheritance",
-      "front": "If you tag an AWS resource group or Azure subscription, do child resources automatically inherit those tags?",
-      "back": "Not by default on any cloud.\n\n- **AWS**: No inheritance. Each resource must be tagged individually. You can use Tag Editor to bulk-tag.\n- **Azure**: Resource groups have tags, but resources inside do NOT inherit them. Use Azure Policy with 'modify' effect to copy tags down.\n- **GCP**: Projects have labels, but resources don't inherit them either.\n\nThis is the #1 reason orgs end up with untagged resources. Automate tag propagation.",
+      "front": "Se você tagueia um resource group da AWS ou uma assinatura do Azure, os recursos filhos herdam essas tags automaticamente?",
+      "back": "Por padrão, não, em nenhuma das clouds.\n\n- **AWS**: sem herança. Cada recurso precisa ser tagueado individualmente. Você pode usar o Tag Editor para tagueamento em massa.\n- **Azure**: resource groups têm tags, mas os recursos dentro deles NÃO as herdam. Use o Azure Policy com efeito 'modify' para copiar as tags para baixo.\n- **GCP**: projetos têm labels, mas os recursos também não as herdam.\n\nEsse é o motivo número um de as empresas acumularem recursos sem tag. Automatize a propagação de tags.",
       "category": "Multi-Cloud",
       "tags": ["tagging", "inheritance", "multi-cloud"]
     },
     {
       "id": "terraform-default-tags",
-      "front": "How do you make sure every resource created by Terraform in AWS gets a standard set of tags?",
-      "back": "Use `default_tags` in the AWS provider block:\n\n```hcl\nprovider \"aws\" {\n  region = \"us-east-1\"\n  default_tags {\n    tags = {\n      environment = var.environment\n      team        = var.team\n      managed-by  = \"terraform\"\n      project     = var.project\n    }\n  }\n}\n```\n\nEvery resource created by this provider gets these tags automatically. No need to add `tags {}` on each resource.",
+      "front": "Como garantir que todo recurso criado pelo Terraform na AWS receba um conjunto padrão de tags?",
+      "back": "Use `default_tags` no bloco do provider da AWS:\n\n```hcl\nprovider \"aws\" {\n  region = \"us-east-1\"\n  default_tags {\n    tags = {\n      environment = var.environment\n      team        = var.team\n      managed-by  = \"terraform\"\n      project     = var.project\n    }\n  }\n}\n```\n\nTodo recurso criado por esse provider recebe essas tags automaticamente. Não é preciso adicionar `tags {}` em cada recurso.",
       "category": "Automation",
       "tags": ["terraform", "tagging", "aws", "iac"]
     },
     {
       "id": "find-untagged-resources",
-      "front": "How do you find all untagged resources in an AWS account?",
-      "back": "Use AWS Resource Groups Tagging API:\n\n```bash\naws resourcegroupstaggingapi get-resources \\\n  --tags-per-page 100 \\\n  | jq '[.ResourceTagMappingList[] | select(.Tags | length == 0)] | length'\n```\n\nOr use AWS Config with a rule like `required-tags` to continuously audit. For a quick count, AWS Tag Editor in the console lets you search for resources missing specific tags across all regions.",
+      "front": "Como encontrar todos os recursos sem tag em uma conta AWS?",
+      "back": "Use a Resource Groups Tagging API da AWS:\n\n```bash\naws resourcegroupstaggingapi get-resources \\\n  --tags-per-page 100 \\\n  | jq '[.ResourceTagMappingList[] | select(.Tags | length == 0)] | length'\n```\n\nOu use o AWS Config com uma regra como `required-tags` para auditar continuamente. Para uma contagem rápida, o AWS Tag Editor no console permite buscar recursos sem tags específicas em todas as regiões.",
       "category": "Automation",
       "tags": ["aws", "untagged", "audit"]
     },
     {
       "id": "cost-allocation-report-delay",
-      "front": "You tagged a resource today. When will it show up in cost allocation reports on each cloud?",
-      "back": "- **AWS**: Up to 24 hours after tag activation. Tags only apply to costs going forward -- they are NOT retroactive.\n- **GCP**: Labels appear in BigQuery billing export within a few hours. Also not retroactive.\n- **Azure**: Tags show in Cost Management within 24-48 hours. Not retroactive.\n\nKey takeaway: tag early. Every day without tags is a day of costs you can never attribute.",
+      "front": "Você tagueou um recurso hoje. Quando ele vai aparecer nos relatórios de alocação de custos em cada cloud?",
+      "back": "- **AWS**: até 24 horas após a ativação da tag. As tags só se aplicam aos custos futuros -- NÃO são retroativas.\n- **GCP**: as labels aparecem na exportação de billing do BigQuery em poucas horas. Também não são retroativas.\n- **Azure**: as tags aparecem no Cost Management em 24-48 horas. Não são retroativas.\n\nO ponto principal: tagueie cedo. Cada dia sem tags é um dia de custos que você nunca vai conseguir atribuir.",
       "category": "Multi-Cloud",
       "tags": ["billing", "tagging", "multi-cloud"]
     },
     {
       "id": "tag-compliance-cicd",
-      "front": "How do you prevent untagged resources from being deployed through your CI/CD pipeline?",
-      "back": "Add a policy check in your pipeline before `terraform apply`:\n\n```bash\n# Using OPA/Conftest\nconftest test --policy policy/ tfplan.json\n```\n\nExample Rego policy:\n```rego\ndeny[msg] {\n  resource := input.resource_changes[_]\n  not resource.change.after.tags.environment\n  msg := sprintf(\"%s missing 'environment' tag\", [resource.address])\n}\n```\n\nFail the pipeline if required tags are missing. This catches issues before they hit production.",
+      "front": "Como impedir que recursos sem tag sejam implantados através do seu pipeline de CI/CD?",
+      "back": "Adicione uma verificação de policy no pipeline antes do `terraform apply`:\n\n```bash\n# Usando OPA/Conftest\nconftest test --policy policy/ tfplan.json\n```\n\nExemplo de policy em Rego:\n```rego\ndeny[msg] {\n  resource := input.resource_changes[_]\n  not resource.change.after.tags.environment\n  msg := sprintf(\"%s missing 'environment' tag\", [resource.address])\n}\n```\n\nFalhe o pipeline se as tags obrigatórias estiverem faltando. Isso pega os problemas antes que cheguem à produção.",
       "category": "Automation",
       "tags": ["cicd", "opa", "tagging", "enforcement"]
     },
     {
       "id": "shared-resource-tagging",
-      "front": "How do you allocate costs for shared resources like a centralized load balancer or a shared VPC?",
-      "back": "Three common approaches:\n\n1. **Tag as 'shared-infra'** and split costs proportionally across teams based on usage metrics\n2. **Use cloud-native splitting** -- AWS lets you split shared costs in CUR using allocation rules\n3. **Tag with the platform team** that owns it and treat it as a platform cost\n\nDon't try to split every penny. Allocate 80% accurately and call it good. Chasing 100% accuracy costs more than the savings.",
+      "front": "Como alocar custos de recursos compartilhados, como um load balancer centralizado ou uma VPC compartilhada?",
+      "back": "Três abordagens comuns:\n\n1. **Tagueie como 'shared-infra'** e divida os custos proporcionalmente entre os times com base em métricas de uso\n2. **Use divisão nativa da cloud** -- a AWS permite dividir custos compartilhados no CUR usando regras de alocação\n3. **Tagueie com o time de plataforma** que é o dono e trate como custo de plataforma\n\nNão tente dividir cada centavo. Aloque 80% com precisão e considere suficiente. Perseguir 100% de precisão custa mais do que a economia gerada.",
       "category": "Strategy",
       "tags": ["finops", "shared-costs", "tagging"]
     },
     {
       "id": "gcp-project-vs-labels",
-      "front": "In GCP, when should you use separate projects for cost isolation instead of labels?",
-      "back": "Use **separate projects** when you need hard billing boundaries, different IAM permissions, or quota isolation. Use **labels** when you just need to slice costs in reports.\n\nRule of thumb: one project per environment per service (e.g., `myapp-prod`, `myapp-staging`). Then use labels for finer breakdowns like `team` and `feature` within each project. Projects give you budget alerts and IAM boundaries that labels cannot.",
+      "front": "No GCP, quando você deve usar projetos separados para isolamento de custos em vez de labels?",
+      "back": "Use **projetos separados** quando precisar de fronteiras rígidas de billing, permissões de IAM diferentes ou isolamento de quota. Use **labels** quando só precisar fatiar custos em relatórios.\n\nRegra prática: um projeto por ambiente por serviço (ex: `myapp-prod`, `myapp-staging`). Depois use labels para detalhamentos mais finos, como `team` e `feature`, dentro de cada projeto. Projetos dão alertas de orçamento e fronteiras de IAM que labels não oferecem.",
       "category": "GCP",
       "tags": ["gcp", "projects", "labels", "cost-isolation"]
     }

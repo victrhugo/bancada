@@ -1,11 +1,11 @@
 {
   "id": "istio-traffic-management",
-  "title": "Service Mesh Traffic Management with Istio",
-  "description": "Learn how to configure advanced traffic management policies in Istio including weighted routing, automatic retries, and circuit breaker patterns for production services.",
+  "title": "Gerenciamento de Tráfego em Service Mesh com Istio",
+  "description": "Aprenda a configurar políticas avançadas de gerenciamento de tráfego no Istio, incluindo roteamento ponderado, retries automáticos e padrões de circuit breaker para serviços em produção.",
   "category": "Service Mesh",
   "icon": "Network",
   "difficulty": "advanced",
-  "estimatedTime": "25 minutes",
+  "estimatedTime": "25 minutos",
   "cardCount": 16,
   "theme": {
     "primaryColor": "blue",
@@ -15,113 +15,113 @@
   "cards": [
     {
       "id": "virtualservice-purpose",
-      "front": "What is an Istio VirtualService and why do you need one?",
-      "back": "A VirtualService defines traffic routing rules for a service. Without one, Istio sends traffic round-robin to all pods behind a Kubernetes Service. With a VirtualService, you control how requests reach your workloads - split traffic by weight, match on headers, rewrite URLs, or route to specific versions.\n\napiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: my-app\nspec:\n  hosts:\n  - my-app\n  http:\n  - route:\n    - destination:\n        host: my-app\n        subset: v2",
+      "front": "O que é um VirtualService do Istio e por que você precisa de um?",
+      "back": "Um VirtualService define regras de roteamento de tráfego para um serviço. Sem ele, o Istio envia o tráfego em round-robin para todos os pods atrás de um Service do Kubernetes. Com um VirtualService, você controla como as requisições chegam aos seus workloads - divide o tráfego por peso, faz match em headers, reescreve URLs ou roteia para versões específicas.\n\napiVersion: networking.istio.io/v1beta1\nkind: VirtualService\nmetadata:\n  name: my-app\nspec:\n  hosts:\n  - my-app\n  http:\n  - route:\n    - destination:\n        host: my-app\n        subset: v2",
       "category": "Core Resources",
       "tags": ["istio", "virtualservice", "routing"]
     },
     {
       "id": "destinationrule-purpose",
-      "front": "What is an Istio DestinationRule and how does it relate to a VirtualService?",
-      "back": "A DestinationRule defines policies applied to traffic after routing decisions are made by a VirtualService. It configures load balancing, connection pools, outlier detection, and TLS settings. It also defines subsets (named groups of pods selected by labels) that VirtualServices reference.\n\napiVersion: networking.istio.io/v1beta1\nkind: DestinationRule\nmetadata:\n  name: my-app\nspec:\n  host: my-app\n  subsets:\n  - name: v1\n    labels:\n      version: v1\n  - name: v2\n    labels:\n      version: v2",
+      "front": "O que é um DestinationRule do Istio e como ele se relaciona com um VirtualService?",
+      "back": "Um DestinationRule define políticas aplicadas ao tráfego depois que as decisões de roteamento são tomadas pelo VirtualService. Ele configura load balancing, connection pools, outlier detection e configurações de TLS. Também define subsets (grupos nomeados de pods selecionados por labels) que os VirtualServices referenciam.\n\napiVersion: networking.istio.io/v1beta1\nkind: DestinationRule\nmetadata:\n  name: my-app\nspec:\n  host: my-app\n  subsets:\n  - name: v1\n    labels:\n      version: v1\n  - name: v2\n    labels:\n      version: v2",
       "category": "Core Resources",
       "tags": ["istio", "destinationrule", "subsets"]
     },
     {
       "id": "subset-definition",
-      "front": "What is a subset in Istio and where do you define it?",
-      "back": "A subset is a named group of endpoints within a service, selected by pod labels. You define subsets inside a DestinationRule. A common pattern is labeling pods with 'version: v1' or 'version: v2' and creating subsets that match those labels. VirtualServices then reference these subset names to route traffic to specific versions.",
+      "front": "O que é um subset no Istio e onde você o define?",
+      "back": "Um subset é um grupo nomeado de endpoints dentro de um serviço, selecionado por labels de pods. Você define subsets dentro de um DestinationRule. Um padrão comum é rotular os pods com 'version: v1' ou 'version: v2' e criar subsets que correspondem a esses labels. Os VirtualServices então referenciam esses nomes de subset para rotear o tráfego para versões específicas.",
       "category": "Core Resources",
       "tags": ["istio", "subsets", "destinationrule"]
     },
     {
       "id": "canary-weighted-routing",
-      "front": "How do you configure a canary deployment in Istio that sends 10% of traffic to v2?",
-      "back": "Use a VirtualService with weighted routing:\n\nspec:\n  hosts:\n  - my-app\n  http:\n  - route:\n    - destination:\n        host: my-app\n        subset: v1\n      weight: 90\n    - destination:\n        host: my-app\n        subset: v2\n      weight: 10\n\nWeights must add up to 100. You also need a DestinationRule that defines the v1 and v2 subsets with matching pod labels. Gradually increase the v2 weight as you gain confidence.",
+      "front": "Como você configura um canary deployment no Istio que envia 10% do tráfego para a v2?",
+      "back": "Use um VirtualService com roteamento ponderado:\n\nspec:\n  hosts:\n  - my-app\n  http:\n  - route:\n    - destination:\n        host: my-app\n        subset: v1\n      weight: 90\n    - destination:\n        host: my-app\n        subset: v2\n      weight: 10\n\nOs pesos precisam somar 100. Você também precisa de um DestinationRule que defina os subsets v1 e v2 com os labels de pods correspondentes. Aumente gradualmente o peso da v2 conforme ganha confiança.",
       "category": "Traffic Routing",
       "tags": ["istio", "canary", "weighted-routing"]
     },
     {
       "id": "header-based-routing",
-      "front": "How do you route requests to a specific service version based on an HTTP header?",
-      "back": "Use a match block in a VirtualService:\n\nhttp:\n- match:\n  - headers:\n      x-test-user:\n        exact: \"true\"\n  route:\n  - destination:\n      host: my-app\n      subset: v2\n- route:\n  - destination:\n      host: my-app\n      subset: v1\n\nThis sends requests with the header 'x-test-user: true' to v2, and everything else to v1. Useful for testing new versions with specific users or internal teams before a wider rollout.",
+      "front": "Como você roteia requisições para uma versão específica de um serviço com base em um header HTTP?",
+      "back": "Use um bloco match em um VirtualService:\n\nhttp:\n- match:\n  - headers:\n      x-test-user:\n        exact: \"true\"\n  route:\n  - destination:\n      host: my-app\n      subset: v2\n- route:\n  - destination:\n      host: my-app\n      subset: v1\n\nIsso envia requisições com o header 'x-test-user: true' para a v2, e todo o resto para a v1. Útil para testar novas versões com usuários específicos ou equipes internas antes de um rollout mais amplo.",
       "category": "Traffic Routing",
       "tags": ["istio", "header-routing", "traffic-management"]
     },
     {
       "id": "retry-config",
-      "front": "How do you configure automatic retries in Istio and what are sensible defaults?",
-      "back": "Add a retries block to a VirtualService route:\n\nhttp:\n- route:\n  - destination:\n      host: my-app\n  retries:\n    attempts: 3\n    perTryTimeout: 2s\n    retryOn: 5xx,reset,connect-failure,retriable-4xx\n\nKey settings:\n- attempts: number of retry attempts (don't go above 3-5 for most services)\n- perTryTimeout: timeout per attempt, not total\n- retryOn: which conditions trigger a retry\n\nBe careful: retries multiply load. 3 retries on a service handling 1000 rps can turn into 3000 rps during an outage.",
+      "front": "Como você configura retries automáticos no Istio, e quais são valores padrão sensatos?",
+      "back": "Adicione um bloco retries a uma rota do VirtualService:\n\nhttp:\n- route:\n  - destination:\n      host: my-app\n  retries:\n    attempts: 3\n    perTryTimeout: 2s\n    retryOn: 5xx,reset,connect-failure,retriable-4xx\n\nConfigurações principais:\n- attempts: número de tentativas de retry (não passe de 3-5 para a maioria dos serviços)\n- perTryTimeout: timeout por tentativa, não o total\n- retryOn: quais condições disparam um retry\n\nCuidado: retries multiplicam a carga. 3 retries em um serviço que lida com 1000 rps podem virar 3000 rps durante uma indisponibilidade.",
       "category": "Retries",
       "tags": ["istio", "retries", "resilience"]
     },
     {
       "id": "retry-on-conditions",
-      "front": "What does the retryOn field in Istio control, and what are the common values?",
-      "back": "retryOn specifies which failure conditions trigger a retry. Common values (comma-separated):\n\n- 5xx: any 500-level response\n- reset: connection reset by the upstream\n- connect-failure: failed to connect to upstream\n- retriable-4xx: retryable 4xx codes (409 Conflict)\n- gateway-error: 502, 503, or 504 responses\n- refused-stream: upstream refused the stream (HTTP/2)\n\nNever retry on non-idempotent requests (POST creating records) unless your service handles duplicates. Retrying a payment request could charge a customer twice.",
+      "front": "O que o campo retryOn no Istio controla, e quais são os valores comuns?",
+      "back": "retryOn especifica quais condições de falha disparam um retry. Valores comuns (separados por vírgula):\n\n- 5xx: qualquer resposta da faixa 500\n- reset: conexão resetada pelo upstream\n- connect-failure: falha ao conectar ao upstream\n- retriable-4xx: códigos 4xx que podem ser repetidos (409 Conflict)\n- gateway-error: respostas 502, 503 ou 504\n- refused-stream: o upstream recusou o stream (HTTP/2)\n\nNunca faça retry em requisições não idempotentes (POST que cria registros) a menos que seu serviço trate duplicatas. Repetir uma requisição de pagamento pode cobrar o cliente duas vezes.",
       "category": "Retries",
       "tags": ["istio", "retries", "error-handling"]
     },
     {
       "id": "timeout-config",
-      "front": "How do you set request timeouts in Istio, and why should you set them explicitly?",
-      "back": "Add a timeout field to a VirtualService route:\n\nhttp:\n- route:\n  - destination:\n      host: my-app\n  timeout: 5s\n\nIstio's default timeout is 15 seconds - too long for most APIs. Explicit timeouts prevent slow upstream services from holding connections open and cascading failures across your mesh. Set timeouts shorter than the caller's timeout to fail fast. For example, if the frontend times out at 10s, set the backend VirtualService timeout to 5s.",
+      "front": "Como você define timeouts de requisição no Istio, e por que deve defini-los explicitamente?",
+      "back": "Adicione um campo timeout a uma rota do VirtualService:\n\nhttp:\n- route:\n  - destination:\n      host: my-app\n  timeout: 5s\n\nO timeout padrão do Istio é de 15 segundos - tempo demais para a maioria das APIs. Timeouts explícitos evitam que serviços upstream lentos mantenham conexões abertas e espalhem falhas em cascata pela sua mesh. Defina timeouts menores que o timeout de quem está chamando para falhar rápido. Por exemplo, se o frontend tem timeout em 10s, defina o timeout do VirtualService do backend em 5s.",
       "category": "Timeouts",
       "tags": ["istio", "timeouts", "resilience"]
     },
     {
       "id": "circuit-breaker-config",
-      "front": "How do you configure a circuit breaker in Istio?",
-      "back": "Circuit breakers are configured in a DestinationRule using connectionPool and outlierDetection:\n\nspec:\n  host: my-app\n  trafficPolicy:\n    connectionPool:\n      tcp:\n        maxConnections: 100\n      http:\n        h2UpgradePolicy: DEFAULT\n        http1MaxPendingRequests: 100\n        http2MaxRequests: 1000\n    outlierDetection:\n      consecutive5xxErrors: 5\n      interval: 10s\n      baseEjectionTime: 30s\n      maxEjectionPercent: 50\n\nconnectionPool limits concurrent load. outlierDetection ejects unhealthy endpoints from the load balancing pool.",
+      "front": "Como você configura um circuit breaker no Istio?",
+      "back": "Circuit breakers são configurados em um DestinationRule usando connectionPool e outlierDetection:\n\nspec:\n  host: my-app\n  trafficPolicy:\n    connectionPool:\n      tcp:\n        maxConnections: 100\n      http:\n        h2UpgradePolicy: DEFAULT\n        http1MaxPendingRequests: 100\n        http2MaxRequests: 1000\n    outlierDetection:\n      consecutive5xxErrors: 5\n      interval: 10s\n      baseEjectionTime: 30s\n      maxEjectionPercent: 50\n\nO connectionPool limita a carga concorrente. O outlierDetection remove endpoints não saudáveis do pool de load balancing.",
       "category": "Circuit Breaking",
       "tags": ["istio", "circuit-breaker", "resilience"]
     },
     {
       "id": "outlier-detection-explained",
-      "front": "What does outlierDetection do in an Istio DestinationRule?",
-      "back": "outlierDetection watches individual endpoints (pods) for failures and temporarily removes bad ones from the load balancing pool.\n\nKey fields:\n- consecutive5xxErrors: how many 5xx errors before ejecting (default: 5)\n- interval: how often to check for outliers (default: 10s)\n- baseEjectionTime: how long to eject an endpoint (default: 30s, increases with each ejection)\n- maxEjectionPercent: max % of endpoints that can be ejected at once (default: 10%)\n\nSet maxEjectionPercent carefully. If set to 100% and all pods are failing, you'll eject everything and have zero capacity.",
+      "front": "O que o outlierDetection faz em um DestinationRule do Istio?",
+      "back": "O outlierDetection monitora endpoints individuais (pods) em busca de falhas e remove temporariamente os problemáticos do pool de load balancing.\n\nCampos principais:\n- consecutive5xxErrors: quantos erros 5xx antes de ejetar (padrão: 5)\n- interval: com que frequência verificar outliers (padrão: 10s)\n- baseEjectionTime: por quanto tempo ejetar um endpoint (padrão: 30s, aumenta a cada ejeção)\n- maxEjectionPercent: % máxima de endpoints que podem ser ejetados de uma vez (padrão: 10%)\n\nDefina o maxEjectionPercent com cuidado. Se estiver em 100% e todos os pods estiverem falhando, você vai ejetar tudo e ficar com capacidade zero.",
       "category": "Circuit Breaking",
       "tags": ["istio", "outlier-detection", "circuit-breaker"]
     },
     {
       "id": "connection-pool-limits",
-      "front": "What happens when Istio connection pool limits are reached?",
-      "back": "When limits are hit, Istio returns an HTTP 503 (Service Unavailable) to the caller immediately instead of queuing the request. This is the \"circuit open\" behavior.\n\nKey limits:\n- maxConnections (TCP): max number of connections to the destination\n- http1MaxPendingRequests: max queued requests waiting for a connection\n- http2MaxRequests: max concurrent active requests\n\nThese limits protect your service from being overwhelmed. If your service can handle 100 concurrent requests, setting http2MaxRequests: 100 prevents a traffic spike from crashing it. The caller gets a fast 503 and can retry or show an error.",
+      "front": "O que acontece quando os limites de connection pool do Istio são atingidos?",
+      "back": "Quando os limites são atingidos, o Istio retorna imediatamente um HTTP 503 (Service Unavailable) para quem chamou, em vez de enfileirar a requisição. Esse é o comportamento de \"circuito aberto\".\n\nLimites principais:\n- maxConnections (TCP): número máximo de conexões com o destino\n- http1MaxPendingRequests: número máximo de requisições enfileiradas aguardando uma conexão\n- http2MaxRequests: número máximo de requisições ativas simultâneas\n\nEsses limites protegem seu serviço de ser sobrecarregado. Se o seu serviço aguenta 100 requisições simultâneas, definir http2MaxRequests: 100 evita que um pico de tráfego o derrube. Quem chamou recebe um 503 rápido e pode tentar de novo ou exibir um erro.",
       "category": "Circuit Breaking",
       "tags": ["istio", "connection-pool", "resilience"]
     },
     {
       "id": "fault-injection-delay",
-      "front": "How do you inject a delay fault in Istio to test timeout handling?",
-      "back": "Add a fault block to a VirtualService:\n\nhttp:\n- fault:\n    delay:\n      percentage:\n        value: 10\n      fixedDelay: 5s\n  route:\n  - destination:\n      host: my-app\n\nThis adds a 5-second delay to 10% of requests. Use this to verify that your timeouts, retries, and circuit breakers work correctly before they're needed in production. Always test with a small percentage first and never inject faults in production without feature flags or header-based targeting.",
+      "front": "Como você injeta uma falha de atraso (delay) no Istio para testar o tratamento de timeouts?",
+      "back": "Adicione um bloco fault a um VirtualService:\n\nhttp:\n- fault:\n    delay:\n      percentage:\n        value: 10\n      fixedDelay: 5s\n  route:\n  - destination:\n      host: my-app\n\nIsso adiciona um atraso de 5 segundos a 10% das requisições. Use isso para verificar se seus timeouts, retries e circuit breakers funcionam corretamente antes de precisar deles em produção. Sempre teste primeiro com uma porcentagem pequena e nunca injete falhas em produção sem feature flags ou direcionamento baseado em headers.",
       "category": "Fault Injection",
       "tags": ["istio", "fault-injection", "testing"]
     },
     {
       "id": "fault-injection-abort",
-      "front": "How do you simulate HTTP errors with Istio fault injection?",
-      "back": "Use an abort fault in a VirtualService:\n\nhttp:\n- fault:\n    abort:\n      percentage:\n        value: 5\n      httpStatus: 503\n  route:\n  - destination:\n      host: my-app\n\nThis returns a 503 for 5% of requests without forwarding them to the service. Combine with header matching to target specific test traffic:\n\nmatch:\n- headers:\n    x-fault-test:\n      exact: \"true\"\nfault:\n  abort:\n    percentage:\n      value: 100\n    httpStatus: 500",
+      "front": "Como você simula erros HTTP com fault injection no Istio?",
+      "back": "Use uma falha do tipo abort em um VirtualService:\n\nhttp:\n- fault:\n    abort:\n      percentage:\n        value: 5\n      httpStatus: 503\n  route:\n  - destination:\n      host: my-app\n\nIsso retorna um 503 para 5% das requisições sem encaminhá-las ao serviço. Combine com matching de headers para direcionar tráfego de teste específico:\n\nmatch:\n- headers:\n    x-fault-test:\n      exact: \"true\"\nfault:\n  abort:\n    percentage:\n      value: 100\n    httpStatus: 500",
       "category": "Fault Injection",
       "tags": ["istio", "fault-injection", "testing"]
     },
     {
       "id": "traffic-mirroring",
-      "front": "What is traffic mirroring in Istio and when would you use it?",
-      "back": "Traffic mirroring (shadowing) sends a copy of live traffic to a second service without affecting the primary request flow. The mirrored traffic is fire-and-forget - responses are discarded.\n\nhttp:\n- route:\n  - destination:\n      host: my-app\n      subset: v1\n  mirror:\n    host: my-app\n    subset: v2\n  mirrorPercentage:\n    value: 100\n\nUse it to test a new version with real production traffic before routing actual users to it. Unlike canary deployments, mirroring has zero risk to users since the mirrored responses are thrown away.",
+      "front": "O que é traffic mirroring no Istio e quando você o usaria?",
+      "back": "Traffic mirroring (shadowing) envia uma cópia do tráfego real para um segundo serviço sem afetar o fluxo principal da requisição. O tráfego espelhado é fire-and-forget - as respostas são descartadas.\n\nhttp:\n- route:\n  - destination:\n      host: my-app\n      subset: v1\n  mirror:\n    host: my-app\n    subset: v2\n  mirrorPercentage:\n    value: 100\n\nUse isso para testar uma nova versão com tráfego real de produção antes de rotear usuários de verdade para ela. Diferente de um canary deployment, o mirroring tem risco zero para os usuários, já que as respostas espelhadas são descartadas.",
       "category": "Traffic Routing",
       "tags": ["istio", "mirroring", "traffic-management"]
     },
     {
       "id": "gateway-vs-virtualservice",
-      "front": "What is the difference between an Istio Gateway and a VirtualService?",
-      "back": "A Gateway configures a load balancer at the edge of the mesh for incoming (or outgoing) traffic. It defines which ports, protocols, and hostnames to listen on.\n\nA VirtualService defines what to do with that traffic - routing rules, retries, timeouts.\n\nThey work together: the Gateway accepts traffic, the VirtualService routes it.\n\napiVersion: networking.istio.io/v1beta1\nkind: Gateway\nmetadata:\n  name: my-gateway\nspec:\n  selector:\n    istio: ingressgateway\n  servers:\n  - port:\n      number: 80\n      name: http\n      protocol: HTTP\n    hosts:\n    - \"app.example.com\"",
+      "front": "Qual é a diferença entre um Gateway do Istio e um VirtualService?",
+      "back": "Um Gateway configura um load balancer na borda da mesh para tráfego de entrada (ou saída). Ele define em quais portas, protocolos e hostnames escutar.\n\nUm VirtualService define o que fazer com esse tráfego - regras de roteamento, retries, timeouts.\n\nEles trabalham juntos: o Gateway aceita o tráfego, o VirtualService o roteia.\n\napiVersion: networking.istio.io/v1beta1\nkind: Gateway\nmetadata:\n  name: my-gateway\nspec:\n  selector:\n    istio: ingressgateway\n  servers:\n  - port:\n      number: 80\n      name: http\n      protocol: HTTP\n    hosts:\n    - \"app.example.com\"",
       "category": "Core Resources",
       "tags": ["istio", "gateway", "ingress"]
     },
     {
       "id": "retry-budget-concern",
-      "front": "Why can retries cause cascading failures, and how do you prevent it?",
-      "back": "Retries amplify load. If service A retries 3 times to service B, and B retries 3 times to service C, a single user request can generate 9 requests to C. During an outage, this multiplier effect can turn a partial failure into a total meltdown.\n\nPrevention strategies:\n- Keep retry attempts low (2-3 max)\n- Set perTryTimeout to fail fast\n- Use circuit breakers alongside retries so you stop retrying once the destination is clearly down\n- Only retry at one layer in the call chain, not every hop\n- Use retry budgets (Istio doesn't natively support these, but keep total retries under 20% of baseline traffic as a rule of thumb)",
+      "front": "Por que retries podem causar falhas em cascata, e como você evita isso?",
+      "back": "Retries amplificam a carga. Se o serviço A faz 3 retries para o serviço B, e B faz 3 retries para o serviço C, uma única requisição de usuário pode gerar 9 requisições para C. Durante uma indisponibilidade, esse efeito multiplicador pode transformar uma falha parcial em um colapso total.\n\nEstratégias de prevenção:\n- Mantenha o número de tentativas de retry baixo (no máximo 2-3)\n- Configure o perTryTimeout para falhar rápido\n- Use circuit breakers junto com retries para parar de tentar novamente quando o destino estiver claramente fora do ar\n- Faça retry em apenas uma camada da cadeia de chamadas, não em cada hop\n- Use retry budgets (o Istio não suporta isso nativamente, mas como regra prática, mantenha o total de retries abaixo de 20% do tráfego de base)",
       "category": "Retries",
       "tags": ["istio", "retries", "cascading-failure"]
     }

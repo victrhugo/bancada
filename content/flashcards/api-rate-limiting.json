@@ -1,11 +1,11 @@
 {
   "id": "api-rate-limiting",
-  "title": "Designing Rate Limiting for APIs",
-  "description": "Token bucket, leaky bucket, fixed and sliding window algorithms, plus the patterns for building rate limiters that work in distributed systems without falling over.",
+  "title": "Projetando Rate Limiting para APIs",
+  "description": "Token bucket, leaky bucket, janela fixa e janela deslizante, além dos padrões para construir rate limiters que funcionam em sistemas distribuídos sem quebrar.",
   "category": "API Design",
   "icon": "Gauge",
   "difficulty": "intermediate",
-  "estimatedTime": "20 minutes",
+  "estimatedTime": "20 minutos",
   "cardCount": 17,
   "theme": {
     "primaryColor": "blue",
@@ -15,120 +15,120 @@
   "cards": [
     {
       "id": "why-rate-limiting-matters",
-      "front": "Why do you need rate limiting on an API even if your servers can handle the traffic?",
-      "back": "Capacity is only one reason. The others bite harder in production:\n\n- A single buggy client in a retry loop can saturate a downstream database or a paid third-party API\n- Abusive scrapers and credential-stuffing bots cost real money on egress, CPU, and tokens\n- Without limits, one customer can degrade service for everyone (noisy neighbor)\n- Auth endpoints without limits turn into brute-force playgrounds\n\nRate limiting is a fairness and safety control. You add it before you need it, not after the incident.",
+      "front": "Por que você precisa de rate limiting em uma API mesmo que seus servidores aguentem o tráfego?",
+      "back": "Capacidade é só um dos motivos. Os outros doem mais em produção:\n\n- Um único cliente com bug em loop de retry pode saturar um banco de dados downstream ou uma API paga de terceiros\n- Scrapers abusivos e bots de credential stuffing custam dinheiro de verdade em egress, CPU e tokens\n- Sem limites, um cliente pode degradar o serviço para todo mundo (o famoso noisy neighbor)\n- Endpoints de autenticação sem limites viram playground para força bruta\n\nRate limiting é um controle de justiça e segurança. Você adiciona antes de precisar, não depois do incidente.",
       "category": "Fundamentals",
       "tags": ["api-design", "rate-limiting", "fundamentals"]
     },
     {
       "id": "fixed-window-counter",
-      "front": "How does the fixed window counter algorithm work, and what is its main flaw?",
-      "back": "You bucket time into fixed intervals (say, one minute) and count requests in the current bucket. Reject when the count goes over the limit.\n\n```\nkey = \"user:123:2026-05-20T14:32\"\ncount = INCR key\nif count == 1: EXPIRE key 60\nif count > 100: reject\n```\n\nThe flaw: a client can send 100 requests at 14:32:59 and another 100 at 14:33:00. That is 200 requests in two seconds while technically respecting a 100/minute limit. Cheap to implement, but lets bursts at the boundary slip through.",
+      "front": "Como funciona o algoritmo de contador de janela fixa (fixed window), e qual é sua principal falha?",
+      "back": "Você divide o tempo em intervalos fixos (digamos, um minuto) e conta as requisições no bucket atual. Rejeita quando a contagem passa do limite.\n\n```\nkey = \"user:123:2026-05-20T14:32\"\ncount = INCR key\nif count == 1: EXPIRE key 60\nif count > 100: reject\n```\n\nA falha: um cliente pode mandar 100 requisições às 14:32:59 e outras 100 às 14:33:00. São 200 requisições em dois segundos, respeitando tecnicamente um limite de 100/minuto. Barato de implementar, mas deixa passar rajadas na fronteira entre janelas.",
       "category": "Algorithms",
       "tags": ["fixed-window", "rate-limiting", "algorithms"]
     },
     {
       "id": "sliding-window-log",
-      "front": "What is the sliding window log algorithm, and why is it expensive?",
-      "back": "You store the timestamp of every request in a sorted set. To check the limit, drop entries older than the window and count what is left.\n\n```\nZREMRANGEBYSCORE user:123 0 (now-60s)\nZADD user:123 now now\ncount = ZCARD user:123\nif count > 100: reject\n```\n\nIt is the most accurate algorithm because there are no boundary effects. The cost is memory: storing every request timestamp scales with traffic. For high-throughput APIs you usually want sliding window counters instead.",
+      "front": "O que é o algoritmo de log de janela deslizante (sliding window log), e por que ele é caro?",
+      "back": "Você guarda o timestamp de cada requisição em um sorted set. Para checar o limite, descarta as entradas mais antigas que a janela e conta o que sobrou.\n\n```\nZREMRANGEBYSCORE user:123 0 (now-60s)\nZADD user:123 now now\ncount = ZCARD user:123\nif count > 100: reject\n```\n\nÉ o algoritmo mais preciso porque não tem efeito de fronteira. O custo é memória: guardar o timestamp de cada requisição escala junto com o tráfego. Para APIs de alto throughput, geralmente vale mais usar o sliding window counter.",
       "category": "Algorithms",
       "tags": ["sliding-window", "rate-limiting", "algorithms"]
     },
     {
       "id": "sliding-window-counter",
-      "front": "How does the sliding window counter approximate a true sliding window without storing every request?",
-      "back": "Keep counters for the current and previous fixed window. Weight the previous window by how much of it still overlaps the sliding window.\n\n```\nweight = (60 - seconds_into_current_window) / 60\nestimated = previous_count * weight + current_count\nif estimated > 100: reject\n```\n\nYou get most of the accuracy of a sliding log with the memory cost of two integers per key. This is what Cloudflare uses, and it is a good default for almost any production rate limiter.",
+      "front": "Como o sliding window counter aproxima uma janela deslizante real sem guardar cada requisição?",
+      "back": "Mantém contadores para a janela fixa atual e a anterior. Pondera a janela anterior pela fração dela que ainda se sobrepõe à janela deslizante.\n\n```\nweight = (60 - seconds_into_current_window) / 60\nestimated = previous_count * weight + current_count\nif estimated > 100: reject\n```\n\nVocê ganha quase toda a precisão de um sliding log com o custo de memória de dois inteiros por chave. É o que a Cloudflare usa, e é um bom padrão para praticamente qualquer rate limiter em produção.",
       "category": "Algorithms",
       "tags": ["sliding-window-counter", "rate-limiting", "cloudflare"]
     },
     {
       "id": "token-bucket-algorithm",
-      "front": "How does the token bucket algorithm work, and what makes it good for bursty traffic?",
-      "back": "A bucket holds up to N tokens. It refills at a steady rate (say, 10 per second). Each request takes one token. If the bucket is empty, reject or queue.\n\n```\ntokens = min(capacity, tokens + (now - last_refill) * rate)\nif tokens >= 1:\n  tokens -= 1\n  allow\nelse:\n  reject\nlast_refill = now\n```\n\nIt allows short bursts up to the bucket capacity while still enforcing the average rate over time. This matches how real clients use APIs: idle, then a flurry of requests. It is what AWS API Gateway and most cloud services use.",
+      "front": "Como funciona o algoritmo de token bucket, e o que o torna bom para tráfego em rajadas?",
+      "back": "Um bucket guarda até N tokens. Ele é reabastecido a uma taxa constante (digamos, 10 por segundo). Cada requisição consome um token. Se o bucket estiver vazio, rejeita ou enfileira.\n\n```\ntokens = min(capacity, tokens + (now - last_refill) * rate)\nif tokens >= 1:\n  tokens -= 1\n  allow\nelse:\n  reject\nlast_refill = now\n```\n\nEle permite rajadas curtas até a capacidade do bucket, mantendo ao mesmo tempo a taxa média ao longo do tempo. Isso combina com o jeito que clientes reais usam APIs: parado, depois uma rajada de requisições. É o que o AWS API Gateway e a maioria dos serviços de nuvem usam.",
       "category": "Algorithms",
       "tags": ["token-bucket", "rate-limiting", "algorithms"]
     },
     {
       "id": "leaky-bucket-algorithm",
-      "front": "What is the leaky bucket algorithm and how is it different from token bucket?",
-      "back": "Requests go into a FIFO queue (the bucket) and are processed at a constant rate (the leak). If the queue is full, new requests are dropped.\n\nThe key difference from token bucket: leaky bucket smooths traffic to a constant output rate. No bursts ever reach the backend. Token bucket lets short bursts through.\n\nUse leaky bucket when the downstream cannot handle spikes (legacy services, payment processors). Use token bucket when you want to be friendly to bursty clients and the backend can absorb short spikes.",
+      "front": "O que é o algoritmo leaky bucket e em que ele difere do token bucket?",
+      "back": "As requisições entram em uma fila FIFO (o bucket) e são processadas a uma taxa constante (o vazamento). Se a fila estiver cheia, novas requisições são descartadas.\n\nA diferença principal em relação ao token bucket: o leaky bucket suaviza o tráfego para uma taxa de saída constante. Nenhuma rajada chega ao backend. O token bucket deixa rajadas curtas passarem.\n\nUse leaky bucket quando o downstream não aguenta picos (serviços legados, processadores de pagamento). Use token bucket quando quiser ser amigável com clientes que trabalham em rajadas e o backend consegue absorver picos curtos.",
       "category": "Algorithms",
       "tags": ["leaky-bucket", "rate-limiting", "algorithms"]
     },
     {
       "id": "which-algorithm",
-      "front": "Which rate limiting algorithm should you pick for a typical public API?",
-      "back": "Default to **token bucket** for most public APIs. It is the right balance for these reasons:\n\n- Allows short bursts that match real client behavior\n- Predictable enforcement of the long-term average\n- Cheap state: two numbers per key (tokens, last refill time)\n- Easy to reason about for users when documented\n\nReach for sliding window counter if you need stricter enforcement without burst tolerance. Use leaky bucket when downstream services need smooth, constant input. Skip fixed window for anything user-facing.",
+      "front": "Qual algoritmo de rate limiting você deveria escolher para uma API pública típica?",
+      "back": "Use **token bucket** como padrão para a maioria das APIs públicas. É o equilíbrio certo pelos seguintes motivos:\n\n- Permite rajadas curtas que combinam com o comportamento real dos clientes\n- Aplicação previsível da média de longo prazo\n- Estado barato: dois números por chave (tokens, horário do último refill)\n- Fácil de explicar para os usuários quando documentado\n\nRecorra ao sliding window counter se precisar de aplicação mais rígida, sem tolerância a rajadas. Use leaky bucket quando os serviços downstream precisarem de uma entrada suave e constante. Evite fixed window para qualquer coisa voltada ao usuário final.",
       "category": "Algorithms",
       "tags": ["algorithm-choice", "token-bucket", "design"]
     },
     {
       "id": "rate-limit-response-codes",
-      "front": "What HTTP status code and headers should you return when a client hits the limit?",
-      "back": "Return `429 Too Many Requests` with headers that tell the client when to retry and what their budget is:\n\n```\nHTTP/1.1 429 Too Many Requests\nRetry-After: 30\nX-RateLimit-Limit: 100\nX-RateLimit-Remaining: 0\nX-RateLimit-Reset: 1716222780\n```\n\n`Retry-After` can be seconds or an HTTP date. The `X-RateLimit-*` headers are not standard, but every major API uses them. The IETF draft `RateLimit-Limit` and `RateLimit-Remaining` headers (no `X-` prefix) are the emerging standard.",
+      "front": "Que código de status HTTP e headers você deveria retornar quando um cliente atinge o limite?",
+      "back": "Retorne `429 Too Many Requests` com headers que informem ao cliente quando tentar de novo e qual é o orçamento dele:\n\n```\nHTTP/1.1 429 Too Many Requests\nRetry-After: 30\nX-RateLimit-Limit: 100\nX-RateLimit-Remaining: 0\nX-RateLimit-Reset: 1716222780\n```\n\n`Retry-After` pode ser em segundos ou uma data HTTP. Os headers `X-RateLimit-*` não são padronizados, mas toda API relevante os usa. Os headers do draft do IETF `RateLimit-Limit` e `RateLimit-Remaining` (sem o prefixo `X-`) são o padrão que está surgindo.",
       "category": "API Contract",
       "tags": ["http-429", "headers", "api-design"]
     },
     {
       "id": "client-identity",
-      "front": "What should you use as the key when rate limiting an API?",
-      "back": "Pick the smallest stable identifier you trust:\n\n- **Authenticated requests**: API key or user ID. Most accurate, lets paying customers get higher limits.\n- **Unauthenticated requests**: IP address. Imperfect (NAT, mobile carriers, corporate proxies all share IPs) but the only thing you have.\n- **Login and signup endpoints**: combine IP + email or IP + username so one attacker cannot brute-force one account from many IPs.\n\nNever trust client-supplied headers like `X-Forwarded-For` unless you know your edge is rewriting them. Use the right hop from the proxy chain.",
+      "front": "O que você deveria usar como chave ao aplicar rate limiting em uma API?",
+      "back": "Escolha o menor identificador estável em que você confia:\n\n- **Requisições autenticadas**: API key ou ID do usuário. Mais preciso, permite dar limites maiores para clientes pagantes.\n- **Requisições não autenticadas**: endereço IP. Imperfeito (NAT, operadoras móveis e proxies corporativos compartilham IPs), mas é o que você tem.\n- **Endpoints de login e cadastro**: combine IP + email ou IP + username para que um atacante não consiga forçar uma conta a partir de vários IPs.\n\nNunca confie em headers fornecidos pelo cliente, como `X-Forwarded-For`, a menos que você saiba que sua borda os está reescrevendo. Use o hop correto na cadeia de proxies.",
       "category": "Implementation",
       "tags": ["client-identity", "api-key", "ip-address"]
     },
     {
       "id": "redis-incr-pattern",
-      "front": "What is the simplest distributed rate limiter you can build with Redis?",
-      "back": "Use `INCR` plus `EXPIRE` for a fixed window counter shared across all app servers:\n\n```\nkey = f\"rl:{user_id}:{minute}\"\ncount = redis.incr(key)\nif count == 1:\n    redis.expire(key, 60)\nif count > limit:\n    return 429\n```\n\nThere is a race between `INCR` and `EXPIRE`: if the process crashes between them, the key never expires. Fix it with a Lua script or `SET key 0 EX 60 NX` followed by `INCR`. For most use cases this is good enough and survives single-node Redis at high throughput.",
+      "front": "Qual é o rate limiter distribuído mais simples que você pode construir com Redis?",
+      "back": "Use `INCR` mais `EXPIRE` para um contador de janela fixa compartilhado entre todos os servidores da aplicação:\n\n```\nkey = f\"rl:{user_id}:{minute}\"\ncount = redis.incr(key)\nif count == 1:\n    redis.expire(key, 60)\nif count > limit:\n    return 429\n```\n\nExiste uma race condition entre `INCR` e `EXPIRE`: se o processo cair entre os dois, a chave nunca expira. Corrija com um script Lua ou com `SET key 0 EX 60 NX` seguido de `INCR`. Para a maioria dos casos isso já é suficiente e aguenta um Redis de nó único em alto throughput.",
       "category": "Implementation",
       "tags": ["redis", "incr", "distributed"]
     },
     {
       "id": "redis-lua-atomic",
-      "front": "Why use a Lua script for rate limiting in Redis instead of multiple commands?",
-      "back": "Multiple Redis commands from the app are not atomic. Two processes can both read `tokens = 0` and both refill, allowing double the intended rate. A Lua script runs as a single atomic operation on the Redis server.\n\n```lua\nlocal tokens = tonumber(redis.call('GET', KEYS[1]) or ARGV[1])\nlocal last = tonumber(redis.call('GET', KEYS[2]) or 0)\nlocal now = tonumber(ARGV[2])\nlocal refill = (now - last) * tonumber(ARGV[3])\ntokens = math.min(tonumber(ARGV[1]), tokens + refill)\nif tokens >= 1 then\n  tokens = tokens - 1\n  redis.call('SET', KEYS[1], tokens, 'EX', 3600)\n  redis.call('SET', KEYS[2], now, 'EX', 3600)\n  return 1\nend\nreturn 0\n```\n\nOne network round trip, no race conditions, works at scale.",
+      "front": "Por que usar um script Lua para rate limiting no Redis em vez de vários comandos?",
+      "back": "Vários comandos do Redis disparados pela aplicação não são atômicos. Dois processos podem ler `tokens = 0` ao mesmo tempo e ambos reabastecerem, permitindo o dobro da taxa pretendida. Um script Lua roda como uma única operação atômica no servidor Redis.\n\n```lua\nlocal tokens = tonumber(redis.call('GET', KEYS[1]) or ARGV[1])\nlocal last = tonumber(redis.call('GET', KEYS[2]) or 0)\nlocal now = tonumber(ARGV[2])\nlocal refill = (now - last) * tonumber(ARGV[3])\ntokens = math.min(tonumber(ARGV[1]), tokens + refill)\nif tokens >= 1 then\n  tokens = tokens - 1\n  redis.call('SET', KEYS[1], tokens, 'EX', 3600)\n  redis.call('SET', KEYS[2], now, 'EX', 3600)\n  return 1\nend\nreturn 0\n```\n\nUma única ida e volta pela rede, sem race conditions, funciona em escala.",
       "category": "Implementation",
       "tags": ["redis", "lua", "atomic"]
     },
     {
       "id": "tiered-limits",
-      "front": "How do you structure rate limits for free, paid, and enterprise tiers?",
-      "back": "Store limits as data, not as code. Key by tier in your config or a small lookup table:\n\n```\nfree:       60 req/min,   1000 req/day\npro:      1000 req/min,  50000 req/day\nenterprise: custom per contract\n```\n\nApply two limits at once: a per-minute limit prevents abuse, and a per-day limit caps cost. Different endpoints often need different weights (a search call costs more than a healthcheck), so let one request consume more than one token from the bucket.",
+      "front": "Como estruturar rate limits para os planos gratuito, pago e enterprise?",
+      "back": "Guarde os limites como dado, não como código. Organize por plano na sua configuração ou em uma pequena tabela de consulta:\n\n```\nfree:       60 req/min,   1000 req/day\npro:      1000 req/min,  50000 req/day\nenterprise: custom per contract\n```\n\nAplique dois limites ao mesmo tempo: um limite por minuto evita abuso, e um limite por dia limita o custo. Endpoints diferentes costumam precisar de pesos diferentes (uma busca custa mais que um healthcheck), então deixe uma requisição consumir mais de um token do bucket.",
       "category": "Patterns",
       "tags": ["tiered-limits", "pricing", "patterns"]
     },
     {
       "id": "per-endpoint-limits",
-      "front": "Why do you usually want different rate limits for different endpoints?",
-      "back": "One global limit per user is a blunt tool. Cheap and expensive endpoints have very different cost profiles:\n\n- `GET /healthz`: 1000/min is fine\n- `POST /search`: 60/min, hits Elasticsearch\n- `POST /generate-pdf`: 10/min, burns CPU\n- `POST /login`: 5/min per IP, stops brute force\n\nGroup endpoints into cost classes (cheap, normal, expensive) instead of setting a limit per route. Use a request weight so one expensive call consumes more tokens. This also matches how AWS and Stripe price their APIs.",
+      "front": "Por que geralmente você quer rate limits diferentes para endpoints diferentes?",
+      "back": "Um limite global por usuário é uma ferramenta grosseira. Endpoints baratos e caros têm perfis de custo bem diferentes:\n\n- `GET /healthz`: 1000/min está de bom tamanho\n- `POST /search`: 60/min, bate no Elasticsearch\n- `POST /generate-pdf`: 10/min, consome muita CPU\n- `POST /login`: 5/min por IP, freia força bruta\n\nAgrupe os endpoints em classes de custo (barato, normal, caro) em vez de definir um limite por rota. Use um peso por requisição para que uma chamada cara consuma mais tokens. Isso também combina com a forma como AWS e Stripe precificam suas APIs.",
       "category": "Patterns",
       "tags": ["per-endpoint", "request-weight", "patterns"]
     },
     {
       "id": "edge-vs-app-rate-limiting",
-      "front": "Should you rate limit at the CDN, the API gateway, or in the application?",
-      "back": "All three, at different layers:\n\n- **CDN (Cloudflare, Fastly)**: blunt limits on raw request volume per IP. Stops volumetric abuse before it costs you anything.\n- **API gateway (Kong, Envoy, AWS API Gateway)**: per-key or per-tier limits, response headers, 429s. The main enforcement point.\n- **Application**: business-rule limits that need request context. Example: 5 password resets per email per hour.\n\nPushing limits as close to the edge as possible saves backend cycles. Some limits can only be enforced after auth and parsing, so the app still needs its own layer.",
+      "front": "Você deveria aplicar rate limiting na CDN, no API gateway ou na aplicação?",
+      "back": "Nas três, em camadas diferentes:\n\n- **CDN (Cloudflare, Fastly)**: limites grosseiros sobre o volume bruto de requisições por IP. Detém abuso volumétrico antes que ele custe qualquer coisa.\n- **API gateway (Kong, Envoy, AWS API Gateway)**: limites por chave ou por plano, headers de resposta, 429s. É o principal ponto de aplicação.\n- **Aplicação**: limites de regras de negócio que precisam de contexto da requisição. Exemplo: 5 resets de senha por email por hora.\n\nAplicar os limites o mais próximo possível da borda economiza ciclos do backend. Alguns limites só podem ser aplicados depois da autenticação e do parsing, então a aplicação ainda precisa da sua própria camada.",
       "category": "Patterns",
       "tags": ["edge", "gateway", "layered"]
     },
     {
       "id": "concurrency-vs-rate",
-      "front": "What is the difference between a rate limiter and a concurrency limiter, and when do you need both?",
-      "back": "A rate limiter caps requests per unit time. A concurrency limiter caps requests in flight at any moment.\n\nA client can stay under 100 req/min while keeping 50 long-running requests open and exhausting your worker pool. Rate limiting alone does not stop that.\n\nUse both for any endpoint that can be slow:\n\n- Rate limit: 60 req/min per user\n- Concurrency limit: 5 in-flight per user\n\nConcurrency limits are usually implemented with a semaphore in the app or a connection limit at the gateway, not in Redis.",
+      "front": "Qual a diferença entre um rate limiter e um limitador de concorrência, e quando você precisa dos dois?",
+      "back": "Um rate limiter limita requisições por unidade de tempo. Um limitador de concorrência limita requisições em andamento em um determinado momento.\n\nUm cliente pode ficar abaixo de 100 req/min mantendo 50 requisições longas abertas ao mesmo tempo e esgotando seu pool de workers. Rate limiting sozinho não impede isso.\n\nUse os dois para qualquer endpoint que possa ser lento:\n\n- Rate limit: 60 req/min por usuário\n- Limite de concorrência: 5 em andamento por usuário\n\nLimites de concorrência geralmente são implementados com um semáforo na aplicação ou um limite de conexões no gateway, não no Redis.",
       "category": "Patterns",
       "tags": ["concurrency", "semaphore", "patterns"]
     },
     {
       "id": "client-backoff",
-      "front": "How should a client respond when it gets a 429, and what is the wrong way to do it?",
-      "back": "Honor `Retry-After` if it is present. Otherwise use exponential backoff with jitter:\n\n```python\nfor attempt in range(5):\n    resp = call_api()\n    if resp.status_code != 429:\n        break\n    wait = int(resp.headers.get(\"Retry-After\",\n                                min(60, 2**attempt)))\n    wait += random.uniform(0, wait * 0.3)  # jitter\n    time.sleep(wait)\n```\n\nThe wrong way: a tight retry loop with no delay. Every blocked client retrying immediately is a thundering herd that keeps the server pinned. Jitter is the difference between recovery in seconds and a self-inflicted outage.",
+      "front": "Como um cliente deveria reagir ao receber um 429, e qual é o jeito errado de fazer isso?",
+      "back": "Respeite o `Retry-After` quando ele estiver presente. Caso contrário, use backoff exponencial com jitter:\n\n```python\nfor attempt in range(5):\n    resp = call_api()\n    if resp.status_code != 429:\n        break\n    wait = int(resp.headers.get(\"Retry-After\",\n                                min(60, 2**attempt)))\n    wait += random.uniform(0, wait * 0.3)  # jitter\n    time.sleep(wait)\n```\n\nO jeito errado: um loop de retry sem nenhum delay. Todo cliente bloqueado tentando de novo imediatamente vira um thundering herd que mantém o servidor pressionado. O jitter é a diferença entre uma recuperação em segundos e uma queda autoinfligida.",
       "category": "Client Behavior",
       "tags": ["backoff", "retry", "jitter"]
     },
     {
       "id": "monitoring-rate-limits",
-      "front": "What do you monitor to know your rate limiter is set correctly?",
-      "back": "Track these metrics and alert on the patterns, not the raw numbers:\n\n- **429 rate per endpoint and per client**: a sudden spike usually means abuse or a buggy integration\n- **Top clients by request volume**: catches noisy neighbors before they show up in 429s\n- **Limit headroom**: percentage of users hitting more than 80% of their limit. If most paying users brush the ceiling, your limits are too tight.\n- **Allow vs deny ratio at the gateway**: shifts in this ratio show shifts in traffic shape\n\nIf nothing is ever rate limited, your limits are too loose. If everyone is rate limited, they are too tight.",
+      "front": "O que você monitora para saber se o seu rate limiter está configurado corretamente?",
+      "back": "Acompanhe estas métricas e alerte sobre os padrões, não sobre os números brutos:\n\n- **Taxa de 429 por endpoint e por cliente**: um pico repentino geralmente significa abuso ou uma integração com bug\n- **Principais clientes por volume de requisições**: identifica noisy neighbors antes que eles apareçam nos 429s\n- **Folga do limite**: percentual de usuários que passam de 80% do próprio limite. Se a maioria dos usuários pagantes está encostando no teto, seus limites estão apertados demais.\n- **Proporção de permitidas vs negadas no gateway**: mudanças nessa proporção mostram mudanças no formato do tráfego\n\nSe nada nunca é limitado, seus limites estão frouxos demais. Se todo mundo é limitado, estão apertados demais.",
       "category": "Operations",
       "tags": ["monitoring", "metrics", "operations"]
     }

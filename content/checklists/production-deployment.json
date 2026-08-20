@@ -1,11 +1,11 @@
 {
   "id": "production-deployment",
   "slug": "production-deployment",
-  "title": "Production Deployment Checklist",
-  "description": "Pre-deployment checklist to ensure safe and successful production releases.",
+  "title": "Checklist de Deploy em Produção",
+  "description": "Checklist pré-deploy para garantir releases de produção seguros e bem-sucedidos.",
   "category": "DevOps",
   "difficulty": "beginner",
-  "estimatedTime": "20-30 minutes",
+  "estimatedTime": "20-30 minutos",
   "tags": [
     "deployment",
     "production",
@@ -15,157 +15,157 @@
   "items": [
     {
       "id": "review-code-changes",
-      "title": "Review code changes",
-      "description": "Code review is your last line of defense before production. Use pull request (PR) workflow: never commit directly to main/production branch. Require at least 2 reviewers for production changes (1 reviewer for non-critical changes). Reviewers should check: functionality (does code do what it's supposed to?), edge cases (error handling, null checks, boundary conditions), security (no hardcoded secrets, SQL injection, XSS vulnerabilities), performance (database query optimization, caching, algorithm efficiency), maintainability (clear variable names, comments for complex logic, follows team conventions). Use PR templates to ensure reviewers check critical items. Enable branch protection rules: require passing CI checks, require review approvals, dismiss stale reviews on new commits. For large changes, break into smaller PRs - easier to review thoroughly. Consider pair programming for complex features. Use automated tools to assist review: code coverage changes, static analysis results, security scan findings. Document 'why' in commit messages and PR descriptions, not just 'what'. For hotfixes: still require review, but establish expedited process. Track review turnaround time - long delays slow team velocity.",
+      "title": "Revisar as mudanças de código",
+      "description": "A revisão de código é sua última linha de defesa antes da produção. Use o fluxo de pull request (PR): nunca faça commit direto na branch main/produção. Exija pelo menos 2 revisores para mudanças de produção (1 revisor para mudanças não críticas). Os revisores devem verificar: funcionalidade (o código faz o que deveria?), casos extremos (tratamento de erros, checagens de null, condições de contorno), segurança (sem segredos hardcoded, injeção de SQL, vulnerabilidades de XSS), performance (otimização de queries no banco, cache, eficiência de algoritmos), manutenibilidade (nomes de variáveis claros, comentários para lógica complexa, seguindo as convenções do time). Use templates de PR para garantir que os revisores checem os itens críticos. Habilite regras de proteção de branch: exigir que os checks de CI passem, exigir aprovações de revisão, descartar reviews antigos quando houver novos commits. Para mudanças grandes, divida em PRs menores - fica mais fácil revisar com profundidade. Considere pair programming para features complexas. Use ferramentas automatizadas para apoiar a revisão: mudanças na cobertura de código, resultados de análise estática, achados de scans de segurança. Documente o 'porquê' nas mensagens de commit e descrições de PR, não só o 'o quê'. Para hotfixes: ainda exija revisão, mas estabeleça um processo mais ágil. Acompanhe o tempo de retorno das revisões - atrasos longos reduzem a velocidade do time.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Review changes since last release",
+          "label": "Revisar mudanças desde o último release",
           "code": "# View commits since last tag:\ngit log $(git describe --tags --abbrev=0)..HEAD --oneline\n\n# View detailed diff:\ngit diff $(git describe --tags --abbrev=0)..HEAD\n\n# View changed files:\ngit diff --name-only $(git describe --tags --abbrev=0)..HEAD"
         },
         {
           "language": "bash",
-          "label": "Review PR before merge",
+          "label": "Revisar o PR antes do merge",
           "code": "# Using GitHub CLI:\ngh pr view 123 --json title,body,commits\n\n# View diff:\ngh pr diff 123\n\n# Check reviews:\ngh pr checks 123"
         }
       ]
     },
     {
       "id": "run-all-tests",
-      "title": "Run all tests",
-      "description": "Never deploy if tests are failing - even one flaky test. Run full test suite locally before pushing: unit tests, integration tests, end-to-end tests. In CI/CD pipeline, ensure all test stages pass: verify green checkmarks on GitHub/GitLab. For large test suites, run in parallel to save time. Check code coverage hasn't decreased: most tools can compare coverage between branches. Run tests against a staging environment that mirrors production: same infrastructure, similar data volume, same configuration. Include smoke tests: quick checks of critical functionality (homepage loads, API health endpoint returns 200, database connection works, authentication works). For database-dependent tests: use test database with representative data, never test against production. If any test fails: fix the issue, don't disable the test or mark it as 'skip'. For E2E tests with UI: run in headless mode for speed, capture screenshots on failure for debugging. Check for test flakiness: run full suite 3-5 times - if any test fails inconsistently, investigate and fix. Run performance tests for high-traffic features: ensure response times meet SLAs under load. Verify tests run successfully in the exact environment configuration that will be deployed (same OS, runtime version, dependencies).",
+      "title": "Rodar todos os testes",
+      "description": "Nunca faça deploy se os testes estiverem falhando - nem mesmo um teste instável (flaky). Rode a suíte de testes completa localmente antes do push: testes unitários, testes de integração, testes end-to-end. No pipeline de CI/CD, garanta que todos os estágios de teste passem: verifique os checkmarks verdes no GitHub/GitLab. Para suítes de teste grandes, rode em paralelo para economizar tempo. Verifique se a cobertura de código não diminuiu: a maioria das ferramentas consegue comparar a cobertura entre branches. Rode os testes contra um ambiente de staging que espelhe a produção: mesma infraestrutura, volume de dados semelhante, mesma configuração. Inclua smoke tests: verificações rápidas de funcionalidades críticas (a homepage carrega, o endpoint de health da API retorna 200, a conexão com o banco funciona, a autenticação funciona). Para testes que dependem do banco: use um banco de testes com dados representativos, nunca teste contra produção. Se algum teste falhar: corrija o problema, não desabilite o teste nem marque como 'skip'. Para testes E2E com UI: rode em modo headless para ganhar velocidade, capture screenshots em caso de falha para facilitar o debug. Verifique instabilidade nos testes: rode a suíte completa de 3 a 5 vezes - se algum teste falhar de forma inconsistente, investigue e corrija. Rode testes de performance para features de alto tráfego: garanta que os tempos de resposta atendem aos SLAs sob carga. Verifique se os testes rodam com sucesso exatamente na configuração de ambiente que será usada no deploy (mesmo SO, versão do runtime, dependências).",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Run full test suite",
+          "label": "Rodar a suíte de testes completa",
           "code": "# Run all tests:\nnpm test\n\n# Run with coverage:\nnpm run test:coverage\n\n# Run integration tests:\nnpm run test:integration\n\n# Run end-to-end tests:\nnpm run test:e2e"
         },
         {
           "language": "bash",
-          "label": "Python test suite",
+          "label": "Suíte de testes em Python",
           "code": "# Run pytest with coverage:\npytest --cov=src --cov-report=html\n\n# Run specific test file:\npytest tests/test_integration.py -v\n\n# Run with markers:\npytest -m \"not slow\""
         }
       ]
     },
     {
       "id": "update-documentation",
-      "title": "Update documentation",
-      "description": "Keep documentation in sync with code changes. Update README.md: new features should include usage examples, new dependencies should be listed with version requirements, changed configuration should document new environment variables or config files. Update API documentation: if you changed API contracts (request/response schemas, new endpoints, deprecated endpoints), update OpenAPI/Swagger specs, generate new API docs with tools like Swagger UI, Redoc, or Postman. Update CHANGELOG.md: follow Keep a Changelog format with sections: Added (new features), Changed (changes in existing functionality), Deprecated (soon-to-be removed features), Removed (now removed features), Fixed (bug fixes), Security (security updates). Version numbers should follow Semantic Versioning (MAJOR.MINOR.PATCH). Update architecture diagrams if you changed system design: infrastructure diagrams, sequence diagrams, ER diagrams. Update runbooks: if you changed deployment process, configuration, or operational procedures. For breaking changes: write migration guide helping users upgrade from previous version. Update inline code comments for complex logic. Check if wiki or Confluence pages need updates. Generate changelog automatically from commit messages: use conventional commits (feat:, fix:, docs:, etc.) and tools like semantic-release or standard-version. Documentation PRs should be part of feature PRs, not separate afterward.",
+      "title": "Atualizar a documentação",
+      "description": "Mantenha a documentação sincronizada com as mudanças de código. Atualize o README.md: novas features devem incluir exemplos de uso, novas dependências devem ser listadas com os requisitos de versão, mudanças de configuração devem documentar novas variáveis de ambiente ou arquivos de config. Atualize a documentação da API: se você mudou contratos da API (schemas de request/response, novos endpoints, endpoints depreciados), atualize as specs OpenAPI/Swagger, gere nova documentação de API com ferramentas como Swagger UI, Redoc ou Postman. Atualize o CHANGELOG.md: siga o formato Keep a Changelog com as seções: Added (novas features), Changed (mudanças em funcionalidades existentes), Deprecated (features que serão removidas em breve), Removed (features removidas), Fixed (correções de bugs), Security (atualizações de segurança). Os números de versão devem seguir o Versionamento Semântico (MAJOR.MINOR.PATCH). Atualize diagramas de arquitetura se você mudou o design do sistema: diagramas de infraestrutura, diagramas de sequência, diagramas ER. Atualize os runbooks: se você mudou o processo de deploy, a configuração ou os procedimentos operacionais. Para mudanças que quebram compatibilidade (breaking changes): escreva um guia de migração ajudando os usuários a atualizar a partir da versão anterior. Atualize os comentários inline do código para lógica complexa. Verifique se páginas de wiki ou Confluence precisam de atualização. Gere o changelog automaticamente a partir das mensagens de commit: use conventional commits (feat:, fix:, docs:, etc.) e ferramentas como semantic-release ou standard-version. PRs de documentação devem fazer parte dos PRs de feature, não vir depois separadamente.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "markdown",
-          "label": "Release notes template",
+          "label": "Template de release notes",
           "code": "## Version X.Y.Z - YYYY-MM-DD\n\n### New Features\n- Feature A: Description of new functionality\n- Feature B: Another new feature\n\n### Bug Fixes\n- Fixed issue with user authentication\n- Resolved memory leak in background worker\n\n### Breaking Changes\n- API endpoint /old-path removed, use /new-path instead\n- Configuration parameter renamed: old_name -> new_name\n\n### Deprecations\n- Feature X is deprecated and will be removed in v2.0.0\n\n### Upgrade Instructions\n1. Backup your database\n2. Update configuration file\n3. Run migrations: `npm run migrate`\n4. Restart services"
         },
         {
           "language": "bash",
-          "label": "Auto-generate changelog",
+          "label": "Gerar changelog automaticamente",
           "code": "# Using conventional commits:\nnpx standard-version\n\n# Or manually:\ngit log --pretty=format:\"%h - %s (%an, %ar)\" v1.0.0..HEAD > CHANGELOG.md"
         }
       ]
     },
     {
       "id": "create-backup",
-      "title": "Create backup",
-      "description": "Backups are your insurance policy against deployment disasters. For databases: create manual snapshot/backup immediately before deployment. For PostgreSQL: 'pg_dump dbname > backup_$(date +%Y%m%d_%H%M%S).sql' or use pg_basebackup for full cluster backup. For MySQL: 'mysqldump --all-databases > backup_$(date +%Y%m%d_%H%M%S).sql' or use Percona XtraBackup for large databases. For managed databases (AWS RDS, Azure SQL): create manual snapshot in console - automated snapshots might not align with deployment timing. Verify backup completed successfully: check file size, test restore on dev environment. For stateful data: backup file storage (S3 buckets, EFS mounts) - use versioning or create point-in-time copies. Document backup location and restore procedure: future you (or your replacement) needs to know how to restore. Set retention policy: keep deployment-time backups for at least 30 days. For critical databases: test restore procedure regularly - untested backups are useless. Consider backup encryption for sensitive data. Backup application configuration: Docker images, Kubernetes manifests, environment variables, secrets. For zero-downtime deployments with database migrations: ensure migrations are backward-compatible (old code can run with new schema) - enables instant rollback without restoring database.",
+      "title": "Criar backup",
+      "description": "Backups são o seu seguro contra desastres de deploy. Para bancos de dados: crie um snapshot/backup manual imediatamente antes do deploy. Para PostgreSQL: 'pg_dump dbname > backup_$(date +%Y%m%d_%H%M%S).sql' ou use pg_basebackup para um backup completo do cluster. Para MySQL: 'mysqldump --all-databases > backup_$(date +%Y%m%d_%H%M%S).sql' ou use Percona XtraBackup para bancos grandes. Para bancos gerenciados (AWS RDS, Azure SQL): crie um snapshot manual no console - os snapshots automáticos podem não coincidir com o horário do deploy. Verifique se o backup foi concluído com sucesso: confira o tamanho do arquivo, teste a restauração em ambiente de dev. Para dados stateful: faça backup do armazenamento de arquivos (buckets S3, montagens EFS) - use versionamento ou crie cópias pontuais no tempo. Documente a localização do backup e o procedimento de restauração: o seu eu do futuro (ou quem te substituir) precisa saber como restaurar. Defina uma política de retenção: mantenha os backups do momento do deploy por pelo menos 30 dias. Para bancos críticos: teste o procedimento de restauração regularmente - backup não testado não serve para nada. Considere criptografar o backup para dados sensíveis. Faça backup da configuração da aplicação: imagens Docker, manifests do Kubernetes, variáveis de ambiente, secrets. Para deploys sem downtime com migrações de banco: garanta que as migrações sejam retrocompatíveis (o código antigo consegue rodar com o novo schema) - isso permite rollback instantâneo sem precisar restaurar o banco.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Database backup",
+          "label": "Backup do banco de dados",
           "code": "# PostgreSQL backup:\npg_dump -U postgres -d mydb -F c -f backup_$(date +%Y%m%d_%H%M%S).dump\n\n# MySQL backup:\nmysqldump -u root -p mydb > backup_$(date +%Y%m%d_%H%M%S).sql\n\n# MongoDB backup:\nmongodump --db mydb --out backup_$(date +%Y%m%d_%H%M%S)"
         },
         {
           "language": "bash",
-          "label": "Kubernetes backup with Velero",
+          "label": "Backup do Kubernetes com Velero",
           "code": "# Create backup:\nvelero backup create pre-deploy-backup \\  --include-namespaces production \\  --wait\n\n# Verify backup:\nvelero backup describe pre-deploy-backup\n\n# List backups:\nvelero backup get"
         }
       ]
     },
     {
       "id": "notify-team",
-      "title": "Notify team members",
-      "description": "Communication prevents surprises and ensures support is available if things go wrong. Send deployment notification to: development team, DevOps/SRE team, product managers, support team, stakeholders. Use established channels: Slack deployment channel, Teams, email, or ticketing system. Include in notification: what's being deployed (version number, PR/issue links), when (scheduled deployment time, expected duration), who's deploying (name of engineer), changes included (high-level summary, link to changelog), rollback plan (how to rollback, who can authorize), support contacts (who to call if issues arise). For scheduled maintenance windows: notify customers 24-48 hours in advance via status page (Statuspage.io, custom page), in-app notifications, email. For zero-downtime deployments: quick notification to internal teams is sufficient. Coordinate with other teams: ensure no conflicting deployments, no load tests or security scans during deployment, on-call engineer is available. Use deployment tools that post to Slack automatically: include deployment status, success/failure, deployment artifacts. After deployment: send completion notification with summary (deployed successfully, any issues encountered, next steps). For major releases: schedule deployment during low-traffic hours (nights, weekends) and have team members on standby. Create deployment calendar visible to entire organization - avoid surprise deployments.",
+      "title": "Avisar os membros do time",
+      "description": "A comunicação evita surpresas e garante que haja suporte disponível se algo der errado. Envie a notificação de deploy para: time de desenvolvimento, time de DevOps/SRE, gerentes de produto, time de suporte, stakeholders. Use os canais já estabelecidos: canal de deploy no Slack, Teams, e-mail ou sistema de tickets. Inclua na notificação: o que está sendo implantado (número da versão, links de PR/issue), quando (horário programado do deploy, duração esperada), quem está fazendo o deploy (nome do engenheiro), mudanças incluídas (resumo de alto nível, link para o changelog), plano de rollback (como reverter, quem pode autorizar), contatos de suporte (para quem ligar se surgirem problemas). Para janelas de manutenção programadas: avise os clientes com 24-48 horas de antecedência via status page (Statuspage.io, página própria), notificações in-app, e-mail. Para deploys sem downtime: um aviso rápido para os times internos já é suficiente. Coordene com outros times: garanta que não haja deploys conflitantes, nem testes de carga ou scans de segurança durante o deploy, e que o engenheiro de plantão esteja disponível. Use ferramentas de deploy que publicam automaticamente no Slack: incluindo status do deploy, sucesso/falha, artefatos do deploy. Depois do deploy: envie uma notificação de conclusão com um resumo (deploy concluído com sucesso, algum problema encontrado, próximos passos). Para releases importantes: programe o deploy para horários de baixo tráfego (noites, fins de semana) e deixe membros do time de prontidão. Crie um calendário de deploys visível para toda a organização - evite deploys surpresa.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Send Slack notification",
-          "code": "# Using curl:\ncurl -X POST -H 'Content-type: application/json' \\  --data '{\"text\":\"\ud83d\ude80 Deployment starting: myapp v1.2.3\\nEnvironment: production\\nETA: 15 minutes\"}' \\  $SLACK_WEBHOOK_URL\n\n# Using slack CLI:\nslack chat send --channel #deployments \\  --text \"\ud83d\ude80 Deployment starting: myapp v1.2.3\""
+          "label": "Enviar notificação no Slack",
+          "code": "# Using curl:\ncurl -X POST -H 'Content-type: application/json' \\  --data '{\"text\":\"🚀 Deployment starting: myapp v1.2.3\\nEnvironment: production\\nETA: 15 minutes\"}' \\  $SLACK_WEBHOOK_URL\n\n# Using slack CLI:\nslack chat send --channel #deployments \\  --text \"🚀 Deployment starting: myapp v1.2.3\""
         },
         {
           "language": "bash",
-          "label": "Create PagerDuty maintenance window",
+          "label": "Criar janela de manutenção no PagerDuty",
           "code": "# Create maintenance window:\ncurl -X POST https://api.pagerduty.com/maintenance_windows \\  -H 'Authorization: Token token=YOUR_API_KEY' \\  -H 'Content-Type: application/json' \\  -d '{\n    \"maintenance_window\": {\n      \"type\": \"maintenance_window\",\n      \"start_time\": \"2024-01-15T10:00:00Z\",\n      \"end_time\": \"2024-01-15T11:00:00Z\",\n      \"description\": \"Production deployment\",\n      \"services\": [{\"id\": \"SERVICE_ID\", \"type\": \"service_reference\"}]\n    }\n  }' "
         }
       ]
     },
     {
       "id": "deploy-staging",
-      "title": "Deploy to staging first",
-      "description": "Staging is your production dress rehearsal - use it to catch deployment issues before customers do. Staging environment should mirror production: same infrastructure (instance types, count), same configuration (environment variables, secrets), same data schema (use anonymized production data or realistic test data), same network setup (load balancers, DNS, SSL certificates), same monitoring and logging. Deploy exact same artifacts that will go to production: same Docker image tag, same build artifacts, same database migration scripts. Verify deployment process works: no configuration errors, no permission issues, no missing dependencies, correct version deployed. Run full test suite against staging: automated E2E tests, manual exploratory testing of new features, check critical user flows (login, checkout, data entry, reports). Test database migrations: ensure migrations run successfully, check migration rollback works, verify data integrity after migration. Test at production scale if possible: load testing with tools like k6, JMeter, Gatling - simulate realistic traffic patterns. Check monitoring dashboards: metrics appear correctly, logs are flowing, alerts don't trigger falsely. Leave staging deployed for sufficient time to catch time-based issues: scheduled jobs, cron tasks, time-zone handling. For blue-green deployments: staging is your 'blue' environment - validate thoroughly before switching production traffic. If anything fails in staging: fix issues, redeploy to staging, verify again - never skip to production.",
+      "title": "Fazer deploy em staging primeiro",
+      "description": "Staging é o ensaio geral da sua produção - use-o para pegar problemas de deploy antes que os clientes os encontrem. O ambiente de staging deve espelhar a produção: mesma infraestrutura (tipos de instância, quantidade), mesma configuração (variáveis de ambiente, secrets), mesmo schema de dados (use dados de produção anonimizados ou dados de teste realistas), mesma configuração de rede (load balancers, DNS, certificados SSL), mesmo monitoramento e logging. Faça deploy dos exatos mesmos artefatos que irão para produção: mesma tag de imagem Docker, mesmos artefatos de build, mesmos scripts de migração de banco. Verifique se o processo de deploy funciona: sem erros de configuração, sem problemas de permissão, sem dependências faltando, versão correta implantada. Rode a suíte de testes completa contra staging: testes E2E automatizados, testes exploratórios manuais das novas features, verifique os fluxos críticos de usuário (login, checkout, entrada de dados, relatórios). Teste as migrações de banco: garanta que as migrações rodam com sucesso, verifique se o rollback da migração funciona, confirme a integridade dos dados após a migração. Teste em escala de produção se possível: testes de carga com ferramentas como k6, JMeter, Gatling - simule padrões de tráfego realistas. Verifique os dashboards de monitoramento: as métricas aparecem corretamente, os logs estão fluindo, os alertas não disparam falsamente. Deixe o staging implantado por tempo suficiente para pegar problemas relacionados a horário: jobs agendados, tarefas cron, tratamento de fuso horário. Para deploys blue-green: staging é o seu ambiente 'blue' - valide com cuidado antes de direcionar o tráfego de produção. Se algo falhar em staging: corrija os problemas, faça o deploy novamente em staging, verifique de novo - nunca pule direto para produção.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Deploy to staging with kubectl",
+          "label": "Deploy em staging com kubectl",
           "code": "# Set context to staging:\nkubectl config use-context staging\n\n# Deploy:\nkubectl apply -f k8s/staging/\n\n# Wait for rollout:\nkubectl rollout status deployment/myapp -n staging\n\n# Verify pods:\nkubectl get pods -n staging -l app=myapp"
         },
         {
           "language": "bash",
-          "label": "Deploy with Helm",
+          "label": "Deploy com Helm",
           "code": "# Deploy to staging:\nhelm upgrade --install myapp ./helm-chart \\  --namespace staging \\  --values values-staging.yaml \\  --set image.tag=v1.2.3 \\  --wait --timeout 5m\n\n# Check release status:\nhelm status myapp -n staging"
         }
       ]
     },
     {
       "id": "verify-monitoring",
-      "title": "Verify monitoring and logging",
-      "description": "You can't fix what you can't see - verify observability before deployment. Check monitoring systems are operational: Datadog, New Relic, Prometheus, CloudWatch dashboards loading correctly and showing data. Verify application metrics: request rate, error rate, latency (p50, p95, p99), throughput. Create or update deployment dashboard showing: current version deployed, deployment timeline, key metrics (errors, latency), recent logs. Check log aggregation: logs flowing to centralized logging (Elasticsearch, Splunk, CloudWatch Logs, Datadog Logs). Verify log levels are appropriate: INFO for normal operations, WARN for issues that don't break functionality, ERROR for failures. Include structured logging with context: request IDs, user IDs, timestamps, environment. Set up deployment markers: annotate monitoring dashboards when deployment happens - makes correlation easy when metrics change. Configure alerts before deployment: alert on error rate spike (>5% increase), latency spike (p95 >1.5x baseline), pod/instance failures, database connection pool exhaustion. Test alerts actually fire: send test alert to Slack/PagerDuty - verify notifications reach on-call engineer. Enable distributed tracing for complex systems: Jaeger, Zipkin, AWS X-Ray help debug issues across microservices. Document where to find logs and metrics: onboarding new team members or incident response needs quick access. Set up log retention: balance between cost and compliance requirements.",
+      "title": "Verificar monitoramento e logging",
+      "description": "Você não consegue corrigir o que não consegue ver - verifique a observabilidade antes do deploy. Verifique se os sistemas de monitoramento estão operacionais: Datadog, New Relic, Prometheus, dashboards do CloudWatch carregando corretamente e mostrando dados. Verifique as métricas da aplicação: taxa de requisições, taxa de erro, latência (p50, p95, p99), throughput. Crie ou atualize um dashboard de deploy mostrando: versão atualmente implantada, linha do tempo do deploy, métricas principais (erros, latência), logs recentes. Verifique a agregação de logs: logs fluindo para o sistema de logging centralizado (Elasticsearch, Splunk, CloudWatch Logs, Datadog Logs). Verifique se os níveis de log estão adequados: INFO para operações normais, WARN para problemas que não quebram a funcionalidade, ERROR para falhas. Inclua logging estruturado com contexto: IDs de request, IDs de usuário, timestamps, ambiente. Configure marcadores de deploy: anote nos dashboards de monitoramento quando o deploy acontece - isso facilita a correlação quando as métricas mudam. Configure os alertas antes do deploy: alerta para pico na taxa de erro (aumento acima de 5%), pico de latência (p95 acima de 1,5x o baseline), falhas de pod/instância, esgotamento do pool de conexões do banco. Teste se os alertas realmente disparam: envie um alerta de teste para Slack/PagerDuty - verifique se as notificações chegam ao engenheiro de plantão. Habilite tracing distribuído para sistemas complexos: Jaeger, Zipkin, AWS X-Ray ajudam a debugar problemas entre microsserviços. Documente onde encontrar logs e métricas: integrar novos membros do time ou responder a incidentes exige acesso rápido. Configure a retenção de logs: equilibre custo e requisitos de compliance.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Check Prometheus metrics",
+          "label": "Verificar métricas do Prometheus",
           "code": "# Query metrics:\ncurl 'http://prometheus:9090/api/v1/query?query=up{job=\"myapp\"}'\n\n# Check if metrics endpoint is working:\ncurl http://myapp.example.com/metrics\n\n# Verify specific metrics exist:\ncurl -s http://myapp.example.com/metrics | grep \"http_requests_total\""
         },
         {
           "language": "bash",
-          "label": "Verify logs are flowing",
+          "label": "Verificar se os logs estão fluindo",
           "code": "# Check logs in CloudWatch:\naws logs tail /aws/ecs/myapp --follow\n\n# Check Kubernetes logs:\nkubectl logs -n production -l app=myapp --tail=100\n\n# Query logs in Elasticsearch:\ncurl -X GET \"http://elasticsearch:9200/logs-*/_search?q=app:myapp&size=10\""
         }
       ]
     },
     {
       "id": "smoke-tests",
-      "title": "Perform smoke tests",
-      "description": "Smoke tests are your first indicator of deployment success - they verify critical functionality works. Immediately after deployment, run: health check endpoint (GET /health should return 200 with status: ok), homepage loads (verify no 500 errors, no broken CSS/JS), authentication works (login with test user, verify JWT/session creation), database connectivity (query returns expected data), critical API endpoints (test 3-5 most important endpoints), background jobs running (check last job execution timestamp). For web applications: click through critical user flows (registration, login, main feature, logout). For APIs: run Postman collection or curl commands against production endpoints. Check external integrations: payment gateway test transaction, email service sends test email, third-party API calls succeed. Verify static assets load: check CDN serving images/CSS/JS correctly, verify correct version of frontend assets deployed. Monitor application logs during smoke tests: look for errors, exceptions, warnings that didn't appear in staging. Check metrics dashboards: error rate should be 0% or baseline, latency should match pre-deployment levels. Run smoke tests from multiple locations: different geographic regions, different user types (free vs. paid users). Automate smoke tests: create script that runs immediately post-deployment, integrate with deployment pipeline for automatic verification. Document smoke test checklist: ensure consistency across deployments and different team members. If any smoke test fails: investigate immediately, consider rollback if critical functionality broken.",
+      "title": "Executar smoke tests",
+      "description": "Smoke tests são o seu primeiro indicador de sucesso do deploy - eles verificam se a funcionalidade crítica está funcionando. Imediatamente após o deploy, execute: endpoint de health check (GET /health deve retornar 200 com status: ok), a homepage carrega (verifique se não há erros 500, nem CSS/JS quebrado), a autenticação funciona (login com usuário de teste, verifique a criação de JWT/sessão), conectividade com o banco (a query retorna os dados esperados), endpoints críticos da API (teste de 3 a 5 dos endpoints mais importantes), jobs em background rodando (verifique o timestamp da última execução do job). Para aplicações web: percorra os fluxos críticos de usuário (cadastro, login, feature principal, logout). Para APIs: rode a collection do Postman ou comandos curl contra os endpoints de produção. Verifique integrações externas: transação de teste no gateway de pagamento, o serviço de e-mail envia um e-mail de teste, chamadas a APIs de terceiros funcionam. Verifique se os assets estáticos carregam: confira se o CDN está servindo imagens/CSS/JS corretamente, verifique se a versão correta dos assets de frontend foi implantada. Monitore os logs da aplicação durante os smoke tests: procure por erros, exceções, warnings que não apareciam em staging. Verifique os dashboards de métricas: a taxa de erro deve estar em 0% ou no baseline, a latência deve corresponder aos níveis pré-deploy. Rode os smoke tests a partir de múltiplas localidades: diferentes regiões geográficas, diferentes tipos de usuário (gratuito vs. pago). Automatize os smoke tests: crie um script que roda imediatamente após o deploy, integre com o pipeline de deploy para verificação automática. Documente o checklist de smoke tests: garanta consistência entre deploys e diferentes membros do time. Se algum smoke test falhar: investigue imediatamente, considere o rollback se uma funcionalidade crítica estiver quebrada.",
       "critical": true,
       "codeBlocks": [
         {
           "language": "bash",
-          "label": "Basic smoke tests",
-          "code": "#!/bin/bash\n# smoke-test.sh\n\nBASE_URL=\"https://myapp.example.com\"\n\n# Test health endpoint:\nif curl -f $BASE_URL/health; then\n  echo \"\u2713 Health check passed\"\nelse\n  echo \"\u2717 Health check failed\"\n  exit 1\nfi\n\n# Test API endpoint:\nif curl -f $BASE_URL/api/status; then\n  echo \"\u2713 API check passed\"\nelse\n  echo \"\u2717 API check failed\"\n  exit 1\nfi\n\n# Test authentication:\nTOKEN=$(curl -X POST $BASE_URL/auth/login -d '{\"user\":\"test\",\"pass\":\"test\"}' | jq -r .token)\nif [ -n \"$TOKEN\" ]; then\n  echo \"\u2713 Authentication passed\"\nelse\n  echo \"\u2717 Authentication failed\"\n  exit 1\nfi\n\necho \"All smoke tests passed!\""
+          "label": "Smoke tests básicos",
+          "code": "#!/bin/bash\n# smoke-test.sh\n\nBASE_URL=\"https://myapp.example.com\"\n\n# Test health endpoint:\nif curl -f $BASE_URL/health; then\n  echo \"✓ Health check passed\"\nelse\n  echo \"✗ Health check failed\"\n  exit 1\nfi\n\n# Test API endpoint:\nif curl -f $BASE_URL/api/status; then\n  echo \"✓ API check passed\"\nelse\n  echo \"✗ API check failed\"\n  exit 1\nfi\n\n# Test authentication:\nTOKEN=$(curl -X POST $BASE_URL/auth/login -d '{\"user\":\"test\",\"pass\":\"test\"}' | jq -r .token)\nif [ -n \"$TOKEN\" ]; then\n  echo \"✓ Authentication passed\"\nelse\n  echo \"✗ Authentication failed\"\n  exit 1\nfi\n\necho \"All smoke tests passed!\""
         },
         {
           "language": "javascript",
-          "label": "Automated smoke tests with Playwright",
+          "label": "Smoke tests automatizados com Playwright",
           "code": "// smoke-test.spec.js\nconst { test, expect } = require('@playwright/test');\n\ntest('homepage loads', async ({ page }) => {\n  await page.goto('https://myapp.example.com');\n  await expect(page).toHaveTitle(/MyApp/);\n});\n\ntest('user can login', async ({ page }) => {\n  await page.goto('https://myapp.example.com/login');\n  await page.fill('input[name=\"username\"]', 'testuser');\n  await page.fill('input[name=\"password\"]', 'testpass');\n  await page.click('button[type=\"submit\"]');\n  await expect(page).toHaveURL(/dashboard/);\n});\n\ntest('API returns 200', async ({ request }) => {\n  const response = await request.get('https://myapp.example.com/api/status');\n  expect(response.status()).toBe(200);\n});"
         }
       ]
     },
     {
       "id": "update-runbooks",
-      "title": "Update runbooks",
-      "description": "Runbooks help team members respond to incidents and perform operational tasks consistently. Update deployment runbook if process changed: new steps added, different tools used, changed configuration, modified rollback procedure. Create or update incident response runbooks for new features: 'How to debug feature X', 'What to do if Y fails', 'How to manually trigger Z'. Include in runbooks: problem description (symptoms, error messages), investigation steps (logs to check, metrics to review, commands to run), resolution steps (exact commands with parameters, expected output, validation steps), escalation path (who to contact if steps don't work). Document common issues and fixes: 'If database migration times out, do X', 'If memory usage spikes, check Y'. Use consistent format: title, overview, prerequisites, step-by-step instructions with code blocks, troubleshooting section, related runbooks. Store runbooks where engineers can find them: wiki, Confluence, GitHub repo (docs/runbooks/), PagerDuty linked runbooks. Include version information: 'This runbook applies to v2.x and later', 'Updated for Kubernetes migration'. Link runbooks to monitoring alerts: when alert fires, link directly to relevant runbook for faster resolution. Review runbooks quarterly: remove outdated procedures, add lessons learned from recent incidents, ensure commands still work. For new team members: runbooks serve as operational training material. Consider runbook templates for consistency: deployment runbook template, incident response template, maintenance procedure template.",
+      "title": "Atualizar os runbooks",
+      "description": "Runbooks ajudam os membros do time a responder a incidentes e executar tarefas operacionais de forma consistente. Atualize o runbook de deploy se o processo mudou: novos passos adicionados, ferramentas diferentes usadas, configuração alterada, procedimento de rollback modificado. Crie ou atualize runbooks de resposta a incidentes para novas features: 'Como debugar a feature X', 'O que fazer se Y falhar', 'Como disparar Z manualmente'. Inclua nos runbooks: descrição do problema (sintomas, mensagens de erro), passos de investigação (logs a verificar, métricas a revisar, comandos a rodar), passos de resolução (comandos exatos com parâmetros, saída esperada, passos de validação), caminho de escalonamento (quem contatar se os passos não funcionarem). Documente problemas comuns e suas soluções: 'Se a migração do banco der timeout, faça X', 'Se o uso de memória disparar, verifique Y'. Use um formato consistente: título, visão geral, pré-requisitos, instruções passo a passo com blocos de código, seção de troubleshooting, runbooks relacionados. Armazene os runbooks onde os engenheiros consigam encontrá-los: wiki, Confluence, repositório GitHub (docs/runbooks/), runbooks vinculados no PagerDuty. Inclua informações de versão: 'Este runbook se aplica à v2.x e posteriores', 'Atualizado para a migração do Kubernetes'. Vincule os runbooks aos alertas de monitoramento: quando um alerta disparar, aponte direto para o runbook relevante para uma resolução mais rápida. Revise os runbooks trimestralmente: remova procedimentos desatualizados, adicione lições aprendidas de incidentes recentes, garanta que os comandos ainda funcionam. Para novos membros do time: os runbooks servem como material de treinamento operacional. Considere templates de runbook para manter a consistência: template de runbook de deploy, template de resposta a incidentes, template de procedimento de manutenção.",
       "critical": false,
       "codeBlocks": [
         {
           "language": "markdown",
-          "label": "Runbook template",
+          "label": "Template de runbook",
           "code": "# Runbook: MyApp Production Deployment\n\n## Quick Links\n- **Monitoring**: https://grafana.example.com/d/myapp\n- **Logs**: https://kibana.example.com\n- **Repository**: https://github.com/org/myapp\n- **On-call**: Check PagerDuty schedule\n\n## Deployment Process\n1. Review PR and get approvals\n2. Merge to main branch\n3. CI/CD automatically builds and tests\n4. Manual approval required for production\n5. Deploy with blue-green strategy\n6. Run smoke tests\n7. Monitor for 30 minutes\n\n## Common Issues\n\n### Issue: Pods CrashLoopBackOff\n**Symptoms**: Pods failing to start\n**Resolution**:\n```bash\nkubectl logs -n production <pod-name>\nkubectl describe pod -n production <pod-name>\n# Check for image pull errors or config issues\n```\n\n### Issue: High latency after deployment\n**Symptoms**: Response times > 1s\n**Resolution**:\n1. Check database connections\n2. Verify cache is warmed up\n3. Scale up replicas if needed\n4. Consider rolling back\n\n## Rollback Procedure\n```bash\n# Immediate rollback:\nkubectl rollout undo deployment/myapp -n production\n\n# Or use Helm:\nhelm rollback myapp -n production\n```\n\n## Contact\n- **Team**: Platform Team\n- **Slack**: #platform-oncall\n- **Escalation**: See PagerDuty"
         }
       ]
