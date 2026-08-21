@@ -8,39 +8,40 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const seoLearningPoints = [
-  'Why mounting /var/run/docker.sock is equivalent to handing over root on the host',
-  'What --privileged actually grants, and the two escapes it enables',
-  'How --pid=host plus a capability combine into a full container escape',
-  'Why SYS_ADMIN is close to root, even though it looks more careful than --privileged',
-  'What the default AppArmor profile is quietly protecting you from',
-  'What a hardened docker run command looks like when every flag is deliberate',
+  'Por que montar /var/run/docker.sock equivale a entregar root no host',
+  'O que --privileged realmente concede, e os dois escapes que habilita',
+  'Como --pid=host mais uma capability se combinam num escape completo de container',
+  'Por que SYS_ADMIN chega perto de root, mesmo parecendo mais cuidadoso que --privileged',
+  'Do que o perfil padrão do AppArmor está silenciosamente te protegendo',
+  'Como é um comando docker run reforçado quando toda flag é deliberada',
 ];
 
 function DockerEscapeEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this container security challenge</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este desafio de segurança de containers</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>That most container escapes are one flag, not a kernel exploit</li>
-            <li>How the Docker socket turns any container into host root</li>
-            <li>Why two individually survivable flags can combine into something much worse</li>
-            <li>What to grant instead, for each dangerous flag</li>
-            <li>That a container is not a security boundary unless you make it one</li>
+            <li>Que a maioria dos escapes de container é uma flag, não um exploit de kernel</li>
+            <li>Como o socket do Docker transforma qualquer container em root do host</li>
+            <li>Por que duas flags individualmente sobreviváveis podem se combinar em algo bem pior</li>
+            <li>O que conceder no lugar, para cada flag perigosa</li>
+            <li>Que um container não é uma fronteira de segurança a menos que você a construa</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">Why it matters</h4>
+          <h4 className="mb-3 text-sm font-semibold">Por que isso importa</h4>
           <p className="text-sm text-muted-foreground">
-            Image scanning gets the attention, but a scanner never looks at how the container is
-            run. Every scenario here is something people genuinely ship, usually because a tutorial
-            said to, and each one gives an attacker the host without needing a CVE.
+            O escaneamento de imagens recebe a atenção, mas um scanner nunca olha para como o
+            container é executado. Cada cenário aqui é algo que as pessoas genuinamente publicam,
+            geralmente porque um tutorial mandou, e cada um dá o host a um atacante sem precisar de
+            um CVE.
           </p>
           <p className="mt-3 text-sm text-muted-foreground">
-            The last scenario has nothing wrong with it. Assuming every config is broken is its own
-            failure mode.
+            O último cenário não tem nada de errado. Assumir que toda config está quebrada é seu
+            próprio modo de falha.
           </p>
         </div>
       </div>

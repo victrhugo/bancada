@@ -40,121 +40,121 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
   {
     id: 'socket',
-    title: 'The CI runner',
+    title: 'O runner de CI',
     context:
-      'A build container that needs to build images. Every "docker in docker" tutorial suggests this.',
+      'Um container de build que precisa construir imagens. Todo tutorial de "docker in docker" sugere isso.',
     tokens: [
       { text: 'docker run -d' },
       {
         text: '-v /var/run/docker.sock:/var/run/docker.sock',
         danger: {
           escape:
-            'The Docker socket is the daemon API, and the daemon runs as root on the host. Anyone inside this container can ask it to start a new container with the host filesystem mounted, then write to /etc/sudoers or drop an SSH key. No kernel exploit, just an API call.',
-          fix: 'Use a rootless builder such as BuildKit or Kaniko, or a socket proxy that allowlists only the endpoints the build actually needs.',
+            'O socket do Docker é a API do daemon, e o daemon roda como root no host. Qualquer um dentro deste container pode pedir para ele iniciar um novo container com o sistema de arquivos do host montado, depois escrever em /etc/sudoers ou plantar uma chave SSH. Sem exploit de kernel, só uma chamada de API.',
+          fix: 'Use um builder sem root como BuildKit ou Kaniko, ou um proxy de socket que só libera os endpoints que o build realmente precisa.',
         },
       },
       { text: 'ci-runner:latest' },
     ],
     lesson:
-      'Mounting the Docker socket is equivalent to giving root on the host. It is the single most common container escape, and it is in most CI tutorials.',
+      'Montar o socket do Docker é equivalente a dar root no host. É o escape de container mais comum de todos, e está na maioria dos tutoriais de CI.',
   },
   {
     id: 'privileged',
-    title: 'The "it did not work so I added this" container',
-    context: 'Someone hit a permissions error, added a flag, and the error went away.',
+    title: 'O container "não funcionou então eu adicionei isso"',
+    context: 'Alguém bateu num erro de permissão, adicionou uma flag, e o erro sumiu.',
     tokens: [
       { text: 'docker run -it' },
       {
         text: '--privileged',
         danger: {
           escape:
-            'Privileged mode grants all capabilities and access to every host device. The classic escape mounts the host disk directly from /dev, reads and rewrites anything on it. A second route abuses cgroup release_agent to make the kernel run a binary on the host as root.',
-          fix: 'Grant the specific capability you needed. Nine times out of ten the actual requirement was one of --cap-add=NET_ADMIN or a device mapping.',
+            'O modo privileged concede todas as capabilities e acesso a todos os dispositivos do host. O escape clássico monta o disco do host diretamente a partir de /dev, lê e reescreve qualquer coisa nele. Uma segunda rota abusa do release_agent de cgroup para fazer o kernel rodar um binário no host como root.',
+          fix: 'Conceda a capability específica que você precisava. Nove em cada dez vezes o requisito real era --cap-add=NET_ADMIN ou um mapeamento de dispositivo.',
         },
       },
       { text: 'ubuntu:24.04 bash' },
     ],
     lesson:
-      '--privileged is not "a bit more permission". It removes essentially every boundary between the container and the host at once.',
+      '--privileged não é "um pouco mais de permissão". Ele remove essencialmente toda fronteira entre o container e o host de uma vez.',
   },
   {
     id: 'hostfs',
-    title: 'The backup job',
-    context: 'A container that needs to read some files from the host to back them up.',
+    title: 'O job de backup',
+    context: 'Um container que precisa ler alguns arquivos do host para fazer backup deles.',
     tokens: [
       { text: 'docker run --rm' },
       {
         text: '-v /:/host',
         danger: {
           escape:
-            'The entire host filesystem is now readable and writable from inside. An attacker writes to /host/etc/cron.d, or edits /host/root/.ssh/authorized_keys, and owns the machine at the next tick.',
-          fix: 'Mount only the directory being backed up, and mount it read-only: -v /var/lib/app:/data:ro',
+            'O sistema de arquivos inteiro do host agora está legível e gravável de dentro. Um atacante escreve em /host/etc/cron.d, ou edita /host/root/.ssh/authorized_keys, e é dono da máquina no próximo tick.',
+          fix: 'Monte só o diretório sendo copiado no backup, e monte-o como somente leitura: -v /var/lib/app:/data:ro',
         },
       },
       { text: 'backup-tool:2' },
     ],
     lesson:
-      'A bind mount is a hole in the boundary that is exactly as large as you make it. Mount the narrowest path that works, read-only where you can.',
+      'Um bind mount é um buraco na fronteira do tamanho exato que você o fizer. Monte o caminho mais estreito que funcione, somente leitura quando possível.',
   },
   {
     id: 'pid',
-    title: 'The monitoring agent',
-    context: 'An agent that reports on processes running on the machine.',
+    title: 'O agente de monitoramento',
+    context: 'Um agente que reporta sobre processos rodando na máquina.',
     tokens: [
       { text: 'docker run -d' },
       {
         text: '--pid=host',
         danger: {
           escape:
-            'Sharing the host PID namespace makes every host process visible. /proc/1/root reaches the host filesystem through the init process, and the container can send signals to host processes. Combined with a writable /proc it becomes a full escape.',
-          fix: 'Most agents only need metrics. Read them from a mounted /proc as read-only, or use the host metrics endpoint rather than joining its namespace.',
+            'Compartilhar o namespace PID do host torna todo processo do host visível. /proc/1/root alcança o sistema de arquivos do host através do processo init, e o container pode mandar sinais para processos do host. Combinado com um /proc gravável, vira um escape completo.',
+          fix: 'A maioria dos agentes só precisa de métricas. Leia-as de um /proc montado como somente leitura, ou use o endpoint de métricas do host em vez de entrar no namespace dele.',
         },
       },
       {
         text: '--cap-add=SYS_PTRACE',
         danger: {
           escape:
-            'SYS_PTRACE lets the container attach a debugger to other processes. With --pid=host in the same command, that means attaching to host processes and reading their memory, including credentials.',
-          fix: 'Drop it unless you are genuinely debugging. Profilers usually need perf_event_open rather than ptrace.',
+            'SYS_PTRACE permite que o container conecte um debugger a outros processos. Com --pid=host no mesmo comando, isso significa se conectar a processos do host e ler a memória deles, incluindo credenciais.',
+          fix: 'Remova, a menos que você esteja de fato depurando. Profilers geralmente precisam de perf_event_open, não de ptrace.',
         },
       },
       { text: 'monitoring-agent:1.4' },
     ],
     lesson:
-      'Two flags that each look survivable can combine into something much worse. Namespace sharing plus a capability is a common pairing in escape write-ups.',
+      'Duas flags que individualmente parecem sobreviváveis podem se combinar em algo bem pior. Compartilhamento de namespace mais uma capability é uma combinação comum em relatos de escape.',
   },
   {
     id: 'caps',
-    title: 'The one that looks careful',
-    context: 'Someone read that --privileged is bad and replaced it with something more specific.',
+    title: 'O que parece cuidadoso',
+    context: 'Alguém leu que --privileged é ruim e substituiu por algo mais específico.',
     tokens: [
       { text: 'docker run -d' },
       {
         text: '--cap-add=SYS_ADMIN',
         danger: {
           escape:
-            'SYS_ADMIN is the capability that does everything. It permits mount, which is enough to remount parts of /proc or /sys writable and reach the host through cgroups. It is often described as "basically root".',
-          fix: 'Identify the actual syscall you need. If it genuinely is mounting, do that on the host and bind the result in.',
+            'SYS_ADMIN é a capability que faz tudo. Ela permite mount, o que é suficiente para remontar partes de /proc ou /sys como graváveis e alcançar o host através de cgroups. Costuma ser descrita como "basicamente root".',
+          fix: 'Identifique a syscall real que você precisa. Se genuinamente é montagem, faça isso no host e monte o resultado dentro.',
         },
       },
       {
         text: '--security-opt apparmor=unconfined',
         danger: {
           escape:
-            'The default AppArmor profile is what blocks several known escapes even when a capability is present. Turning it off removes the backstop that was covering the flag above.',
-          fix: 'Keep the default profile. If it blocks something, write a narrower profile rather than disabling it.',
+            'O perfil padrão do AppArmor é o que bloqueia vários escapes conhecidos mesmo quando uma capability está presente. Desligá-lo remove a barreira que estava cobrindo a flag acima.',
+          fix: 'Mantenha o perfil padrão. Se ele bloquear algo, escreva um perfil mais estreito em vez de desabilitá-lo.',
         },
       },
       { text: 'app:latest' },
     ],
     lesson:
-      'Replacing --privileged with specific flags is only an improvement if the specific flags are actually smaller. SYS_ADMIN plus unconfined AppArmor is not.',
+      'Substituir --privileged por flags específicas só é uma melhoria se as flags específicas forem de fato menores. SYS_ADMIN mais AppArmor unconfined não é.',
   },
   {
     id: 'clean',
-    title: 'The last one',
+    title: 'O último',
     context:
-      'Read it carefully. Not every scenario has something wrong with it, and assuming otherwise is its own failure mode.',
+      'Leia com atenção. Nem todo cenário tem algo errado, e assumir o contrário é seu próprio modo de falha.',
     tokens: [
       { text: 'docker run -d' },
       { text: '--read-only' },
@@ -165,7 +165,7 @@ const SCENARIOS: Scenario[] = [
       { text: 'app:1.9.2' },
     ],
     lesson:
-      'This is roughly what a hardened run looks like: no capabilities, a read-only root filesystem, a non-root user, no privilege escalation, and a narrow read-only mount. Nothing to click.',
+      'Isso é mais ou menos como um run reforçado se parece: sem capabilities, um sistema de arquivos raiz somente leitura, um usuário não-root, sem escalação de privilégio, e um mount estreito de somente leitura. Nada para clicar.',
   },
 ];
 
@@ -231,7 +231,7 @@ export default function DockerEscape() {
       <style>{CSS}</style>
 
       <div className="ces-top">
-        <div className="ces-progress" aria-label={`Scenario ${index + 1} of ${SCENARIOS.length}`}>
+        <div className="ces-progress" aria-label={`Cenário ${index + 1} de ${SCENARIOS.length}`}>
           {SCENARIOS.map((s, i) => (
             <span
               key={s.id}
@@ -249,11 +249,11 @@ export default function DockerEscape() {
 
       <p className="ces-instruction">
         {phase === 'playing'
-          ? 'Click every part of this command that would let an attacker reach the host.'
-          : 'Red is a real escape route. Grey was safe.'}
+          ? 'Clique em cada parte deste comando que permitiria um atacante alcançar o host.'
+          : 'Vermelho é uma rota de escape real. Cinza era seguro.'}
       </p>
 
-      <div className="ces-cmd" role="group" aria-label="docker run command">
+      <div className="ces-cmd" role="group" aria-label="comando docker run">
         {scenario.tokens.map((t, i) => {
           const isPicked = picked.has(i);
           const isDanger = dangerIdx.has(i);
@@ -284,7 +284,7 @@ export default function DockerEscape() {
 
       {phase === 'playing' && (
         <button className="ces-btn ces-primary" onClick={check}>
-          {picked.size === 0 ? 'Nothing here is dangerous' : `Check ${picked.size} selection${picked.size > 1 ? 's' : ''}`}
+          {picked.size === 0 ? 'Nada aqui é perigoso' : `Checar ${picked.size} seleç${picked.size > 1 ? 'ões' : 'ão'}`}
         </button>
       )}
 
@@ -295,13 +295,13 @@ export default function DockerEscape() {
               <div key={i} className={`ces-card${picked.has(i) ? ' ces-got' : ' ces-miss'}`}>
                 <div className="ces-cardtop">
                   <code>{t.text}</code>
-                  <span className="ces-tag">{picked.has(i) ? 'you caught this' : 'you missed this'}</span>
+                  <span className="ces-tag">{picked.has(i) ? 'você pegou essa' : 'você deixou passar'}</span>
                 </div>
                 <p className="ces-escape">
-                  <b>The escape:</b> {t.danger.escape}
+                  <b>O escape:</b> {t.danger.escape}
                 </p>
                 <p className="ces-fix">
-                  <b>The fix:</b> {t.danger.fix}
+                  <b>A correção:</b> {t.danger.fix}
                 </p>
               </div>
             ) : null
@@ -310,9 +310,9 @@ export default function DockerEscape() {
           {dangerIdx.size === 0 && (
             <div className="ces-card ces-got">
               <div className="ces-cardtop">
-                <code>nothing dangerous</code>
+                <code>nada perigoso</code>
                 <span className="ces-tag">
-                  {picked.size === 0 ? 'correct, you clicked nothing' : 'you flagged a safe flag'}
+                  {picked.size === 0 ? 'correto, você não clicou em nada' : 'você marcou uma flag segura'}
                 </span>
               </div>
             </div>
@@ -322,23 +322,23 @@ export default function DockerEscape() {
 
           {!done ? (
             <button className="ces-btn ces-primary" onClick={next}>
-              Next scenario &rsaquo;
+              Próximo cenário &rsaquo;
             </button>
           ) : (
             <div className="ces-final">
               <p>
                 <b>
-                  {totals.found} of {totalDangers} escape routes found
+                  {totals.found} de {totalDangers} rotas de escape encontradas
                 </b>
-                {totals.wrong > 0 && `, ${totals.wrong} safe flag${totals.wrong > 1 ? 's' : ''} flagged`}
+                {totals.wrong > 0 && `, ${totals.wrong} flag${totals.wrong > 1 ? 's' : ''} segura${totals.wrong > 1 ? 's' : ''} marcada${totals.wrong > 1 ? 's' : ''}`}
               </p>
               <p className="ces-lesson">
-                A container is not a security boundary on its own. Almost everything here was one
-                flag, not a kernel bug, which is why reviewing the run command matters as much as
-                scanning the image.
+                Um container não é uma fronteira de segurança por si só. Quase tudo aqui foi uma flag,
+                não um bug de kernel, e é por isso que revisar o comando de run importa tanto quanto
+                escanear a imagem.
               </p>
               <button className="ces-btn" onClick={restart}>
-                Start again
+                Começar de novo
               </button>
             </div>
           )}
