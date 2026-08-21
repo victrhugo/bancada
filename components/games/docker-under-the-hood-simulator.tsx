@@ -62,36 +62,36 @@ function buildStages(imageLocal: boolean): Stage[] {
       key: 'cli',
       actor: 'Docker CLI',
       icon: 'terminal',
-      title: 'You run a command',
-      tag: 'REST over a Unix socket',
+      title: 'Você roda um comando',
+      tag: 'REST sobre um socket Unix',
       detail:
-        'The docker CLI is just a small REST client. It turns your command into an HTTP request and sends it to the Docker daemon over a local socket. The CLI never creates a container itself.',
+        'O CLI do docker é só um pequeno cliente REST. Ele transforma seu comando numa requisição HTTP e a envia ao daemon do Docker por um socket local. O CLI nunca cria um container sozinho.',
       cmd: 'curl --unix-socket /var/run/docker.sock http://localhost/v1.45/info',
-      cmdNote: 'The CLI talks to dockerd exactly like this under the hood.',
+      cmdNote: 'O CLI conversa com o dockerd exatamente assim por baixo dos panos.',
     },
     {
       key: 'dockerd',
-      actor: 'Docker daemon',
+      actor: 'Daemon do Docker',
       icon: 'gear',
-      title: 'dockerd takes the request',
-      tag: 'the long-running engine',
+      title: 'O dockerd recebe a requisição',
+      tag: 'o motor de longa duração',
       detail:
-        'The daemon (dockerd) parses the request and prepares the container config: env, the 8080:80 port map, mounts. First it checks whether the nginx image is already on disk.',
+        'O daemon (dockerd) parseia a requisição e prepara a config do container: env, o mapeamento de porta 8080:80, mounts. Primeiro ele checa se a imagem nginx já está em disco.',
       cmd: 'docker image inspect nginx',
-      cmdNote: 'dockerd looks here first. A miss triggers a pull.',
+      cmdNote: 'O dockerd olha aqui primeiro. Se não achar, dispara um pull.',
     },
     {
       key: 'pull',
       actor: 'Registry',
       icon: 'cloud',
-      title: 'Pull the image',
-      tag: 'only the missing layers',
+      title: 'Faz o pull da imagem',
+      tag: 'só as camadas faltando',
       detail:
-        'The image is a stack of read-only layers plus a manifest. Because nginx is not local, the daemon downloads each layer it does not already have from the registry (Docker Hub, ECR, ...) into its content store.',
+        'A imagem é uma pilha de camadas somente leitura mais um manifest. Como o nginx não está local, o daemon baixa cada camada que ainda não tem do registry (Docker Hub, ECR, ...) para seu content store.',
       cmd: 'docker pull nginx:latest',
-      cmdNote: 'Shared base layers are downloaded once and reused across images.',
+      cmdNote: 'Camadas base compartilhadas são baixadas uma vez e reusadas entre imagens.',
       artifact: {
-        label: 'manifest layers',
+        label: 'camadas do manifest',
         lines: [
           'sha256:9b1c...  31 MB   (debian base)',
           'sha256:4f2d...  1.2 MB  (nginx apt install)',
@@ -104,25 +104,25 @@ function buildStages(imageLocal: boolean): Stage[] {
       key: 'containerd',
       actor: 'containerd',
       icon: 'layers',
-      title: 'dockerd hands off to containerd',
-      tag: 'the container supervisor',
+      title: 'O dockerd repassa para o containerd',
+      tag: 'o supervisor de containers',
       detail:
-        'dockerd does not start the process. It delegates to containerd, which owns the container lifecycle: it unpacks the image layers into a snapshot, tracks state, and gets a runtime bundle ready.',
+        'O dockerd não inicia o processo. Ele delega ao containerd, que é dono do ciclo de vida do container: desempacota as camadas da imagem num snapshot, rastreia o estado, e prepara um bundle de runtime.',
       cmd: 'sudo ctr -n moby containers ls',
-      cmdNote: 'Your Docker containers live under containerd’s "moby" namespace.',
+      cmdNote: 'Seus containers Docker vivem sob o namespace "moby" do containerd.',
     },
     {
       key: 'bundle',
-      actor: 'OCI bundle',
+      actor: 'Bundle OCI',
       icon: 'package',
-      title: 'Assemble the runtime bundle',
+      title: 'Monta o bundle de runtime',
       tag: 'config.json + rootfs',
       detail:
-        'containerd builds an OCI bundle: a config.json (which process to run, which namespaces and cgroups to create, which mounts) and a rootfs (the image layers plus a fresh writable layer, unioned with overlayfs).',
+        'O containerd constrói um bundle OCI: um config.json (qual processo rodar, quais namespaces e cgroups criar, quais mounts) e um rootfs (as camadas da imagem mais uma camada gravável nova, unidas com overlayfs).',
       cmd: 'runc spec',
-      cmdNote: 'Generates a sample config.json so you can see its shape.',
+      cmdNote: 'Gera um config.json de exemplo para você ver o formato.',
       artifact: {
-        label: 'config.json (excerpt)',
+        label: 'config.json (trecho)',
         lines: [
           '"process": { "args": ["nginx", "-g", "daemon off;"] },',
           '"linux": { "namespaces": [',
@@ -135,34 +135,34 @@ function buildStages(imageLocal: boolean): Stage[] {
       key: 'runc',
       actor: 'runc',
       icon: 'play',
-      title: 'runc creates the container',
-      tag: 'namespaces + cgroups, then exec',
+      title: 'O runc cria o container',
+      tag: 'namespaces + cgroups, depois exec',
       detail:
-        'containerd calls runc, the low-level OCI runtime. runc reads config.json, creates the namespaces and the cgroup, pivots the root into rootfs, drops capabilities, then execs nginx as PID 1 inside the container. runc exits; a shim keeps it attached to containerd.',
+        'O containerd chama o runc, o runtime OCI de baixo nível. O runc lê o config.json, cria os namespaces e o cgroup, faz pivot da raiz para o rootfs, remove capabilities, depois faz exec do nginx como PID 1 dentro do container. O runc sai; um shim o mantém conectado ao containerd.',
       cmd: 'sudo runc list',
-      cmdNote: 'The containers runc is managing, by ID.',
+      cmdNote: 'Os containers que o runc está gerenciando, por ID.',
     },
     {
       key: 'container',
-      actor: 'Running container',
+      actor: 'Container em execução',
       icon: 'container',
-      title: 'The container is running',
-      tag: 'an isolated process, not a VM',
+      title: 'O container está rodando',
+      tag: 'um processo isolado, não uma VM',
       detail:
-        'nginx is now a normal host process, just boxed in: its own PID 1, its own network interface, its own view of the filesystem. Your -p 8080:80 is wired up with an iptables DNAT rule so host port 8080 reaches the container’s port 80.',
+        'O nginx agora é um processo normal do host, só que encaixotado: seu próprio PID 1, sua própria interface de rede, sua própria visão do sistema de arquivos. Seu -p 8080:80 é conectado com uma regra iptables DNAT para que a porta 8080 do host alcance a porta 80 do container.',
       cmd: "docker inspect --format '{{.State.Pid}}' <id>",
-      cmdNote: 'That PID is a real process you can see in ps on the host.',
+      cmdNote: 'Esse PID é um processo real que você pode ver no ps do host.',
     },
     {
       key: 'kernel',
-      actor: 'Linux kernel',
+      actor: 'Kernel Linux',
       icon: 'cpu',
-      title: 'It all runs on the shared kernel',
-      tag: 'namespaces · cgroups · networking · mounts',
+      title: 'Tudo roda no kernel compartilhado',
+      tag: 'namespaces · cgroups · rede · mounts',
       detail:
-        'There is no guest OS. The container shares the host kernel, and the "isolation" is just kernel features: namespaces decide what the process can see, cgroups cap what it can use, plus host networking and mounts. That is why containers start in milliseconds.',
+        'Não existe sistema operacional convidado. O container compartilha o kernel do host, e o "isolamento" é só um conjunto de features do kernel: namespaces decidem o que o processo pode ver, cgroups limitam o que ele pode usar, mais rede e mounts do host. É por isso que containers iniciam em milissegundos.',
       cmd: 'lsns -p $(docker inspect --format \'{{.State.Pid}}\' <id>)',
-      cmdNote: 'Lists the namespaces the nginx process is living in.',
+      cmdNote: 'Lista os namespaces em que o processo nginx está vivendo.',
     },
   ];
   return all.filter((s) => !(s.optional && imageLocal));
@@ -236,8 +236,8 @@ export default function DockerUnderTheHoodSimulator() {
     <div className="dhk">
       <style>{CSS}</style>
 
-      <p className="dhk-eyebrow">Container internals · the real path of a docker run</p>
-      <h2 className="dhk-h">What happens when you run a container</h2>
+      <p className="dhk-eyebrow">Internamente no container · o caminho real de um docker run</p>
+      <h2 className="dhk-h">O que acontece quando você roda um container</h2>
 
       <div className="dhk-cmdbar">
         <span className="dhk-dollar">$</span>
@@ -248,22 +248,22 @@ export default function DockerUnderTheHoodSimulator() {
 
       <div className="dhk-controls">
         <button className="dhk-btn dhk-primary" onClick={togglePlay} type="button">
-          {playing ? 'Pause' : atEnd ? 'Replay' : 'Play'}
+          {playing ? 'Pausar' : atEnd ? 'De novo' : 'Play'}
         </button>
         <button className="dhk-btn" onClick={() => go(active - 1)} disabled={active === 0} type="button">
-          Prev
+          Anterior
         </button>
         <button className="dhk-btn" onClick={() => go(active + 1)} disabled={atEnd} type="button">
-          Next
+          Próximo
         </button>
         <label className="dhk-toggle">
           <input type="checkbox" checked={imageLocal} onChange={(e) => setImageLocal(e.target.checked)} />
-          <span>nginx already pulled</span>
+          <span>nginx já foi baixado</span>
         </label>
       </div>
 
       <div className="dhk-grid">
-        <ol className="dhk-flow" aria-label="Docker run pipeline">
+        <ol className="dhk-flow" aria-label="Pipeline do docker run">
           {stages.map((s, i) => {
             const state = i < active ? 'done' : i === active ? 'active' : 'todo';
             return (
@@ -292,7 +292,7 @@ export default function DockerUnderTheHoodSimulator() {
           <div className="dhk-panelhead">
             <span className="dhk-chip">{current.tag}</span>
             <span className="dhk-step">
-              Step {active + 1} / {stages.length}
+              Passo {active + 1} / {stages.length}
             </span>
           </div>
           <h3 className="dhk-paneltitle">
@@ -320,7 +320,7 @@ export default function DockerUnderTheHoodSimulator() {
                 <span className="dhk-cmdollar">$</span> {current.cmd}
               </code>
               <button className="dhk-copy" onClick={copyCmd} type="button">
-                {copied ? 'copied' : 'copy'}
+                {copied ? 'copiado' : 'copiar'}
               </button>
             </div>
             <p className="dhk-cmdnote">{current.cmdNote}</p>
@@ -339,9 +339,9 @@ export default function DockerUnderTheHoodSimulator() {
       </div>
 
       <p className="dhk-foot">
-        The whole point: a container is not a small VM. It is one host process that the kernel keeps
-        in its own namespaces and cgroups. Every step above is something you can run yourself on a
-        real Linux box.
+        O ponto central: um container não é uma pequena VM. É um processo do host que o kernel mantém
+        em seus próprios namespaces e cgroups. Cada passo acima é algo que você pode rodar você mesmo
+        numa máquina Linux real.
       </p>
     </div>
   );
