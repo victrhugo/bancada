@@ -34,32 +34,32 @@ const TOTAL_BUDGET = 150;
 function buildSteps(separateJudge: boolean): Step[] {
   if (separateJudge) {
     return [
-      { role: 'plan', it: 1, tokens: 7, ctx: ['goal', 'plan: create the route'], cap: 'Planner: the goal needs a POST /signup route, a DB insert, and a 201 response. Step one, create the route.' },
-      { role: 'build', it: 1, tool: 'Edit routes/signup.ts', tokens: 11, ctx: ['signup.ts'], cap: 'Builder: writes routes/signup.ts with a basic handler that inserts the user.' },
-      { role: 'judge', it: 1, tool: 'npm test', tokens: 9, test: 'fail', cap: 'Judge: runs the tests. The route works, but the password is stored in plain text. Rejected.' },
-      { role: 'decision', it: 1, met: false, cap: 'The judge sends it back to the planner with the reason. Loop again.' },
-      { role: 'plan', it: 2, tokens: 6, ctx: ['plan: hash the password'], cap: 'Planner: add password hashing before the insert.' },
-      { role: 'build', it: 2, tool: 'Edit routes/signup.ts', tokens: 12, ctx: ['edit: bcrypt hash'], cap: 'Builder: adds bcrypt hashing in the handler.' },
-      { role: 'judge', it: 2, tool: 'npm test', tokens: 9, test: 'pass', met: false, cap: 'Judge: tests pass now, but the endpoint returns 200 and the spec says 201. Tests green is not the same as goal met. Rejected.' },
-      { role: 'decision', it: 2, met: false, cap: 'The judge checks the spec, not just the tests. Back to the planner.' },
-      { role: 'plan', it: 3, tokens: 5, ctx: ['plan: return 201'], cap: 'Planner: change the response status to 201 Created.' },
-      { role: 'build', it: 3, tool: 'Edit routes/signup.ts', tokens: 8, ctx: ['edit: 201'], cap: 'Builder: returns 201 Created.' },
-      { role: 'judge', it: 3, tool: 'npm test', tokens: 9, test: 'pass', met: true, cap: 'Judge: hashes the password, returns 201, all tests pass, matches the spec. Approved.' },
-      { role: 'decision', it: 3, met: true, cap: 'The judge approves. The loop stops here, correct and complete.' },
-      { role: 'done', ok: true, cap: 'Three loops, checked each time by a separate judge. Safe to ship.' },
+      { role: 'plan', it: 1, tokens: 7, ctx: ['goal', 'plano: criar a rota'], cap: 'Planner: o objetivo precisa de uma rota POST /signup, um insert no banco, e uma resposta 201. Passo um, criar a rota.' },
+      { role: 'build', it: 1, tool: 'Edit routes/signup.ts', tokens: 11, ctx: ['signup.ts'], cap: 'Builder: escreve routes/signup.ts com um handler básico que insere o usuário.' },
+      { role: 'judge', it: 1, tool: 'npm test', tokens: 9, test: 'fail', cap: 'Judge: roda os testes. A rota funciona, mas a senha é armazenada em texto puro. Rejeitado.' },
+      { role: 'decision', it: 1, met: false, cap: 'O judge devolve ao planner com o motivo. Loop de novo.' },
+      { role: 'plan', it: 2, tokens: 6, ctx: ['plano: fazer hash da senha'], cap: 'Planner: adicionar hash de senha antes do insert.' },
+      { role: 'build', it: 2, tool: 'Edit routes/signup.ts', tokens: 12, ctx: ['edit: bcrypt hash'], cap: 'Builder: adiciona hashing com bcrypt no handler.' },
+      { role: 'judge', it: 2, tool: 'npm test', tokens: 9, test: 'pass', met: false, cap: 'Judge: os testes passam agora, mas o endpoint retorna 200 e o spec diz 201. Testes verdes não é o mesmo que objetivo cumprido. Rejeitado.' },
+      { role: 'decision', it: 2, met: false, cap: 'O judge checa o spec, não só os testes. De volta ao planner.' },
+      { role: 'plan', it: 3, tokens: 5, ctx: ['plano: retornar 201'], cap: 'Planner: mudar o status da resposta para 201 Created.' },
+      { role: 'build', it: 3, tool: 'Edit routes/signup.ts', tokens: 8, ctx: ['edit: 201'], cap: 'Builder: retorna 201 Created.' },
+      { role: 'judge', it: 3, tool: 'npm test', tokens: 9, test: 'pass', met: true, cap: 'Judge: faz hash da senha, retorna 201, todos os testes passam, bate com o spec. Aprovado.' },
+      { role: 'decision', it: 3, met: true, cap: 'O judge aprova. O loop para aqui, correto e completo.' },
+      { role: 'done', ok: true, cap: 'Três loops, checados a cada vez por um judge separado. Seguro pra ir pra produção.' },
     ];
   }
   return [
-    { role: 'plan', it: 1, tokens: 7, ctx: ['goal', 'plan: create the route'], cap: 'Planner: create the POST /signup route first.' },
-    { role: 'build', it: 1, tool: 'Edit routes/signup.ts', tokens: 11, ctx: ['signup.ts'], cap: 'Builder: writes the handler that inserts the user.' },
-    { role: 'judge', it: 1, tool: 'npm test', tokens: 8, test: 'fail', cap: 'Builder self-check: tests fail, the password is plain text. Keep going.' },
-    { role: 'decision', it: 1, met: false, cap: 'Not done by its own check. Loop again.' },
-    { role: 'plan', it: 2, tokens: 6, ctx: ['plan: hash the password'], cap: 'Planner: add password hashing.' },
-    { role: 'build', it: 2, tool: 'Edit routes/signup.ts', tokens: 12, ctx: ['edit: bcrypt hash'], cap: 'Builder: adds bcrypt hashing.' },
-    { role: 'judge', it: 2, tool: 'npm test', tokens: 8, test: 'pass', met: true, cap: 'Builder self-check: tests pass. Looks done, ship it.' },
-    { role: 'decision', it: 2, met: true, cap: 'The builder graded its own work and called it done as soon as the tests went green.' },
-    { role: 'done', ok: false, cap: 'No separate judge. It stopped the moment tests passed.' },
-    { role: 'bug', cap: 'But it returns 200, not the 201 the spec requires, and nobody checked the spec. A separate judge would have caught it. It shipped a confident bug.' },
+    { role: 'plan', it: 1, tokens: 7, ctx: ['goal', 'plano: criar a rota'], cap: 'Planner: criar a rota POST /signup primeiro.' },
+    { role: 'build', it: 1, tool: 'Edit routes/signup.ts', tokens: 11, ctx: ['signup.ts'], cap: 'Builder: escreve o handler que insere o usuário.' },
+    { role: 'judge', it: 1, tool: 'npm test', tokens: 8, test: 'fail', cap: 'Autocheck do builder: testes falham, a senha está em texto puro. Continua.' },
+    { role: 'decision', it: 1, met: false, cap: 'Não terminado pelo próprio check. Loop de novo.' },
+    { role: 'plan', it: 2, tokens: 6, ctx: ['plano: fazer hash da senha'], cap: 'Planner: adicionar hash de senha.' },
+    { role: 'build', it: 2, tool: 'Edit routes/signup.ts', tokens: 12, ctx: ['edit: bcrypt hash'], cap: 'Builder: adiciona hashing com bcrypt.' },
+    { role: 'judge', it: 2, tool: 'npm test', tokens: 8, test: 'pass', met: true, cap: 'Autocheck do builder: testes passam. Parece pronto, vamos publicar.' },
+    { role: 'decision', it: 2, met: true, cap: 'O builder avaliou o próprio trabalho e declarou pronto assim que os testes ficaram verdes.' },
+    { role: 'done', ok: false, cap: 'Sem judge separado. Parou no momento em que os testes passaram.' },
+    { role: 'bug', cap: 'Mas retorna 200, não o 201 que o spec exige, e ninguém checou o spec. Um judge separado teria pego isso. Publicou um bug com confiança.' },
   ];
 }
 
@@ -83,10 +83,10 @@ interface View {
 function computeView(steps: Step[], idx: number): View {
   if (idx < 0) {
     return {
-      role: null, phaseLabel: 'ready',
-      caption: 'Press Play to watch three agents build a feature together, one loop at a time. Slow by default.',
+      role: null, phaseLabel: 'pronto',
+      caption: 'Aperte Play para ver três agentes construírem uma funcionalidade juntos, um loop de cada vez. Devagar por padrão.',
       color: 'var(--als-accent)', iter: 0, tokens: 0, ctx: [], test: null, goalMet: false,
-      gate: { state: 'idle', text: 'the judge decides: loop or stop' }, looping: false, result: null,
+      gate: { state: 'idle', text: 'o judge decide: repetir ou parar' }, looping: false, result: null,
     };
   }
   const st = steps[idx];
@@ -103,30 +103,30 @@ function computeView(steps: Step[], idx: number): View {
     if (typeof s.met === 'boolean') met = s.met;
   }
   const phaseLabel =
-    st.role === 'decision' ? (st.met ? 'approved' : 'rejected') :
-    st.role === 'done' ? (st.ok ? 'done' : 'stop') :
-    st.role === 'bug' ? 'missed' : st.role;
+    st.role === 'decision' ? (st.met ? 'aprovado' : 'rejeitado') :
+    st.role === 'done' ? (st.ok ? 'pronto' : 'parou') :
+    st.role === 'bug' ? 'passou batido' : st.role;
 
-  let gate: View['gate'] = { state: 'idle', text: 'the judge decides: loop or stop' };
+  let gate: View['gate'] = { state: 'idle', text: 'o judge decide: repetir ou parar' };
   let looping = false;
   let result: View['result'] = null;
   let goalMet = met === true && st.role !== 'decision';
 
   if (st.role === 'decision') {
-    if (st.met) gate = { state: 'yes', text: 'goal met  ✓  stop' };
-    else { gate = { state: 'no', text: 'goal not met  ✗  loop back to plan' }; looping = true; }
+    if (st.met) gate = { state: 'yes', text: 'objetivo cumprido  ✓  parar' };
+    else { gate = { state: 'no', text: 'objetivo não cumprido  ✗  voltar ao plan' }; looping = true; }
   }
   if (st.role === 'done') {
-    gate = { state: 'end', text: 'loop ended' };
+    gate = { state: 'end', text: 'loop encerrado' };
     goalMet = !!st.ok;
     result = st.ok
-      ? { kind: 'ok', title: 'Done, verified by the judge', text: 'Correct, hashed password and a 201, confirmed by a separate agent.' }
-      : { kind: 'bad', title: 'Stopped by its own self-check', text: 'Tests passed, so it stopped. Nobody checked it against the spec.' };
+      ? { kind: 'ok', title: 'Pronto, verificado pelo judge', text: 'Correto, senha com hash e um 201, confirmado por um agente separado.' }
+      : { kind: 'bad', title: 'Parou pelo próprio autocheck', text: 'Os testes passaram, então parou. Ninguém checou contra o spec.' };
   }
   if (st.role === 'bug') {
-    gate = { state: 'end', text: 'loop ended' };
+    gate = { state: 'end', text: 'loop encerrado' };
     goalMet = false;
-    result = { kind: 'bad', title: 'Shipped a confident bug', text: 'Returns 200 instead of 201. The builder was too easy on its own work. A separate judge catches what a self-check misses.' };
+    result = { kind: 'bad', title: 'Publicou um bug com confiança', text: 'Retorna 200 em vez de 201. O builder foi condescendente demais com o próprio trabalho. Um judge separado pega o que um autocheck deixa passar.' };
   }
 
   return {
@@ -137,9 +137,9 @@ function computeView(steps: Step[], idx: number): View {
 }
 
 const CARDS = [
-  { role: 'plan', n: 1, title: 'Plan', agent: 'planner agent', desc: 'Decide the single next step toward the goal.' },
-  { role: 'build', n: 2, title: 'Build', agent: 'builder agent + tools', desc: 'Do it: read, edit, run a command.' },
-  { role: 'judge', n: 3, title: 'Judge', agent: 'judge agent (separate)', desc: 'Grade the result against the goal and spec.' },
+  { role: 'plan', n: 1, title: 'Plan', agent: 'agente planner', desc: 'Decidir o único próximo passo em direção ao objetivo.' },
+  { role: 'build', n: 2, title: 'Build', agent: 'agente builder + ferramentas', desc: 'Fazer: ler, editar, rodar um comando.' },
+  { role: 'judge', n: 3, title: 'Judge', agent: 'agente judge (separado)', desc: 'Avaliar o resultado contra o objetivo e o spec.' },
 ] as const;
 
 export default function AgenticLoopSimulator() {
@@ -183,17 +183,17 @@ export default function AgenticLoopSimulator() {
     >
       <style>{CSS}</style>
 
-      <p className="als-eyebrow">Agentic loop · three agents</p>
-      <h2 className="als-h">A loop of three agents: plan, build, judge</h2>
-      <div className="als-task"><span className="als-dot" /> Task: <b>add a working /signup endpoint (hash the password, return 201)</b></div>
+      <p className="als-eyebrow">Loop agêntico · três agentes</p>
+      <h2 className="als-h">Um loop de três agentes: plan, build, judge</h2>
+      <div className="als-task"><span className="als-dot" /> Tarefa: <b>adicionar um endpoint /signup funcional (fazer hash da senha, retornar 201)</b></div>
 
       <div className="als-controls">
-        <button className="als-btn als-primary" onClick={onPlay}>{playing ? '❙❙ Pause' : atEnd ? '↻ Replay' : '▶ Play'}</button>
-        <button className="als-btn" onClick={onPrev} title="Previous step">&lsaquo; Prev</button>
-        <button className="als-btn" onClick={onStep} title="Next step">Next &rsaquo;</button>
-        <span className="als-label">or use &larr; &rarr;</span>
-        <button className="als-btn" onClick={onReset}>&#8635; Restart</button>
-        <span className="als-label">Speed</span>
+        <button className="als-btn als-primary" onClick={onPlay}>{playing ? '❙❙ Pausar' : atEnd ? '↻ De novo' : '▶ Play'}</button>
+        <button className="als-btn" onClick={onPrev} title="Passo anterior">&lsaquo; Anterior</button>
+        <button className="als-btn" onClick={onStep} title="Próximo passo">Próximo &rsaquo;</button>
+        <span className="als-label">ou use &larr; &rarr;</span>
+        <button className="als-btn" onClick={onReset}>&#8635; Reiniciar</button>
+        <span className="als-label">Velocidade</span>
         <div className="als-seg">
           {[0.5, 1, 2].map((s) => (
             <button key={s} className={`als-btn${speed === s ? ' als-on' : ''}`} onClick={() => setSpeed(s)}>{s}&times;</button>
@@ -201,7 +201,7 @@ export default function AgenticLoopSimulator() {
         </div>
         <span className="als-spacer" />
         <button className={`als-toggle${separateJudge ? ' als-ton' : ''}`} onClick={onToggleJudge} aria-pressed={separateJudge}>
-          <span className="als-sw" /><span>Separate judge agent</span>
+          <span className="als-sw" /><span>Agente judge separado</span>
         </button>
       </div>
 
@@ -237,19 +237,19 @@ export default function AgenticLoopSimulator() {
 
       <div className="als-panels">
         <div className="als-panel">
-          <h4 className="als-h4">Loop state</h4>
-          <div className="als-row"><span className="als-k">Iteration</span><span className="als-v"><b style={{ color: 'var(--als-accent)' }}>{view.iter}</b> <span style={{ color: 'var(--als-faint)' }}>/ loops</span></span></div>
-          <div className="als-row"><span className="als-k">Tokens this run</span><span className="als-v">{view.tokens}k</span></div>
+          <h4 className="als-h4">Estado do loop</h4>
+          <div className="als-row"><span className="als-k">Iteração</span><span className="als-v"><b style={{ color: 'var(--als-accent)' }}>{view.iter}</b> <span style={{ color: 'var(--als-faint)' }}>/ loops</span></span></div>
+          <div className="als-row"><span className="als-k">Tokens nesta execução</span><span className="als-v">{view.tokens}k</span></div>
           <div className="als-row"><div className="als-meter"><i style={{ width: `${tokPct}%` }} /></div></div>
-          <div className="als-hint">The whole context is re-sent every loop, so cost climbs as it grows.</div>
-          <div className="als-row" style={{ marginTop: 12 }}><span className="als-k">Goal: hashed pw + 201</span><span className={`als-v${view.goalMet ? ' als-met' : ''}`}>{view.goalMet ? 'met' : 'not met'}</span></div>
-          <div className="als-row"><span className="als-k">Test suite</span><span className={`als-badge${view.test === 'pass' ? ' als-pass' : view.test === 'fail' ? ' als-fail' : ''}`}>{view.test === 'pass' ? 'passing' : view.test === 'fail' ? 'failing' : 'not run'}</span></div>
+          <div className="als-hint">Todo o contexto é reenviado a cada loop, então o custo sobe conforme ele cresce.</div>
+          <div className="als-row" style={{ marginTop: 12 }}><span className="als-k">Objetivo: senha com hash + 201</span><span className={`als-v${view.goalMet ? ' als-met' : ''}`}>{view.goalMet ? 'cumprido' : 'não cumprido'}</span></div>
+          <div className="als-row"><span className="als-k">Suíte de testes</span><span className={`als-badge${view.test === 'pass' ? ' als-pass' : view.test === 'fail' ? ' als-fail' : ''}`}>{view.test === 'pass' ? 'passando' : view.test === 'fail' ? 'falhando' : 'não rodou'}</span></div>
         </div>
         <div className="als-panel">
-          <h4 className="als-h4">Context window <span className="als-sub">(grows each loop)</span></h4>
+          <h4 className="als-h4">Janela de contexto <span className="als-sub">(cresce a cada loop)</span></h4>
           <div className="als-ctx">
             {view.ctx.length === 0 ? (
-              <span className="als-empty">Empty. The agents start with just the task.</span>
+              <span className="als-empty">Vazia. Os agentes começam só com a tarefa.</span>
             ) : (
               view.ctx.map((t, i) => <span key={`${t}-${i}`} className="als-chip">{t}</span>)
             )}
@@ -265,12 +265,12 @@ export default function AgenticLoopSimulator() {
       )}
 
       <div className="als-maps">
-        <div className="als-m als-mplan"><b>Plan</b>In Claude Code: a planner subagent, or a plan-mode turn that writes the next step.</div>
-        <div className="als-m als-mbuild"><b>Build</b>The main agent using Read, Edit, Bash to change the code.</div>
-        <div className="als-m als-mjudge"><b>Judge</b>A separate reviewer subagent, ideally a different model, checking against tests and the spec.</div>
+        <div className="als-m als-mplan"><b>Plan</b>No Claude Code: um subagente planner, ou um turno em plan mode que escreve o próximo passo.</div>
+        <div className="als-m als-mbuild"><b>Build</b>O agente principal usando Read, Edit, Bash para mudar o código.</div>
+        <div className="als-m als-mjudge"><b>Judge</b>Um subagente revisor separado, idealmente um modelo diferente, checando contra os testes e o spec.</div>
       </div>
 
-      <p className="als-note">Illustrative model of the multi-agent loop pattern (plan &rarr; build &rarr; judge &rarr; repeat) used by coding agents like Claude Code. It shows the harness and the role split, not any model&apos;s internal reasoning. Turn the separate judge off to see why an agent grading its own work ships confident bugs.</p>
+      <p className="als-note">Modelo ilustrativo do padrão de loop multiagente (plan &rarr; build &rarr; judge &rarr; repetir) usado por agentes de código como o Claude Code. Mostra o harness e a divisão de papéis, não o raciocínio interno de nenhum modelo. Desligue o judge separado para ver por que um agente que avalia o próprio trabalho publica bugs com confiança.</p>
     </div>
   );
 }

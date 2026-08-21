@@ -8,96 +8,97 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const seoLearningPoints = [
-  'What an agentic loop is: plan, build, judge, then repeat until the goal is met',
-  'Why a coding agent finishes multi-step work on its own instead of answering once',
-  'How the decision at the end of each loop chooses to keep going or stop',
-  'Why the judge should be a separate agent, and what happens when it is not',
-  'Why token cost compounds as the context window grows each loop',
-  'How the phases map to Claude Code: subagents, the Read/Edit/Bash tools, and a stop condition',
+  'O que é um loop agêntico: planejar, construir, julgar, depois repetir até o objetivo ser cumprido',
+  'Por que um agente de código termina trabalho de múltiplas etapas sozinho em vez de responder uma vez',
+  'Como a decisão no fim de cada loop escolhe continuar ou parar',
+  'Por que o judge deveria ser um agente separado, e o que acontece quando não é',
+  'Por que o custo em tokens se acumula conforme a janela de contexto cresce a cada loop',
+  'Como as fases se mapeiam ao Claude Code: subagentes, as ferramentas Read/Edit/Bash, e uma condição de parada',
 ];
 
 function AgenticLoopEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this agentic loop simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador de loop agêntico</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>How a coding agent runs a loop instead of answering a single prompt</li>
-            <li>The three roles: a planner picks the next step, a builder does it, a judge checks it</li>
-            <li>Why &quot;the tests pass&quot; is not the same as &quot;the goal is met&quot;</li>
-            <li>Why the judge being a separate agent is what stops the loop shipping confident bugs</li>
-            <li>How the context window grows each loop, and why that makes cost climb</li>
-            <li>What each phase maps to in Claude Code</li>
+            <li>Como um agente de código roda um loop em vez de responder um único prompt</li>
+            <li>Os três papéis: um planner escolhe o próximo passo, um builder o executa, um judge o checa</li>
+            <li>Por que &quot;os testes passam&quot; não é o mesmo que &quot;o objetivo foi cumprido&quot;</li>
+            <li>Por que o judge ser um agente separado é o que impede o loop de publicar bugs com confiança</li>
+            <li>Como a janela de contexto cresce a cada loop, e por que isso faz o custo subir</li>
+            <li>O que cada fase mapeia no Claude Code</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">How the loop works</h4>
+          <h4 className="mb-3 text-sm font-semibold">Como o loop funciona</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Plan:</strong> gather the goal and the last result,
-              decide the single next step
+              <strong className="text-foreground">Plan:</strong> reúne o objetivo e o último resultado,
+              decide o único próximo passo
             </li>
             <li>
-              <strong className="text-foreground">Build:</strong> take one action, read a file, edit
-              code, run a command
+              <strong className="text-foreground">Build:</strong> executa uma ação, lê um arquivo, edita
+              código, roda um comando
             </li>
             <li>
-              <strong className="text-foreground">Judge:</strong> grade the result against the goal and
-              the spec, not just the tests
+              <strong className="text-foreground">Judge:</strong> avalia o resultado contra o objetivo e
+              o spec, não só os testes
             </li>
             <li>
-              <strong className="text-foreground">Decide:</strong> goal met means stop, not met means
-              loop back to plan
+              <strong className="text-foreground">Decidir:</strong> objetivo cumprido significa parar,
+              não cumprido significa voltar ao plan
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Watch the verifier make the difference</h4>
+        <h4 className="mb-2 text-sm font-semibold">Veja o verificador fazer a diferença</h4>
         <p className="text-sm text-muted-foreground">
-          The single most important control in the simulator is the &quot;separate judge agent&quot;
-          toggle. With it on, a second agent reviews the work against the spec and catches a status
-          code the builder got wrong. Turn it off and the builder grades its own work, sees green tests,
-          and stops, shipping a confident bug. That is the whole reason serious agent loops split the
-          agent that writes the code from the agent that checks it.
+          O controle mais importante do simulador é a chave &quot;agente judge separado&quot;. Com ela
+          ligada, um segundo agente revisa o trabalho contra o spec e pega um código de status que o
+          builder errou. Desligue e o builder avalia o próprio trabalho, vê testes verdes, e para,
+          publicando um bug com confiança. É por isso que loops de agentes sérios separam o agente que
+          escreve o código do agente que o checa.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">How this maps to Claude Code</h4>
+        <h4 className="mb-2 text-sm font-semibold">Como isso mapeia para o Claude Code</h4>
         <p className="text-sm text-muted-foreground">
-          Plan and Judge are the kind of work you hand to a subagent, often a different model, so the
-          judge is not grading its own homework. Build is the main agent using the Read, Edit, and Bash
-          tools. The loop runs until a goal condition or a turn limit, the same way a real harness keeps
-          an agent going until the work is actually done.
+          Plan e Judge são o tipo de trabalho que você entrega a um subagente, muitas vezes um modelo
+          diferente, para que o judge não esteja avaliando sua própria tarefa. Build é o agente principal
+          usando as ferramentas Read, Edit e Bash. O loop roda até uma condição de objetivo ou um limite
+          de turnos, do mesmo jeito que um harness real mantém um agente trabalhando até o trabalho
+          estar de fato concluído.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Go deeper</h4>
+        <h4 className="mb-2 text-sm font-semibold">Vá mais fundo</h4>
         <p className="text-sm text-muted-foreground">
-          The companion post,{' '}
+          O post relacionado,{' '}
           <a
             href="https://bancada.app/posts/stop-prompting-start-looping"
             className="font-medium text-primary underline underline-offset-2"
           >
             Stop Prompting, Start Looping
           </a>
-          , covers why engineers at Anthropic, NVIDIA, and beyond say the job is shifting from writing
-          prompts to designing loops, and what actually makes a loop reliable rather than an expensive
-          way to ship bugs.
+          , cobre por que engenheiros da Anthropic, NVIDIA, e outros dizem que o trabalho está mudando de
+          escrever prompts para desenhar loops, e o que realmente torna um loop confiável em vez de uma
+          forma cara de publicar bugs.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Why learn it this way?</h4>
+        <h4 className="mb-2 text-sm font-semibold">Por que aprender assim?</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>The loop is a simple cycle, but it is the thing that turns a chatbot into an agent.</li>
-          <li>Seeing the plan, build, and judge steps hand off makes the pattern concrete.</li>
-          <li>Watching an unverified loop finish wrong is the fastest way to learn why verification matters.</li>
+          <li>O loop é um ciclo simples, mas é o que transforma um chatbot em um agente.</li>
+          <li>Ver os passos de plan, build e judge se passando o bastão torna o padrão concreto.</li>
+          <li>Ver um loop sem verificação terminar errado é a forma mais rápida de aprender por que a verificação importa.</li>
         </ul>
       </div>
     </>
@@ -108,11 +109,11 @@ export default function AgenticLoopSimulatorPage() {
   return (
     <SimulatorShell
       slug="agentic-loop-simulator"
-      fallbackTitle="Agentic Loop Simulator"
-      fallbackDescription="Watch a coding agent's loop work, one step at a time. A planner, a builder, and a judge cycle through plan, build, verify, and repeat until the goal is met, with a toggle that shows why the judge should be a separate agent."
+      fallbackTitle="Simulador de Loop Agêntico"
+      fallbackDescription="Veja o loop de um agente de código funcionar, um passo de cada vez. Um planner, um builder e um judge ciclam por planejar, construir, verificar e repetir até o objetivo ser cumprido, com uma chave que mostra por que o judge deveria ser um agente separado."
       educational={<AgenticLoopEducational />}
       seoLearningPoints={seoLearningPoints}
-      shareText="Watch how a coding agent's loop actually works: plan, build, judge, repeat. An interactive agentic loop simulator."
+      shareText="Veja como o loop de um agente de código realmente funciona: planejar, construir, julgar, repetir. Um simulador interativo de loop agêntico."
     >
       <AgenticLoopSimulator />
     </SimulatorShell>
