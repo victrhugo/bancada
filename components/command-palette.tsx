@@ -190,7 +190,7 @@ export function CommandPalette() {
       {/* Trigger Button */}
       <button
         onClick={() => setOpen(true)}
-        className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-lg transition-colors border border-border/50 hover:border-border"
+        className="hidden xl:flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-lg transition-colors border border-border/50 hover:border-border"
       >
         <Search className="w-4 h-4" />
         <span>Buscar...</span>
@@ -199,10 +199,10 @@ export function CommandPalette() {
         </kbd>
       </button>
 
-      {/* Mobile trigger */}
+      {/* Compact trigger (below xl, and mobile) */}
       <button
         onClick={() => setOpen(true)}
-        className="sm:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
+        className="xl:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
         aria-label="Buscar"
       >
         <Search className="w-5 h-5" />

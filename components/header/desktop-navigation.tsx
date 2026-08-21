@@ -10,13 +10,13 @@ export function DesktopNavigation() {
   return (
     <>
       {/* Desktop Navigation */}
-      <div className="hidden lg:flex lg:items-center lg:gap-1">
+      <div className="hidden lg:flex lg:items-center lg:gap-0 xl:gap-0.5 2xl:gap-1">
         {mainNavigation.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              'flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-300',
+              'flex items-center gap-1 px-2 py-2.5 text-sm font-medium rounded-xl transition-all duration-300 whitespace-nowrap xl:gap-1.5 xl:px-2.5 2xl:px-4 2xl:gap-2',
               'hover:bg-primary/8 hover:text-primary hover:shadow-sm',
               'relative'
             )}
@@ -33,7 +33,7 @@ export function DesktopNavigation() {
       </div>
 
       {/* Right side */}
-      <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-3">
+      <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-1 xl:gap-x-3">
         <CommandPalette />
         <ThemeToggle />
       </div>

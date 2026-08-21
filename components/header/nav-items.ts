@@ -13,7 +13,7 @@ export const mainNavigation: MainNavItem[] = [
   { label: 'Quizzes', href: '/quizzes', icon: Trophy },
   { label: 'Flashcards', href: '/flashcards', icon: Layers },
   { label: 'Checklists', href: '/checklists', icon: ListChecks },
-  { label: 'Perguntas de Entrevista', href: '/interview-questions', icon: Briefcase },
+  { label: 'Entrevistas', href: '/interview-questions', icon: Briefcase },
   { label: 'Jogos', href: '/games', icon: Gamepad2 },
   { label: 'Roadmap', href: '/roadmap', icon: Map },
 ];
