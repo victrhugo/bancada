@@ -29,46 +29,46 @@ export interface PipelineStage {
 export const PIPELINE_STAGES: PipelineStage[] = [
   {
     id: 'sources',
-    shortLabel: 'Sources',
-    title: 'Apps & hosts',
-    role: 'Applications, containers, and hosts emit raw log events.',
-    watches: 'Watch the incoming rate. A sudden increase is often the first sign of an incident.',
+    shortLabel: 'Fontes',
+    title: 'Apps e hosts',
+    role: 'Aplicações, containers e hosts emitem eventos de log brutos.',
+    watches: 'Observe a taxa de entrada. Um aumento repentino costuma ser o primeiro sinal de um incidente.',
   },
   {
     id: 'collector',
-    shortLabel: 'Collect',
+    shortLabel: 'Coletar',
     title: 'Fluent Bit',
-    role: 'A lightweight agent tails files and forwards each event.',
-    watches: 'The source queue grows when agents cannot forward as fast as logs arrive.',
+    role: 'Um agente leve segue arquivos (tail) e encaminha cada evento.',
+    watches: 'A fila de origem cresce quando os agentes não conseguem encaminhar tão rápido quanto os logs chegam.',
   },
   {
     id: 'processor',
-    shortLabel: 'Process',
-    title: 'Parse & filter',
-    role: 'The processor extracts fields, enriches events, and removes noise.',
-    watches: 'Parser rejects mean the incoming format no longer matches the configured parser.',
+    shortLabel: 'Processar',
+    title: 'Parse e filtro',
+    role: 'O processador extrai campos, enriquece eventos, e remove ruído.',
+    watches: 'Rejeições de parser significam que o formato de entrada não bate mais com o parser configurado.',
   },
   {
     id: 'buffer',
     shortLabel: 'Buffer',
-    title: 'Durable buffer',
-    role: 'A bounded queue absorbs short bursts and decouples parsing from indexing.',
-    watches: 'A rising buffer is backpressure. A full buffer turns pressure into dropped logs.',
+    title: 'Buffer durável',
+    role: 'Uma fila limitada absorve rajadas curtas e desacopla o parsing da indexação.',
+    watches: 'Um buffer crescendo é backpressure. Um buffer cheio transforma pressão em logs descartados.',
   },
   {
     id: 'storage',
-    shortLabel: 'Index',
-    title: 'Search cluster',
-    role: 'Elasticsearch-style shards index the accepted, structured events.',
-    watches: 'Uneven or saturated shards increase indexing and query latency.',
+    shortLabel: 'Indexar',
+    title: 'Cluster de busca',
+    role: 'Shards no estilo Elasticsearch indexam os eventos aceitos e estruturados.',
+    watches: 'Shards desbalanceados ou saturados aumentam a latência de indexação e consulta.',
   },
   {
     id: 'query',
-    shortLabel: 'Search',
-    title: 'Explore logs',
-    role: 'Operators query indexed fields to investigate production behavior.',
+    shortLabel: 'Buscar',
+    title: 'Explorar logs',
+    role: 'Operadores consultam campos indexados para investigar o comportamento em produção.',
     watches:
-      'Only indexed logs are searchable; filtered, rejected, and dropped logs never arrive here.',
+      'Só logs indexados são pesquisáveis; logs filtrados, rejeitados e descartados nunca chegam aqui.',
   },
 ];
 
@@ -89,8 +89,8 @@ export interface LogScenario {
 export const LOG_SCENARIOS: Record<LogScenarioId, LogScenario> = {
   healthy: {
     id: 'healthy',
-    label: 'Healthy flow',
-    summary: 'Every stage has enough capacity, so queues drain normally.',
+    label: 'Fluxo saudável',
+    summary: 'Todo estágio tem capacidade suficiente, então as filas escoam normalmente.',
     sourceRate: 24,
     sourceCapacity: 100,
     collectorCapacity: 32,
@@ -102,8 +102,8 @@ export const LOG_SCENARIOS: Record<LogScenarioId, LogScenario> = {
   },
   spike: {
     id: 'spike',
-    label: 'Traffic spike',
-    summary: 'A burst outruns collection and creates pressure at the edge.',
+    label: 'Pico de tráfego',
+    summary: 'Uma rajada ultrapassa a coleta e cria pressão na borda.',
     sourceRate: 84,
     sourceCapacity: 150,
     collectorCapacity: 38,
@@ -115,8 +115,8 @@ export const LOG_SCENARIOS: Record<LogScenarioId, LogScenario> = {
   },
   'parse-failure': {
     id: 'parse-failure',
-    label: 'Parser mismatch',
-    summary: 'A deployment changes the log format and structured parsing rejects events.',
+    label: 'Incompatibilidade de parser',
+    summary: 'Um deployment muda o formato do log e o parsing estruturado rejeita eventos.',
     sourceRate: 30,
     sourceCapacity: 110,
     collectorCapacity: 36,
@@ -128,8 +128,8 @@ export const LOG_SCENARIOS: Record<LogScenarioId, LogScenario> = {
   },
   'slow-index': {
     id: 'slow-index',
-    label: 'Slow indexing',
-    summary: 'Storage cannot keep up, so the durable buffer absorbs backpressure.',
+    label: 'Indexação lenta',
+    summary: 'O armazenamento não consegue acompanhar, então o buffer durável absorve o backpressure.',
     sourceRate: 36,
     sourceCapacity: 120,
     collectorCapacity: 40,
@@ -198,7 +198,7 @@ export function createPipelineState(settings: PipelineSettings = {}): PipelineSt
     dropped: 0,
     shardLoads: [0, 0, 0],
     indexedLogs: [],
-    lastEvent: 'Ready. Generate a batch to start the pipeline.',
+    lastEvent: 'Pronto. Gere um lote para iniciar o pipeline.',
   };
 }
 
@@ -263,8 +263,8 @@ export function advancePipeline(state: PipelineState): PipelineState {
       sourceQueue: queued - overflow,
       dropped: state.dropped + overflow,
       lastEvent: overflow
-        ? `Sources emitted ${scenario.sourceRate} logs; ${overflow} were dropped before collection.`
-        : `Sources emitted ${scenario.sourceRate} raw logs into the collection queue.`,
+        ? `As fontes emitiram ${scenario.sourceRate} logs; ${overflow} foram descartados antes da coleta.`
+        : `As fontes emitiram ${scenario.sourceRate} logs brutos na fila de coleta.`,
     });
   }
 
@@ -275,8 +275,8 @@ export function advancePipeline(state: PipelineState): PipelineState {
       processQueue: state.processQueue + moved,
       collected: state.collected + moved,
       lastEvent: moved
-        ? `Fluent Bit forwarded ${moved} logs to the processor.`
-        : 'The collector found no new logs to forward.',
+        ? `O Fluent Bit encaminhou ${moved} logs para o processador.`
+        : 'O coletor não encontrou logs novos para encaminhar.',
     });
   }
 
@@ -291,9 +291,9 @@ export function advancePipeline(state: PipelineState): PipelineState {
     );
     const accepted = parseCandidates - parseFailed;
     const details = [
-      `${accepted} accepted`,
-      filtered ? `${filtered} noise filtered` : null,
-      parseFailed ? `${parseFailed} parser rejects` : null,
+      `${accepted} aceitos`,
+      filtered ? `${filtered} filtrados como ruído` : null,
+      parseFailed ? `${parseFailed} rejeitados pelo parser` : null,
     ]
       .filter(Boolean)
       .join(', ');
@@ -305,8 +305,8 @@ export function advancePipeline(state: PipelineState): PipelineState {
       filtered: state.filtered + filtered,
       parseFailed: state.parseFailed + parseFailed,
       lastEvent: moved
-        ? `Processor handled ${moved} logs: ${details}.`
-        : 'The processor queue is empty.',
+        ? `O processador tratou ${moved} logs: ${details}.`
+        : 'A fila do processador está vazia.',
     });
   }
 
@@ -316,8 +316,8 @@ export function advancePipeline(state: PipelineState): PipelineState {
       bufferQueue: state.bufferQueue - overflow,
       dropped: state.dropped + overflow,
       lastEvent: overflow
-        ? `The buffer reached capacity and dropped ${overflow} oldest logs.`
-        : `${state.bufferQueue} logs are safely buffered for indexing.`,
+        ? `O buffer atingiu a capacidade e descartou os ${overflow} logs mais antigos.`
+        : `${state.bufferQueue} logs estão em buffer com segurança para indexação.`,
     });
   }
 
@@ -338,15 +338,15 @@ export function advancePipeline(state: PipelineState): PipelineState {
       shardLoads,
       indexedLogs: makeIndexedLogs(state, indexedNow, shardLoads),
       lastEvent: indexedNow
-        ? `The search cluster indexed ${indexedNow} logs across three shards.`
-        : 'The indexer found no buffered logs to write.',
+        ? `O cluster de busca indexou ${indexedNow} logs entre três shards.`
+        : 'O indexador não encontrou logs em buffer para escrever.',
     });
   }
 
   return nextStage(state, {
     lastEvent: state.indexed
-      ? `Search refreshed. ${state.indexed} indexed logs are now queryable.`
-      : 'Search refreshed, but no logs have reached the index yet.',
+      ? `Busca atualizada. ${state.indexed} logs indexados agora são pesquisáveis.`
+      : 'Busca atualizada, mas nenhum log chegou ao índice ainda.',
   });
 }
 
@@ -384,29 +384,29 @@ export function getPipelineHealth(state: PipelineState): {
   if (state.dropped > 0) {
     return {
       tone: 'critical',
-      label: 'Logs are being lost',
+      label: 'Logs estão sendo perdidos',
       explanation:
-        'A bounded queue overflowed. Reduce input, add capacity, or restore the slow stage.',
+        'Uma fila limitada transbordou. Reduza a entrada, adicione capacidade, ou restaure o estágio lento.',
     };
   }
   if (state.parseFailed > 0) {
     return {
       tone: 'critical',
-      label: 'Parser rejects detected',
+      label: 'Rejeições de parser detectadas',
       explanation:
-        'Valid-looking events are failing before indexing. Compare the parser with the new log format.',
+        'Eventos que parecem válidos estão falhando antes da indexação. Compare o parser com o novo formato de log.',
     };
   }
   if (bufferRatio >= 0.65 || state.sourceQueue >= scenario.collectorCapacity) {
     return {
       tone: 'warning',
-      label: 'Backpressure is building',
-      explanation: 'An upstream queue is growing. The buffer buys time, but it is not infinite.',
+      label: 'Backpressure se acumulando',
+      explanation: 'Uma fila upstream está crescendo. O buffer ganha tempo, mas não é infinito.',
     };
   }
   return {
     tone: 'healthy',
-    label: 'Pipeline is healthy',
-    explanation: 'Capacity is keeping up and accepted logs are progressing toward search.',
+    label: 'Pipeline está saudável',
+    explanation: 'A capacidade está acompanhando e os logs aceitos estão progredindo até a busca.',
   };
 }

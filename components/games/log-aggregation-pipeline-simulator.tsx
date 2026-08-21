@@ -71,17 +71,17 @@ function queueLabel(stage: PipelineStageId, state: ReturnType<typeof createPipel
   const scenario = LOG_SCENARIOS[state.scenarioId];
   switch (stage) {
     case 'sources':
-      return `${state.sourceQueue} waiting`;
+      return `${state.sourceQueue} aguardando`;
     case 'collector':
-      return `${state.processQueue} for parsing`;
+      return `${state.processQueue} para parsing`;
     case 'processor':
-      return `${state.filtered + state.parseFailed} removed`;
+      return `${state.filtered + state.parseFailed} removidos`;
     case 'buffer':
       return `${state.bufferQueue} / ${scenario.bufferCapacity}`;
     case 'storage':
-      return `${state.indexed} indexed`;
+      return `${state.indexed} indexados`;
     case 'query':
-      return `${state.indexedLogs.length} samples`;
+      return `${state.indexedLogs.length} amostras`;
   }
 }
 
@@ -180,7 +180,7 @@ export default function LogAggregationPipelineSimulator() {
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-base font-semibold">Production log pipeline</h2>
+              <h2 className="text-base font-semibold">Pipeline de logs de produção</h2>
               <Badge variant="outline" className={cn('gap-1.5', healthStyle.className)}>
                 <HealthIcon className="h-3.5 w-3.5" />
                 {health.label}
@@ -198,7 +198,7 @@ export default function LogAggregationPipelineSimulator() {
               className="min-w-24"
             >
               {running ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-              {running ? 'Pause' : 'Run flow'}
+              {running ? 'Pausar' : 'Rodar fluxo'}
             </Button>
             <Button
               type="button"
@@ -208,11 +208,11 @@ export default function LogAggregationPipelineSimulator() {
               disabled={running}
             >
               <StepForward className="h-4 w-4" />
-              Step
+              Passo
             </Button>
             <Button type="button" variant="ghost" size="sm" onClick={reset}>
               <RotateCcw className="h-4 w-4" />
-              Reset
+              Reiniciar
             </Button>
           </div>
         </div>
@@ -243,9 +243,9 @@ export default function LogAggregationPipelineSimulator() {
       <div className="p-4 sm:p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Cycle {state.cycle} · next stage
+            Ciclo {state.cycle} · próximo estágio
           </p>
-          <p className="text-xs text-muted-foreground">Select a stage to inspect what it does.</p>
+          <p className="text-xs text-muted-foreground">Selecione um estágio para inspecionar o que ele faz.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
@@ -277,7 +277,7 @@ export default function LogAggregationPipelineSimulator() {
                     </span>
                     {isNext && (
                       <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
-                        NEXT
+                        PRÓXIMO
                       </span>
                     )}
                   </div>
@@ -302,7 +302,7 @@ export default function LogAggregationPipelineSimulator() {
             {state.stageIndex + 1}
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-medium">Next: {nextStage.title}</p>
+            <p className="text-sm font-medium">Próximo: {nextStage.title}</p>
             <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
               {state.lastEvent}
             </p>
@@ -310,18 +310,18 @@ export default function LogAggregationPipelineSimulator() {
         </div>
 
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
-          <Metric label="Generated" value={state.generated} hint="all incoming" />
-          <Metric label="Buffered" value={state.bufferQueue} hint="waiting to index" />
-          <Metric label="Indexed" value={state.indexed} hint="searchable" />
-          <Metric label="Rejected" value={state.parseFailed} hint="parser mismatch" />
-          <Metric label="Dropped" value={state.dropped} hint="lost to overflow" />
+          <Metric label="Gerados" value={state.generated} hint="toda entrada" />
+          <Metric label="Em buffer" value={state.bufferQueue} hint="aguardando indexação" />
+          <Metric label="Indexados" value={state.indexed} hint="pesquisáveis" />
+          <Metric label="Rejeitados" value={state.parseFailed} hint="incompatibilidade de parser" />
+          <Metric label="Descartados" value={state.dropped} hint="perdidos por transbordamento" />
         </div>
 
         <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           <section className="rounded-lg border bg-background">
             <div className="border-b px-4 py-3">
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Stage inspector
+                Inspetor de estágio
               </p>
               <h3 className="mt-1 font-semibold">{inspected.title}</h3>
             </div>
@@ -329,7 +329,7 @@ export default function LogAggregationPipelineSimulator() {
               <div>
                 <p className="text-sm leading-relaxed">{inspected.role}</p>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  <strong className="font-semibold text-foreground">Operator signal:</strong>{' '}
+                  <strong className="font-semibold text-foreground">Sinal para o operador:</strong>{' '}
                   {inspected.watches}
                 </p>
               </div>
@@ -340,7 +340,7 @@ export default function LogAggregationPipelineSimulator() {
                     <label htmlFor="parser-mode" className="text-sm font-medium">
                       Parser
                     </label>
-                    <p className="text-xs text-muted-foreground">Changes require a fresh run.</p>
+                    <p className="text-xs text-muted-foreground">Mudanças exigem uma nova execução.</p>
                   </div>
                   <select
                     id="parser-mode"
@@ -350,17 +350,17 @@ export default function LogAggregationPipelineSimulator() {
                     }
                     className="h-9 rounded-md border bg-background px-3 text-sm"
                   >
-                    <option value="json">JSON parser</option>
-                    <option value="grok">Grok pattern</option>
+                    <option value="json">Parser JSON</option>
+                    <option value="grok">Padrão Grok</option>
                   </select>
                 </div>
                 <div className="mt-4 flex items-center justify-between gap-3">
                   <div>
                     <label htmlFor="noise-filter" className="text-sm font-medium">
-                      Drop health-check noise
+                      Descartar ruído de health-check
                     </label>
                     <p className="text-xs text-muted-foreground">
-                      Reduces storage volume before indexing.
+                      Reduz o volume de armazenamento antes da indexação.
                     </p>
                   </div>
                   <Switch
@@ -383,7 +383,7 @@ export default function LogAggregationPipelineSimulator() {
                   detailView === 'inspect' ? 'bg-muted text-foreground' : 'text-muted-foreground'
                 )}
               >
-                Shard health
+                Saúde dos shards
               </button>
               <button
                 type="button"
@@ -393,7 +393,7 @@ export default function LogAggregationPipelineSimulator() {
                   detailView === 'search' ? 'bg-muted text-foreground' : 'text-muted-foreground'
                 )}
               >
-                Search logs
+                Buscar logs
               </button>
             </div>
 
@@ -401,10 +401,10 @@ export default function LogAggregationPipelineSimulator() {
               <div className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="font-semibold">Three primary shards</h3>
+                    <h3 className="font-semibold">Três shards primários</h3>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Events are distributed by document id. Balanced bars mean balanced indexing
-                      work.
+                      Eventos são distribuídos por id de documento. Barras equilibradas significam
+                      trabalho de indexação equilibrado.
                     </p>
                   </div>
                   <Badge variant="secondary" className="shrink-0 font-mono">
@@ -432,9 +432,9 @@ export default function LogAggregationPipelineSimulator() {
                   })}
                 </div>
                 <div className="mt-5 rounded-md bg-muted/60 px-3 py-2.5 text-xs leading-relaxed text-muted-foreground">
-                  This models primary-shard routing, not a full Elasticsearch cluster. Replicas,
-                  refresh intervals, and segment merges are intentionally omitted to keep the first
-                  lesson focused on flow and backpressure.
+                  Isso modela o roteamento de shards primários, não um cluster Elasticsearch completo.
+                  Réplicas, intervalos de refresh, e merges de segmento são omitidos de propósito para
+                  manter a primeira lição focada em fluxo e backpressure.
                 </div>
               </div>
             ) : (
@@ -445,7 +445,7 @@ export default function LogAggregationPipelineSimulator() {
                     <Input
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
-                      placeholder="Search service, message, parser, or shard…"
+                      placeholder="Buscar serviço, mensagem, parser, ou shard…"
                       className="pl-9"
                     />
                   </div>
@@ -462,7 +462,7 @@ export default function LogAggregationPipelineSimulator() {
                             : 'text-muted-foreground hover:text-foreground'
                         )}
                       >
-                        {option === 'ALL' ? 'All levels' : option}
+                        {option === 'ALL' ? 'Todos os níveis' : option}
                       </button>
                     ))}
                   </div>
@@ -474,12 +474,12 @@ export default function LogAggregationPipelineSimulator() {
                     <div className="flex min-h-36 flex-col items-center justify-center px-4 text-center">
                       <Search className="h-7 w-7 text-muted-foreground/50" />
                       <p className="mt-2 text-sm font-medium">
-                        {state.indexed ? 'No matching logs' : 'Nothing is indexed yet'}
+                        {state.indexed ? 'Nenhum log encontrado' : 'Nada indexado ainda'}
                       </p>
                       <p className="mt-1 max-w-sm text-xs text-muted-foreground">
                         {state.indexed
-                          ? 'Try another term or severity.'
-                          : 'Run or step the flow until a batch reaches the Index stage.'}
+                          ? 'Tente outro termo ou severidade.'
+                          : 'Rode ou avance o fluxo até um lote chegar ao estágio de Indexação.'}
                       </p>
                     </div>
                   )}
