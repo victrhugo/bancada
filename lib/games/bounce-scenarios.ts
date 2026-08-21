@@ -30,22 +30,22 @@ export interface BounceScenario {
 export const KIND_LABELS: Record<BounceKind, string> = {
   hard: 'Hard bounce',
   soft: 'Soft bounce',
-  block: 'Blocked',
-  complaint: 'Complaint',
+  block: 'Bloqueado',
+  complaint: 'Reclamação',
 };
 
 export const KIND_HINTS: Record<BounceKind, string> = {
-  hard: 'Permanent. This address will never accept mail.',
-  soft: 'Temporary. The same address may well accept it later.',
-  block: 'The address is fine. They are refusing you, this message, or this rate.',
-  complaint: 'The recipient marked it as spam.',
+  hard: 'Permanente. Esse endereço nunca vai aceitar e-mail.',
+  soft: 'Temporário. O mesmo endereço pode aceitar mais tarde.',
+  block: 'O endereço está ok. Estão recusando você, esta mensagem, ou este ritmo de envio.',
+  complaint: 'O destinatário marcou como spam.',
 };
 
 export const ACTION_LABELS: Record<BounceAction, string> = {
-  suppress: 'Suppress permanently',
-  retry: 'Retry with backoff',
-  'fix-content': 'Fix the message, then retry',
-  'slow-down': 'Slow down, then retry',
+  suppress: 'Suprimir permanentemente',
+  retry: 'Tentar novamente com backoff',
+  'fix-content': 'Corrigir a mensagem, depois tentar de novo',
+  'slow-down': 'Reduzir o ritmo, depois tentar de novo',
 };
 
 export const BOUNCE_SCENARIOS: BounceScenario[] = [
@@ -57,9 +57,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'hard',
     action: 'suppress',
     explanation:
-      '5.1.1 is the canonical "no such mailbox" response. Note the address itself: jhon at exmaple.com is a double typo of john at example.com, which is what most hard bounces really are. Someone mistyped their address at signup.',
+      '5.1.1 é a resposta canônica de "caixa de e-mail inexistente". Repare no próprio endereço: jhon em exmaple.com é um duplo erro de digitação de john em example.com, que é o que a maioria dos hard bounces realmente é. Alguém digitou o próprio endereço errado no cadastro.',
     consequence:
-      'Retrying this costs you reputation every single time. A rising hard bounce rate is the fastest way to get throttled, and mailbox providers read repeated sends to a known-dead address as a sign you are mailing a purchased list.',
+      'Tentar de novo custa reputação toda vez. Uma taxa crescente de hard bounces é a forma mais rápida de ser limitado (throttled), e os provedores de caixa postal interpretam envios repetidos para um endereço conhecidamente morto como sinal de que você está enviando para uma lista comprada.',
   },
   {
     id: 'mailbox-full',
@@ -69,9 +69,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'soft',
     action: 'retry',
     explanation:
-      '4.2.2 means the mailbox exists and the person is real, they have simply run out of space. This is the textbook soft bounce.',
+      '4.2.2 significa que a caixa existe e a pessoa é real, só ficaram sem espaço. Esse é o soft bounce de livro-texto.',
     consequence:
-      'Suppressing on this is the expensive mistake. You permanently lose a real subscriber because they were briefly over quota. Retry with backoff, and only give up after it has failed consistently for days.',
+      'Suprimir aqui é o erro caro. Você perde permanentemente um assinante real porque ele ficou brevemente sem cota. Tente de novo com backoff, e só desista depois de falhar consistentemente por dias.',
   },
   {
     id: 'greylisted',
@@ -81,9 +81,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'soft',
     action: 'retry',
     explanation:
-      'Greylisting deliberately rejects the first attempt from an unknown sender, on the theory that spam software does not retry and real mail servers do. Wait the stated interval and the retry is usually accepted.',
+      'O greylisting rejeita deliberadamente a primeira tentativa de um remetente desconhecido, partindo da teoria de que software de spam não tenta de novo e servidores de e-mail de verdade tentam. Espere o intervalo indicado e a nova tentativa geralmente é aceita.',
     consequence:
-      'Treating greylisting as a failure means you never deliver to a whole class of small self-hosted domains. The retry is the entire point of the mechanism: it is a test you pass by behaving like a real mail server.',
+      'Tratar greylisting como falha significa que você nunca entrega para toda uma classe de domínios pequenos auto-hospedados. A nova tentativa é todo o propósito do mecanismo: é um teste que você passa se comportando como um servidor de e-mail real.',
   },
   {
     id: 'spam-content',
@@ -93,9 +93,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'block',
     action: 'fix-content',
     explanation:
-      'A 5xx that is not about the address at all. The mailbox is fine and the recipient is real; a content filter objected to something in the message. Common causes are a link shortener, a bare IP in a URL, an attachment type, or copy that reads like phishing.',
+      'Um 5xx que não tem nada a ver com o endereço. A caixa está ok e o destinatário é real; um filtro de conteúdo se opôs a algo na mensagem. Causas comuns são um encurtador de link, um IP nu numa URL, um tipo de anexo, ou um texto que soa como phishing.',
     consequence:
-      'Suppressing here throws away a valid recipient for a problem that lives in your template. Fix the message and it delivers. The trap is that the 5 in 550 looks permanent, so naive triage files it with the dead addresses.',
+      'Suprimir aqui descarta um destinatário válido por um problema que está no seu template. Corrija a mensagem e ela entrega. A armadilha é que o 5 em 550 parece permanente, então uma triagem ingênua arquiva junto com os endereços mortos.',
   },
   {
     id: 'gmail-unauthenticated',
@@ -105,9 +105,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'block',
     action: 'fix-content',
     explanation:
-      'Nothing to do with the recipient. Your DMARC policy told Gmail to reject mail that fails authentication, and this message failed. Usually SPF or DKIM alignment: the From domain does not match the domain that actually authenticated.',
+      'Nada a ver com o destinatário. Sua política de DMARC disse ao Gmail para rejeitar e-mail que falha na autenticação, e essa mensagem falhou. Geralmente é alinhamento de SPF ou DKIM: o domínio do From não bate com o domínio que de fato autenticou.',
     consequence:
-      'Suppressing recipients over this hides an authentication bug behind a shrinking list. Every message you send is failing the same way. Fix the DNS or the signing domain and the whole class disappears.',
+      'Suprimir destinatários por isso esconde um bug de autenticação atrás de uma lista encolhendo. Toda mensagem que você envia está falhando da mesma forma. Corrija o DNS ou o domínio de assinatura e a classe inteira desaparece.',
   },
   {
     id: 'rate-limited',
@@ -117,9 +117,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'block',
     action: 'slow-down',
     explanation:
-      'A 421 closes the connection. The provider is telling you the rate is the problem, not the mail. Common when a new sending domain sends a burst instead of ramping up.',
+      'Um 421 fecha a conexão. O provedor está dizendo que o ritmo é o problema, não o e-mail. Comum quando um domínio de envio novo manda uma rajada em vez de ir aumentando aos poucos.',
     consequence:
-      'Retrying immediately at the same rate makes it worse and can get the IP temporarily blocked. Reduce concurrency, spread the send, and let the reputation build.',
+      'Tentar de novo imediatamente no mesmo ritmo piora as coisas e pode bloquear o IP temporariamente. Reduza a concorrência, espalhe o envio, e deixe a reputação se construir.',
   },
   {
     id: 'domain-not-found',
@@ -129,9 +129,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'hard',
     action: 'suppress',
     explanation:
-      '5.1.2 means the domain has no MX or A record. The company shut down, the domain lapsed, or it was never real. There is no server to accept this mail.',
+      '5.1.2 significa que o domínio não tem registro MX ou A. A empresa fechou, o domínio expirou, ou nunca existiu de verdade. Não há servidor para aceitar esse e-mail.',
     consequence:
-      'This one never recovers, so retrying is pure waste. Worth checking the whole list: if many addresses share a dead domain, one company folding can quietly rot a chunk of your audience.',
+      'Esse nunca se recupera, então tentar de novo é puro desperdício. Vale checar a lista inteira: se muitos endereços compartilham um domínio morto, uma empresa fechando pode silenciosamente apodrecer um pedaço da sua audiência.',
   },
   {
     id: 'complaint-feedback-loop',
@@ -141,9 +141,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'complaint',
     action: 'suppress',
     explanation:
-      'Not a bounce at all. This is an ARF report from a feedback loop: the message was delivered, and the recipient pressed "report spam". You only see these if you are enrolled in the provider feedback loops.',
+      'Isso nem é um bounce. É um relatório ARF de um feedback loop: a mensagem foi entregue, e o destinatário apertou "denunciar como spam". Você só vê isso se estiver inscrito nos feedback loops do provedor.',
     consequence:
-      'Suppress immediately and permanently. Someone who reported you as spam is never a re-engagement opportunity, and complaints are weighted far more heavily than bounces. Google starts throttling around 0.3%, which is three people per thousand.',
+      'Suprima imediata e permanentemente. Alguém que te denunciou como spam nunca é uma oportunidade de reengajamento, e reclamações pesam muito mais que bounces. O Google começa a limitar por volta de 0,3%, que são três pessoas a cada mil.',
   },
   {
     id: 'relay-denied',
@@ -153,9 +153,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'block',
     action: 'fix-content',
     explanation:
-      'The receiving server does not consider itself responsible for that domain, so it refuses to relay. Usually a stale MX record pointing at a server that no longer hosts the domain, or a misrouted internal address.',
+      'O servidor destinatário não se considera responsável por aquele domínio, então recusa fazer o relay. Geralmente um registro MX desatualizado apontando para um servidor que não hospeda mais o domínio, ou um endereço interno mal roteado.',
     consequence:
-      'Not the recipient\'s fault and not fixable by retrying. It needs a DNS or routing fix on their side, so this is a support conversation rather than a list-hygiene action.',
+      'Não é culpa do destinatário e não se resolve tentando de novo. Precisa de um ajuste de DNS ou roteamento do lado deles, então isso é uma conversa de suporte, não uma ação de higiene de lista.',
   },
   {
     id: 'temporary-server-failure',
@@ -165,9 +165,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'soft',
     action: 'retry',
     explanation:
-      '4.3.0 is the receiving server admitting its own problem. Nothing is wrong with the address, your content, or your reputation.',
+      '4.3.0 é o servidor destinatário admitindo seu próprio problema. Não há nada errado com o endereço, seu conteúdo, ou sua reputação.',
     consequence:
-      'Retry with backoff and it almost always delivers. The only mistake here is giving up too early, or hammering it with immediate retries and turning a transient error into a rate-limit block.',
+      'Tente de novo com backoff e quase sempre entrega. O único erro aqui é desistir cedo demais, ou martelar com tentativas imediatas e transformar um erro transitório num bloqueio por limite de taxa.',
   },
   {
     id: 'blocked-listing',
@@ -177,9 +177,9 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'block',
     action: 'slow-down',
     explanation:
-      'Your sending IP is on a public blocklist. Nothing about this recipient is wrong, and it will affect everything you send until it is resolved.',
+      'Seu IP de envio está numa blocklist pública. Não há nada de errado com esse destinatário, e isso vai afetar tudo que você enviar até ser resolvido.',
     consequence:
-      'The urgent signal in the list: stop sending, find what caused the listing (usually a spike in complaints or hitting a spam trap), fix it, then request delisting. Continuing to send while listed deepens the hole.',
+      'O sinal urgente da lista: pare de enviar, descubra o que causou a listagem (geralmente um pico de reclamações ou atingir uma spam trap), corrija, então peça a remoção da lista. Continuar enviando enquanto listado aprofunda o buraco.',
   },
   {
     id: 'disabled-mailbox',
@@ -189,8 +189,8 @@ export const BOUNCE_SCENARIOS: BounceScenario[] = [
     kind: 'hard',
     action: 'suppress',
     explanation:
-      '5.2.1 means the mailbox exists but has been switched off, which is what happens to a work address after someone leaves. It will not come back.',
+      '5.2.1 significa que a caixa existe mas foi desativada, que é o que acontece com um endereço de trabalho depois que alguém sai da empresa. Não vai voltar.',
     consequence:
-      'Suppress it. This is also worth surfacing to the customer, since a B2B list quietly fills with departed employees and the bounce rate creeps up until it starts costing deliverability.',
+      'Suprima. Vale também trazer isso à tona com o cliente, já que uma lista B2B silenciosamente se enche de ex-funcionários e a taxa de bounce vai subindo até começar a custar entregabilidade.',
   },
 ];
