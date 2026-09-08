@@ -89,7 +89,7 @@ For answers to common questions about this code of conduct, see the FAQ at [http
 
 ## Our Commitment to Learning
 
-At DevOps Daily, we're building a community where everyone can learn and grow. We understand that:
+At Bancada, we're building a community where everyone can learn and grow. We understand that:
 
 - **Everyone starts somewhere** - We were all beginners once
 - **Questions are encouraged** - There are no "stupid questions"
@@ -100,4 +100,4 @@ We're committed to maintaining a supportive environment where everyone feels saf
 
 ---
 
-**Thank you for helping make DevOps Daily a welcoming and inclusive community for all!** 🚀
+**Thank you for helping make Bancada a welcoming and inclusive community for all!** 🚀
