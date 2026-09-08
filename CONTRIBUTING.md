@@ -1,6 +1,6 @@
-# Contributing to DevOps Daily
+# Contributing to Bancada
 
-First off, thank you for considering contributing to DevOps Daily! 🎉 It's people like you that make DevOps Daily such a great resource for the community.
+First off, thank you for considering contributing to Bancada! 🎉 It's people like you that make Bancada such a great resource for the community.
 
 ## 📋 Table of Contents
 
@@ -23,8 +23,8 @@ We're building a welcoming community where everyone can learn and contribute, re
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/devops-daily.git
-   cd devops-daily
+   git clone https://github.com/YOUR-USERNAME/bancada.git
+   cd bancada
    ```
 3. **Install dependencies**:
    ```bash
@@ -36,7 +36,7 @@ We're building a welcoming community where everyone can learn and contribute, re
    ```
 5. **Start the development server**:
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 ## 🤝 How Can I Contribute?
@@ -208,13 +208,13 @@ description: 'All about Docker containers and containerization'
 
 ```bash
 # Start development server
-npm run dev
+pnpm dev
 
 # Run linting
-npm run lint
+pnpm lint
 
 # Fix linting issues
-npm run lint:fix
+pnpm lint:fix
 
 # Format code
 npm run format
@@ -269,9 +269,9 @@ npm run generate:images:parallel
 4. **Test your changes locally**:
 
    ```bash
-   npm run dev
-   npm run lint
-   npm run format
+   pnpm dev
+   pnpm lint
+   pnpm format
    ```
 
 5. **Commit your changes**:
@@ -362,13 +362,13 @@ Contributors are recognized in:
 
 ## ❓ Questions?
 
-- **GitHub Issues**: [Ask a question](https://github.com/The-DevOps-Daily/devops-daily/issues)
-- **Discussions**: Check [GitHub Discussions](https://github.com/The-DevOps-Daily/devops-daily/discussions)
+- **GitHub Issues**: [Ask a question](https://github.com/victrhugo/bancada/issues)
+- **GitHub Discussions**: [Join the discussion](https://github.com/victrhugo/bancada/discussions)
 
 ## 📄 License
 
-By contributing to DevOps Daily, you agree that your contributions will be licensed under the MIT License.
+By contributing to Bancada, you agree that your contributions will be licensed under the Apache License 2.0.
 
 ---
 
-Thank you for contributing to DevOps Daily! Your efforts help the entire DevOps community. ��
+Thank you for contributing to Bancada! Your efforts help the entire DevOps community.
