@@ -75,7 +75,7 @@ export const milestones: DevSecOpsMilestone[] = [
         icon: Shield,
         priority: 'essential',
         estimatedHours: 15,
-        link: '/guides/security-principles',
+        link: '/interview-questions/senior/security-architecture',
       },
       {
         name: 'OWASP Top 10',
@@ -83,7 +83,7 @@ export const milestones: DevSecOpsMilestone[] = [
         icon: AlertTriangle,
         priority: 'essential',
         estimatedHours: 20,
-        link: '/guides/owasp-top-10',
+        link: '/checklists/cicd-pipeline-setup',
      },
      {
        name: 'Threat Modeling',
@@ -91,7 +91,7 @@ export const milestones: DevSecOpsMilestone[] = [
        icon: Bug,
        priority: 'important',
        estimatedHours: 15,
-        link: '/guides/threat-modeling',
+        link: '/interview-questions/senior/security-architecture',
      },
      {
         name: 'Linux Security Basics',
@@ -108,7 +108,7 @@ export const milestones: DevSecOpsMilestone[] = [
        icon: Key,
        priority: 'important',
        estimatedHours: 15,
-       link: '/guides/cryptography-essentials',
+       link: '/quizzes/network-security-quiz',
      },
     ],
     project: {

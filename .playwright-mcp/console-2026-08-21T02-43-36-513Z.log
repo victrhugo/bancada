@@ -1,0 +1,9 @@
+[     866ms] [LOG] %c👀 Xeretando o console?
+
+%cSe você chegou até aqui, já sabe apertar F12 — e provavelmente já entende de código. No Baker a gente ensina uma IA a ler métrica de anúncio e tomar decisão de campanha sozinha, e o time que constrói isso ainda é pequeno (por enquanto).
+
+%cTemos vaga aberta pro time de engenharia. Bora conversar? 🚀 background: oklch(0.6317 0.254355 21.7529); color: white; font-size: 16px; font-weight: 700; padding: 6px 12px; border-radius: 8px; line-height: 2.2; color: inherit; font-size: 13px; font-weight: 400; line-height: 1.6; color: oklch(0.6317 0.254355 21.7529); font-size: 13px; font-weight: 700; @ https://b4ker.io/_next/static/chunks/1o271ameyn15w.js:0
+[    4287ms] [WARNING] The resource https://b4ker.io/_next/static/chunks/1qlle-740_lg3.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://b4ker.io/:0
+[    8264ms] [WARNING] The resource https://b4ker.io/_next/static/chunks/1qlle-740_lg3.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://b4ker.io/:0
+[   17051ms] [WARNING] The resource https://b4ker.io/_next/static/chunks/1qlle-740_lg3.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://b4ker.io/:0
+[   25662ms] [WARNING] The resource https://b4ker.io/_next/static/chunks/1qlle-740_lg3.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://b4ker.io/:0
