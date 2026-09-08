@@ -1,0 +1,6 @@
+[      -2ms] [ERROR] Failed to load resource: the server responded with a status of 429 () @ https://apps.apple.com/us/app/b4ker/id6791284735:0
+[     130ms] Unexpected identifier 'loading'
+[     144ms] [WARNING] "debugSource" found.
+This will override any same-named client-supplied configSource fields.
+This setting "sticks" across session, use "setDebugSource(null)" to clear @ https://apps.apple.com/assets/mt-client-logger-core.esm~DFLHsSWhNI.js:0
+[    3394ms] [ERROR] navigator.sendBeacon() was unable to queue the data for transfer @ https://apps.apple.com/assets/index~BRTBTu87nN.js:0
