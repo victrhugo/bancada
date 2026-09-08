@@ -8,7 +8,7 @@ test('homepage renders in both themes without horizontal overflow', async ({ pag
     }, theme);
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Learn DevOps');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Aprenda DevOps');
     await expect(page.locator('html')).toHaveClass(new RegExp(theme));
 
     const hasHorizontalOverflow = await page.evaluate(
@@ -21,24 +21,24 @@ test('homepage renders in both themes without horizontal overflow', async ({ pag
 test('games directory keeps available and coming-soon tools distinct', async ({ page }) => {
   await page.goto('/games');
 
-  const counter = page.getByText(/Showing \d+ of \d+ available tools/);
+  const counter = page.getByText(/Mostrando \d+ de \d+ ferramentas disponíveis/);
   await expect(counter).toBeVisible();
-  const counts = (await counter.textContent())?.match(/Showing (\d+) of (\d+)/);
+  const counts = (await counter.textContent())?.match(/Mostrando (\d+) de (\d+)/);
   expect(counts?.[1]).toBe(counts?.[2]);
 
-  const comingSoon = page.getByRole('region', { name: 'Coming Soon' });
+  const comingSoon = page.getByRole('region', { name: 'Em Breve' });
   await expect(comingSoon).toBeVisible();
   await expect(comingSoon.getByRole('link')).toHaveCount(0);
 
-  const simulatorsTab = page.getByRole('button', { name: /Simulators/ });
+  const simulatorsTab = page.getByRole('button', { name: /Simuladores/ });
   await simulatorsTab.click();
   await expect(simulatorsTab).toHaveAttribute('aria-pressed', 'true');
   await expect(comingSoon).not.toBeVisible();
 });
 
-test('representative article and simulator routes render', async ({ page }) => {
-  await page.goto('/posts/reliable-webhook-delivery-retries-signatures-idempotency');
-  await expect(page.getByRole('main')).toContainText(/webhook/i);
+test('representative exercise and simulator routes render', async ({ page }) => {
+  await page.goto('/exercises/docker-multi-stage-build');
+  await expect(page.getByRole('main')).toContainText(/Otimização de Build Multi-Stage no Docker/i);
 
   await page.goto('/games/webhook-delivery-simulator');
   await expect(
