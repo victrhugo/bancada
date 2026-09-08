@@ -121,7 +121,7 @@
     },
     {
       "title": "Boas Práticas de Segurança do Docker",
-      "url": "/posts/docker-security-best-practices",
+      "url": "/checklists/docker-security",
       "type": "tutorial"
     }
   ],
