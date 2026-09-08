@@ -91,4 +91,4 @@ pnpm build
 
 ## Licença
 
-Distribuído sob a [Licença Apache 2.0](LICENSE).
+As contribuições próprias do Bancada são distribuídas sob a [Licença Apache 2.0](LICENSE). O projeto foi adaptado de [The DevOps Daily](https://github.com/The-DevOps-Daily/devops-daily), originalmente licenciado sob MIT. Consulte os [avisos de terceiros](THIRD_PARTY_NOTICES.md) para detalhes e atribuições.
