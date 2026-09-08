@@ -9,7 +9,7 @@
  *   bun scripts/submit-indexnow.ts --dry-run <url>  # print the payload, don't POST
  *
  * Environment:
- *   SITE_URL          defaults to https://bancada.app
+ *   SITE_URL          defaults to https://bancada-9g8r.vercel.app
  *   INDEXNOW_ENDPOINT defaults to https://api.indexnow.org/IndexNow
  */
 
@@ -17,7 +17,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const KEY = '94431595b723407986a66bb4726c8be6';
-const SITE_URL = (process.env.SITE_URL || 'https://bancada.app').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://bancada-9g8r.vercel.app').replace(/\/$/, '');
 const HOST = new URL(SITE_URL).host;
 const KEY_LOCATION = `${SITE_URL}/${KEY}.txt`;
 const ENDPOINT = process.env.INDEXNOW_ENDPOINT || 'https://api.indexnow.org/IndexNow';
@@ -79,14 +79,15 @@ async function main(): Promise<void> {
   }
   urls.push(...positional);
 
-  const normalized = [...new Set(urls.map(normalizeUrl).filter((u): u is string => u !== null))]
-    .filter((u) => {
-      try {
-        return new URL(u).host === HOST;
-      } catch {
-        return false;
-      }
-    });
+  const normalized = [
+    ...new Set(urls.map(normalizeUrl).filter((u): u is string => u !== null)),
+  ].filter((u) => {
+    try {
+      return new URL(u).host === HOST;
+    } catch {
+      return false;
+    }
+  });
 
   if (normalized.length === 0) {
     console.log('No URLs to submit.');
