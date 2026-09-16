@@ -26,15 +26,26 @@ We're building a welcoming community where everyone can learn and contribute, re
    git clone https://github.com/YOUR-USERNAME/bancada.git
    cd bancada
    ```
-3. **Install dependencies**:
+
+   Configure the original repository as the upstream remote:
+
+   ```bash
+   git remote add upstream https://github.com/victrhugo/bancada.git
+   git remote -v
+   ```
+
+   `origin` points to your fork. `upstream` points to the original repository
+   and is used to fetch updates.
+   
+4. **Install dependencies**:
    ```bash
    pnpm install
    ```
-4. **Create a branch** for your changes:
+5. **Create a branch** for your changes:
    ```bash
    git checkout -b feature/your-feature-name
    ```
-5. **Start the development server**:
+6. **Start the development server**:
    ```bash
    pnpm dev
    ```
