@@ -27,7 +27,7 @@
   "publishedAt": "2024-12-08T10:00:00Z",
   "author": {
     "name": "Bancada",
-    "slug": "devops-daily-team"
+    "slug": "bancada"
   },
   "tags": ["Terraform", "DigitalOcean", "IaC", "Beginner", "Cloud"],
   "steps": [

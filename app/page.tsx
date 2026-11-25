@@ -3,7 +3,7 @@ import FeaturedExercises from '@/components/featured-exercises';
 import FeaturedQuizzes from '@/components/featured-quizzes';
 import { SectionHeader } from '@/components/section-header';
 import { SectionSeparator } from '@/components/section-separator';
-import { ArrowRight, Globe, Anchor, Scale, GitBranch, Database, Shield } from 'lucide-react';
+import { ArrowRight, Globe, Anchor, Scale, GitBranch, Database, Shield, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getActiveGames } from '@/lib/games';
@@ -102,6 +102,32 @@ export default async function Home() {
       </div>
 
       <div className="container px-4 mx-auto">
+        {/* AI module highlight */}
+        <section className="mt-12" aria-label="Módulo de Engenharia de IA">
+          <Link
+            href="/roadmap/ia"
+            className="group flex flex-col gap-4 rounded-md border border-primary/30 bg-gradient-to-br from-primary/[0.08] via-card to-card p-6 transition-colors hover:border-primary/60 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div className="flex items-start gap-4">
+              <div className="rounded-md border border-primary/30 bg-primary/10 p-2.5">
+                <Sparkles className="h-5 w-5 text-primary" strokeWidth={1.5} />
+              </div>
+              <div>
+                <p className="text-xs font-mono text-primary mb-1">{'// novo módulo'}</p>
+                <h2 className="text-lg font-semibold tracking-tight">Engenharia de IA: LLMs, RAG e Agentes</h2>
+                <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+                  Roadmap, simulador de pipeline RAG, exercício com pgvector, quiz, flashcards, checklist de
+                  produção e perguntas de entrevista. Do primeiro prompt ao assistente em produção.
+                </p>
+              </div>
+            </div>
+            <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-primary">
+              Começar o módulo
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </span>
+          </Link>
+        </section>
+
         <SectionSeparator command="ls /simulators" />
 
         {/* Featured Simulators */}

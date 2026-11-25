@@ -1,0 +1,30 @@
+{
+  "id": "ia-rag-qualidade-retrieval",
+  "slug": "ia-rag-qualidade-retrieval",
+  "title": "Diagnosticando um RAG que Responde Mal",
+  "question": "Seu assistente com RAG está dando respostas erradas ou vagas. Como você investiga se o problema está no retrieval ou na geração, e quais ajustes você faria em cada caso?",
+  "answer": "Primeiro separo as duas metades com um golden set: perguntas reais com a fonte esperada. Se a fonte certa não aparece no top-k (recall@k baixo), o problema é retrieval e não adianta mexer no prompt. Aí ajusto chunking (cortar por seção, tamanho entre 300 e 800 tokens, overlap), adiciono busca híbrida (vetorial + BM25 para termos exatos), um reranker no top 20 e filtros por metadados. Se a fonte certa está no contexto mas a resposta é ruim, o problema é geração: reviso o prompt com regras de grounding e citação, reduzo o número de trechos para tirar ruído, baixo a temperature ou testo um modelo mais capaz. Cada mudança roda de novo no golden set para comparar antes e depois.",
+  "explanation": "O que diferencia uma pessoa pleno aqui é o método: não sair trocando modelo ou prompt às cegas. Medir retrieval e geração separadamente transforma um problema vago (\"a IA está ruim\") em dois problemas investigáveis. Também vale citar que documentos desatualizados ou duplicados no índice são causa comum e que a solução às vezes é curadoria de conteúdo, não tecnologia.",
+  "category": "IA",
+  "difficulty": "intermediate",
+  "tier": "mid",
+  "tags": ["ia", "rag", "avaliacao", "chunking", "busca-hibrida", "reranking"],
+  "codeExamples": [
+    {
+      "language": "python",
+      "label": "Medindo recall@k",
+      "code": "def recall_at_k(casos, buscar, k=5):\n    acertos = 0\n    for caso in casos:\n        fontes = {r.fonte for r in buscar(caso[\"pergunta\"], k)}\n        acertos += caso[\"fonte_esperada\"] in fontes\n    return acertos / len(casos)\n\nprint(recall_at_k(golden, busca_vetorial))   # 0.68\nprint(recall_at_k(golden, busca_hibrida))    # 0.86"
+    }
+  ],
+  "followUpQuestions": [
+    "Como você montaria o golden set do zero?",
+    "Quando um reranker vale o custo e a latência extra?",
+    "Como avaliar fidelidade (faithfulness) da resposta em escala?"
+  ],
+  "commonMistakes": [
+    "Trocar de modelo antes de medir o retrieval",
+    "Avaliar com três perguntas no chat (vibe check)",
+    "Aumentar o top-k indefinidamente e encher o contexto de ruído"
+  ],
+  "relatedTopics": ["golden-set", "recall-at-k", "busca-hibrida", "llm-as-a-judge"]
+}

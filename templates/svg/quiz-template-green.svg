@@ -49,6 +49,6 @@
     <path d="M1000 450 L1030 480 L1080 430" fill="none" stroke="#34d399" stroke-width="5"/>
   </g>
 
-  <!-- DevOps Daily branding -->
-  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#34d399">DevOps Daily</text>
+  <!-- Bancada branding -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#34d399">Bancada</text>
 </svg>

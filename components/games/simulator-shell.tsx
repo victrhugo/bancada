@@ -5,7 +5,6 @@ import { Breadcrumb } from '@/components/breadcrumb';
 import { BreadcrumbSchema, SoftwareApplicationSchema } from '@/components/schema-markup';
 import { GameActions } from '@/components/games/game-actions';
 import { GameSeoContent } from '@/components/games/game-seo-content';
-import { CarbonAds } from '@/components/carbon-ads';
 import { getGameById, getActiveGames } from '@/lib/games';
 import { cn } from '@/lib/utils';
 
@@ -24,8 +23,6 @@ interface SimulatorShellProps {
   shareText?: string;
   /** Optional indexable learning points for the hidden SEO/no-JS content block */
   seoLearningPoints?: string[];
-  /** Hide the CarbonAds block (use sparingly; e.g. for in-game pages that already embed ads) */
-  hideAds?: boolean;
   /** Hide the social share footer */
   hideShare?: boolean;
   className?: string;
@@ -35,9 +32,7 @@ interface SimulatorShellProps {
  * Shared chrome for every simulator / game page. Encapsulates:
  * - Schemas (Breadcrumb + SoftwareApplication)
  * - Container + breadcrumb + GameActions
- * - Sponsors
  * - Educational content wrapper (styled consistently)
- * - CarbonAds
  * - Share footer + "Back to simulators" link
  *
  * Game components are passed as `children` and rendered untouched.
@@ -50,7 +45,6 @@ export async function SimulatorShell({
   educational,
   shareText,
   seoLearningPoints,
-  hideAds = false,
   hideShare = false,
   className,
 }: SimulatorShellProps) {
@@ -110,7 +104,7 @@ export async function SimulatorShell({
 
       <div className={cn('container px-4 py-8 mx-auto', className)}>
         {/* Breadcrumb + actions */}
-        <div className="flex items-center justify-between mb-4 gap-4">
+        <div className="flex flex-wrap items-center justify-between mb-4 gap-4">
           <Breadcrumb items={breadcrumbItems} />
           <GameActions gameSlug={slug} gameTitle={title} />
         </div>
@@ -162,13 +156,6 @@ export async function SimulatorShell({
                 ))}
               </ul>
             </section>
-          )}
-
-          {/* Carbon ads */}
-          {!hideAds && (
-            <div className="w-full max-w-md mx-auto my-8">
-              <CarbonAds />
-            </div>
           )}
 
           {/* Share + back-to-games footer */}

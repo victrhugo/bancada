@@ -84,7 +84,7 @@ export default async function GamesPage() {
               úteis. Compartilhe sua ideia e talvez a construamos em seguida.
             </p>
             <Button size="lg" asChild>
-              <Link href="https://github.com/The-DevOps-Daily/devops-daily/issues/new/choose">
+              <Link href="https://github.com/victrhugo/bancada/issues/new/choose">
                 <Dice6 className="mr-2 h-4 w-4" />
                 Sugerir um Jogo
               </Link>

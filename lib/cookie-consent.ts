@@ -1,5 +1,5 @@
 export const COOKIE_CONSENT_KEY = 'cookie-consent';
-export const COOKIE_CONSENT_EVENT = 'devops-daily:cookie-consent';
+export const COOKIE_CONSENT_EVENT = 'bancada:cookie-consent';
 
 export type CookieConsent = 'accepted' | 'rejected';
 

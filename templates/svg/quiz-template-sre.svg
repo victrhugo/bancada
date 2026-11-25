@@ -53,6 +53,6 @@
     <rect x="975" y="430" width="130" height="80" rx="5" fill="none" stroke="#fb923c" stroke-width="3"/>
   </g>
 
-  <!-- DevOps Daily branding -->
-  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#fb923c">DevOps Daily</text>
+  <!-- Bancada branding -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#fb923c">Bancada</text>
 </svg>

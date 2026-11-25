@@ -1,5 +1,5 @@
 # =============================================================================
-# Docker Compose for DevOps Daily
+# Docker Compose for Bancada
 # Supports both development and production modes
 # =============================================================================
 
@@ -16,8 +16,8 @@ services:
       args:
         NODE_VERSION: 22.13.1
         PNPM_VERSION: 9.12.3
-    container_name: devops-daily-dev
-    image: devops-daily:dev
+    container_name: bancada-dev
+    image: bancada:dev
     ports:
       - "3000:3000"
     volumes:
@@ -32,7 +32,7 @@ services:
       - NEXT_TELEMETRY_DISABLED=1
       - WATCHPACK_POLLING=true
     networks:
-      - devops-daily-network
+      - bancada-network
     # Keep container running and enable tty for better logging
     tty: true
     stdin_open: true
@@ -45,8 +45,8 @@ services:
       retries: 3
       start_period: 40s
     labels:
-      - "com.devops-daily.service=dev"
-      - "com.devops-daily.environment=development"
+      - "com.bancada.service=dev"
+      - "com.bancada.environment=development"
     deploy:
       resources:
         limits:
@@ -73,14 +73,14 @@ services:
       args:
         NODE_VERSION: 22.13.1
         PNPM_VERSION: 9.12.3
-    container_name: devops-daily-prod
-    image: devops-daily:prod
+    container_name: bancada-prod
+    image: bancada:prod
     ports:
       - "8080:80"
     environment:
       - NODE_ENV=production
     networks:
-      - devops-daily-network
+      - bancada-network
     # Restart policy for production
     restart: unless-stopped
     healthcheck:
@@ -90,8 +90,8 @@ services:
       retries: 3
       start_period: 10s
     labels:
-      - "com.devops-daily.service=prod"
-      - "com.devops-daily.environment=production"
+      - "com.bancada.service=prod"
+      - "com.bancada.environment=production"
     deploy:
       resources:
         limits:
@@ -107,12 +107,12 @@ services:
         max-file: "3"
 
 networks:
-  devops-daily-network:
-    name: devops-daily-network
+  bancada-network:
+    name: bancada-network
     driver: bridge
 
 volumes:
   node_modules:
-    name: devops-daily-node-modules
+    name: bancada-node-modules
   pnpm_store:
-    name: devops-daily-pnpm-store
+    name: bancada-pnpm-store

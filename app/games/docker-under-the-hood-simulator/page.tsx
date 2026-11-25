@@ -79,8 +79,8 @@ function DockerEducational() {
           Todo comando no simulador é real. A forma limpa de mexer com namespaces e cgroups sem tocar
           no seu laptop é uma máquina Linux descartável: suba um{' '}
           <a
-            href="https://m.do.co/c/2a9bba940f39"
-            rel="nofollow sponsored"
+            href="https://www.digitalocean.com/"
+            rel="nofollow noopener noreferrer"
             className="font-medium text-primary underline underline-offset-2"
           >
             droplet da DigitalOcean

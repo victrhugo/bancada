@@ -1,6 +1,6 @@
 # Create a DevOps Weekly News Digest
 
-Create a new weekly news digest for DevOps Daily: $ARGUMENTS
+Create a new weekly news digest for Bancada: $ARGUMENTS
 
 If no specific week/year is given, use the current week and year.
 
@@ -24,7 +24,7 @@ summary: '<Emoji-rich 1-2 sentence summary of the week highlights>'
 Start with a pinned intro line, then organize news into emoji-prefixed `##` sections. Each news item uses an `###` sub-header.
 
 ```markdown
-> 📌 **Handpicked by DevOps Daily** - Your weekly dose of curated DevOps news and updates!
+> 📌 **Selecionado pelo Bancada** - Your weekly dose of curated DevOps news and updates!
 
 ---
 

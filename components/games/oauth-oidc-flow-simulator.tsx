@@ -112,7 +112,7 @@ const LESSONS: Lesson[] = [
         to: 'browser',
         log: `GET /authorize?
   response_type=code
-  client_id=devops_daily_lab
+  client_id=bancada_lab
   redirect_uri=https://app.example/callback
   scope=openid profile email
   state=s4f3_csrf
@@ -185,7 +185,7 @@ const LESSONS: Lesson[] = [
         to: 'app',
         log: `ID token claims
   iss: https://auth.example
-  aud: devops_daily_lab
+  aud: bancada_lab
   sub: user_123
   nonce: n0nc3_login
   exp: now + 5m`,
@@ -324,7 +324,7 @@ const TOKEN_COPY: Record<TokenKind, { title: string; description: string; claims
   id: {
     title: 'ID Token',
     description: 'For the client app. Proves authentication.',
-    claims: ['iss=https://auth.example', 'aud=devops_daily_lab', 'sub=user_123', 'nonce=n0nc3_login'],
+    claims: ['iss=https://auth.example', 'aud=bancada_lab', 'sub=user_123', 'nonce=n0nc3_login'],
   },
   access: {
     title: 'Access Token',

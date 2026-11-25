@@ -59,6 +59,6 @@
     <polygon points="1020,470 1040,470 1040,490 1045,490 1030,500 1015,490 1020,490" fill="#fb923c"/>
   </g>
 
-  <!-- DevOps Daily branding -->
-  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#fbbf24">DevOps Daily</text>
+  <!-- Bancada branding -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#fbbf24">Bancada</text>
 </svg>

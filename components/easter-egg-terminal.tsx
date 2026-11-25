@@ -165,7 +165,7 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
       '✓ Step 6/8: RUN npm run build',
       '✓ Step 7/8: EXPOSE 3000',
       '✓ Step 8/8: CMD ["npm", "start"]',
-      '✓ Docker image built: devopsdaily:latest',
+      '✓ Docker image built: bancada:latest',
       '→ Pushing to registry...',
       '✓ Pushed to registry',
     ],
@@ -173,9 +173,9 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
       '→ Connecting to Kubernetes cluster...',
       '✓ Connected to production cluster',
       '→ Applying deployment manifest...',
-      '✓ deployment.apps/devopsdaily configured',
+      '✓ deployment.apps/bancada configured',
       '→ Applying service manifest...',
-      '✓ service/devopsdaily configured',
+      '✓ service/bancada configured',
       '→ Scaling replicas...',
       '✓ Scaled to 3 replicas',
       '→ Waiting for rollout...',
@@ -409,7 +409,7 @@ export function EasterEggTerminal({ variant = 'icon' }: { variant?: 'icon' | 'te
   const [hasFoundBefore, setHasFoundBefore] = useState(false);
 
   useEffect(() => {
-    const found = localStorage.getItem('devops-daily-easter-egg-found');
+    const found = localStorage.getItem('bancada-easter-egg-found');
     if (found) {
       setHasFoundBefore(true);
     }
@@ -470,7 +470,7 @@ export function EasterEggTerminal({ variant = 'icon' }: { variant?: 'icon' | 'te
 
     // Save achievement
     if (!hasFoundBefore) {
-      localStorage.setItem('devops-daily-easter-egg-found', 'true');
+      localStorage.setItem('bancada-easter-egg-found', 'true');
       setHasFoundBefore(true);
       setShowAchievement(true);
     } else {
@@ -516,7 +516,7 @@ export function EasterEggTerminal({ variant = 'icon' }: { variant?: 'icon' | 'te
               <div className="flex items-center gap-3">
                 <Terminal className="w-5 h-5 text-green-500" />
                 <span className="font-mono text-sm text-slate-300">
-                  devops-ninja@devopsdaily:~$
+                  devops-ninja@bancada:~$
                 </span>
               </div>
               <Button

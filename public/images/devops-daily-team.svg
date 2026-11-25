@@ -1,5 +1,0 @@
-<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-  <rect width="400" height="400" fill="#f3f4f6"/>
-  <circle cx="200" cy="200" r="180" fill="#e5e7eb"/>
-  <text x="200" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="120" font-weight="bold" fill="#6b7280" text-anchor="middle">D</text>
-</svg>

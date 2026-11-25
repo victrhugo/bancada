@@ -1,6 +1,6 @@
-# Create DevOps Daily Interview Questions
+# Create Bancada Interview Questions
 
-Create new interview questions for DevOps Daily on the topic: $ARGUMENTS
+Create new interview questions for Bancada on the topic: $ARGUMENTS
 
 ## Content Location & Format
 

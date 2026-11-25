@@ -53,6 +53,6 @@
   <rect x="1050" y="150" width="60" height="50" rx="4" fill="#64b5f6" opacity="0.2"/>
   <rect x="1000" y="450" width="60" height="50" rx="4" fill="#42a5f5" opacity="0.2"/>
 
-  <!-- DevOps Daily branding -->
-  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#64b5f6">DevOps Daily</text>
+  <!-- Bancada branding -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#64b5f6">Bancada</text>
 </svg>

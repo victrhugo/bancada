@@ -47,6 +47,6 @@
   <circle cx="1050" cy="150" r="80" fill="#3b82f6" opacity="0.1"/>
   <circle cx="1100" cy="500" r="120" fill="#60a5fa" opacity="0.1"/>
 
-  <!-- DevOps Daily branding -->
-  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#60a5fa">DevOps Daily</text>
+  <!-- Bancada branding -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#60a5fa">Bancada</text>
 </svg>

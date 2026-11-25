@@ -108,8 +108,8 @@
   <text x="240" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">HANDS-ON</text>
   <text x="240" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">EXERCISES</text>
   
-  <!-- DevOps Daily branding with glow -->
-  <text x="100" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="url(#primaryGradient)" filter="url(#glowFilter)">DevOps Daily</text>
+  <!-- Bancada branding with glow -->
+  <text x="100" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="url(#primaryGradient)" filter="url(#glowFilter)">Bancada</text>
   
   <!-- Main title with better hierarchy -->
   <text x="100" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="900" fill="#f8fafc">Practice Like</text>

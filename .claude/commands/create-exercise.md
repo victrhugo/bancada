@@ -1,6 +1,6 @@
-# Create a DevOps Daily Exercise
+# Create a Bancada Exercise
 
-Create a new hands-on exercise for DevOps Daily on the topic: $ARGUMENTS
+Create a new hands-on exercise for Bancada on the topic: $ARGUMENTS
 
 ## Content Location & Format
 
@@ -34,8 +34,8 @@ Create a new hands-on exercise for DevOps Daily on the topic: $ARGUMENTS
   "icon": "<Lucide Icon Name>",
   "publishedAt": "<ISO 8601 timestamp>",
   "author": {
-    "name": "DevOps Daily Team",
-    "slug": "devops-daily-team"
+    "name": "Bancada",
+    "slug": "bancada"
   },
   "tags": ["Tag1", "Tag2"],
   "featured": false,

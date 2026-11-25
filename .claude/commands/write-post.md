@@ -1,6 +1,6 @@
-# Write a DevOps Daily Post
+# Write a Bancada Post
 
-Write a new blog post for DevOps Daily on the topic: $ARGUMENTS
+Write a new blog post for Bancada on the topic: $ARGUMENTS
 
 ## Content Location & Format
 
@@ -21,8 +21,8 @@ publishedAt: '<YYYY-MM-DDT09:00:00Z>'
 updatedAt: '<YYYY-MM-DDT09:00:00Z>'
 readingTime: '<N min read>'
 author:
-  name: 'DevOps Daily Team'
-  slug: 'devops-daily-team'
+  name: 'Bancada'
+  slug: 'bancada'
 featured: false
 tags:
   - Tag1
@@ -186,7 +186,7 @@ Use callouts for caveats, gotchas, and prerequisites you want to stand out. Don'
 **GitHub repo card** — ` ```github ` with a repo URL (or `owner/repo`) renders a live repo card: avatar, name, description, topics, language, stars, forks, and license, fetched client-side from the GitHub API. Great for linking the companion repo of a build-log.
 
 ```github
-https://github.com/The-DevOps-Daily/devops-daily
+https://github.com/victrhugo/bancada
 ```
 
 The body can be a full `https://github.com/owner/repo` URL or just `owner/repo`. Data is fetched at view time (the site is statically exported), cached per session, and degrades to a simple link card if the GitHub API is unreachable or rate-limited. Use it once where the repo matters rather than after every mention.

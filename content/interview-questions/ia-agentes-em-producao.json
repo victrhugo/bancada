@@ -1,0 +1,30 @@
+{
+  "id": "ia-agentes-em-producao",
+  "slug": "ia-agentes-em-producao",
+  "title": "Projetando Agentes de IA para Produção",
+  "question": "Você precisa construir um agente que executa ações em sistemas internos, como consultar pedidos, reagendar entregas e abrir tickets. Como você projeta isso para ser confiável e seguro?",
+  "answer": "Começo questionando se precisa ser um agente: se o caminho é previsível, um workflow fixo com LLM em etapas específicas é mais confiável e barato. Se precisa de autonomia, desenho o loop com limites explícitos: número máximo de iterações, timeout por ferramenta e por tarefa, e uma condição de parada clara. Cada ferramenta tem schema estrito, escopo mínimo e validação no código antes de executar; ações de escrita são idempotentes e as sensíveis exigem confirmação humana. Instrumento cada passo (decisão do modelo, chamada, resultado, tokens) para depurar e auditar. Avalio com cenários de ponta a ponta, incluindo falhas de ferramenta e entradas maliciosas, e faço rollout gradual com métricas de sucesso da tarefa, custo por tarefa e taxa de escalonamento para humanos.",
+  "explanation": "Agentes multiplicam os riscos de um LLM porque agora ele age. A pessoa sênior pensa em blast radius, idempotência, observabilidade e degradação graciosa, as mesmas preocupações de qualquer sistema distribuído, mais o fato de que o \"orquestrador\" é probabilístico. Mencionar que o modelo nunca executa nada diretamente (a aplicação executa) e que permissões são aplicadas no código, não no prompt, é um sinal forte.",
+  "category": "IA",
+  "difficulty": "advanced",
+  "tier": "senior",
+  "tags": ["ia", "agentes", "tool-use", "producao", "seguranca", "observabilidade"],
+  "codeExamples": [
+    {
+      "language": "python",
+      "label": "Loop de agente com limites",
+      "code": "MAX_PASSOS = 8\n\ndef rodar_agente(objetivo, usuario):\n    contexto = [sistema(), objetivo]\n    for passo in range(MAX_PASSOS):\n        saida = llm(contexto, ferramentas=FERRAMENTAS_PERMITIDAS[usuario.papel])\n        trace(passo, saida)\n        if not saida.chamadas:\n            return saida.texto\n        for chamada in saida.chamadas:\n            validar_schema(chamada)\n            if chamada.nome in ACOES_SENSIVEIS:\n                return pedir_confirmacao(usuario, chamada)\n            contexto.append(executar_com_timeout(chamada, segundos=10))\n    return escalar_para_humano(objetivo, contexto)"
+    }
+  ],
+  "followUpQuestions": [
+    "Quando você escolheria um workflow fixo em vez de um agente?",
+    "Como tornar uma ferramenta de escrita idempotente?",
+    "Como você avaliaria um agente antes do lançamento?"
+  ],
+  "commonMistakes": [
+    "Dar ao agente acesso amplo \"para facilitar\"",
+    "Não ter limite de iterações nem de custo por tarefa",
+    "Aplicar permissões só via instrução no prompt"
+  ],
+  "relatedTopics": ["tool-use", "mcp", "prompt-injection", "observabilidade"]
+}

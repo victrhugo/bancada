@@ -119,7 +119,7 @@ variable "instance_type" {
 variable "project" {
   description = "Project name used to tag resources"
   type        = string
-  default     = "devops-daily"
+  default     = "bancada"
 }`,
   'outputs.tf': `output "instance_id" {
   value = aws_instance.web.id

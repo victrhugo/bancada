@@ -52,6 +52,6 @@
   <path d="M1050 100 L1080 115 L1080 145 L1050 160 L1020 145 L1020 115 Z" fill="#326ce5" opacity="0.2"/>
   <path d="M1100 400 L1140 425 L1140 475 L1100 500 L1060 475 L1060 425 Z" fill="#5b8def" opacity="0.2"/>
 
-  <!-- DevOps Daily branding -->
-  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#5b8def">DevOps Daily</text>
+  <!-- Bancada branding -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#5b8def">Bancada</text>
 </svg>

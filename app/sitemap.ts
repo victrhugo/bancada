@@ -134,7 +134,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Roadmap sub-pages
-  const roadmapRoutes = ['junior', 'devsecops'].flatMap((slug) => [
+  const roadmapRoutes = ['junior', 'devsecops', 'ia'].flatMap((slug) => [
     { url: `${baseUrl}/roadmap/${slug}`, changeFrequency: 'monthly' as const, priority: 0.6 },
     { url: `${baseUrl}/roadmaps/${slug}`, changeFrequency: 'monthly' as const, priority: 0.5 },
   ]);

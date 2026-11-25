@@ -21,7 +21,7 @@
   "publishedAt": "2024-11-20T11:00:00Z",
   "author": {
     "name": "Bancada",
-    "slug": "devops-daily-team"
+    "slug": "bancada"
   },
   "tags": ["GitHub Actions", "CI/CD", "Automation", "Testing", "Security"],
   "steps": [

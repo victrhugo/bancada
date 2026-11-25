@@ -25,7 +25,7 @@
   "publishedAt": "2024-11-28T14:00:00Z",
   "author": {
     "name": "Bancada",
-    "slug": "devops-daily-team"
+    "slug": "bancada"
   },
   "tags": ["Kubernetes", "Autoscaling", "Performance", "Monitoring"],
   "steps": [

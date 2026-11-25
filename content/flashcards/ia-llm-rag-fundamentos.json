@@ -1,0 +1,171 @@
+{
+  "id": "ia-llm-rag-fundamentos",
+  "title": "Engenharia de IA: LLMs, RAG e Agentes",
+  "description": "Os conceitos que você precisa dominar para construir produtos com IA generativa: como um LLM funciona, tokens, embeddings, chunking, RAG, avaliação, agentes, segurança e custo.",
+  "category": "IA",
+  "icon": "Sparkles",
+  "difficulty": "intermediate",
+  "estimatedTime": "25 minutos",
+  "cardCount": 22,
+  "theme": {
+    "primaryColor": "violet",
+    "gradientFrom": "from-violet-500",
+    "gradientTo": "to-fuchsia-600"
+  },
+  "cards": [
+    {
+      "id": "llm-definition",
+      "front": "O que é um LLM (Large Language Model)?",
+      "back": "Um modelo de rede neural (geralmente baseado na arquitetura Transformer) treinado em uma enorme quantidade de texto para prever o próximo token. Dessa tarefa simples surgem capacidades como resumir, traduzir, classificar, escrever código e raciocinar sobre problemas. Ele não consulta um banco de fatos: gera a continuação mais provável para o contexto que recebe.",
+      "category": "Fundamentos",
+      "tags": ["llm", "transformer", "fundamentos"]
+    },
+    {
+      "id": "token",
+      "front": "O que é um token e por que ele importa?",
+      "back": "Token é a unidade de texto que o modelo processa: pode ser uma palavra, parte de uma palavra ou um sinal de pontuação. Limites de contexto, preço e latência são todos medidos em tokens. Em português, uma palavra costuma virar mais de um token, então textos em pt-BR tendem a custar um pouco mais do que o mesmo conteúdo em inglês.",
+      "category": "Fundamentos",
+      "tags": ["tokens", "custo", "fundamentos"]
+    },
+    {
+      "id": "context-window",
+      "front": "O que é a janela de contexto?",
+      "back": "O número máximo de tokens que o modelo consegue considerar em uma única chamada, somando entrada (prompt de sistema, histórico, documentos, pergunta) e saída gerada. Tudo que está fora da janela não existe para o modelo. Janelas maiores ajudam, mas encher o contexto de texto irrelevante piora a qualidade e aumenta o custo.",
+      "category": "Fundamentos",
+      "tags": ["contexto", "tokens", "limites"]
+    },
+    {
+      "id": "temperature",
+      "front": "O que a temperature controla?",
+      "back": "O grau de aleatoriedade na escolha do próximo token. Valores baixos (0 a 0.3) deixam a saída mais previsível, bom para extração, classificação e código. Valores altos deixam a saída mais variada, útil para brainstorming e escrita criativa. Temperature 0 reduz a variação, mas não garante resposta idêntica em toda chamada.",
+      "category": "Fundamentos",
+      "tags": ["temperature", "sampling", "parametros"]
+    },
+    {
+      "id": "hallucination",
+      "front": "O que é alucinação em LLMs?",
+      "back": "Quando o modelo gera informação falsa ou sem suporte, mas com aparência fluente e confiante. Acontece porque o modelo otimiza plausibilidade, não verdade. As principais mitigações são grounding com RAG, instruções para responder só com base no contexto, exigência de citação, uma saída explícita para \"não sei\" e avaliação contínua.",
+      "category": "Fundamentos",
+      "tags": ["alucinacao", "qualidade", "riscos"]
+    },
+    {
+      "id": "system-prompt",
+      "front": "Qual é o papel do prompt de sistema?",
+      "back": "Definir o comportamento estável do assistente: papel, tom, regras, limites, formato de saída e o que fazer quando não souber. Ele é a \"especificação\" do produto. Um bom prompt de sistema é versionado, revisado como código e testado contra um conjunto de avaliação sempre que muda.",
+      "category": "Prompt Engineering",
+      "tags": ["prompt", "system-prompt", "boas-praticas"]
+    },
+    {
+      "id": "few-shot",
+      "front": "O que é few-shot prompting?",
+      "back": "Incluir alguns exemplos de entrada e saída esperada dentro do prompt para mostrar ao modelo o padrão desejado. É uma das formas mais baratas de melhorar formato e consistência sem treinar nada. Os exemplos devem ser variados e representar os casos difíceis, não só os óbvios.",
+      "category": "Prompt Engineering",
+      "tags": ["prompt", "few-shot", "exemplos"]
+    },
+    {
+      "id": "structured-output",
+      "front": "Por que usar saída estruturada (JSON schema, tool use)?",
+      "back": "Porque código precisa de dados previsíveis. Pedir a resposta em um schema definido (campos, tipos, enums) torna a saída parseável e validável. Mesmo com suporte nativo do provedor, valide no seu código e trate o caso de falha com retry ou fallback.",
+      "category": "Prompt Engineering",
+      "tags": ["json", "structured-output", "integracao"]
+    },
+    {
+      "id": "embedding",
+      "front": "O que é um embedding?",
+      "back": "Uma representação numérica de um texto como vetor, gerada por um modelo de embeddings, em que textos de significado parecido ficam próximos no espaço. É a base da busca semântica: \"devolver produto com defeito\" fica perto de \"troca de item danificado\" mesmo sem palavras em comum.",
+      "category": "RAG",
+      "tags": ["embeddings", "vetores", "busca-semantica"]
+    },
+    {
+      "id": "cosine-similarity",
+      "front": "O que mede a similaridade de cosseno?",
+      "back": "O ângulo entre dois vetores, ignorando o tamanho deles. Vai de -1 a 1; quanto mais perto de 1, mais parecido o significado. É a métrica mais comum para comparar embeddings de pergunta e de documento em busca vetorial.",
+      "category": "RAG",
+      "tags": ["similaridade", "vetores", "matematica"]
+    },
+    {
+      "id": "rag-definition",
+      "front": "O que é RAG (Retrieval-Augmented Generation)?",
+      "back": "Um padrão em que, antes de gerar a resposta, o sistema busca trechos relevantes em uma base de conhecimento e os insere no contexto do modelo. O fluxo é: indexar (chunking + embeddings), recuperar (busca vetorial, keyword ou híbrida), montar o prompt com os trechos e gerar a resposta citando as fontes. Permite conhecimento atualizado e rastreável sem retreinar o modelo.",
+      "category": "RAG",
+      "tags": ["rag", "retrieval", "arquitetura"]
+    },
+    {
+      "id": "chunking",
+      "front": "O que é chunking e como escolher o tamanho do chunk?",
+      "back": "Dividir documentos em trechos menores antes de gerar embeddings. Chunks grandes diluem o significado e trazem ruído; chunks pequenos perdem contexto. Um ponto de partida comum é 300 a 800 tokens, cortando por estrutura (títulos, parágrafos) e com overlap de 10 a 20%. O tamanho ideal é decidido medindo com perguntas reais.",
+      "category": "RAG",
+      "tags": ["chunking", "indexacao", "qualidade"]
+    },
+    {
+      "id": "vector-db",
+      "front": "Para que serve um banco vetorial?",
+      "back": "Armazenar embeddings e encontrar rapidamente os vetores mais próximos de uma consulta (busca de vizinhos mais próximos aproximada, ANN), geralmente com índices como HNSW. Pode ser um serviço dedicado ou uma extensão em um banco que você já usa, como pgvector no PostgreSQL. Metadados (fonte, data, permissão) junto ao vetor permitem filtrar resultados.",
+      "category": "RAG",
+      "tags": ["vector-db", "pgvector", "hnsw", "infraestrutura"]
+    },
+    {
+      "id": "hybrid-search-rerank",
+      "front": "O que são busca híbrida e reranking?",
+      "back": "Busca híbrida combina busca vetorial (bom para significado) com busca por palavra-chave como BM25 (bom para termos exatos, códigos e nomes) e funde os rankings. Reranking usa um modelo mais preciso, como um cross-encoder, para reordenar os melhores candidatos antes de enviá-los ao LLM. Juntos, aumentam a chance de o trecho certo estar no topo.",
+      "category": "RAG",
+      "tags": ["busca-hibrida", "bm25", "reranking"]
+    },
+    {
+      "id": "rag-metrics",
+      "front": "Quais métricas avaliam um sistema RAG?",
+      "back": "Separe as duas metades. Retrieval: recall@k (o trecho certo veio entre os k primeiros?) e MRR (quão no topo ele veio?). Geração: fidelidade/faithfulness (a resposta se apoia nos trechos?), relevância da resposta e taxa de recusa correta quando a informação não existe. Sem separar, você não sabe se o problema está na busca ou no modelo.",
+      "category": "Avaliação",
+      "tags": ["avaliacao", "metricas", "recall", "faithfulness"]
+    },
+    {
+      "id": "golden-set",
+      "front": "O que é um golden set (conjunto de avaliação)?",
+      "back": "Uma coleção fixa de perguntas reais com respostas e fontes esperadas, incluindo casos difíceis e perguntas fora do escopo. É o \"teste automatizado\" de um sistema com LLM: toda mudança de prompt, modelo, chunking ou retrieval roda contra ele antes de ir para produção, para evitar regressões silenciosas.",
+      "category": "Avaliação",
+      "tags": ["avaliacao", "golden-set", "testes"]
+    },
+    {
+      "id": "llm-as-judge",
+      "front": "O que é LLM-as-a-judge e qual o cuidado ao usar?",
+      "back": "Usar um modelo para avaliar respostas de outro modelo com base em uma rubrica (por exemplo, fidelidade de 1 a 5). Escala bem, mas tem vieses: prefere respostas longas, pode favorecer o próprio estilo e varia com o prompt. Use rubricas objetivas, peça justificativa e calibre periodicamente com uma amostra avaliada por pessoas.",
+      "category": "Avaliação",
+      "tags": ["avaliacao", "llm-as-judge", "vieses"]
+    },
+    {
+      "id": "agent",
+      "front": "O que define um agente de IA?",
+      "back": "Um LLM rodando em loop com acesso a ferramentas: o modelo decide a próxima ação, sua aplicação executa (consulta API, lê arquivo, roda código), o resultado volta ao contexto e o ciclo se repete até atingir o objetivo ou um limite. A autonomia exige limites de iteração, permissões mínimas, logs de cada passo e uma condição de parada clara.",
+      "category": "Agentes",
+      "tags": ["agentes", "tool-use", "loop"]
+    },
+    {
+      "id": "tool-use",
+      "front": "Como funciona tool use (function calling)?",
+      "back": "Você descreve ferramentas para o modelo (nome, descrição e schema de parâmetros). Quando precisa de uma, o modelo devolve uma chamada estruturada em vez de texto. Sua aplicação valida, executa com as permissões que você define e devolve o resultado. O modelo nunca executa nada sozinho: o controle é sempre do seu código.",
+      "category": "Agentes",
+      "tags": ["tool-use", "function-calling", "integracao"]
+    },
+    {
+      "id": "mcp",
+      "front": "O que é o Model Context Protocol (MCP)?",
+      "back": "Um protocolo aberto que padroniza como aplicações de IA se conectam a ferramentas e fontes de dados. Em vez de criar uma integração diferente para cada par modelo-ferramenta, você expõe um servidor MCP (por exemplo, para um banco, um sistema de tickets ou arquivos) e qualquer cliente compatível consegue usá-lo.",
+      "category": "Agentes",
+      "tags": ["mcp", "protocolo", "integracao"]
+    },
+    {
+      "id": "prompt-injection",
+      "front": "O que é prompt injection e como se defender?",
+      "back": "Um ataque em que texto malicioso tenta substituir as instruções do sistema. Na forma indireta, ele vem de conteúdo que o modelo lê: páginas, e-mails, documentos, resultados de ferramentas. Não existe filtro perfeito; a defesa é em camadas: tratar dados externos como dados, privilégio mínimo nas ferramentas, confirmação humana para ações sensíveis e não expor dados desnecessários.",
+      "category": "Segurança",
+      "tags": ["seguranca", "prompt-injection", "riscos"]
+    },
+    {
+      "id": "cost-levers",
+      "front": "Quais são as principais alavancas de custo e latência em LLMs?",
+      "back": "Escolha do modelo (roteie perguntas simples para modelos menores), tokens de entrada (menos trechos e melhores, via reranking), prompt caching para prefixos repetidos, limite de tokens de saída, processamento em lote para tarefas não urgentes e streaming para reduzir a latência percebida. Meça qualidade junto: economizar e piorar a resposta não é otimização.",
+      "category": "Produção",
+      "tags": ["custo", "latencia", "producao", "caching"]
+    }
+  ]
+}

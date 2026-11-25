@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- AI Engineering module: roadmap, RAG pipeline simulator, hands-on RAG exercise with pgvector, quiz, flashcards, production checklist, and interview questions.
+- Unit tests for the RAG pipeline simulator engine.
+
+### Changed
+
+- Regenerated social images with Bancada branding.
+- Replaced upstream author resources in the roadmap with official documentation.
+
+### Removed
+
+- Third-party ad slots, sponsor blocks, and referral links inherited from the upstream project.
+
 ## [0.1.0] - 2026-09-08
 
 ### Added

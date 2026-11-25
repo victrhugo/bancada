@@ -1,6 +1,6 @@
 # Image Generation and Caching
 
-This document explains how image generation and caching works in the DevOps Daily project.
+This document explains how image generation and caching works in the Bancada project.
 
 ## Overview
 

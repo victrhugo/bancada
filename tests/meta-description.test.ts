@@ -49,7 +49,7 @@ describe('truncateMetaDescription', () => {
 
   it('falls back to a word boundary with ellipsis when no late sentence end exists', () => {
     const text =
-      'DevOps Daily Week 17, 2026 newsletter: caching strategies simulator, Kubernetes scheduler challenge, fresh quizzes, and evergreen DevOps reads worth revisiting.';
+      'Bancada Week 17, 2026 newsletter: caching strategies simulator, Kubernetes scheduler challenge, fresh quizzes, and evergreen DevOps reads worth revisiting.';
     const out = truncateMetaDescription(text);
     expect(out.length).toBeLessThanOrEqual(160);
     expect(out.endsWith('...') || /\.$/.test(out)).toBe(true);

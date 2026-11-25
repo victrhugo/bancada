@@ -41,6 +41,7 @@ import {
   Code,
   Settings,
   Check,
+  Sparkles,
 } from 'lucide-react';
 import type { Exercise } from '@/lib/exercises-types';
 import Link from 'next/link';
@@ -57,6 +58,7 @@ const iconComponents: Record<string, LucideIcon> = {
   GitBranch,
   Code,
   Settings,
+  Sparkles,
 };
 
 interface ExerciseDetailClientProps {

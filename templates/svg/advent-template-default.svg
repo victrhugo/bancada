@@ -88,10 +88,10 @@
     <text x="950" y="590" font-size="18" fill="#ffffff" opacity="0.4">❄</text>
   </g>
 
-  <!-- DevOps Daily branding -->
+  <!-- Bancada branding -->
   <g>
     <text x="80" y="580" font-family="'SF Mono', 'Monaco', 'Inconsolata', monospace" font-size="20" font-weight="bold" fill="#10b981" opacity="0.8">ADVENT OF DEVOPS</text>
-    <text x="1120" y="580" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" fill="#60a5fa" text-anchor="end" opacity="0.7">DevOps Daily</text>
+    <text x="1120" y="580" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" fill="#60a5fa" text-anchor="end" opacity="0.7">Bancada</text>
   </g>
 
   <!-- Decorative corner stars -->

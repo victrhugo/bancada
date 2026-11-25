@@ -31,7 +31,7 @@
   "publishedAt": "2026-03-26T09:00:00Z",
   "author": {
     "name": "Bancada",
-    "slug": "devops-daily-team"
+    "slug": "bancada"
   },
   "tags": [
     "linux",
@@ -47,11 +47,6 @@
     "name": "Série de Configuração de Servidor Linux",
     "order": 2,
     "total": 5
-  },
-  "sponsorCta": {
-    "text": "Você precisa de um servidor Linux em execução para este exercício. Qualquer servidor Ubuntu funciona, mas recomendamos a DigitalOcean para uma configuração rápida.",
-    "url": "https://m.do.co/c/2a9bba940f39",
-    "buttonText": "Comece com a DigitalOcean"
   },
   "steps": [
     {

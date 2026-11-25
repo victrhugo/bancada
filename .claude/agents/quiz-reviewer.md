@@ -1,6 +1,6 @@
 # Quiz Reviewer Agent
 
-Review a DevOps Daily quiz for structural validity, technical accuracy, and question quality.
+Review a Bancada quiz for structural validity, technical accuracy, and question quality.
 
 This agent runs the existing quiz validation script for structural checks, then adds a quality layer that requires reasoning.
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Map, ArrowRight, Clock, GraduationCap, Shield } from 'lucide-react';
+import { Map, ArrowRight, Clock, GraduationCap, Shield, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -43,6 +43,18 @@ const roadmaps: Roadmap[] = [
     estimatedTime: '4-8 meses',
     difficulty: 'Intermediate',
     topics: ['Fundamentos de Segurança', 'SAST/DAST', 'Segurança de Containers', 'Conformidade', 'Modelagem de Ameaças'],
+  },
+  {
+    slug: 'ia',
+    title: 'Roadmap de Engenharia de IA',
+    description:
+      'Do primeiro prompt ao assistente em produção. Entenda LLMs, construa RAG, meça a qualidade, crie agentes com ferramentas e lance com segurança e custo sob controle.',
+    icon: Sparkles,
+    color: 'blue',
+    estimatedTime: '5-6 meses',
+    difficulty: 'Intermediate',
+    topics: ['LLMs e Tokens', 'Prompt Engineering', 'Embeddings', 'RAG', 'Avaliação', 'Agentes', 'IA Responsável'],
+    featured: true,
   },
 ];
 

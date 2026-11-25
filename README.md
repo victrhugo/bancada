@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Uma plataforma open source em português com simuladores, exercícios e ferramentas interativas para estudar DevOps e system design.
+  Uma plataforma open source em português com simuladores, exercícios e ferramentas interativas para estudar DevOps, system design e engenharia de IA.
 </p>
 
 <p align="center">
@@ -27,18 +27,27 @@
 
 ## O que você encontra
 
-O Bancada reúne **168 recursos práticos**, acessíveis gratuitamente e sem exigir cadastro:
+O Bancada reúne **173 recursos práticos**, acessíveis gratuitamente e sem exigir cadastro:
 
-- **53 jogos e simuladores** de DevOps e system design;
-- **20 exercícios práticos** guiados;
-- **44 quizzes** para testar conhecimentos;
-- **27 conjuntos de flashcards** para revisão;
-- **24 checklists** para cenários reais;
+- **54 jogos e simuladores** de DevOps, system design e IA;
+- **21 exercícios práticos** guiados;
+- **45 quizzes** para testar conhecimentos;
+- **28 conjuntos de flashcards** para revisão;
+- **25 checklists** para cenários reais;
 - roadmaps e perguntas de entrevista organizados por nível;
 - terminais educacionais de Linux, Docker, Kubernetes, SQL, MongoDB e PostgreSQL;
 - suporte a PWA para instalar e usar como aplicativo.
 
 Explore [simuladores](https://bancada-9g8r.vercel.app/games), [exercícios](https://bancada-9g8r.vercel.app/exercises), [quizzes](https://bancada-9g8r.vercel.app/quizzes), [flashcards](https://bancada-9g8r.vercel.app/flashcards), [checklists](https://bancada-9g8r.vercel.app/checklists) e [roadmaps](https://bancada-9g8r.vercel.app/roadmap).
+
+## Módulo de Engenharia de IA
+
+Um módulo completo, no mesmo formato prático do restante da plataforma, para quem quer construir produtos com IA generativa:
+
+- **[Roadmap de Engenharia de IA](https://bancada-9g8r.vercel.app/roadmap/ia)**: 7 marcos, de fundamentos de LLMs a produção, segurança e LGPD;
+- **[Simulador de Pipeline RAG](https://bancada-9g8r.vercel.app/games/rag-pipeline-simulator)**: ajuste chunking, top-k, tipo de busca e grounding e veja a resposta acertar, recusar, alucinar ou sofrer prompt injection;
+- **[Exercício RAG do Zero com pgvector](https://bancada-9g8r.vercel.app/exercises/rag-do-zero-pgvector)**: um assistente local com citação de fonte, busca híbrida e avaliação, sem chave de API;
+- quiz, flashcards, checklist de RAG em produção e perguntas de entrevista do júnior ao sênior.
 
 ## Por que o Bancada?
 
@@ -91,4 +100,4 @@ pnpm build
 
 ## Licença
 
-As contribuições próprias do Bancada são distribuídas sob a [Licença Apache 2.0](LICENSE). O projeto foi adaptado de [The DevOps Daily](https://github.com/The-DevOps-Daily/devops-daily), originalmente licenciado sob MIT. Consulte os [avisos de terceiros](THIRD_PARTY_NOTICES.md) para detalhes e atribuições.
+As contribuições próprias do Bancada são distribuídas sob a [Licença Apache 2.0](LICENSE). Partes do código derivam de software de terceiros licenciado sob MIT; os avisos de copyright exigidos por essa licença estão em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -479,9 +479,8 @@ const providers = [
   {
     name: 'DigitalOcean Managed PostgreSQL',
     label: 'Managed',
-    href: 'https://m.do.co/c/2a9bba940f39',
+    href: 'https://www.digitalocean.com/',
     description: 'Managed Postgres with backups, standby nodes, VPC networking, and simple pricing.',
-    sponsored: true,
   },
   {
     name: 'Neon',
@@ -1176,7 +1175,7 @@ export default function PostgresWireProtocolSimulator() {
                 key={provider.name}
                 href={provider.href}
                 target="_blank"
-                rel={provider.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}
+                rel="noopener noreferrer"
                 className={cn(
                   'rounded-lg border bg-muted/20 p-4 transition-colors',
                   'hover:border-primary/50 hover:bg-muted/35'
@@ -1184,16 +1183,11 @@ export default function PostgresWireProtocolSimulator() {
               >
                 <div className="mb-3 flex items-start justify-between gap-3">
                   <h4 className="text-sm font-semibold leading-snug">{provider.name}</h4>
-                  <Badge variant={provider.sponsored ? 'default' : 'secondary'} className="shrink-0">
+                  <Badge variant="secondary" className="shrink-0">
                     {provider.label}
                   </Badge>
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">{provider.description}</p>
-                {provider.sponsored && (
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    Affiliate link. We may earn a commission at no extra cost to you.
-                  </p>
-                )}
               </a>
             ))}
           </div>

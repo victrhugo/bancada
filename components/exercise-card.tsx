@@ -24,6 +24,7 @@ import {
   Terminal,
   Code,
   Settings,
+  Sparkles,
 } from 'lucide-react';
 import type { Exercise } from '@/lib/exercises-types';
 import {
@@ -44,6 +45,7 @@ const iconComponents: Record<string, LucideIcon> = {
   Terminal,
   Code,
   Settings,
+  Sparkles,
 };
 
 interface ExerciseCardProps {
