@@ -4,11 +4,12 @@ import { getActiveGames } from '@/lib/games';
 import { getAllFlashCardSets } from '@/lib/flashcard-loader';
 import { getAllChecklists } from '@/lib/checklists';
 import { interviewQuestions } from '@/content/interview-questions';
+import { SITE_URL } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
+  const baseUrl = SITE_URL;
 
   const [exercises, quizzes, games, flashcards, checklists] = await Promise.all([
     getAllExercises(),

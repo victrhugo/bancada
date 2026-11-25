@@ -148,7 +148,7 @@ export default function DDoSSimulator() {
   const [lastHealthCheck, setLastHealthCheck] = useState(100);
 
   // Refs
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const particleIdCounter = useRef(0);
   const explosionIdCounter = useRef(0);
   const lastSpawnTime = useRef(Date.now());

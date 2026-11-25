@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: { absolute: 'Roadmap DevOps - Seu Caminho para a Maestria em DevOps' },
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
     title: 'Roadmap DevOps - Seu Caminho para a Maestria em DevOps',
     description:
       'Trilha de aprendizado estratégica para futuros engenheiros de DevOps. Descubra as habilidades, tecnologias e a progressão de carreira do nível iniciante ao avançado.',
-    url: 'https://bancada.app/roadmap',
+    url: `${SITE_URL}/roadmap`,
     type: 'website',
     images: [
       {
-        url: 'https://bancada.app/images/roadmap.png',
+        url: `${SITE_URL}/images/roadmap.png`,
         width: 1200,
         height: 630,
         alt: 'Roadmap de Aprendizado DevOps - Trilha de Habilidades e Tecnologias',
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: [
       {
-        url: 'https://bancada.app/images/roadmap.png',
+        url: `${SITE_URL}/images/roadmap.png`,
         width: 1200,
         height: 630,
         alt: 'Roadmap de Aprendizado DevOps - Trilha de Habilidades e Tecnologias',
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: 'Bancada',
-      url: 'https://bancada.app',
+      url: SITE_URL,
     },
   ],
 };
@@ -79,7 +80,7 @@ const stagesJsonLd = {
     '@type': 'ListItem',
     position: i + 1,
     name,
-    url: 'https://bancada.app/roadmap',
+    url: `${SITE_URL}/roadmap`,
   })),
 };
 

@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { SITE_URL } from '@/lib/site';
 
 interface EmbedCodeModalProps {
   gameSlug: string;
@@ -43,7 +44,7 @@ export function EmbedCodeModal({ gameSlug, gameTitle }: EmbedCodeModalProps) {
   const [theme, setTheme] = useState<ThemeOption>('dark');
   const [showTitle, setShowTitle] = useState(true);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
+  const siteUrl = SITE_URL;
   const size = SIZE_PRESETS[sizePreset];
 
   const buildEmbedUrl = useCallback(() => {

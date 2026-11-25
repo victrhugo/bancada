@@ -50,6 +50,7 @@ import {
 import { useIsMobile } from '@/components/ui/use-mobile';
 import {
   type SearchItem,
+  type SearchItemType,
   type SearchResult,
   type SearchFilters,
   DEFAULT_FILTERS,
@@ -442,11 +443,11 @@ export function SearchPageClient() {
                     onClick={() => toggleType(type)}
                     className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
                       filters.types.includes(type)
-                        ? TYPE_COLORS[type]
+                        ? TYPE_COLORS[type as SearchItemType]
                         : 'bg-background hover:bg-muted'
                     }`}
                   >
-                    {TYPE_LABELS[type] || type}
+                    {TYPE_LABELS[type as SearchItemType] || type}
                   </button>
                 ))}
               </div>
@@ -534,11 +535,11 @@ export function SearchPageClient() {
                     onClick={() => toggleType(type)}
                     className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
                       filters.types.includes(type)
-                        ? TYPE_COLORS[type]
+                        ? TYPE_COLORS[type as SearchItemType]
                         : 'bg-background hover:bg-muted'
                     }`}
                   >
-                    {TYPE_LABELS[type] || type}
+                    {TYPE_LABELS[type as SearchItemType] || type}
                   </button>
                 ))}
               </div>

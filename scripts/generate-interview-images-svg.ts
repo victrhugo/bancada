@@ -39,13 +39,21 @@ const DIFFICULTY_COLORS: Record<string, string> = {
   advanced: '#ef4444',
 };
 
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner: 'INICIANTE',
+  intermediate: 'INTERMEDIÁRIO',
+  advanced: 'AVANÇADO',
+};
+
 function generateQuestionSVG(
   title: string,
   category: string,
   difficulty: string
 ): string {
   const safeCategory = escapeXml(category.toUpperCase());
-  const safeDifficulty = escapeXml(difficulty.toUpperCase());
+  const safeDifficulty = escapeXml(
+    DIFFICULTY_LABELS[difficulty.toLowerCase()] ?? difficulty.toUpperCase()
+  );
 
   // Word wrap for long titles
   const words = title.split(' ');
@@ -114,8 +122,8 @@ function generateQuestionSVG(
   <rect width="${IMAGE_WIDTH}" height="${IMAGE_HEIGHT}" fill="url(#grid)"/>
   
   <!-- Top badge -->
-  <rect x="80" y="70" width="260" height="44" rx="22" fill="${COLORS.primary}" opacity="0.9"/>
-  <text x="105" y="100" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="${COLORS.text}">INTERVIEW QUESTION</text>
+  <rect x="80" y="70" width="320" height="44" rx="22" fill="${COLORS.primary}" opacity="0.9"/>
+  <text x="105" y="100" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="${COLORS.text}">PERGUNTA DE ENTREVISTA</text>
   
   <!-- Category and difficulty badges -->
   <rect x="80" y="130" width="${categoryWidth}" height="40" rx="20" fill="${categoryColor}" opacity="0.9"/>
@@ -135,7 +143,7 @@ function generateQuestionSVG(
   
   <!-- Bottom branding -->
   <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="${COLORS.accent}">Bancada</text>
-  <text x="80" y="${IMAGE_HEIGHT - 35}" font-family="Arial, sans-serif" font-size="20" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Interview Prep</text>
+  <text x="80" y="${IMAGE_HEIGHT - 35}" font-family="Arial, sans-serif" font-size="20" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Preparação para Entrevistas</text>
 </svg>`;
 }
 
@@ -159,14 +167,14 @@ function generateListingPageSVG(): string {
   
   <!-- Badge -->
   <rect x="80" y="80" width="280" height="50" rx="25" fill="${COLORS.primary}" opacity="0.9"/>
-  <text x="115" y="113" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="${COLORS.text}">INTERVIEW PREP</text>
+  <text x="115" y="113" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="${COLORS.text}">ENTREVISTAS</text>
   
   <!-- Main title -->
-  <text x="80" y="230" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">DevOps Interview</text>
-  <text x="80" y="300" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">Questions</text>
+  <text x="80" y="230" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">Perguntas de Entrevista</text>
+  <text x="80" y="300" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">DevOps e IA</text>
   
   <!-- Subtitle -->
-  <text x="80" y="360" font-family="Arial, sans-serif" font-size="26" font-weight="500" fill="${COLORS.accent}">In-depth questions with code examples</text>
+  <text x="80" y="360" font-family="Arial, sans-serif" font-size="26" font-weight="500" fill="${COLORS.accent}">Respostas detalhadas com exemplos de código</text>
   
   <!-- Question mark icons -->
   <g opacity="0.1">
@@ -182,7 +190,7 @@ function generateListingPageSVG(): string {
   
   <!-- Bottom branding -->
   <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="${COLORS.accent}">Bancada</text>
-  <text x="80" y="${IMAGE_HEIGHT - 30}" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Ace your next interview</text>
+  <text x="80" y="${IMAGE_HEIGHT - 30}" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Prepare-se para a próxima entrevista</text>
 </svg>`;
 }
 

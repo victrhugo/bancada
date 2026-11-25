@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Exercícios e Laboratórios de DevOps',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
     title: 'Exercícios e Laboratórios de DevOps - Aprendizado na Prática | Bancada',
     description:
       'Pratique habilidades reais de DevOps com nossa coleção completa de exercícios práticos e laboratórios. De Docker a Kubernetes, CI/CD a Infrastructure as Code.',
-    url: 'https://bancada.app/exercises',
+    url: `${SITE_URL}/exercises`,
     images: [
       {
         url: '/images/exercises-og-image.png',
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: 'Bancada',
-      url: 'https://bancada.app',
+      url: SITE_URL,
     },
   ],
 };

@@ -358,7 +358,7 @@ describe('Cache Logic Integration', () => {
     const title = 'New Post';
     const category = 'DevOps';
     const outputPath = 'path/to/new-post.svg';
-    const cache = {};
+    const cache: Record<string, string> = {};
 
     vi.mocked(fs.stat).mockRejectedValue(new Error('ENOENT'));
 

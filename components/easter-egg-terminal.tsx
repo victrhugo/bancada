@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { SITE_URL } from '@/lib/site';
 import { Terminal, X, Rocket, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Confetti from 'react-confetti';
@@ -194,7 +195,7 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
       '🎉 DEPLOYMENT SUCCESSFUL! 🎉',
       '',
       '🚀 Your application is now live!',
-      '📊 Dashboard: https://bancada.app',
+      `📊 Dashboard: ${SITE_URL}`,
       '📈 Metrics: All systems operational',
     ],
   ];

@@ -93,10 +93,10 @@ async function generateFlashcardOG(options: FlashcardOGOptions): Promise<void> {
   ${titleLines}
   
   <!-- Card count -->
-  <text x="80" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="600" fill="#fbbf24">${cardCount} Cards</text>
+  <text x="80" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="600" fill="#fbbf24">${cardCount} cartões</text>
   
   <!-- Subtitle -->
-  <text x="80" y="530" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#9ca3af">Interactive Flashcards for DevOps Learning</text>
+  <text x="80" y="530" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#9ca3af">Flashcards interativos para revisar e fixar</text>
   
   <!-- Logo/branding -->
   <text x="1120" y="600" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#d97706" text-anchor="end">Bancada</text>

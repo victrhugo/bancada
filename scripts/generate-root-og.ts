@@ -1,13 +1,14 @@
 #!/usr/bin/env tsx
 /**
  * Generates the site-wide root OG image shown when anyone shares
- * https://bancada.app/ (homepage).
+ * the homepage (SITE_URL from lib/site.ts).
  *
  * Run with:  bun run scripts/generate-root-og.ts
  */
 import fs from 'fs';
 import path from 'path';
 import { Resvg } from '@resvg/resvg-js';
+import { SITE_HOST } from '../lib/site';
 
 const OUT_PNG = path.join(process.cwd(), 'public', 'og-image.png');
 const OUT_SVG = path.join(process.cwd(), 'public', 'og-image.svg');
@@ -34,7 +35,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     <circle cx="22" cy="22" r="7" fill="#f87171" opacity="0.8"/>
     <circle cx="44" cy="22" r="7" fill="#fbbf24" opacity="0.85"/>
     <circle cx="66" cy="22" r="7" fill="#34d399" opacity="0.85"/>
-    <text x="94" y="28" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af">bancada.app</text>
+    <text x="94" y="28" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af">${SITE_HOST}</text>
 
     <text x="36" y="100" font-family="Menlo, Monaco, monospace" font-size="18" fill="#34d399">$</text>
     <text x="60" y="100" font-family="Menlo, Monaco, monospace" font-size="18" fill="#9ca3af">cat about.md</text>
@@ -49,7 +50,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
   </g>
 
   <text x="100" y="588" font-family="Menlo, Monaco, monospace" font-size="18" fill="#fbbf24" font-weight="600">Bancada</text>
-  <text x="1100" y="588" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af" text-anchor="end">bancada.app</text>
+  <text x="1100" y="588" font-family="Menlo, Monaco, monospace" font-size="15" fill="#9ca3af" text-anchor="end">${SITE_HOST}</text>
 </svg>`;
 
 fs.writeFileSync(OUT_SVG, svg, 'utf-8');

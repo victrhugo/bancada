@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useCallback, useState } from 'react';
+import { SITE_URL } from '@/lib/site';
 
 interface GameActionsProps {
   gameSlug: string;
@@ -24,7 +25,7 @@ export function GameActions({ gameSlug, gameTitle }: GameActionsProps) {
 
   const shareUrl = typeof window !== 'undefined'
     ? window.location.href
-    : `https://bancada.app/games/${gameSlug}`;
+    : `${SITE_URL}/games/${gameSlug}`;
 
   const handleShare = useCallback(async (method: 'copy' | 'twitter' | 'linkedin') => {
     const title = `Confira ${gameTitle} no Bancada!`;

@@ -89,21 +89,6 @@ function DockerEducational() {
           mesmas peças que o simulador mostra. Delete o droplet quando terminar.
         </p>
       </div>
-
-      <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Vá mais fundo</h4>
-        <p className="text-sm text-muted-foreground">
-          O post relacionado,{' '}
-          <a
-            href="https://bancada.app/posts/how-docker-works-under-the-hood"
-            className="font-medium text-primary underline underline-offset-2"
-          >
-            How Docker Really Works, From docker run to the Kernel
-          </a>
-          , percorre o mesmo caminho em profundidade com os comandos para rodar num host real, e
-          explica por que a divisão entre dockerd, containerd e runc existe.
-        </p>
-      </div>
     </>
   );
 }

@@ -209,7 +209,12 @@ export function QuizManager({ quizzes, className }: QuizManagerProps) {
           result = dateA - dateB;
           break;
         case 'difficulty':
-          const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
+          const difficultyOrder: Record<DifficultyLevel, number> = {
+            all: 0,
+            beginner: 1,
+            intermediate: 2,
+            advanced: 3,
+          };
           const aDiff = getQuizDifficulty(a);
           const bDiff = getQuizDifficulty(b);
           result = difficultyOrder[aDiff] - difficultyOrder[bDiff];

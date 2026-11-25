@@ -41,7 +41,7 @@
   </g>
 
   <!-- Quiz label -->
-  <text x="150" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" fill="#fbbf24">INTERACTIVE QUIZ</text>
+  <text x="150" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" fill="#fbbf24">QUIZ INTERATIVO</text>
 
   {{TITLE_LINES}}
 

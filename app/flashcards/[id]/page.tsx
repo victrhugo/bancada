@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, BookOpen, Clock, Layers } from 'lucide-react'
 import Link from 'next/link'
 import * as Icons from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { PageHero } from '@/components/page-hero'
 import { truncateMetaDescription } from '@/lib/meta-description'
 import { detailPageMetadata } from '@/lib/metadata-utils'
@@ -58,7 +59,7 @@ export default async function FlashcardPage({ params }: FlashcardPageProps) {
     notFound()
   }
 
-  const IconComponent = Icons[flashcardSet.icon as keyof typeof Icons] || BookOpen
+  const IconComponent = (Icons[flashcardSet.icon as keyof typeof Icons] as LucideIcon | undefined) ?? BookOpen
   const difficultyColors = {
     beginner: 'bg-green-500',
     intermediate: 'bg-yellow-500',

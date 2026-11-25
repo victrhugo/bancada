@@ -16,9 +16,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Regenerated social images with Bancada branding.
 - Replaced upstream author resources in the roadmap with official documentation.
+- Centralized the public site URL in `lib/site.ts` (`NEXT_PUBLIC_SITE_URL`), so canonical tags, the sitemap, robots.txt and social images point to the real host.
+- Translated the fixed labels on generated social images to Portuguese.
+- Upgraded dependencies and pinned transitive versions to clear all high and critical audit findings.
+- Fixed all TypeScript errors and made the typecheck a required CI step.
+
+### Fixed
+
+- The embedded Cards Against DevOps game imported a default export that does not exist.
+- Removed links to blog posts that do not exist on this site.
 
 ### Removed
 
+- Unused `calendar`, `chart` and `resizable` UI components and their dependencies.
 - Third-party ad slots, sponsor blocks, and referral links inherited from the upstream project.
 
 ## [0.1.0] - 2026-09-08

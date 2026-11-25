@@ -6,7 +6,7 @@ import AwsVpcSimulator from '@/components/games/aws-vpc-simulator';
 import BCDRSimulator from '@/components/games/bcdr-simulator';
 import BugHunter from '@/components/games/bug-hunter';
 import CachingSimulator from '@/components/games/caching-simulator';
-import CardsAgainstDevOps from '@/components/games/cards-against-devops';
+import { CardsAgainstDevOps } from '@/components/games/cards-against-devops';
 import CicdStackGenerator from '@/components/games/cicd-stack-generator';
 import DatabaseReplicationShardingScaling from '@/components/games/database-replication-sharding-scaling';
 import DbIndexingSimulator from '@/components/games/db-indexing-simulator';

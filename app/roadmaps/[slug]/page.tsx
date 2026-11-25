@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import JuniorRoadmapPage from '@/app/roadmap/junior/page';
 import DevSecOpsRoadmapPage from '@/app/roadmap/devsecops/page';
 import AiRoadmapPage from '@/app/roadmap/ia/page';
+import { SITE_URL } from '@/lib/site';
 
 const validRoadmaps = ['junior', 'devsecops', 'ia'] as const;
 type RoadmapSlug = (typeof validRoadmaps)[number];
@@ -36,11 +37,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps',
         description:
           'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
-        url: 'https://bancada.app/roadmaps/junior',
+        url: `${SITE_URL}/roadmaps/junior`,
         type: 'website',
         images: [
           {
-            url: 'https://bancada.app/images/junior-roadmap-og.png',
+            url: `${SITE_URL}/images/junior-roadmap-og.png`,
             width: 1200,
             height: 630,
             alt: 'Roadmap DevOps Júnior - Comece Sua Jornada',
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps',
         description:
           'Um roadmap para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
-        images: ['https://bancada.app/images/junior-roadmap-og.png'],
+        images: [`${SITE_URL}/images/junior-roadmap-og.png`],
       },
     },
     devsecops: {
@@ -66,11 +67,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
         description:
           'Domine a integração de práticas de segurança no pipeline de DevOps. Aprenda a construir sistemas seguros, em conformidade e resilientes.',
-        url: 'https://bancada.app/roadmaps/devsecops',
+        url: `${SITE_URL}/roadmaps/devsecops`,
         type: 'website',
         images: [
           {
-            url: 'https://bancada.app/images/devsecops-roadmap-og.png',
+            url: `${SITE_URL}/images/devsecops-roadmap-og.png`,
             width: 1200,
             height: 630,
             alt: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
@@ -82,7 +83,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: 'Roadmap DevSecOps - DevOps com Foco em Segurança',
         description:
           'Domine as práticas de segurança no pipeline de DevOps. Construa sistemas seguros, em conformidade e resilientes.',
-        images: ['https://bancada.app/images/devsecops-roadmap-og.png'],
+        images: [`${SITE_URL}/images/devsecops-roadmap-og.png`],
       },
     },
     ia: {
@@ -96,11 +97,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: 'Roadmap de Engenharia de IA - LLMs, RAG, Agentes e Produção',
         description:
           'Um roadmap prático em português para construir produtos com IA generativa: LLMs, prompt engineering, embeddings, RAG, avaliação, agentes, segurança e custo.',
-        url: 'https://bancada.app/roadmaps/ia',
+        url: `${SITE_URL}/roadmaps/ia`,
         type: 'website',
         images: [
           {
-            url: 'https://bancada.app/images/roadmaps-og.png',
+            url: `${SITE_URL}/images/roadmaps-og.png`,
             width: 1200,
             height: 630,
             alt: 'Roadmap de Engenharia de IA',
@@ -112,7 +113,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title: 'Roadmap de Engenharia de IA - LLMs, RAG, Agentes e Produção',
         description:
           'LLMs, RAG, avaliação, agentes e IA responsável na prática, em português.',
-        images: ['https://bancada.app/images/roadmaps-og.png'],
+        images: [`${SITE_URL}/images/roadmaps-og.png`],
       },
     },
   };

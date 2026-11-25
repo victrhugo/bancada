@@ -252,7 +252,7 @@ export default function PacketJourney() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showStagesPanel, setShowStagesPanel] = useState(true); // Collapsible on mobile
 
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const lastFrameTime = useRef<number>(Date.now());
   const journeyStartTime = useRef<number>(0);
   const stageTimes = useRef<Array<{ stage: string; duration: number }>>([]);

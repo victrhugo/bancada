@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/site';
 
 const TITLE = 'Roadmap de Engenharia de IA - LLMs, RAG, Agentes e Produção';
 const DESCRIPTION =
@@ -14,11 +15,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: 'https://bancada.app/roadmap/ia',
+    url: `${SITE_URL}/roadmap/ia`,
     type: 'website',
     images: [
       {
-        url: 'https://bancada.app/images/roadmaps-og.png',
+        url: `${SITE_URL}/images/roadmaps-og.png`,
         width: 1200,
         height: 630,
         alt: 'Roadmap de Engenharia de IA',
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     card: 'summary_large_image',
-    images: ['https://bancada.app/images/roadmaps-og.png'],
+    images: [`${SITE_URL}/images/roadmaps-og.png`],
   },
   keywords: [
     'Engenharia de IA',
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: 'Bancada',
-      url: 'https://bancada.app',
+      url: SITE_URL,
     },
   ],
 };

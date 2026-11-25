@@ -11,6 +11,7 @@ import { PWAInstaller } from '@/components/pwa-installer';
 import { SkipToContent } from '@/components/skip-to-content';
 import { SiteAnalytics } from '@/components/site-analytics';
 import { DeferredSiteExtras } from '@/components/deferred-site-extras';
+import { SITE_URL } from '@/lib/site';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   },
   description:
     'Aprenda DevOps na prática. Exercícios, quizzes, flashcards, checklists e simuladores interativos sobre Docker, Kubernetes, Terraform, CI/CD e mais.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app'),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: '/',
   },

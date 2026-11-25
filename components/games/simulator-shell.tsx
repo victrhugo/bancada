@@ -7,6 +7,7 @@ import { GameActions } from '@/components/games/game-actions';
 import { GameSeoContent } from '@/components/games/game-seo-content';
 import { getGameById, getActiveGames } from '@/lib/games';
 import { cn } from '@/lib/utils';
+import { SITE_URL } from '@/lib/site';
 
 interface SimulatorShellProps {
   /** Game id that matches the games registry (lib/games.ts) */
@@ -69,7 +70,7 @@ export async function SimulatorShell({
   );
   const relatedGames = [...sameCategory, ...otherGames].slice(0, 3);
 
-  const shareUrl = `https://bancada.app${href}`;
+  const shareUrl = `${SITE_URL}${href}`;
   const defaultShareText = shareText ?? `Confira ${title} no Bancada`;
 
   const breadcrumbItems = [

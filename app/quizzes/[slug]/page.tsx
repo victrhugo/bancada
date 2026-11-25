@@ -15,6 +15,7 @@ import { notFound } from 'next/navigation';
 import { RelatedQuizzes } from '@/components/related-quizzes';
 import { RelatedAcrossTypes } from '@/components/related-across-types';
 import { getRelatedAcrossTypes } from '@/lib/related-cross-type';
+import { SITE_URL } from '@/lib/site';
 
 export const dynamicParams = false;
 
@@ -211,7 +212,7 @@ export default async function QuizPage({ params }: { params: Promise<{ slug: str
                 <Button size="sm" variant="outline" asChild>
                   <a
                     href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                      `https://bancada.app/quizzes/${slug}`
+                      `${SITE_URL}/quizzes/${slug}`
                     )}&text=${encodeURIComponent(
                       `Acabei de fazer o quiz ${quizConfig.title} na Bancada! Teste seus conhecimentos de ${quizConfig.category}:`
                     )}`}
@@ -224,7 +225,7 @@ export default async function QuizPage({ params }: { params: Promise<{ slug: str
                 <Button size="sm" variant="outline" asChild>
                   <a
                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      `https://bancada.app/quizzes/${slug}`
+                      `${SITE_URL}/quizzes/${slug}`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -235,7 +236,7 @@ export default async function QuizPage({ params }: { params: Promise<{ slug: str
                 <Button size="sm" variant="outline" asChild>
                   <a
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                      `https://bancada.app/quizzes/${slug}`
+                      `${SITE_URL}/quizzes/${slug}`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

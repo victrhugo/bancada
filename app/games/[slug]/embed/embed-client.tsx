@@ -4,6 +4,7 @@ import { useSearchParams, usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { EmbedBadge } from '@/components/embed';
 import { Suspense, useEffect } from 'react';
+import { SITE_URL } from '@/lib/site';
 
 interface EmbedClientProps {
   slug: string;
@@ -18,7 +19,7 @@ function EmbedContent({ slug, title, GameComponent }: EmbedClientProps) {
   const pathname = usePathname();
   const { setTheme } = useTheme();
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
+  const siteUrl = SITE_URL;
   const gameUrl = `${siteUrl}/games/${slug}`;
 
   // Apply the embed's theme via next-themes so the host site's iframe

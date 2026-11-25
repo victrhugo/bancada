@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: { absolute: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps' },
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
     title: 'Roadmap DevOps Júnior - Comece Sua Jornada em DevOps',
     description:
       'Um roadmap amigável para iniciantes, criado especialmente para futuros engenheiros de DevOps. Uma trilha de aprendizado clara e focada, sem sobrecarga.',
-    url: 'https://bancada.app/roadmap/junior',
+    url: `${SITE_URL}/roadmap/junior`,
     type: 'website',
     images: [
       {
-        url: 'https://bancada.app/images/junior-roadmap-og.png',
+        url: `${SITE_URL}/images/junior-roadmap-og.png`,
         width: 1200,
         height: 630,
         alt: 'Roadmap DevOps Júnior - Comece Sua Jornada',
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: [
       {
-        url: 'https://bancada.app/images/junior-roadmap-og.png',
+        url: `${SITE_URL}/images/junior-roadmap-og.png`,
         width: 1200,
         height: 630,
         alt: 'Roadmap DevOps Júnior - Comece Sua Jornada',
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: 'Bancada',
-      url: 'https://bancada.app',
+      url: SITE_URL,
     },
   ],
 };

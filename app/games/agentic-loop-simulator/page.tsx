@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import AgenticLoopSimulator from '@/components/games/agentic-loop-simulator';
 import { SimulatorShell } from '@/components/games/simulator-shell';
@@ -80,16 +81,19 @@ function AgenticLoopEducational() {
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
         <h4 className="mb-2 text-sm font-semibold">Vá mais fundo</h4>
         <p className="text-sm text-muted-foreground">
-          O post relacionado,{' '}
-          <a
-            href="https://bancada.app/posts/stop-prompting-start-looping"
+          Agentes são uma das etapas do{' '}
+          <Link href="/roadmap/ia" className="font-medium text-primary underline underline-offset-2">
+            Roadmap de Engenharia de IA
+          </Link>
+          , que também cobre tool use, MCP, avaliação e segurança. Para ver outra peça de sistemas com
+          LLM por dentro, experimente o{' '}
+          <Link
+            href="/games/rag-pipeline-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
-            Stop Prompting, Start Looping
-          </a>
-          , cobre por que engenheiros da Anthropic, NVIDIA, e outros dizem que o trabalho está mudando de
-          escrever prompts para desenhar loops, e o que realmente torna um loop confiável em vez de uma
-          forma cara de publicar bugs.
+            Simulador de Pipeline RAG
+          </Link>
+          .
         </p>
       </div>
 

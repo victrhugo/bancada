@@ -3,6 +3,7 @@ import { getAllExercises, getExerciseStats } from '@/lib/exercises';
 import { Target } from 'lucide-react';
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/page-hero';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Exercícios e Laboratórios de DevOps - Aprendizado na Prática',
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://bancada.app/images/exercises-og-image.png',
+        url: `${SITE_URL}/images/exercises-og-image.png`,
         width: 1200,
         height: 630,
         alt: 'Exercícios e Laboratórios de DevOps',
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     title: 'Exercícios e Laboratórios de DevOps - Aprendizado na Prática | Bancada',
     description:
       'Pratique habilidades reais de DevOps com nossa coleção completa de exercícios práticos e laboratórios.',
-    images: ['https://bancada.app/images/exercises-og-image.png'],
+    images: [`${SITE_URL}/images/exercises-og-image.png`],
   },
 };
 

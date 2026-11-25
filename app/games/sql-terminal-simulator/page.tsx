@@ -102,35 +102,6 @@ function SqlTerminalEducational() {
           your own data.
         </p>
       </div>
-
-      <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Related reading</h4>
-        <p className="mb-2 text-sm text-muted-foreground">
-          Once the queries click, these deep dives cover the schema and query patterns that keep a
-          Postgres database fast as it grows:
-        </p>
-        <ul className="space-y-2 text-sm text-muted-foreground">
-          <li>
-            <a
-              href="https://bancada.app/posts/postgres-18-uuidv7-primary-keys"
-              className="font-medium text-primary underline underline-offset-2"
-            >
-              Stop Using Random UUIDs as Primary Keys
-            </a>{' '}
-            — why random UUIDs hurt index and primary-key performance, and what to use instead.
-          </li>
-          <li>
-            <a
-              href="https://bancada.app/posts/stop-paginating-with-offset"
-              className="font-medium text-primary underline underline-offset-2"
-            >
-              Stop Paginating With OFFSET
-            </a>{' '}
-            — how keyset pagination beats LIMIT/OFFSET as tables get large.
-          </li>
-        </ul>
-      </div>
-
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
         <h4 className="mb-2 text-sm font-semibold">Why learn SQL this way?</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
