@@ -7,7 +7,6 @@ import {
   Clock,
   Globe,
   Inbox,
-  KeyRound,
   Lock,
   Mail,
   Pause,
@@ -91,7 +90,7 @@ const scenarios: Scenario[] = [
         title: 'Open submission connection',
         actor: 'app',
         command: 'TCP connect smtp.example.net:587',
-        response: '220 smtpfast ESMTP ready',
+        response: '220 mail.exemplo.com ESMTP ready',
         detail:
           'Apps usually submit mail to a provider over port 587. Port 25 is mostly for server-to-server relay.',
         protocolNote: 'The server greeting starts every SMTP session.',
@@ -219,7 +218,7 @@ const scenarios: Scenario[] = [
         title: 'Queue message for delivery',
         actor: 'smtp',
         command: 'DATA <message>',
-        response: '250 queued as smtpfast-82a9',
+        response: '250 queued as msg-82a9',
         detail:
           'A relay accepts the message, stores it durably, and begins outbound delivery attempts.',
         protocolNote: 'Queues are what make SMTP resilient to temporary failures.',
@@ -650,26 +649,6 @@ export default function SmtpFlowSimulator() {
                   <p className="mt-1 text-xs text-muted-foreground">{item.description}</p>
                 </div>
               ))}
-            </CardContent>
-          </Card>
-
-          <Card className="border-primary/30 bg-primary/5">
-            <CardHeader className="p-4 pb-2">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <KeyRound className="h-5 w-5 text-primary" />
-                Sponsored by SMTPfast
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 p-4 pt-0">
-              <p className="text-sm text-muted-foreground">
-                SMTPfast handles transactional and marketing email with SMTP/API sending, logs,
-                webhooks, and embeddable signup forms.
-              </p>
-              <Button asChild size="sm" className="w-full">
-                <a href="https://smtpfa.st" target="_blank" rel="noopener noreferrer sponsored">
-                  Try SMTPfast
-                </a>
-              </Button>
             </CardContent>
           </Card>
         </div>

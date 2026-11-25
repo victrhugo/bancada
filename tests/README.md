@@ -1,6 +1,6 @@
-# DevOps Daily Test Suite
+# Bancada Test Suite
 
-This directory contains automated tests for the DevOps Daily static site.
+This directory contains automated tests for the Bancada static site.
 
 ## Test Categories
 

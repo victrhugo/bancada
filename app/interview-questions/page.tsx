@@ -59,8 +59,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@TheDevOpsDaily',
-    creator: '@TheDevOpsDaily',
     title: 'Perguntas de Entrevista DevOps - Bancada',
     description:
       'Pratique perguntas reais de entrevista de DevOps com respostas ocultas, exemplos de código e explicações.',

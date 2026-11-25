@@ -44,15 +44,6 @@ function SmtpEducationalContent() {
           </ul>
         </div>
       </div>
-
-      <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Sponsored by SMTPfast</h4>
-        <p className="text-sm text-muted-foreground">
-          SMTPfast is a developer-first email platform for transactional and marketing email. It
-          provides SMTP/API sending, detailed logs, webhooks, and embeddable signup forms for teams
-          that want to ship email without running their own mail infrastructure.
-        </p>
-      </div>
     </>
   );
 }

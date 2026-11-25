@@ -1,0 +1,30 @@
+{
+  "id": "ia-avaliacao-llm-producao",
+  "slug": "ia-avaliacao-llm-producao",
+  "title": "Avaliação de Sistemas com LLM",
+  "question": "Como você garante que uma mudança de prompt ou de modelo não piorou um sistema com LLM em produção?",
+  "answer": "Trato avaliação como testes automatizados. Mantenho um golden set versionado com perguntas reais, casos difíceis e casos que devem ser recusados. Defino métricas por tipo de tarefa: acerto exato para classificação e extração, recall@k e faithfulness para RAG, e uma rubrica com LLM-as-a-judge para respostas abertas, calibrada periodicamente com avaliação humana. Rodo a avaliação no CI em todo pull request que muda prompt, modelo ou retrieval, com limites mínimos que bloqueiam o merge. Em produção, acompanho feedback do usuário, taxa de recusa, custo e latência, e transformo cada falha reportada em um novo caso do golden set.",
+  "explanation": "Sistemas com LLM são não determinísticos e uma melhoria em um tipo de pergunta pode piorar outro. Sem avaliação contínua, regressões passam silenciosamente. A resposta forte conecta avaliação offline (antes do deploy) com sinais online (depois do deploy) e fecha o ciclo usando falhas reais para fortalecer o conjunto de testes.",
+  "category": "IA",
+  "difficulty": "intermediate",
+  "tier": "mid",
+  "tags": ["ia", "llm", "avaliacao", "ci", "llm-as-a-judge", "qualidade"],
+  "codeExamples": [
+    {
+      "language": "yaml",
+      "label": "Gate de qualidade no CI",
+      "code": "evals:\n  golden_set: evals/golden.json   # 150 casos\n  metricas:\n    recall_at_5:      { minimo: 0.85 }\n    faithfulness:     { minimo: 0.90 }\n    recusa_correta:   { minimo: 0.80 }\n    custo_por_100:    { maximo_usd: 0.60 }\n  falhar_pr_se_abaixo: true"
+    }
+  ],
+  "followUpQuestions": [
+    "Quais vieses um LLM-as-a-judge pode ter?",
+    "Como você lida com a variação entre execuções do mesmo prompt?",
+    "Que sinais online indicam que a qualidade caiu?"
+  ],
+  "commonMistakes": [
+    "Confiar no próprio modelo para dizer se melhorou, sem referência",
+    "Ter um golden set só com perguntas fáceis",
+    "Avaliar uma vez no lançamento e nunca mais"
+  ],
+  "relatedTopics": ["golden-set", "ci-cd", "observabilidade", "rag"]
+}

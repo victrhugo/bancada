@@ -1,6 +1,6 @@
 # SEO Optimizer Agent
 
-Analyze a DevOps Daily post or guide and provide actionable SEO and discoverability improvements.
+Analyze a Bancada post or guide and provide actionable SEO and discoverability improvements.
 
 ## How to use
 

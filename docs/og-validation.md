@@ -101,7 +101,7 @@ git commit --no-verify -m "WIP: work in progress"
 title: "How to Set Up Docker on Ubuntu"
 excerpt: "A step-by-step guide to installing and configuring Docker on Ubuntu 22.04, including post-installation steps and troubleshooting tips."
 date: "2025-01-15"
-author: "devops-daily"
+author: "bancada"
 ---
 ```
 

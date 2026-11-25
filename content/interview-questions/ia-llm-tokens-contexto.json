@@ -1,0 +1,30 @@
+{
+  "id": "ia-llm-tokens-contexto",
+  "slug": "ia-llm-tokens-contexto",
+  "title": "Como um LLM Funciona: Tokens e Janela de Contexto",
+  "question": "O que um LLM faz quando gera uma resposta? O que são tokens e janela de contexto, e por que isso importa para quem constrói um produto?",
+  "answer": "Um LLM é um modelo treinado para prever o próximo token a partir do contexto. Ele gera a resposta um token por vez, escolhendo continuações prováveis. Tokens são pedaços de texto (palavras, partes de palavras, pontuação) e são a unidade de tudo: preço, latência e limite. A janela de contexto é o total de tokens que o modelo enxerga numa chamada, somando entrada e saída. O que não está na janela não existe para o modelo, e encher a janela de texto irrelevante deixa a resposta pior e mais cara.",
+  "explanation": "Essa pergunta testa se a pessoa entende o modelo como um preditor de texto, e não como um banco de fatos. Daí saem as consequências práticas: alucinação (plausível não é verdadeiro), a necessidade de colocar a informação certa no contexto (RAG) e o fato de que custo e limite são medidos em tokens, não em palavras. Em português, uma palavra costuma virar mais de um token.",
+  "category": "IA",
+  "difficulty": "beginner",
+  "tier": "junior",
+  "tags": ["ia", "llm", "tokens", "contexto", "fundamentos"],
+  "codeExamples": [
+    {
+      "language": "text",
+      "label": "Orçamento de tokens de uma chamada",
+      "code": "Janela do modelo:          8.000 tokens\n------------------------------------\nPrompt de sistema:         1.200\nTrechos recuperados (RAG): 2.400\nHistórico da conversa:     1.800\nPergunta do usuário:          60\nReservado para a resposta: 1.000\n------------------------------------\nTotal:                     6.460  (cabe, com folga)"
+    }
+  ],
+  "followUpQuestions": [
+    "O que acontece com o histórico de uma conversa muito longa?",
+    "Por que um texto em português pode custar mais tokens que o mesmo texto em inglês?",
+    "Como a temperature afeta a geração?"
+  ],
+  "commonMistakes": [
+    "Achar que o modelo \"sabe\" ou \"consulta\" fatos",
+    "Esquecer que a saída também consome a janela de contexto",
+    "Medir custo em palavras ou caracteres em vez de tokens"
+  ],
+  "relatedTopics": ["temperature", "alucinacao", "rag", "custo-de-llm"]
+}

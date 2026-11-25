@@ -68,8 +68,8 @@ export const skillResourcesDatabase: Record<string, SkillResource[]> = {
       description: 'Pratique comandos Linux em um terminal simulado',
     },
     {
-      title: 'Introdução ao Linux',
-      url: 'https://leanpub.com/introduction-to-linux',
+      title: 'The Linux Command Line (livro gratuito)',
+      url: 'https://linuxcommand.org/tlcl.php',
       type: 'book',
       external: true,
       description: 'Ebook completo sobre os fundamentos do Linux na Leanpub',
@@ -83,8 +83,8 @@ export const skillResourcesDatabase: Record<string, SkillResource[]> = {
       description: 'Aprenda scripts bash do básico ao avançado',
     },
     {
-      title: 'Introdução a Scripts Bash',
-      url: 'https://github.com/bobbyiliev/introduction-to-bash-scripting',
+      title: 'Manual de Referência do Bash (GNU)',
+      url: 'https://www.gnu.org/software/bash/manual/bash.html',
       type: 'tutorial',
       external: true,
       description: 'Ebook open-source sobre scripts bash no GitHub',
@@ -115,8 +115,8 @@ export const skillResourcesDatabase: Record<string, SkillResource[]> = {
   ],
   'Git Version Control': [
     {
-      title: 'Ebook de Fundamentos de Git',
-      url: 'https://github.com/bobbyiliev/introduction-to-git-and-github-ebook',
+      title: 'Livro Pro Git (gratuito, em português)',
+      url: 'https://git-scm.com/book/pt-br/v2',
       type: 'book',
       external: true,
       description: 'Aprenda controle de versão com Git',
@@ -156,8 +156,8 @@ export const skillResourcesDatabase: Record<string, SkillResource[]> = {
       description: 'Guia completo de containerização com Docker',
     },
     {
-      title: 'Ebook de Docker',
-      url: 'https://github.com/bobbyiliev/introduction-to-docker-ebook',
+      title: 'Guia Oficial de Introdução ao Docker',
+      url: 'https://docs.docker.com/get-started/',
       type: 'book',
       external: true,
       description: 'Aprenda Docker do básico ao avançado',
@@ -218,9 +218,9 @@ export const skillResourcesDatabase: Record<string, SkillResource[]> = {
       description: 'Infraestrutura como Código com Terraform',
     },
     {
-      title: 'Ebook de Terraform',
-      url: 'https://leanpub.com/introduction-to-terraform',
-      type: 'book',
+      title: 'Tutoriais Oficiais de Terraform',
+      url: 'https://developer.hashicorp.com/terraform/tutorials',
+      type: 'tutorial',
       external: true,
       description: 'Aprenda Terraform do básico ao avançado',
     },
@@ -645,7 +645,7 @@ export const roadmapStages: RoadmapStage[] = [
         level: 'intermediate',
         type: 'concept',
         icon: Globe,
-        link: 'https://devdojo.com/post/bobbyiliev/docker-networking-a-quick-guide-to-get-you-started',
+        link: 'https://docs.docker.com/engine/network/',
         external: true,
       },
       {
@@ -671,7 +671,7 @@ export const roadmapStages: RoadmapStage[] = [
         level: 'advanced',
         type: 'practice',
         icon: Shield,
-        link: 'https://devdojo.com/post/bobbyiliev/5-docker-best-practices-i-wish-i-knew-when-i-started',
+        link: 'https://docs.docker.com/build/building/best-practices/',
         external: true,
       },
     ],
@@ -1129,7 +1129,7 @@ export const roadmapStages: RoadmapStage[] = [
         level: 'basic',
         type: 'concept',
         icon: Database,
-        link: 'https://github.com/bobbyiliev/introduction-to-sql',
+        link: 'https://www.postgresql.org/docs/current/tutorial-sql.html',
         external: true,
       },
       {

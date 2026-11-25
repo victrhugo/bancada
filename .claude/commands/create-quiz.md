@@ -1,6 +1,6 @@
-# Create a DevOps Daily Quiz
+# Create a Bancada Quiz
 
-Create a new quiz for DevOps Daily on the topic: $ARGUMENTS
+Create a new quiz for Bancada on the topic: $ARGUMENTS
 
 ## Content Location & Format
 

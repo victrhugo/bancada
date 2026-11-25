@@ -4,8 +4,9 @@ import type { Metadata } from 'next';
 // Import the roadmap page components
 import JuniorRoadmapPage from '@/app/roadmap/junior/page';
 import DevSecOpsRoadmapPage from '@/app/roadmap/devsecops/page';
+import AiRoadmapPage from '@/app/roadmap/ia/page';
 
-const validRoadmaps = ['junior', 'devsecops'] as const;
+const validRoadmaps = ['junior', 'devsecops', 'ia'] as const;
 type RoadmapSlug = (typeof validRoadmaps)[number];
 
 interface PageProps {
@@ -84,6 +85,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         images: ['https://bancada.app/images/devsecops-roadmap-og.png'],
       },
     },
+    ia: {
+      title: { absolute: 'Roadmap de Engenharia de IA - LLMs, RAG, Agentes e Produção' },
+      description:
+        'Um roadmap prático em português para construir produtos com IA generativa: LLMs, prompt engineering, embeddings, RAG, avaliação, agentes, segurança e custo.',
+      alternates: {
+        canonical: '/roadmaps/ia',
+      },
+      openGraph: {
+        title: 'Roadmap de Engenharia de IA - LLMs, RAG, Agentes e Produção',
+        description:
+          'Um roadmap prático em português para construir produtos com IA generativa: LLMs, prompt engineering, embeddings, RAG, avaliação, agentes, segurança e custo.',
+        url: 'https://bancada.app/roadmaps/ia',
+        type: 'website',
+        images: [
+          {
+            url: 'https://bancada.app/images/roadmaps-og.png',
+            width: 1200,
+            height: 630,
+            alt: 'Roadmap de Engenharia de IA',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Roadmap de Engenharia de IA - LLMs, RAG, Agentes e Produção',
+        description:
+          'LLMs, RAG, avaliação, agentes e IA responsável na prática, em português.',
+        images: ['https://bancada.app/images/roadmaps-og.png'],
+      },
+    },
   };
 
   return metadata[slug as RoadmapSlug];
@@ -102,6 +133,8 @@ export default async function RoadmapPage({ params }: PageProps) {
       return <JuniorRoadmapPage />;
     case 'devsecops':
       return <DevSecOpsRoadmapPage />;
+    case 'ia':
+      return <AiRoadmapPage />;
     default:
       notFound();
   }

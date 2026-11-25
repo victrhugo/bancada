@@ -15,7 +15,6 @@ import { notFound } from 'next/navigation';
 import { RelatedQuizzes } from '@/components/related-quizzes';
 import { RelatedAcrossTypes } from '@/components/related-across-types';
 import { getRelatedAcrossTypes } from '@/lib/related-cross-type';
-import { CarbonAds } from '@/components/carbon-ads';
 
 export const dynamicParams = false;
 
@@ -175,11 +174,6 @@ export default async function QuizPage({ params }: { params: Promise<{ slug: str
                 Voltar para Quizzes
               </Link>
             </Button>
-          </div>
-
-          {/* Inline ad slot at the natural break before the cross-link block. */}
-          <div className="max-w-2xl mx-auto mt-12">
-            <CarbonAds />
           </div>
 
           {/* Related Quizzes */}

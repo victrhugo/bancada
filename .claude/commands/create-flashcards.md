@@ -1,6 +1,6 @@
-# Create DevOps Daily Flashcards
+# Create Bancada Flashcards
 
-Create a new flashcard deck for DevOps Daily on the topic: $ARGUMENTS
+Create a new flashcard deck for Bancada on the topic: $ARGUMENTS
 
 ## Content Location & Format
 

@@ -1,6 +1,6 @@
-# Create a DevOps Daily Checklist
+# Create a Bancada Checklist
 
-Create a new checklist for DevOps Daily on the topic: $ARGUMENTS
+Create a new checklist for Bancada on the topic: $ARGUMENTS
 
 ## Content Location & Format
 

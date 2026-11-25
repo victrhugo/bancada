@@ -74,6 +74,6 @@
     <line x1="1135" y1="475" x2="1135" y2="485" stroke="#60a5fa" stroke-width="3"/>
   </g>
 
-  <!-- DevOps Daily branding -->
-  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#a78bfa">DevOps Daily</text>
+  <!-- Bancada branding -->
+  <text x="80" y="550" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#a78bfa">Bancada</text>
 </svg>

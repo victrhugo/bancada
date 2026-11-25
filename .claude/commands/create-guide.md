@@ -1,6 +1,6 @@
-# Create a DevOps Daily Guide
+# Create a Bancada Guide
 
-Create a new multi-part guide for DevOps Daily on the topic: $ARGUMENTS
+Create a new multi-part guide for Bancada on the topic: $ARGUMENTS
 
 ## Content Location & Format
 
@@ -31,8 +31,8 @@ category:
 publishedAt: '<YYYY-MM-DD>'
 updatedAt: '<YYYY-MM-DD>'
 author:
-  name: 'DevOps Daily Team'
-  slug: 'devops-daily-team'
+  name: 'Bancada'
+  slug: 'bancada'
 tags:
   - Tag1
   - Tag2

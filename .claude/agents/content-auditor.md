@@ -1,6 +1,6 @@
 # Content Auditor Agent
 
-Audit DevOps Daily content for structural issues and plan fixes.
+Audit Bancada content for structural issues and plan fixes.
 
 This agent uses `scripts/audit-content.ts` for automated checks (fast, zero tokens wasted on file reads) and focuses its reasoning on prioritizing issues and planning fixes.
 

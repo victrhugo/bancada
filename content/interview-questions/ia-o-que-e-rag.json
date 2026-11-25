@@ -1,0 +1,30 @@
+{
+  "id": "ia-o-que-e-rag",
+  "slug": "ia-o-que-e-rag",
+  "title": "O Que é RAG e Quando Usar",
+  "question": "O que é RAG (Retrieval-Augmented Generation)? Descreva o fluxo básico e dê um exemplo de quando ele é melhor do que usar só o modelo.",
+  "answer": "RAG é um padrão em que o sistema busca informação relevante numa base de conhecimento antes de pedir a resposta ao modelo. O fluxo tem duas fases. Na indexação, os documentos são divididos em chunks, cada chunk vira um embedding e é guardado num banco vetorial. Na consulta, a pergunta vira embedding, os chunks mais parecidos são recuperados, entram no prompt junto com a pergunta e o modelo responde com base neles, citando a fonte. É melhor que usar só o modelo quando o conhecimento é privado, muda com frequência ou precisa ser rastreável, como políticas internas, catálogo de produtos ou documentação técnica.",
+  "explanation": "Uma boa resposta mostra as duas fases (indexar e consultar) e explica o porquê: o modelo não conhece os seus dados e não sabe o que mudou ontem. Atualizar um índice é barato e imediato; retreinar um modelo não é. Pontos extras para quem menciona citação de fonte e a instrução de responder \"não sei\" quando o contexto não cobre a pergunta.",
+  "category": "IA",
+  "difficulty": "beginner",
+  "tier": "junior",
+  "tags": ["ia", "rag", "embeddings", "retrieval", "fundamentos"],
+  "codeExamples": [
+    {
+      "language": "text",
+      "label": "Fluxo de um RAG",
+      "code": "INDEXAÇÃO (offline)\n  documentos -> chunking -> embeddings -> banco vetorial\n\nCONSULTA (a cada pergunta)\n  pergunta -> embedding -> busca top-k -> prompt com trechos -> LLM -> resposta + fontes"
+    }
+  ],
+  "followUpQuestions": [
+    "O que é um embedding?",
+    "Como você escolheria o tamanho dos chunks?",
+    "O que o assistente deve fazer quando nenhum trecho responde à pergunta?"
+  ],
+  "commonMistakes": [
+    "Confundir RAG com fine-tuning",
+    "Achar que RAG elimina alucinação por completo",
+    "Colocar todos os documentos no prompt em vez de recuperar só os relevantes"
+  ],
+  "relatedTopics": ["embeddings", "chunking", "banco-vetorial", "fine-tuning"]
+}

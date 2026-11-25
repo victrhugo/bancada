@@ -1,6 +1,6 @@
 # Repository agent instructions
 
-## DevOps Daily posts
+## Bancada posts
 
 Before creating or substantially editing a file in `content/posts/`, read
 `.claude/commands/write-post.md` completely and follow it as the authoritative

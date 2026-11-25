@@ -51,16 +51,16 @@ function WebhookDeliveryEducational() {
         <p className="text-sm leading-relaxed text-muted-foreground">
           This simulator uses the published{' '}
           <a
-            href="https://link.svix.com/devopsdaily"
+            href="https://docs.svix.com/retries"
             className="font-medium text-primary underline underline-offset-2"
             target="_blank"
-            rel="noopener noreferrer sponsored"
+            rel="noopener noreferrer"
           >
-            Svix Dispatch
+            Svix
           </a>{' '}
-          retry schedule and genuine Standard Webhooks signatures. Dispatch adds the durable queue,
-          endpoint controls, attempt history, replay, and customer portal that turn these mechanics
-          into a complete delivery product. For the underlying queue and throttling concepts, try
+          retry schedule and genuine Standard Webhooks signatures. A production delivery system adds
+          a durable queue, endpoint controls, attempt history, replay, and a customer portal on top
+          of these mechanics. For the underlying queue and throttling concepts, try
           the{' '}
           <a
             href="/games/message-queue-simulator"

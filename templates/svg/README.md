@@ -1,4 +1,4 @@
-# SVG Templates for DevOps Daily
+# SVG Templates for Bancada
 
 Reusable SVG templates for creating consistent, professional images for exercises and quizzes.
 

@@ -865,25 +865,6 @@ svix-signature: ${signatureHeader || 'computing...'}`}
         </details>
       )}
 
-      <div className="flex flex-col gap-3 border-t border-[#2c70ff]/25 bg-[#2c70ff]/[0.05] p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <p className="text-sm font-semibold">Put this delivery path into production</p>
-          <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted-foreground">
-            Svix Dispatch provides the durable queue, automatic retries, signed requests, rate
-            limits, searchable attempt logs, replay, and a customer-facing endpoint portal behind
-            one API.
-          </p>
-        </div>
-        <a
-          href="https://link.svix.com/devopsdaily"
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-primary hover:underline"
-        >
-          Explore Svix Dispatch
-          <ArrowRight className="h-4 w-4" />
-        </a>
-      </div>
       <style jsx global>{`
         @keyframes webhook-packet-x {
           from {

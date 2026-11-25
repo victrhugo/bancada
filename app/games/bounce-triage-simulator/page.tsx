@@ -79,16 +79,7 @@ function BounceTriageEducational() {
           suficiente para agir:{' '}
           <span className="font-mono text-xs">550 5.1.1 user unknown</span> e{' '}
           <span className="font-mono text-xs">550 5.7.1 content rejected</span> são a mesma categoria
-          e precisam de respostas opostas.{' '}
-          <a
-            href="https://smtpfa.st"
-            className="font-medium text-primary underline underline-offset-2"
-            rel="noopener"
-          >
-            SMTPfast
-          </a>{' '}
-          mantém o diagnóstico completo junto da mensagem que o causou, e a supressão é aplicada no
-          envio em vez de ser apenas informativa.
+          e precisam de respostas opostas.
         </p>
       </div>
 

@@ -91,7 +91,7 @@ function SqlTerminalEducational() {
           </a>{' '}
           and paste the same queries in to run them for real, or{' '}
           <a
-            href="https://m.do.co/c/2a9bba940f39"
+            href="https://www.digitalocean.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-primary underline underline-offset-2"

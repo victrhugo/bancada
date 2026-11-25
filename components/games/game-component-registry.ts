@@ -39,6 +39,7 @@ import OAuthOidcFlowSimulator from '@/components/games/oauth-oidc-flow-simulator
 import PacketJourney from '@/components/games/packet-journey';
 import PostgresTerminalSimulator from '@/components/games/postgres-terminal-simulator';
 import PostgresWireProtocolSimulator from '@/components/games/postgres-wire-protocol-simulator';
+import RagPipelineSimulator from '@/components/games/rag-pipeline-simulator';
 import PromqlPlayground from '@/components/games/promql-playground';
 import RateLimitSimulator from '@/components/games/rate-limit-simulator';
 import RestVsGraphql from '@/components/games/rest-vs-graphql-simulator';
@@ -55,6 +56,7 @@ import WebhookDeliverySimulator from '@/components/games/webhook-delivery-simula
 
 export const GAME_COMPONENTS: Record<string, ComponentType> = {
   'agentic-loop-simulator': AgenticLoopSimulator,
+  'rag-pipeline-simulator': RagPipelineSimulator,
   'binary-byte-simulator': BinaryByteSimulator,
   'bounce-triage-simulator': BounceTriageSimulator,
   'docker-under-the-hood-simulator': DockerUnderTheHoodSimulator,

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import BCDRSimulator from '@/components/games/bcdr-simulator';
 import { SimulatorShell } from '@/components/games/simulator-shell';
 import { generateGameMetadata } from '@/lib/game-metadata';
@@ -74,48 +73,6 @@ function BcdrEducational() {
           <li>Use geographic diversity for DR sites.</li>
           <li>Automate failover where possible to reduce human error.</li>
         </ul>
-      </div>
-
-      <div className="mt-6 rounded-md border bg-background p-6">
-        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
-          <a
-            href="https://m.do.co/c/2a9bba940f39"
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="shrink-0"
-          >
-            <Image
-              src="/acronis.svg"
-              alt="Acronis"
-              width={80}
-              height={80}
-              className="rounded-lg"
-            />
-          </a>
-          <div className="flex-1 text-center sm:text-left">
-            <h4 className="mb-2 font-semibold text-sm">Need a real BCDR solution?</h4>
-            <p className="mb-3 text-sm text-muted-foreground">
-              <strong className="text-foreground">Acronis Cyber Protect</strong> offers
-              enterprise-grade backup and disaster recovery with anti-ransomware protection.
-              Trusted by 500,000+ businesses worldwide.
-            </p>
-            <a
-              href="https://m.do.co/c/2a9bba940f39"
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="inline-flex items-center gap-2 rounded-md border border-primary/30 px-3 py-1.5 text-sm font-mono text-primary transition-colors hover:bg-primary/10"
-            >
-              Learn more about Acronis
-              <span aria-hidden="true">-&gt;</span>
-            </a>
-          </div>
-        </div>
-        <p className="mt-4 text-xs text-center text-muted-foreground/70">
-          <em>
-            This page contains an affiliate link. Using it helps support Bancada at no extra
-            cost to you.
-          </em>
-        </p>
       </div>
     </>
   );

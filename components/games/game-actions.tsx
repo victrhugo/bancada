@@ -64,7 +64,7 @@ export function GameActions({ gameSlug, gameTitle }: GameActionsProps) {
   }, []);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {/* Embed Button */}
       <EmbedCodeModal gameSlug={gameSlug} gameTitle={gameTitle} />
 

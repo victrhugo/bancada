@@ -1,6 +1,6 @@
 # Content Planner Agent
 
-Analyze existing DevOps Daily content to identify gaps and propose new content that fills them.
+Analyze existing Bancada content to identify gaps and propose new content that fills them.
 
 ## How to use
 

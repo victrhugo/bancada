@@ -44,8 +44,6 @@ export const metadata: Metadata = {
  },
  twitter: {
   card: 'summary_large_image',
-  site: '@TheDevOpsDaily',
-  creator: '@TheDevOpsDaily',
   title: 'Checklists de DevOps e Segurança - Bancada',
   description: 'Checklists interativos de DevOps, segurança e boas práticas de nuvem. Acompanhe seu progresso e garanta que nada seja esquecido.',
   images: ['/images/checklists/checklists-og.png'],

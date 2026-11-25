@@ -1,0 +1,551 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { ReportIssue } from '@/components/report-issue';
+import {
+  Brain,
+  FileSearch,
+  Gauge,
+  Bot,
+  Sparkles,
+  ListChecks,
+  Layers,
+  GraduationCap,
+  MessageSquare,
+  Terminal,
+  BookOpen,
+  CheckCircle2,
+  Clock,
+  Target,
+  Lightbulb,
+  Rocket,
+  ChevronRight,
+  ExternalLink,
+  Star,
+  Trophy,
+  MapPin,
+  PlayCircle,
+} from 'lucide-react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+
+import { AI_MODULE_LINKS, type AiMilestone, milestones } from '@/lib/roadmap-ia-data';
+
+const priorityColors = {
+  essential: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+  important: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
+  'nice-to-have': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+};
+
+const PRIORITY_LABELS: Record<string, string> = {
+  essential: 'essencial',
+  important: 'importante',
+  'nice-to-have': 'bom ter',
+};
+
+const difficultyColors = {
+  easy: 'text-green-600 dark:text-green-400',
+  medium: 'text-yellow-600 dark:text-yellow-400',
+  hard: 'text-red-600 dark:text-red-400',
+};
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  easy: 'fácil',
+  medium: 'médio',
+  hard: 'difícil',
+};
+
+const MODULE_RESOURCES = [
+  {
+    kind: 'simulador',
+    title: 'Simulador de Pipeline RAG',
+    description: 'Veja chunking, embeddings, top-k e grounding mudarem a resposta em tempo real.',
+    href: AI_MODULE_LINKS.ragSimulator,
+    icon: Layers,
+  },
+  {
+    kind: 'exercício',
+    title: 'RAG do Zero com pgvector',
+    description: 'Monte um assistente local com citação, busca híbrida e avaliação automatizada.',
+    href: AI_MODULE_LINKS.exercise,
+    icon: Terminal,
+  },
+  {
+    kind: 'quiz',
+    title: 'Quiz de Engenharia de IA',
+    description: '14 cenários reais sobre LLMs, RAG, agentes, segurança e custo.',
+    href: AI_MODULE_LINKS.quiz,
+    icon: Brain,
+  },
+  {
+    kind: 'flashcards',
+    title: 'LLMs, RAG e Agentes',
+    description: '22 cartões para revisar os conceitos essenciais com repetição espaçada.',
+    href: AI_MODULE_LINKS.flashcards,
+    icon: Sparkles,
+  },
+  {
+    kind: 'checklist',
+    title: 'RAG em Produção',
+    description: 'Do protótipo ao lançamento: qualidade, permissões, LGPD, custo e rollout.',
+    href: AI_MODULE_LINKS.checklist,
+    icon: ListChecks,
+  },
+  {
+    kind: 'entrevista',
+    title: 'Perguntas de Entrevista de IA',
+    description: 'Do júnior ao sênior: tokens, RAG, avaliação, agentes e prompt injection.',
+    href: '/interview-questions?topic=ia',
+    icon: MessageSquare,
+  },
+  {
+    kind: 'simulador',
+    title: 'Simulador de Loop Agêntico',
+    description: 'Entenda como um agente planeja, executa, verifica e decide quando parar.',
+    href: AI_MODULE_LINKS.agentSimulator,
+    icon: Bot,
+  },
+  {
+    kind: 'roadmap',
+    title: 'Roadmap DevOps Júnior',
+    description: 'A base de Linux, Git, Docker e CI/CD que sustenta qualquer produto com IA.',
+    href: '/roadmap/junior',
+    icon: GraduationCap,
+  },
+];
+
+export default function AiRoadmapPage() {
+  const [expandedMilestones, setExpandedMilestones] = useState<string[]>(['ai-fundamentals']);
+  const [completedSkills, setCompletedSkills] = useState<Set<string>>(new Set());
+
+  const toggleMilestone = (id: string) => {
+    setExpandedMilestones((prev) =>
+      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]
+    );
+  };
+
+  const toggleSkill = (milestoneId: string, skillName: string) => {
+    const key = `${milestoneId}-${skillName}`;
+    setCompletedSkills((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(key)) {
+        newSet.delete(key);
+      } else {
+        newSet.add(key);
+      }
+      return newSet;
+    });
+  };
+
+  const getTotalProgress = () => {
+    const totalSkills = milestones.reduce((acc, m) => acc + m.skills.length, 0);
+    return Math.round((completedSkills.size / totalSkills) * 100);
+  };
+
+  const getMilestoneProgress = (milestone: AiMilestone) => {
+    const completed = milestone.skills.filter((s) =>
+      completedSkills.has(`${milestone.id}-${s.name}`)
+    ).length;
+    return Math.round((completed / milestone.skills.length) * 100);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      {/* Hero Section */}
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5" />
+        <div className="container mx-auto px-4 max-w-6xl relative">
+          <div className="text-center space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-800 dark:text-violet-300 text-sm font-medium">
+              <Sparkles className="h-4 w-4" />
+              <span>Módulo de Inteligência Artificial</span>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              Roadmap de <span className="text-primary">Engenharia de IA</span>
+            </h1>
+
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+              Do primeiro prompt ao assistente em produção: entenda LLMs, construa RAG, meça a
+              qualidade, crie agentes com ferramentas e lance com segurança, privacidade e custo sob
+              controle.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-4 pt-4">
+              <Badge variant="outline" className="px-3 py-1">
+                <Clock className="h-3 w-3 mr-1" />
+                5-6 Meses
+              </Badge>
+              <Badge variant="outline" className="px-3 py-1">
+                <Target className="h-3 w-3 mr-1" />
+                {milestones.length} Marcos
+              </Badge>
+              <Badge variant="outline" className="px-3 py-1">
+                <Brain className="h-3 w-3 mr-1" />
+                {milestones.reduce((acc, m) => acc + m.skills.length, 0)} Habilidades de IA
+              </Badge>
+            </div>
+
+            {/* Progress Overview */}
+            <div className="max-w-md mx-auto pt-8">
+              <div className="flex items-center justify-between text-sm mb-2">
+                <span className="text-muted-foreground">Seu Progresso</span>
+                <span className="font-medium">{getTotalProgress()}%</span>
+              </div>
+              <Progress value={getTotalProgress()} className="h-2" />
+              <p className="text-xs text-muted-foreground mt-2">
+                Clique nas habilidades para marcá-las como concluídas
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Key Principles */}
+      <section className="py-12 container mx-auto px-4 max-w-6xl">
+        <div className="grid md:grid-cols-3 gap-6">
+          <Card className="border-violet-500/20 bg-violet-500/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <FileSearch className="h-5 w-5 text-violet-500" />
+                Contexto Antes do Modelo
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                A qualidade de uma resposta depende mais da informação certa no contexto do que do
+                tamanho do modelo. Dados bons e retrieval bom vêm primeiro.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-emerald-500/20 bg-emerald-500/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Gauge className="h-5 w-5 text-emerald-500" />
+                Meça, Não Adivinhe
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Sistemas com LLM são não determinísticos. Golden sets e métricas transformam
+                &quot;parece bom&quot; em evidência e impedem regressões silenciosas.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-rose-500/20 bg-rose-500/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Bot className="h-5 w-5 text-rose-500" />O Controle Fica no Código
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Trate o modelo como um componente não confiável. Permissões, validação e limites são
+                aplicados pela sua aplicação, nunca só por instrução no prompt.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Module overview */}
+      <section className="py-12 container mx-auto px-4 max-w-6xl">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-3">
+          Pratique o Módulo Completo
+        </h2>
+        <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+          Cada formato treina uma habilidade diferente. Use o roadmap como mapa e pratique com o
+          simulador, o exercício, o quiz, os flashcards, o checklist e as perguntas de entrevista.
+        </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {MODULE_RESOURCES.map((resource) => {
+            const ResourceIcon = resource.icon;
+            return (
+              <Link
+                key={resource.href}
+                href={resource.href}
+                className="group p-5 rounded-lg border bg-card hover:bg-accent transition-colors"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <ResourceIcon className="h-5 w-5 text-primary" />
+                  <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                    {resource.kind}
+                  </span>
+                </div>
+                <h3 className="font-semibold group-hover:text-primary transition-colors">
+                  {resource.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Milestones */}
+      <section className="py-12 container mx-auto px-4 max-w-6xl">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
+          Sua Jornada em Engenharia de IA
+        </h2>
+
+        <div className="space-y-6">
+          {milestones.map((milestone) => {
+            const isExpanded = expandedMilestones.includes(milestone.id);
+            const progress = getMilestoneProgress(milestone);
+            const Icon = milestone.icon;
+
+            return (
+              <Card
+                key={milestone.id}
+                className={cn('transition-all duration-300', milestone.bgColor)}
+              >
+                <CardHeader
+                  className="cursor-pointer"
+                  onClick={() => toggleMilestone(milestone.id)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={cn('p-3 rounded-xl', milestone.bgColor.replace('border', 'bg'))}
+                      >
+                        <Icon className={cn('h-6 w-6', milestone.color)} />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <CardTitle className="text-xl">{milestone.title}</CardTitle>
+                          <Badge variant="secondary" className="text-xs">
+                            {milestone.subtitle}
+                          </Badge>
+                        </div>
+                        <CardDescription className="mt-1">{milestone.description}</CardDescription>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right hidden sm:block">
+                        <div className="text-sm font-medium">{progress}%</div>
+                        <div className="text-xs text-muted-foreground">
+                          {
+                            milestone.skills.filter((s) =>
+                              completedSkills.has(`${milestone.id}-${s.name}`)
+                            ).length
+                          }
+                          /{milestone.skills.length} habilidades
+                        </div>
+                      </div>
+                      <ChevronRight
+                        className={cn('h-5 w-5 transition-transform', isExpanded && 'rotate-90')}
+                      />
+                    </div>
+                  </div>
+                  <Progress value={progress} className="h-1 mt-4" />
+                </CardHeader>
+
+                {isExpanded && (
+                  <CardContent className="pt-0">
+                    <div className="grid lg:grid-cols-3 gap-6">
+                      {/* Skills */}
+                      <div className="lg:col-span-2 space-y-3">
+                        <h4 className="font-semibold flex items-center gap-2">
+                          <BookOpen className="h-4 w-4" />
+                          Habilidades para Aprender
+                        </h4>
+                        <div className="space-y-2">
+                          {milestone.skills.map((skill) => {
+                            const isCompleted = completedSkills.has(
+                              `${milestone.id}-${skill.name}`
+                            );
+                            const SkillIcon = skill.icon;
+
+                            return (
+                              <div
+                                key={skill.name}
+                                className={cn(
+                                  'p-3 rounded-lg border bg-background/50 cursor-pointer transition-all',
+                                  isCompleted && 'bg-green-500/10 border-green-500/30'
+                                )}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleSkill(milestone.id, skill.name);
+                                }}
+                              >
+                                <div className="flex items-start gap-3">
+                                  <div
+                                    className={cn(
+                                      'p-1.5 rounded-md',
+                                      isCompleted ? 'bg-green-500/20' : 'bg-muted'
+                                    )}
+                                  >
+                                    {isCompleted ? (
+                                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                                    ) : (
+                                      <SkillIcon className="h-4 w-4" />
+                                    )}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <span
+                                        className={cn(
+                                          'font-medium',
+                                          isCompleted && 'line-through opacity-70'
+                                        )}
+                                      >
+                                        {skill.name}
+                                      </span>
+                                      <Badge
+                                        className={cn('text-xs', priorityColors[skill.priority])}
+                                      >
+                                        {PRIORITY_LABELS[skill.priority] ?? skill.priority}
+                                      </Badge>
+                                      <span className="text-xs text-muted-foreground">
+                                        ~{skill.estimatedHours}h
+                                      </span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                      {skill.description}
+                                    </p>
+                                    {skill.link && (
+                                      <Link
+                                        href={skill.link}
+                                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2"
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        <PlayCircle className="h-3 w-3" />
+                                        Saiba mais
+                                        {skill.external && <ExternalLink className="h-3 w-3" />}
+                                      </Link>
+                                    )}
+                                    {skill.simulators?.map((sim) => (
+                                      <Link
+                                        key={sim.link}
+                                        href={sim.link}
+                                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2 ml-3"
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        <Terminal className="h-3 w-3" />
+                                        Experimentar: {sim.name}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Sidebar */}
+                      <div className="space-y-4">
+                        {/* Project */}
+                        <div className="p-4 rounded-lg border bg-background/50">
+                          <h4 className="font-semibold flex items-center gap-2 mb-2">
+                            <Rocket className="h-4 w-4" />
+                            Projeto do Marco
+                          </h4>
+                          <p className="font-medium text-sm">{milestone.project.name}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {milestone.project.description}
+                          </p>
+                          <Badge
+                            variant="outline"
+                            className={cn('mt-2', difficultyColors[milestone.project.difficulty])}
+                          >
+                            {DIFFICULTY_LABELS[milestone.project.difficulty] ??
+                              milestone.project.difficulty}
+                          </Badge>
+                        </div>
+
+                        {/* Outcomes */}
+                        <div className="p-4 rounded-lg border bg-background/50">
+                          <h4 className="font-semibold flex items-center gap-2 mb-2">
+                            <Target className="h-4 w-4" />
+                            Resultados
+                          </h4>
+                          <ul className="space-y-1">
+                            {milestone.outcomes.map((outcome) => (
+                              <li
+                                key={outcome}
+                                className="text-xs text-muted-foreground flex items-start gap-2"
+                              >
+                                <CheckCircle2 className="h-3 w-3 text-green-500 mt-0.5 shrink-0" />
+                                {outcome}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Tips */}
+                        <div className="p-4 rounded-lg border bg-background/50">
+                          <h4 className="font-semibold flex items-center gap-2 mb-2">
+                            <Lightbulb className="h-4 w-4 text-yellow-500" />
+                            Dicas de Especialista
+                          </h4>
+                          <ul className="space-y-1">
+                            {milestone.tips.map((tip) => (
+                              <li
+                                key={tip}
+                                className="text-xs text-muted-foreground flex items-start gap-2"
+                              >
+                                <Star className="h-3 w-3 text-yellow-500 mt-0.5 shrink-0" />
+                                {tip}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 container mx-auto px-4 max-w-4xl">
+        <Card className="border-2 border-dashed">
+          <CardContent className="py-12 text-center">
+            <Trophy className="h-12 w-12 mx-auto text-yellow-500 mb-4" />
+            <h3 className="text-2xl font-bold mb-2">Pronto para Construir com IA?</h3>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              Comece pelos fundamentos, depois coloque a mão na massa com o simulador e o exercício
+              de RAG. Teoria sem prática vira esquecimento.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button asChild>
+                <Link href={AI_MODULE_LINKS.ragSimulator}>
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Abrir o Simulador de RAG
+                </Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/roadmaps">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  Ver Todos os Roadmaps
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Report Issue */}
+      <section className="py-8 container mx-auto px-4 max-w-4xl mb-16">
+        <div className="text-center">
+          <ReportIssue
+            title="Encontrou um problema com esse roadmap?"
+            type="page"
+            slug="roadmap/ia"
+            variant="default"
+          />
+        </div>
+      </section>
+    </div>
+  );
+}

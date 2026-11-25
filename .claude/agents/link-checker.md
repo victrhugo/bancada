@@ -1,6 +1,6 @@
 # Link Checker Agent
 
-Check internal links in DevOps Daily content and plan fixes for missing links.
+Check internal links in Bancada content and plan fixes for missing links.
 
 This agent uses `scripts/check-internal-links.ts` for the scanning (fast, zero tokens wasted on file reads) and focuses its reasoning on interpreting results and planning edits.
 

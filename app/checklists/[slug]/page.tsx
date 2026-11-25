@@ -11,7 +11,6 @@ import { BreadcrumbSchema, LearningResourceSchema } from '@/components/schema-ma
 import { RelatedContent } from '@/components/related-content';
 import { RelatedAcrossTypes } from '@/components/related-across-types';
 import { getRelatedAcrossTypes } from '@/lib/related-cross-type';
-import { CarbonAds } from '@/components/carbon-ads';
 
 export async function generateStaticParams() {
   const checklists = await getAllChecklists();
@@ -41,7 +40,6 @@ export async function generateMetadata(
     ogType: 'website',
     siteName: 'Bancada',
     locale: 'en_US',
-    twitterHandle: '@TheDevOpsDaily',
   });
 }
 
@@ -117,15 +115,6 @@ export default async function ChecklistPage(
         ].filter(s => s.value !== '')}
       />
       <ChecklistPageClient checklist={checklist} />
-      {/* Inline ad slot. Sits between the checklist body and the "More
-          checklists" cross-links so it lands at a natural reading break
-          rather than mid-content. Same pattern across the four slug pages
-          we previously had no ad on. */}
-      <div className="container mx-auto px-4 pt-8 pb-2">
-        <div className="max-w-2xl mx-auto">
-          <CarbonAds />
-        </div>
-      </div>
       {related.length > 0 && (
         <div className="container mx-auto px-4 pb-8">
           <RelatedContent

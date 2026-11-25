@@ -393,7 +393,7 @@ export function QuizManager({ quizzes, className }: QuizManagerProps) {
             Terraform e outros temas de DevOps.
           </p>
           <Button variant="outline" asChild>
-            <Link href="https://github.com/The-DevOps-Daily/devops-daily/issues/new/choose">
+            <Link href="https://github.com/victrhugo/bancada/issues/new/choose">
               Sugira um Tema de Quiz
             </Link>
           </Button>

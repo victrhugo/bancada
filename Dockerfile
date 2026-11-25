@@ -1,4 +1,4 @@
-# Universal Dockerfile for DevOps Daily
+# Universal Dockerfile for Bancada
 # Multi-stage build for optimized development and production images
 
 ARG NODE_VERSION=22.13.1
@@ -36,12 +36,12 @@ ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV WATCHPACK_POLLING=true
 
-LABEL org.opencontainers.image.title="DevOps Daily"
-LABEL org.opencontainers.image.description="A modern content platform for DevOps professionals"
-LABEL org.opencontainers.image.source="https://github.com/The-DevOps-Daily/devops-daily"
-LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.vendor="DevOps Daily"
-LABEL org.opencontainers.image.authors="DevOps Daily Team"
+LABEL org.opencontainers.image.title="Bancada"
+LABEL org.opencontainers.image.description="Plataforma open source em português para praticar DevOps e IA"
+LABEL org.opencontainers.image.source="https://github.com/victrhugo/bancada"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
+LABEL org.opencontainers.image.vendor="Bancada"
+LABEL org.opencontainers.image.authors="Bancada"
 
 EXPOSE 3000
 
@@ -86,12 +86,12 @@ RUN chown -R nginx:nginx /usr/share/nginx/html && \
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-LABEL org.opencontainers.image.title="DevOps Daily"
-LABEL org.opencontainers.image.description="A modern content platform for DevOps professionals"
-LABEL org.opencontainers.image.source="https://github.com/The-DevOps-Daily/devops-daily"
-LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.vendor="DevOps Daily"
-LABEL org.opencontainers.image.authors="DevOps Daily Team"
+LABEL org.opencontainers.image.title="Bancada"
+LABEL org.opencontainers.image.description="Plataforma open source em português para praticar DevOps e IA"
+LABEL org.opencontainers.image.source="https://github.com/victrhugo/bancada"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
+LABEL org.opencontainers.image.vendor="Bancada"
+LABEL org.opencontainers.image.authors="Bancada"
 
 EXPOSE 80
 
