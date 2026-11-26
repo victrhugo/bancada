@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 const LoadingSpinner = () => (
   <div className="flex flex-col items-center justify-center h-96 w-full">
     <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-    <p className="text-muted-foreground">Loading CICD Stack Generator...</p>
+    <p className="text-muted-foreground">Carregando o Gerador de Stack CI/CD...</p>
   </div>
 );
 
@@ -23,12 +23,12 @@ export default function CICDStackGeneratorWrapper() {
         if (mod.default) {
           setComponent(() => mod.default);
         } else {
-          setError('Failed to load CICD Stack Generator: invalid module');
+          setError('Falha ao carregar o Gerador de Stack CI/CD: módulo inválido');
         }
       })
       .catch((err) => {
         console.error('Failed to load CICD Stack Generator', err);
-        setError('Failed to load CICD Stack Generator');
+        setError('Falha ao carregar o Gerador de Stack CI/CD');
       });
   }, []);
 

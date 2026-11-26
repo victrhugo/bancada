@@ -64,20 +64,20 @@ interface Achievement {
 
 // Attack types
 const ATTACK_TYPES = {
-  http: { name: 'HTTP Flood', color: '#3b82f6', description: 'Overwhelming with HTTP requests' },
-  syn: { name: 'SYN Flood', color: '#8b5cf6', description: 'Half-open TCP connections' },
-  udp: { name: 'UDP Flood', color: '#ec4899', description: 'User Datagram Protocol flood' },
+  http: { name: 'HTTP Flood', color: '#3b82f6', description: 'Sobrecarga com requisições HTTP' },
+  syn: { name: 'SYN Flood', color: '#8b5cf6', description: 'Conexões TCP semiabertas' },
+  udp: { name: 'UDP Flood', color: '#ec4899', description: 'Inundação de pacotes UDP' },
 };
 
 // Achievements list
 const ACHIEVEMENTS_LIST: Achievement[] = [
-  { id: 'survivor_30', title: 'Survivor', description: 'Survive for 30 seconds', unlocked: false, icon: '🛡️' },
-  { id: 'survivor_60', title: 'Defender', description: 'Survive for 60 seconds', unlocked: false, icon: '🏰' },
-  { id: 'survivor_120', title: 'Fortress', description: 'Survive for 2 minutes', unlocked: false, icon: '🏛️' },
-  { id: 'block_100', title: 'Firewall Master', description: 'Block 100 attacks', unlocked: false, icon: '🔥' },
-  { id: 'block_500', title: 'Shield Expert', description: 'Block 500 attacks', unlocked: false, icon: '⚔️' },
-  { id: 'survive_max', title: 'Unbreakable', description: 'Survive max intensity for 30s', unlocked: false, icon: '👑' },
-  { id: 'recover_full', title: 'Phoenix', description: 'Recover from critical to full health', unlocked: false, icon: '🔄' },
+  { id: 'survivor_30', title: 'Sobrevivente', description: 'Sobreviva por 30 segundos', unlocked: false, icon: '🛡️' },
+  { id: 'survivor_60', title: 'Defensor', description: 'Sobreviva por 60 segundos', unlocked: false, icon: '🏰' },
+  { id: 'survivor_120', title: 'Fortaleza', description: 'Sobreviva por 2 minutos', unlocked: false, icon: '🏛️' },
+  { id: 'block_100', title: 'Mestre do Firewall', description: 'Bloqueie 100 ataques', unlocked: false, icon: '🔥' },
+  { id: 'block_500', title: 'Especialista em Escudos', description: 'Bloqueie 500 ataques', unlocked: false, icon: '⚔️' },
+  { id: 'survive_max', title: 'Inquebrável', description: 'Sobreviva à intensidade máxima por 30s', unlocked: false, icon: '👑' },
+  { id: 'recover_full', title: 'Fênix', description: 'Recupere-se do estado crítico até a saúde total', unlocked: false, icon: '🔄' },
 ];
 
 // Slider component
@@ -568,7 +568,7 @@ export default function DDoSSimulator() {
                 <div className="text-white">
                   <div className="font-bold flex items-center gap-2">
                     <span>{newAchievement.icon}</span>
-                    <span>Achievement Unlocked!</span>
+                    <span>Conquista desbloqueada!</span>
                   </div>
                   <div className="text-sm">{newAchievement.title}: {newAchievement.description}</div>
                 </div>
@@ -588,33 +588,33 @@ export default function DDoSSimulator() {
               <Shield className="w-6 h-6 text-white" />
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
-              DDoS Attack Simulator
+              Simulador de Ataque DDoS
             </h2>
           </div>
           <p className={cn(
             "text-lg max-w-2xl mx-auto mb-4",
             isDark ? "text-gray-400" : "text-gray-600"
           )}>
-            Educational simulator to understand how Distributed Denial of Service attacks work and
-            why protection is crucial
+            Simulador educacional para entender como funcionam os ataques de negação de serviço
+            distribuída (DDoS) e por que a proteção é essencial
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Badge variant="outline" className="border-red-500/30 text-red-400">
               <AlertTriangle className="w-3 h-3 mr-1" />
-              Educational Only
+              Apenas educacional
             </Badge>
             <Badge variant="outline" className="border-blue-500/30 text-blue-400">
               <Activity className="w-3 h-3 mr-1" />
-              Wave {currentWave}
+              Onda {currentWave}
             </Badge>
             <Badge variant="outline" className="border-purple-500/30 text-purple-400">
               <Award className="w-3 h-3 mr-1" />
-              {unlockedAchievements}/{achievements.length} Achievements
+              {unlockedAchievements}/{achievements.length} conquistas
             </Badge>
             {highScore > 0 && (
               <Badge variant="outline" className="border-yellow-500/30 text-yellow-400">
                 <Target className="w-3 h-3 mr-1" />
-                Best: {highScore}s
+                Recorde: {highScore}s
               </Badge>
             )}
             <Button
@@ -628,7 +628,7 @@ export default function DDoSSimulator() {
               )}
             >
               <Info className="w-4 h-4 mr-2" />
-              Learn More
+              Saiba mais
             </Button>
           </div>
         </motion.div>
@@ -651,7 +651,7 @@ export default function DDoSSimulator() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-blue-400">
                     <Info className="w-5 h-5" />
-                    What is a DDoS Attack?
+                    O que é um ataque DDoS?
                   </CardTitle>
                 </CardHeader>
                 <CardContent className={cn(
@@ -659,9 +659,9 @@ export default function DDoSSimulator() {
                   isDark ? "text-gray-300" : "text-gray-700"
                 )}>
                   <p>
-                    A <strong>Distributed Denial of Service (DDoS)</strong> attack is a malicious
-                    attempt to disrupt the normal traffic of a targeted server, service, or network
-                    by overwhelming it with a flood of internet traffic from multiple sources.
+                    Um ataque de <strong>negação de serviço distribuída (DDoS)</strong> é uma
+                    tentativa maliciosa de interromper o tráfego normal de um servidor, serviço ou
+                    rede, sobrecarregando o alvo com uma enxurrada de tráfego vindo de várias origens.
                   </p>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
@@ -670,7 +670,7 @@ export default function DDoSSimulator() {
                         HTTP Flood
                       </h4>
                       <p className="text-xs">
-                        Overwhelms the server with seemingly legitimate HTTP GET or POST requests
+                        Sobrecarrega o servidor com requisições HTTP GET ou POST aparentemente legítimas
                       </p>
                     </div>
                     <div className="p-4 bg-purple-500/10 rounded-lg border border-purple-500/20">
@@ -679,8 +679,8 @@ export default function DDoSSimulator() {
                         SYN Flood
                       </h4>
                       <p className="text-xs">
-                        Exploits TCP handshake by sending many SYN requests without completing the
-                        connection
+                        Explora o handshake do TCP enviando muitos pedidos SYN sem completar a
+                        conexão
                       </p>
                     </div>
                     <div className="p-4 bg-pink-500/10 rounded-lg border border-pink-500/20">
@@ -689,8 +689,8 @@ export default function DDoSSimulator() {
                         UDP Flood
                       </h4>
                       <p className="text-xs">
-                        Floods random ports with UDP packets, forcing the server to check for
-                        applications
+                        Inunda portas aleatórias com pacotes UDP, forçando o servidor a procurar
+                        aplicações nelas
                       </p>
                     </div>
                   </div>
@@ -711,9 +711,9 @@ export default function DDoSSimulator() {
                         isDark ? "text-yellow-200" : "text-yellow-800"
                       )}
                     >
-                      <strong>Important:</strong> This is purely educational. Launching actual DDoS
-                      attacks is illegal and unethical. Always use proper DDoS protection services
-                      in production.
+                      <strong>Importante:</strong> isto é puramente educacional. Lançar um ataque DDoS de verdade
+                      é ilegal e antiético. Sempre use serviços adequados de proteção contra DDoS em
+                      produção.
                     </AlertDescription>
                   </Alert>
                 </CardContent>
@@ -739,11 +739,11 @@ export default function DDoSSimulator() {
                   isDark ? "text-white" : "text-gray-900"
                 )}>
                   <Settings className="w-5 h-5" />
-                  Attack Configuration
+                  Configuração do ataque
                 </CardTitle>
                 <CardDescription className={cn(
                   isDark ? "" : "text-gray-600"
-                )}>Adjust attack parameters</CardDescription>
+                )}>Ajuste os parâmetros do ataque</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Attack Type */}
@@ -751,7 +751,7 @@ export default function DDoSSimulator() {
                   <label className={cn(
                     "text-sm font-medium",
                     isDark ? "text-gray-300" : "text-gray-700"
-                  )}>Attack Type</label>
+                  )}>Tipo de ataque</label>
                   <div className="grid grid-cols-1 gap-2">
                     {Object.entries(ATTACK_TYPES).map(([key, attack]) => (
                       <button
@@ -797,7 +797,7 @@ export default function DDoSSimulator() {
                       "text-sm font-medium",
                       isDark ? "text-gray-300" : "text-gray-700"
                     )}>
-                      Attack Intensity: Level {intensity}
+                      Intensidade do ataque: nível {intensity}
                     </label>
                     <Badge
                       variant="outline"
@@ -821,9 +821,9 @@ export default function DDoSSimulator() {
                     className="cursor-pointer"
                   />
                   <div className="flex justify-between text-xs text-gray-500">
-                    <span>Gentle</span>
-                    <span>Moderate</span>
-                    <span>Devastating</span>
+                    <span>Leve</span>
+                    <span>Moderado</span>
+                    <span>Devastador</span>
                   </div>
                 </div>
 
@@ -833,7 +833,7 @@ export default function DDoSSimulator() {
                     "flex items-center justify-between text-sm font-medium",
                     isDark ? "text-gray-300" : "text-gray-700"
                   )}>
-                    <span>Defense Systems</span>
+                    <span>Sistemas de defesa</span>
                     <Badge variant="outline" className="text-xs">
                       {activeDefenses}/3 Active
                     </Badge>
@@ -858,7 +858,7 @@ export default function DDoSSimulator() {
                         <div className={cn(
                           "text-xs",
                           isDark ? "text-gray-400" : "text-gray-600"
-                        )}>Blocks ~30% of attacks</div>
+                        )}>Bloqueia ~30% dos ataques</div>
                       </div>
                     </div>
                     <button
@@ -896,7 +896,7 @@ export default function DDoSSimulator() {
                         <div className={cn(
                           "text-xs",
                           isDark ? "text-gray-400" : "text-gray-600"
-                        )}>Reduces damage by 50%</div>
+                        )}>Reduz o dano em 50%</div>
                       </div>
                     </div>
                     <button
@@ -931,7 +931,7 @@ export default function DDoSSimulator() {
                           "text-sm font-medium flex items-center gap-2",
                           isDark ? "text-white" : "text-gray-900"
                         )}>
-                          Auto Rate Limit
+                          Rate limit automático
                           {rateLimitActive && (
                             <Badge variant="outline" className="text-xs border-purple-500 text-purple-400">
                               Active
@@ -941,7 +941,7 @@ export default function DDoSSimulator() {
                         <div className={cn(
                           "text-xs",
                           isDark ? "text-gray-400" : "text-gray-600"
-                        )}>Auto-blocks high traffic</div>
+                        )}>Bloqueia tráfego alto automaticamente</div>
                       </div>
                     </div>
                     <button
@@ -973,7 +973,7 @@ export default function DDoSSimulator() {
                       "text-xs",
                       isDark ? "text-blue-300" : "text-blue-800"
                     )}>
-                      💡 <strong>Tip:</strong> Active defenses reduce effective load and boost server recovery rate (+{activeDefenses * 0.5}/s). Pause to normalize faster!
+                      💡 <strong>Dica:</strong> defesas ativas reduzem a carga efetiva e aceleram a recuperação do servidor (+{activeDefenses * 0.5}/s). Pause para normalizar mais rápido!
                     </p>
                   </div>
                 )}
@@ -991,12 +991,12 @@ export default function DDoSSimulator() {
                     {isRunning ? (
                       <>
                         <Pause className="w-4 h-4 mr-2" />
-                        Stop Attack
+                        Parar ataque
                       </>
                     ) : (
                       <>
                         <Play className="w-4 h-4 mr-2" />
-                        Start Attack
+                        Iniciar ataque
                       </>
                     )}
                   </Button>
@@ -1023,7 +1023,7 @@ export default function DDoSSimulator() {
                     isDark ? "text-white" : "text-gray-900"
                   )}>
                     <Target className="w-5 h-5" />
-                    Network Visualization
+                    Visualização da rede
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className={cn('border-current', serverStatus.color)}>
@@ -1046,7 +1046,7 @@ export default function DDoSSimulator() {
                     <span className={cn(
                       "text-sm font-medium",
                       isDark ? "text-gray-300" : "text-gray-700"
-                    )}>Server Health</span>
+                    )}>Saúde do servidor</span>
                     <span className={cn('text-sm font-bold', serverStatus.color)}>
                       {Math.floor(serverHealth)}%
                     </span>
@@ -1286,12 +1286,12 @@ export default function DDoSSimulator() {
                           <h3 className={cn(
                             "text-2xl font-bold mb-2",
                             isDark ? "text-white" : "text-gray-900"
-                          )}>Server Offline</h3>
+                          )}>Servidor fora do ar</h3>
                           <p className={cn(
                             "mb-4",
                             isDark ? "text-gray-400" : "text-gray-600"
                           )}>
-                            The server was overwhelmed by the DDoS attack!
+                            O servidor foi derrubado pelo ataque DDoS!
                           </p>
                           <div className="grid grid-cols-2 gap-4 mb-6">
                             <div className={cn(
@@ -1304,7 +1304,7 @@ export default function DDoSSimulator() {
                               <div className={cn(
                                 "text-sm",
                                 isDark ? "text-gray-400" : "text-gray-600"
-                              )}>Survival Time</div>
+                              )}>Tempo de sobrevivência</div>
                             </div>
                             <div className={cn(
                               "p-4 rounded-lg",
@@ -1316,7 +1316,7 @@ export default function DDoSSimulator() {
                               <div className={cn(
                                 "text-sm",
                                 isDark ? "text-gray-400" : "text-gray-600"
-                              )}>Blocked</div>
+                              )}>Bloqueados</div>
                             </div>
                           </div>
                           {survivalTime === highScore && highScore > 0 && (
@@ -1326,7 +1326,7 @@ export default function DDoSSimulator() {
                           )}
                           <Button onClick={resetGame}>
                             <RotateCcw className="w-4 h-4 mr-2" />
-                            Try Again
+                            Tentar de novo
                           </Button>
                         </div>
                       </motion.div>
@@ -1367,7 +1367,7 @@ export default function DDoSSimulator() {
                 className={cn("flex items-center gap-2", isDark ? "text-white" : "text-gray-900")}
               >
                 <TrendingUp className="w-5 h-5" />
-                Statistics
+                Estatísticas
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -1375,25 +1375,25 @@ export default function DDoSSimulator() {
                 <div className="p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
                   <div className="text-2xl font-bold text-blue-400">{totalRequests}</div>
                   <div className={cn("text-xs", isDark ? "text-gray-400" : "text-gray-600")}>
-                    Total Requests
+                    Total de requisições
                   </div>
                 </div>
                 <div className="p-3 bg-green-500/10 rounded-lg border border-green-500/20">
                   <div className="text-2xl font-bold text-green-400">{blockedRequests}</div>
                   <div className={cn("text-xs", isDark ? "text-gray-400" : "text-gray-600")}>
-                    Blocked
+                    Bloqueadas
                   </div>
                 </div>
                 <div className="p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
                   <div className="text-2xl font-bold text-purple-400">{currentRPS}</div>
                   <div className={cn("text-xs", isDark ? "text-gray-400" : "text-gray-600")}>
-                    Requests/sec
+                    Requisições/s
                   </div>
                 </div>
                 <div className="p-3 bg-orange-500/10 rounded-lg border border-orange-500/20">
                   <div className="text-2xl font-bold text-orange-400">{particles.length}</div>
                   <div className={cn("text-xs", isDark ? "text-gray-400" : "text-gray-600")}>
-                    Active Packets
+                    Pacotes ativos
                   </div>
                 </div>
               </div>
@@ -1408,7 +1408,7 @@ export default function DDoSSimulator() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className={cn("text-sm", isDark ? "text-gray-400" : "text-gray-600")}>
-                      Block Rate
+                      Taxa de bloqueio
                     </span>
                     <span className="text-sm font-bold text-green-400">
                       {((blockedRequests / totalRequests) * 100).toFixed(1)}%
@@ -1437,7 +1437,7 @@ export default function DDoSSimulator() {
                 className={cn("flex items-center gap-2", isDark ? "text-white" : "text-gray-900")}
               >
                 <Award className="w-5 h-5" />
-                Achievements
+                Conquistas
               </CardTitle>
               <CardDescription>
                 {unlockedAchievements}/{achievements.length} unlocked
@@ -1501,17 +1501,17 @@ export default function DDoSSimulator() {
                   "font-semibold mb-2",
                   isDark ? "text-white" : "text-gray-900"
                 )}>
-                  How to Protect Against DDoS Attacks
+                  Como se proteger de ataques DDoS
                 </h3>
                 <ul className={cn(
                   "text-sm space-y-1",
                   isDark ? "text-gray-300" : "text-gray-700"
                 )}>
-                  <li>• Use CDN services like Cloudflare, Akamai, or AWS CloudFront</li>
-                  <li>• Implement rate limiting and traffic filtering</li>
-                  <li>• Deploy load balancers and auto-scaling infrastructure</li>
-                  <li>• Monitor traffic patterns and set up alerts for anomalies</li>
-                  <li>• Use DDoS protection services (AWS Shield, Azure DDoS Protection)</li>
+                  <li>• Use serviços de CDN como Cloudflare, Akamai ou AWS CloudFront</li>
+                  <li>• Implemente rate limiting e filtragem de tráfego</li>
+                  <li>• Use load balancers e infraestrutura com auto-scaling</li>
+                  <li>• Monitore padrões de tráfego e configure alertas para anomalias</li>
+                  <li>• Use serviços de proteção contra DDoS (AWS Shield, Azure DDoS Protection)</li>
                 </ul>
               </div>
             </div>
