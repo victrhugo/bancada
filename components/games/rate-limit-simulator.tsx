@@ -63,9 +63,9 @@ const RATE_LIMIT_PRESETS: Record<string, RateLimitConfig> = {
 };
 
 const BACKOFF_STRATEGIES = {
-  none: { name: 'No Backoff', description: 'Keep retrying immediately' },
-  fixed: { name: 'Fixed Delay', description: 'Wait 1 second between retries' },
-  exponential: { name: 'Exponential Backoff', description: 'Double the delay each time' },
+  none: { name: 'Sem backoff', description: 'Tenta de novo imediatamente, sem parar' },
+  fixed: { name: 'Atraso fixo', description: 'Espera 1 segundo entre as tentativas' },
+  exponential: { name: 'Backoff exponencial', description: 'Dobra o atraso a cada tentativa' },
 };
 
 // Simple Select component
@@ -414,10 +414,10 @@ export default function RateLimitSimulator() {
         className="text-center space-y-4"
       >
         <h2 className="text-4xl md:text-5xl font-bold text-primary">
-          Rate Limit Simulator
+          Simulador de Rate Limit
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Learn rate limiting, backoff strategies, and API throttling through interactive simulation
+          Aprenda rate limiting, estratégias de backoff e throttling de APIs com uma simulação interativa
         </p>
       </motion.div>
 
@@ -434,7 +434,7 @@ export default function RateLimitSimulator() {
             )}
           >
             <Activity className="h-4 w-4" />
-            Simulator
+            Simulador
           </button>
           <button
             onClick={() => setActiveTab('headers')}
@@ -446,7 +446,7 @@ export default function RateLimitSimulator() {
             )}
           >
             <BarChart3 className="h-4 w-4" />
-            API Headers
+            Headers da API
           </button>
         </div>
       </div>
@@ -459,17 +459,17 @@ export default function RateLimitSimulator() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
-                Configuration
+                Configuração
               </CardTitle>
-              <CardDescription>Configure rate limits and simulation parameters</CardDescription>
+              <CardDescription>Configure os limites e os parâmetros da simulação</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Rate Limit Preset</label>
+                  <label className="text-sm font-medium">Limite pré-definido</label>
                   <Select value={preset} onValueChange={handlePresetChange}>
-                    <SelectItem value="demo">Demo (20/30sec)</SelectItem>
-                    <SelectItem value="github">GitHub API (5000/hour)</SelectItem>
+                    <SelectItem value="demo">Demonstração (20/30s)</SelectItem>
+                    <SelectItem value="github">GitHub API (5000/hora)</SelectItem>
                     <SelectItem value="twitter">Twitter API (300/15min)</SelectItem>
                     <SelectItem value="stripe">Stripe API (100/min)</SelectItem>
                     <SelectItem value="openai">OpenAI API (3/min)</SelectItem>
@@ -477,7 +477,7 @@ export default function RateLimitSimulator() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Backoff Strategy</label>
+                  <label className="text-sm font-medium">Estratégia de backoff</label>
                   <Select value={strategy} onValueChange={setStrategy}>
                     {Object.entries(BACKOFF_STRATEGIES).map(([key, strat]) => (
                       <SelectItem key={key} value={key}>
@@ -500,7 +500,7 @@ export default function RateLimitSimulator() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">
-                    Burst Interval: {burstInterval / 1000}s
+                    Intervalo entre rajadas: {burstInterval / 1000}s
                   </label>
                   <Slider
                     value={[burstInterval]}
@@ -524,18 +524,18 @@ export default function RateLimitSimulator() {
                   {isRunning ? (
                     <>
                       <Pause className="h-4 w-4" />
-                      Pause
+                      Pausar
                     </>
                   ) : (
                     <>
                       <Play className="h-4 w-4" />
-                      Start
+                      Iniciar
                     </>
                   )}
                 </Button>
                 <Button onClick={resetSimulation} variant="outline">
                   <RotateCcw className="h-4 w-4 mr-2" />
-                  Reset
+                  Reiniciar
                 </Button>
               </div>
 
@@ -546,15 +546,15 @@ export default function RateLimitSimulator() {
                     <div className="text-2xl font-bold text-blue-600">
                       {currentRemaining}/{config.limit}
                     </div>
-                    <div className="text-sm text-muted-foreground">Remaining</div>
+                    <div className="text-sm text-muted-foreground">Restantes</div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-green-600">{successfulRequests}</div>
-                    <div className="text-sm text-muted-foreground">Successful</div>
+                    <div className="text-sm text-muted-foreground">Com sucesso</div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-red-600">{throttledRequests}</div>
-                    <div className="text-sm text-muted-foreground">Throttled</div>
+                    <div className="text-sm text-muted-foreground">Limitadas</div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-purple-600">{totalRequests}</div>
@@ -568,13 +568,13 @@ export default function RateLimitSimulator() {
                     <div className="text-lg font-semibold text-green-600">
                       {successRate.toFixed(1)}%
                     </div>
-                    <div className="text-xs text-muted-foreground">Success Rate</div>
+                    <div className="text-xs text-muted-foreground">Taxa de sucesso</div>
                   </div>
                   <div>
                     <div className="text-lg font-semibold text-red-600">
                       {throttleRate.toFixed(1)}%
                     </div>
-                    <div className="text-xs text-muted-foreground">Throttle Rate</div>
+                    <div className="text-xs text-muted-foreground">Taxa de limitação</div>
                   </div>
                 </div>
               </div>
@@ -584,15 +584,15 @@ export default function RateLimitSimulator() {
           {/* Keyboard shortcuts hint */}
           <div className="hidden sm:flex items-center justify-center gap-2 text-xs opacity-70">
             <Keyboard className="h-3 w-3" />
-            <span>Space start/stop · R reset</span>
+            <span>Espaço iniciar/parar · R reiniciar</span>
           </div>
 
           {/* Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Request Timeline (5-second intervals)</CardTitle>
+              <CardTitle>Linha do tempo das requisições (intervalos de 5 segundos)</CardTitle>
               <CardDescription>
-                Aggregated view of requests over time - each bar represents a 5-second period
+                Visão agregada das requisições ao longo do tempo: cada barra representa um período de 5 segundos
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -607,11 +607,11 @@ export default function RateLimitSimulator() {
                         value,
                         name === 'successful' ? 'Successful' : 'Throttled',
                       ]}
-                      labelFormatter={(label) => `Period: ${label}`}
+                      labelFormatter={(label) => `Período: ${label}`}
                     />
                     <Legend />
-                    <Bar dataKey="successful" fill="#10b981" name="Successful Requests" />
-                    <Bar dataKey="throttled" fill="#ef4444" name="Throttled Requests" />
+                    <Bar dataKey="successful" fill="#10b981" name="Requisições com sucesso" />
+                    <Bar dataKey="throttled" fill="#ef4444" name="Requisições limitadas" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -630,7 +630,7 @@ export default function RateLimitSimulator() {
                       dataKey="remaining"
                       stroke="#3b82f6"
                       strokeWidth={2}
-                      name="Rate Limit Remaining"
+                      name="Limite restante"
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -648,8 +648,8 @@ export default function RateLimitSimulator() {
                 </strong>{' '}
                 {BACKOFF_STRATEGIES[strategy as keyof typeof BACKOFF_STRATEGIES]?.description}
                 {strategy === 'exponential' &&
-                  ' - Delays grow: 1s → 2s → 4s → 8s → 16s → 30s (max)'}
-                {strategy === 'fixed' && ' - Always waits 1 second between retries'}
+                  ' - O atraso cresce: 1s → 2s → 4s → 8s → 16s → 30s (máx.)'}
+                {strategy === 'fixed' && ' - Sempre espera 1 segundo entre as tentativas'}
               </AlertDescription>
             </Alert>
           )}
@@ -661,8 +661,8 @@ export default function RateLimitSimulator() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>HTTP Rate Limit Headers</CardTitle>
-              <CardDescription>Standard headers returned by rate-limited APIs</CardDescription>
+              <CardTitle>Headers HTTP de rate limit</CardTitle>
+              <CardDescription>Headers padrão retornados por APIs com rate limit</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -680,23 +680,23 @@ export default function RateLimitSimulator() {
               </div>
 
               <div className="mt-6 space-y-4">
-                <h4 className="font-semibold">Header Explanations:</h4>
+                <h4 className="font-semibold">O que cada header significa:</h4>
                 <div className="grid gap-3 text-sm">
                   <div>
-                    <strong>X-RateLimit-Limit:</strong> Maximum requests allowed in the time window
+                    <strong>X-RateLimit-Limit:</strong> máximo de requisições permitidas na janela de tempo
                   </div>
                   <div>
-                    <strong>X-RateLimit-Remaining:</strong> Requests remaining in current window
+                    <strong>X-RateLimit-Remaining:</strong> requisições restantes na janela atual
                   </div>
                   <div>
-                    <strong>X-RateLimit-Reset:</strong> Unix timestamp when the window resets
+                    <strong>X-RateLimit-Reset:</strong> timestamp Unix de quando a janela reinicia
                   </div>
                   <div>
-                    <strong>X-RateLimit-Window:</strong> Duration of the rate limiting window
+                    <strong>X-RateLimit-Window:</strong> duração da janela de rate limit
                   </div>
                   <div>
-                    <strong>Retry-After:</strong> Seconds to wait before retrying (when rate
-                    limited)
+                    <strong>Retry-After:</strong> segundos a esperar antes de tentar de novo (quando
+                    limitado)
                   </div>
                 </div>
               </div>
@@ -706,8 +706,8 @@ export default function RateLimitSimulator() {
           {/* Recent Requests Log */}
           <Card>
             <CardHeader>
-              <CardTitle>Request Log</CardTitle>
-              <CardDescription>Recent API requests and responses</CardDescription>
+              <CardTitle>Log de requisições</CardTitle>
+              <CardDescription>Requisições e respostas recentes da API</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -743,17 +743,17 @@ export default function RateLimitSimulator() {
                       >
                         {request.success ? 'HTTP 200 OK' : 'HTTP 429 Too Many Requests'}
                       </span>
-                      <span className="text-muted-foreground">Remaining: {request.remaining}</span>
+                      <span className="text-muted-foreground">Restantes: {request.remaining}</span>
                       {request.retryAfter && (
                         <Badge variant="outline" className="ml-auto">
-                          Retry in {(request.retryAfter / 1000).toFixed(1)}s
+                          Nova tentativa em {(request.retryAfter / 1000).toFixed(1)}s
                         </Badge>
                       )}
                     </motion.div>
                   ))}
                 {requests.length === 0 && (
                   <div className="text-center py-8 text-muted-foreground">
-                    No requests yet. Start the simulation to see request logs.
+                    Nenhuma requisição ainda. Inicie a simulação para ver o log.
                   </div>
                 )}
               </div>
