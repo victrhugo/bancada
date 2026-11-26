@@ -79,20 +79,20 @@ interface TrafficScenarioDef {
 const TRAFFIC_SCENARIOS: TrafficScenarioDef[] = [
   {
     id: 'internet-to-public',
-    name: 'Internet → Public EC2',
-    description: 'How traffic flows from the internet to a public-facing web server',
+    name: 'Internet → EC2 pública',
+    description: 'Como o tráfego vai da internet até um servidor web público',
     requiredComponents: ['igw', 'public-subnet', 'public-ec2', 'public-route-table'],
   },
   {
     id: 'private-to-internet',
-    name: 'Private EC2 → Internet',
-    description: 'How a private database server fetches updates from the internet',
+    name: 'EC2 privada → internet',
+    description: 'Como um servidor de banco privado baixa atualizações da internet',
     requiredComponents: ['igw', 'nat-gateway', 'public-subnet', 'private-subnet', 'private-ec2', 'private-route-table'],
   },
   {
     id: 'public-to-private',
-    name: 'Public EC2 → Private EC2',
-    description: 'How a web server communicates with a private database',
+    name: 'EC2 pública → EC2 privada',
+    description: 'Como um servidor web conversa com um banco de dados privado',
     requiredComponents: ['public-subnet', 'private-subnet', 'public-ec2', 'private-ec2'],
   },
 ];
@@ -103,30 +103,30 @@ function generateTrafficSteps(scenario: TrafficScenario): TrafficStep[] {
       return [
         {
           id: 1,
-          title: 'Request from Internet',
+          title: 'Requisição vinda da internet',
           location: 'Internet',
-          explanation: 'A user from the internet sends a request to your EC2 instance\'s public IP address.',
+          explanation: 'Um usuário na internet envia uma requisição para o IP público da sua instância EC2.',
           highlight: [],
         },
         {
           id: 2,
           title: 'Internet Gateway',
-          location: 'VPC Edge',
-          explanation: 'The request arrives at the Internet Gateway, which is the entry/exit point for all internet traffic in your VPC.',
+          location: 'Borda da VPC',
+          explanation: 'A requisição chega ao Internet Gateway, que é a porta de entrada e saída de todo o tráfego de internet da VPC.',
           highlight: ['igw'],
         },
         {
           id: 3,
-          title: 'Route Table Lookup',
-          location: 'Public Subnet',
-          explanation: 'The public route table directs traffic destined for the public subnet to the correct location.',
+          title: 'Consulta à route table',
+          location: 'Subnet pública',
+          explanation: 'A route table pública direciona o tráfego da subnet pública para o lugar certo.',
           highlight: ['public-route-table'],
         },
         {
           id: 4,
-          title: 'Arrives at EC2',
-          location: 'Public Subnet',
-          explanation: 'The traffic reaches your EC2 instance in the public subnet. Security groups will filter if the traffic is allowed.',
+          title: 'Chega à EC2',
+          location: 'Subnet pública',
+          explanation: 'O tráfego chega à instância EC2 na subnet pública. Os security groups filtram se ele é permitido.',
           highlight: ['public-ec2', 'public-subnet'],
         },
       ];
@@ -134,37 +134,37 @@ function generateTrafficSteps(scenario: TrafficScenario): TrafficStep[] {
       return [
         {
           id: 1,
-          title: 'Private EC2 Request',
-          location: 'Private Subnet',
-          explanation: 'Your private EC2 instance (e.g., a database) needs to download updates from the internet.',
+          title: 'Requisição da EC2 privada',
+          location: 'Subnet privada',
+          explanation: 'Sua instância EC2 privada (por exemplo, um banco de dados) precisa baixar atualizações da internet.',
           highlight: ['private-ec2', 'private-subnet'],
         },
         {
           id: 2,
-          title: 'Route Table Lookup',
-          location: 'Private Subnet',
-          explanation: 'The private route table has a rule: 0.0.0.0/0 → NAT Gateway. This routes all internet-bound traffic to the NAT.',
+          title: 'Consulta à route table',
+          location: 'Subnet privada',
+          explanation: 'A route table privada tem a regra 0.0.0.0/0 → NAT Gateway. Ela manda todo o tráfego para a internet ao NAT.',
           highlight: ['private-route-table'],
         },
         {
           id: 3,
-          title: 'NAT Gateway Translation',
-          location: 'Public Subnet',
-          explanation: 'The NAT Gateway translates the private IP to its own public IP, masking the private EC2. It lives in the public subnet.',
+          title: 'Tradução no NAT Gateway',
+          location: 'Subnet pública',
+          explanation: 'O NAT Gateway troca o IP privado pelo próprio IP público, escondendo a EC2 privada. Ele fica na subnet pública.',
           highlight: ['nat-gateway', 'public-subnet'],
         },
         {
           id: 4,
-          title: 'To Internet Gateway',
-          location: 'VPC Edge',
-          explanation: 'The request (now from NAT\'s public IP) exits through the Internet Gateway to reach the internet.',
+          title: 'Rumo ao Internet Gateway',
+          location: 'Borda da VPC',
+          explanation: 'A requisição (agora com o IP público do NAT) sai pelo Internet Gateway para chegar à internet.',
           highlight: ['igw'],
         },
         {
           id: 5,
-          title: 'Response Returns',
+          title: 'A resposta volta',
           location: 'VPC',
-          explanation: 'The response comes back to NAT Gateway, which translates it back and forwards to the private EC2.',
+          explanation: 'A resposta volta ao NAT Gateway, que desfaz a tradução e encaminha para a EC2 privada.',
           highlight: ['igw', 'nat-gateway', 'private-ec2'],
         },
       ];
@@ -172,30 +172,30 @@ function generateTrafficSteps(scenario: TrafficScenario): TrafficStep[] {
       return [
         {
           id: 1,
-          title: 'Web Server Request',
-          location: 'Public Subnet',
-          explanation: 'Your web server in the public subnet needs to query the database in the private subnet.',
+          title: 'Requisição do servidor web',
+          location: 'Subnet pública',
+          explanation: 'Seu servidor web na subnet pública precisa consultar o banco de dados na subnet privada.',
           highlight: ['public-ec2', 'public-subnet'],
         },
         {
           id: 2,
-          title: 'Internal VPC Routing',
+          title: 'Roteamento interno da VPC',
           location: 'VPC',
-          explanation: 'Traffic within the VPC (10.0.0.0/16) stays local. The route table knows how to reach other subnets directly.',
+          explanation: 'O tráfego dentro da VPC (10.0.0.0/16) fica local. A route table sabe chegar direto nas outras subnets.',
           highlight: ['public-route-table'],
         },
         {
           id: 3,
-          title: 'Arrives at Private EC2',
-          location: 'Private Subnet',
-          explanation: 'The request reaches your private database. No NAT or IGW needed for internal VPC traffic!',
+          title: 'Chega à EC2 privada',
+          location: 'Subnet privada',
+          explanation: 'A requisição chega ao banco de dados privado. Tráfego interno da VPC não precisa de NAT nem de IGW!',
           highlight: ['private-ec2', 'private-subnet'],
         },
         {
           id: 4,
-          title: 'Response Sent Back',
-          location: 'Private Subnet',
-          explanation: 'The database responds directly to the web server via the internal VPC network.',
+          title: 'A resposta é enviada de volta',
+          location: 'Subnet privada',
+          explanation: 'O banco de dados responde direto ao servidor web pela rede interna da VPC.',
           highlight: ['private-ec2', 'public-ec2'],
         },
       ];
@@ -212,7 +212,7 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   {
     type: 'igw',
     name: 'Internet Gateway',
-    description: 'Enables internet access for your VPC. Required for any public-facing resources.',
+    description: 'Libera o acesso à internet para a VPC. Obrigatório para qualquer recurso público.',
     icon: Router,
     color: 'text-purple-500',
     bgColor: 'bg-purple-500/10',
@@ -221,7 +221,7 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   {
     type: 'nat-gateway',
     name: 'NAT Gateway',
-    description: 'Allows private resources to access internet without being publicly accessible. Must be in a public subnet.',
+    description: 'Permite que recursos privados acessem a internet sem ficarem expostos. Precisa estar numa subnet pública.',
     icon: Shield,
     color: 'text-orange-500',
     bgColor: 'bg-orange-500/10',
@@ -230,8 +230,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'public-subnet',
-    name: 'Public Subnet',
-    description: 'A subnet with a route to the Internet Gateway. Resources here can have public IPs.',
+    name: 'Subnet pública',
+    description: 'Uma subnet com rota para o Internet Gateway. Os recursos aqui podem ter IP público.',
     icon: Cloud,
     color: 'text-green-500',
     bgColor: 'bg-green-500/10',
@@ -240,8 +240,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'private-subnet',
-    name: 'Private Subnet',
-    description: 'A subnet without direct internet access. Resources are protected from public exposure.',
+    name: 'Subnet privada',
+    description: 'Uma subnet sem acesso direto à internet. Os recursos ficam protegidos de exposição pública.',
     icon: Cloud,
     color: 'text-red-500',
     bgColor: 'bg-red-500/10',
@@ -249,8 +249,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'public-ec2',
-    name: 'Public EC2 Instance',
-    description: 'A compute instance in a public subnet. Can be accessed directly from the internet.',
+    name: 'Instância EC2 pública',
+    description: 'Uma instância de computação numa subnet pública. Pode ser acessada direto da internet.',
     icon: Server,
     color: 'text-green-600',
     bgColor: 'bg-green-600/10',
@@ -259,8 +259,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'private-ec2',
-    name: 'Private EC2 Instance',
-    description: 'A compute instance in a private subnet. Cannot be accessed directly from the internet.',
+    name: 'Instância EC2 privada',
+    description: 'Uma instância de computação numa subnet privada. Não pode ser acessada direto da internet.',
     icon: Server,
     color: 'text-red-600',
     bgColor: 'bg-red-600/10',
@@ -269,8 +269,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'public-route-table',
-    name: 'Public Route Table',
-    description: 'Routes traffic to the Internet Gateway for public subnets (0.0.0.0/0 -> IGW).',
+    name: 'Route table pública',
+    description: 'Roteia o tráfego das subnets públicas para o Internet Gateway (0.0.0.0/0 -> IGW).',
     icon: Network,
     color: 'text-indigo-500',
     bgColor: 'bg-indigo-500/10',
@@ -279,8 +279,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'private-route-table',
-    name: 'Private Route Table',
-    description: 'Routes traffic to NAT Gateway for private subnets (0.0.0.0/0 -> NAT).',
+    name: 'Route table privada',
+    description: 'Roteia o tráfego das subnets privadas para o NAT Gateway (0.0.0.0/0 -> NAT).',
     icon: Network,
     color: 'text-amber-500',
     bgColor: 'bg-amber-500/10',
@@ -309,7 +309,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
         if (!activeComponents.has(dep)) {
           results.push({
             type: 'error',
-            message: `${comp.name} requires ${COMPONENT_MAP[dep].name} to function.`,
+            message: `${comp.name} precisa de ${COMPONENT_MAP[dep].name} para funcionar.`,
             component: compType,
           });
         }
@@ -321,7 +321,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   if (activeComponents.has('igw') && !activeComponents.has('public-subnet')) {
     results.push({
       type: 'warning',
-      message: 'Internet Gateway is not useful without a Public Subnet.',
+      message: 'O Internet Gateway não serve para nada sem uma subnet pública.',
       component: 'igw',
     });
   }
@@ -329,7 +329,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   if (activeComponents.has('nat-gateway') && !activeComponents.has('private-subnet')) {
     results.push({
       type: 'warning',
-      message: 'NAT Gateway is not useful without a Private Subnet.',
+      message: 'O NAT Gateway não serve para nada sem uma subnet privada.',
       component: 'nat-gateway',
     });
   }
@@ -341,7 +341,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   ) {
     results.push({
       type: 'warning',
-      message: 'Private EC2 cannot access the internet without a NAT Gateway.',
+      message: 'A EC2 privada não acessa a internet sem um NAT Gateway.',
       component: 'private-ec2',
     });
   }
@@ -349,7 +349,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   if (activeComponents.has('public-subnet') && !activeComponents.has('public-route-table')) {
     results.push({
       type: 'info',
-      message: 'Consider adding a Public Route Table to properly route traffic in your public subnet.',
+      message: 'Considere adicionar uma route table pública para rotear direito o tráfego da subnet pública.',
       component: 'public-subnet',
     });
   }
@@ -361,7 +361,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   ) {
     results.push({
       type: 'info',
-      message: 'Consider adding a Private Route Table to route traffic through NAT Gateway.',
+      message: 'Considere adicionar uma route table privada para rotear o tráfego pelo NAT Gateway.',
       component: 'private-subnet',
     });
   }
@@ -376,17 +376,17 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
     if (hasPublicArch && hasPrivateArch && hasNat) {
       results.push({
         type: 'success',
-        message: 'Complete VPC architecture! Public web tier + private database tier with NAT for outbound access.',
+        message: 'Arquitetura de VPC completa! Camada web pública + camada de banco privada, com NAT para acesso de saída.',
       });
     } else if (hasPublicArch) {
       results.push({
         type: 'success',
-        message: 'Valid public-facing architecture. Your EC2 can receive traffic from the internet.',
+        message: 'Arquitetura pública válida. Sua EC2 pode receber tráfego da internet.',
       });
     } else if (hasPrivateArch && hasNat) {
       results.push({
         type: 'success',
-        message: 'Valid private architecture with NAT. Resources can access internet without being exposed.',
+        message: 'Arquitetura privada válida com NAT. Os recursos acessam a internet sem ficar expostos.',
       });
     }
   }
@@ -631,7 +631,7 @@ export default function AwsVpcSimulator() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle className="flex items-center gap-2 text-lg text-foreground sm:text-xl">
             <Cloud className="h-5 w-5 text-orange-400 sm:h-6 sm:w-6" />
-            AWS VPC Builder
+            Montador de VPC na AWS
           </CardTitle>
           <div className="flex flex-wrap gap-2">
             <Button
@@ -644,7 +644,7 @@ export default function AwsVpcSimulator() {
               )}
             >
               <Zap className="mr-1 h-3 w-3" />
-              Test
+              Testar
             </Button>
             <Button
               variant="outline"
@@ -653,19 +653,19 @@ export default function AwsVpcSimulator() {
               className="border text-muted-foreground hover:bg-muted"
             >
               <RotateCcw className="mr-1 h-3 w-3" />
-              Reset
+              Reiniciar
             </Button>
           </div>
         </div>
         <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-          Build your VPC by adding components. The simulator will tell you if something is misconfigured.
+          Monte sua VPC adicionando componentes. O simulador avisa se algo estiver mal configurado.
         </p>
       </CardHeader>
 
       <CardContent className="space-y-4 sm:space-y-5">
         {/* Quick Presets */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">Quick start:</span>
+          <span className="text-xs text-muted-foreground">Início rápido:</span>
           <Button
             variant="ghost"
             size="sm"
@@ -673,7 +673,7 @@ export default function AwsVpcSimulator() {
             className="h-6 px-2 text-xs text-muted-foreground hover:bg-muted"
           >
             <PlayCircle className="mr-1 h-3 w-3" />
-            Public Web Server
+            Servidor web público
           </Button>
           <Button
             variant="ghost"
@@ -682,7 +682,7 @@ export default function AwsVpcSimulator() {
             className="h-6 px-2 text-xs text-muted-foreground hover:bg-muted"
           >
             <PlayCircle className="mr-1 h-3 w-3" />
-            Private with NAT
+            Privada com NAT
           </Button>
           <Button
             variant="ghost"
@@ -691,7 +691,7 @@ export default function AwsVpcSimulator() {
             className="h-6 px-2 text-xs text-muted-foreground hover:bg-muted"
           >
             <PlayCircle className="mr-1 h-3 w-3" />
-            Full Architecture
+            Arquitetura completa
           </Button>
         </div>
 
@@ -708,19 +708,19 @@ export default function AwsVpcSimulator() {
                 {category === 'core' && (
                   <>
                     <Globe className="h-3.5 w-3.5" />
-                    Core Infrastructure
+                    Infraestrutura base
                   </>
                 )}
                 {category === 'public' && (
                   <>
                     <Cloud className="h-3.5 w-3.5" />
-                    Public Layer (Internet-Facing)
+                    Camada pública (exposta à internet)
                   </>
                 )}
                 {category === 'private' && (
                   <>
                     <Shield className="h-3.5 w-3.5" />
-                    Private Layer (Protected)
+                    Camada privada (protegida)
                   </>
                 )}
               </div>
@@ -755,7 +755,7 @@ export default function AwsVpcSimulator() {
                 <p className="mt-2 text-sm text-muted-foreground">{COMPONENT_MAP[selectedInfo].description}</p>
                 {COMPONENT_MAP[selectedInfo].dependencies && (
                   <div className="mt-2 text-xs text-muted-foreground">
-                    <span className="font-medium">Requires:</span>{' '}
+                    <span className="font-medium">Depende de:</span>{' '}
                     {COMPONENT_MAP[selectedInfo].dependencies!.map((d) => COMPONENT_MAP[d].name).join(', ')}
                   </div>
                 )}
@@ -766,11 +766,11 @@ export default function AwsVpcSimulator() {
 
         {/* Validation Feedback */}
         <div className="rounded-lg border border bg-muted/50 p-3">
-          <div className="mb-2 text-xs font-medium text-muted-foreground">Configuration Status</div>
+          <div className="mb-2 text-xs font-medium text-muted-foreground">Status da configuração</div>
           {activeComponents.size === 0 ? (
-            <p className="text-sm text-muted-foreground">Add components to build your VPC architecture.</p>
+            <p className="text-sm text-muted-foreground">Adicione componentes para montar a arquitetura da VPC.</p>
           ) : validation.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Add more components to create a functional architecture.</p>
+            <p className="text-sm text-muted-foreground">Adicione mais componentes para ter uma arquitetura funcional.</p>
           ) : (
             <div className="space-y-2">
               {validation.map((v, i) => (
@@ -809,19 +809,19 @@ export default function AwsVpcSimulator() {
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-500/20 transition-colors group-hover:bg-purple-500/40">
                 <Play className="h-4 w-4 text-purple-600 dark:text-purple-400" />
               </div>
-              Traffic Flow Simulation
+              Simulação do fluxo de tráfego
             </button>
             {isSimulating && (
               <Button variant="ghost" size="sm" onClick={stopSimulation} className="h-7 px-2 text-xs">
                 <X className="mr-1 h-3 w-3" />
-                Exit
+                Sair
               </Button>
             )}
           </div>
 
           {!isSimulating ? (
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">Select a scenario or press <kbd className="rounded bg-muted px-1">4-6</kbd> to start:</p>
+              <p className="text-xs text-muted-foreground">Escolha um cenário ou aperte <kbd className="rounded bg-muted px-1">4-6</kbd> para começar:</p>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 {TRAFFIC_SCENARIOS.map((scenario, index) => (
                   <Button
@@ -848,7 +848,7 @@ export default function AwsVpcSimulator() {
               {/* Progress */}
               <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <span>
-                  Step {currentStepIndex + 1} of {trafficSteps.length}
+                  Passo {currentStepIndex + 1} de {trafficSteps.length}
                 </span>
                 <span className="font-medium text-purple-600 dark:text-purple-400">
                   {TRAFFIC_SCENARIOS.find((s) => s.id === selectedScenario)?.name}
@@ -896,7 +896,7 @@ export default function AwsVpcSimulator() {
                   className="h-8"
                 >
                   <ChevronLeft className="mr-1 h-4 w-4" />
-                  Back
+                  Voltar
                 </Button>
                 <div className="flex gap-1">
                   {trafficSteps.map((_, i) => (
@@ -917,7 +917,7 @@ export default function AwsVpcSimulator() {
                   disabled={currentStepIndex >= trafficSteps.length - 1}
                   className="h-8"
                 >
-                  Next
+                  Próximo
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
               </div>
@@ -942,7 +942,7 @@ export default function AwsVpcSimulator() {
               className="overflow-hidden"
             >
               <div className="rounded-lg border border bg-muted/30 p-3 sm:p-4">
-                <div className="mb-3 text-xs font-medium text-muted-foreground">Your VPC Architecture</div>
+                <div className="mb-3 text-xs font-medium text-muted-foreground">Sua arquitetura de VPC</div>
 
                 {/* Internet */}
                 <div className="mb-3 flex justify-center">
@@ -988,7 +988,7 @@ export default function AwsVpcSimulator() {
                           isHighlighted('public-subnet') && 'ring-2 ring-yellow-400 ring-offset-1 ring-offset-background'
                         )}
                       >
-                        <div className="mb-2 text-center text-[10px] font-medium text-green-700 dark:text-green-400">Public Subnet</div>
+                        <div className="mb-2 text-center text-[10px] font-medium text-green-700 dark:text-green-400">Subnet pública</div>
                         <div className="flex flex-wrap justify-center gap-2">
                           {activeComponents.has('public-route-table') && (
                             <div className={cn(
@@ -1031,7 +1031,7 @@ export default function AwsVpcSimulator() {
                           isHighlighted('private-subnet') && 'ring-2 ring-yellow-400 ring-offset-1 ring-offset-background'
                         )}
                       >
-                        <div className="mb-2 text-center text-[10px] font-medium text-red-700 dark:text-red-400">Private Subnet</div>
+                        <div className="mb-2 text-center text-[10px] font-medium text-red-700 dark:text-red-400">Subnet privada</div>
                         <div className="flex flex-wrap justify-center gap-2">
                           {activeComponents.has('private-route-table') && (
                             <div className={cn(
@@ -1057,7 +1057,7 @@ export default function AwsVpcSimulator() {
 
                     {!activeComponents.has('public-subnet') && !activeComponents.has('private-subnet') && (
                       <div className="col-span-full py-4 text-center text-xs text-muted-foreground">
-                        Add subnets to see the architecture
+                        Adicione subnets para ver a arquitetura
                       </div>
                     )}
                   </div>
@@ -1077,36 +1077,36 @@ export default function AwsVpcSimulator() {
               className="overflow-hidden"
             >
               <div className="rounded-lg border border bg-muted/50 p-3">
-                <div className="mb-2 text-xs font-medium text-muted-foreground">Connectivity Tests</div>
+                <div className="mb-2 text-xs font-medium text-muted-foreground">Testes de conectividade</div>
                 <div className="space-y-2 text-sm">
                   {/* Test: Internet to Public EC2 */}
                   <div className="flex items-center justify-between rounded bg-muted p-2">
-                    <span className="text-muted-foreground">Internet to Public EC2</span>
+                    <span className="text-muted-foreground">Internet para EC2 pública</span>
                     {activeComponents.has('igw') &&
                     activeComponents.has('public-subnet') &&
                     activeComponents.has('public-ec2') ? (
                       <span className="flex items-center gap-1 text-green-400">
-                        <CheckCircle className="h-4 w-4" /> Works
+                        <CheckCircle className="h-4 w-4" /> Funciona
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-red-400">
-                        <X className="h-4 w-4" /> Blocked
+                        <X className="h-4 w-4" /> Bloqueado
                       </span>
                     )}
                   </div>
                   {/* Test: Private EC2 to Internet */}
                   <div className="flex items-center justify-between rounded bg-muted p-2">
-                    <span className="text-muted-foreground">Private EC2 to Internet</span>
+                    <span className="text-muted-foreground">EC2 privada para internet</span>
                     {activeComponents.has('igw') &&
                     activeComponents.has('nat-gateway') &&
                     activeComponents.has('private-subnet') &&
                     activeComponents.has('private-ec2') ? (
                       <span className="flex items-center gap-1 text-green-400">
-                        <CheckCircle className="h-4 w-4" /> Works
+                        <CheckCircle className="h-4 w-4" /> Funciona
                       </span>
                     ) : activeComponents.has('private-ec2') ? (
                       <span className="flex items-center gap-1 text-red-400">
-                        <X className="h-4 w-4" /> Blocked
+                        <X className="h-4 w-4" /> Bloqueado
                       </span>
                     ) : (
                       <span className="text-muted-foreground">N/A</span>
@@ -1114,10 +1114,10 @@ export default function AwsVpcSimulator() {
                   </div>
                   {/* Test: Internet to Private EC2 */}
                   <div className="flex items-center justify-between rounded bg-muted p-2">
-                    <span className="text-muted-foreground">Internet to Private EC2</span>
+                    <span className="text-muted-foreground">Internet para EC2 privada</span>
                     {activeComponents.has('private-ec2') ? (
                       <span className="flex items-center gap-1 text-green-400">
-                        <Shield className="h-4 w-4" /> Protected
+                        <Shield className="h-4 w-4" /> Protegido
                       </span>
                     ) : (
                       <span className="text-muted-foreground">N/A</span>
@@ -1133,37 +1133,37 @@ export default function AwsVpcSimulator() {
         <div className="hidden items-center justify-center gap-4 text-xs text-muted-foreground sm:flex">
           <Keyboard className="h-3 w-3" />
           <span>
-            <kbd className="rounded bg-muted px-1">1-3</kbd> presets
+            <kbd className="rounded bg-muted px-1">1-3</kbd> modelos
           </span>
           <span>
-            <kbd className="rounded bg-muted px-1">4-6</kbd> simulate
+            <kbd className="rounded bg-muted px-1">4-6</kbd> simular
           </span>
           <span>
-            <kbd className="rounded bg-muted px-1">T</kbd> test
+            <kbd className="rounded bg-muted px-1">T</kbd> testar
           </span>
           <span>
-            <kbd className="rounded bg-muted px-1">R</kbd> reset
+            <kbd className="rounded bg-muted px-1">R</kbd> reiniciar
           </span>
         </div>
 
         {/* Educational Summary */}
         <div className="rounded-lg border border bg-muted/30 p-3">
-          <h3 className="mb-2 text-sm font-semibold text-foreground">Key Concepts</h3>
+          <h3 className="mb-2 text-sm font-semibold text-foreground">Conceitos-chave</h3>
           <ul className="space-y-1 text-xs text-muted-foreground">
             <li>
-              <strong className="text-green-400">Public Subnet</strong>: Has route to Internet Gateway - resources can
-              have public IPs
+              <strong className="text-green-400">Subnet pública</strong>: tem rota para o Internet Gateway; os recursos podem
+              ter IP público
             </li>
             <li>
-              <strong className="text-red-400">Private Subnet</strong>: No direct internet route - resources are
-              protected
+              <strong className="text-red-400">Subnet privada</strong>: sem rota direta para a internet; os recursos ficam
+              protegidos
             </li>
             <li>
-              <strong className="text-orange-400">NAT Gateway</strong>: Lets private resources reach internet without
-              being exposed
+              <strong className="text-orange-400">NAT Gateway</strong>: deixa recursos privados acessarem a internet sem
+              ficarem expostos
             </li>
             <li>
-              <strong className="text-purple-400">Internet Gateway</strong>: The door between your VPC and the internet
+              <strong className="text-purple-400">Internet Gateway</strong>: a porta entre a sua VPC e a internet
             </li>
           </ul>
         </div>
