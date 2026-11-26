@@ -74,108 +74,108 @@ const DATAPLANES: Record<
     label: 'Overlay CNI',
     shortLabel: 'VXLAN',
     description:
-      'Pod traffic keeps pod IPs inside the cluster packet, while cross-node hops can be wrapped in an outer node-to-node tunnel.',
-    servicePath: 'kube-proxy programs iptables/IPVS rules for Service VIP translation.',
-    crossNodePath: 'Node A encapsulates the pod packet, the underlay carries it to Node B, then Node B decapsulates it.',
+      'O tráfego de Pods mantém os IPs dos Pods dentro do pacote do cluster, enquanto os saltos entre nodes podem ser encapsulados em um túnel externo node a node.',
+    servicePath: 'O kube-proxy programa regras iptables/IPVS para traduzir o VIP do Service.',
+    crossNodePath: 'O Node A encapsula o pacote do Pod, a rede underlay o leva até o Node B, e o Node B desencapsula.',
   },
   direct: {
     label: 'Routed CNI',
     shortLabel: 'BGP / routes',
     description:
-      'Pod CIDRs are routable through the node or fabric routing table, so cross-node pod traffic can travel without an overlay header.',
-    servicePath: 'kube-proxy still handles ClusterIP translation unless the CNI replaces it.',
-    crossNodePath: 'Node A routes directly to Node B because the fabric knows where the destination PodCIDR lives.',
+      'Os Pod CIDRs são roteáveis pela tabela de rotas do node ou da rede física, então o tráfego entre nodes pode viajar sem cabeçalho de overlay.',
+    servicePath: 'O kube-proxy continua cuidando da tradução do ClusterIP, a menos que o CNI o substitua.',
+    crossNodePath: 'O Node A roteia direto para o Node B porque a rede sabe onde fica o PodCIDR de destino.',
   },
   ebpf: {
     label: 'eBPF CNI',
     shortLabel: 'eBPF',
     description:
-      'eBPF programs can enforce policy and perform Service load balancing in the kernel datapath, sometimes replacing kube-proxy.',
-    servicePath: 'The eBPF datapath can translate the Service VIP to a backend before iptables is involved.',
-    crossNodePath: 'The packet takes native routing or tunneling, with eBPF programs applying policy and visibility at key hooks.',
+      'Programas eBPF podem aplicar policies e fazer o load balancing de Services no datapath do kernel, às vezes substituindo o kube-proxy.',
+    servicePath: 'O datapath eBPF pode traduzir o VIP do Service para um backend antes de o iptables entrar em cena.',
+    crossNodePath: 'O pacote segue por roteamento nativo ou túnel, com programas eBPF aplicando policy e observabilidade nos principais hooks.',
   },
 };
 
 const SCENARIOS: Scenario[] = [
   {
     id: 'same-node',
-    title: 'Pod to Pod, Same Node',
-    subtitle: 'The simplest packet path',
-    lesson: 'Pods get their own IPs. On the same node, traffic can move through veth pairs and local routing without a Service.',
+    title: 'Pod para Pod, mesmo node',
+    subtitle: 'O caminho de pacote mais simples',
+    lesson: 'Cada Pod recebe seu próprio IP. No mesmo node, o tráfego passa por pares veth e roteamento local, sem Service.',
     icon: Boxes,
     steps: [
       {
-        title: 'Application opens a socket',
+        title: 'A aplicação abre um socket',
         packet: 'src=10.244.1.12:43152 -> dst=10.244.1.34:8080',
         explanation:
-          'The frontend Pod sends directly to the backend Pod IP. This is normal Kubernetes networking: Pod IPs are first-class addresses inside the cluster.',
-        mutation: 'No NAT. The destination is already a Pod IP.',
+          'O Pod frontend envia direto para o IP do Pod backend. Isso é a rede normal do Kubernetes: IPs de Pod são endereços de primeira classe dentro do cluster.',
+        mutation: 'Sem NAT. O destino já é um IP de Pod.',
         highlights: ['pod-frontend', 'pod-api', 'same-node-link'],
       },
       {
-        title: 'Packet exits the Pod namespace',
+        title: 'O pacote sai do namespace do Pod',
         packet: 'eth0 -> veth peer -> node network namespace',
         explanation:
-          'The CNI plugin created the Pod interface and connected it to the node using a veth pair or an equivalent datapath.',
-        mutation: 'The packet leaves the Pod, but source and destination IPs stay the same.',
+          'O plugin CNI criou a interface do Pod e a conectou ao node usando um par veth ou um datapath equivalente.',
+        mutation: 'O pacote sai do Pod, mas os IPs de origem e destino continuam os mesmos.',
         highlights: ['pod-frontend', 'cni-a', 'node-a'],
       },
       {
-        title: 'Node routes locally',
+        title: 'O node roteia localmente',
         packet: 'node-a route lookup: 10.244.1.34 is local',
         explanation:
-          'Because both Pods are on node-a, the kernel or CNI datapath can forward to the backend Pod interface locally.',
-        mutation: 'No Service lookup is needed. No overlay tunnel is needed.',
+          'Como os dois Pods estão no node-a, o kernel ou o datapath do CNI encaminha localmente para a interface do Pod backend.',
+        mutation: 'Não precisa consultar Service. Não precisa de túnel overlay.',
         highlights: ['node-a', 'cni-a', 'pod-api', 'same-node-link'],
       },
       {
-        title: 'Backend receives the packet',
+        title: 'O backend recebe o pacote',
         packet: 'backend sees src=10.244.1.12 -> dst=10.244.1.34',
         explanation:
-          'The backend can identify the calling Pod by its Pod IP. That direct addressing is one of the core ideas behind Kubernetes networking.',
-        mutation: 'Pod identity is preserved at L3.',
+          'O backend identifica o Pod que chamou pelo IP dele. Esse endereçamento direto é uma das ideias centrais da rede do Kubernetes.',
+        mutation: 'A identidade do Pod é preservada na camada 3.',
         highlights: ['pod-frontend', 'pod-api'],
       },
     ],
   },
   {
     id: 'cross-node',
-    title: 'Pod to Pod, Cross Node',
-    subtitle: 'Overlay, routed, or eBPF',
+    title: 'Pod para Pod, entre nodes',
+    subtitle: 'Overlay, roteado ou eBPF',
     lesson:
-      'Cross-node traffic is where the CNI dataplane matters most: it must make PodCIDRs reachable across nodes.',
+      'É no tráfego entre nodes que o dataplane do CNI mais importa: ele precisa tornar os PodCIDRs alcançáveis entre nodes.',
     icon: Route,
     steps: [
       {
-        title: 'Frontend targets a remote Pod IP',
+        title: 'O frontend mira um IP de Pod remoto',
         packet: 'src=10.244.1.12 -> dst=10.244.2.21',
         explanation:
-          'The app is still talking to a Pod IP. Kubernetes expects this to work across nodes without the app doing anything special.',
-        mutation: 'The inner packet is a Pod-to-Pod packet.',
+          'A aplicação continua falando com um IP de Pod. O Kubernetes espera que isso funcione entre nodes sem a aplicação fazer nada de especial.',
+        mutation: 'O pacote interno é um pacote de Pod para Pod.',
         highlights: ['pod-frontend', 'pod-payments', 'cross-node-link'],
       },
       {
-        title: 'Node A finds the remote PodCIDR',
+        title: 'O Node A encontra o PodCIDR remoto',
         packet: '10.244.2.0/24 belongs behind node-b',
         explanation:
-          'The node routing table, CNI agent, or eBPF map tells the datapath that the destination Pod lives on node-b.',
-        mutation: 'Next hop becomes node-b, but the inner destination remains the remote Pod IP.',
+          'A tabela de rotas do node, o agente CNI ou um mapa eBPF informa ao datapath que o Pod de destino está no node-b.',
+        mutation: 'O próximo salto passa a ser o node-b, mas o destino interno continua sendo o IP do Pod remoto.',
         highlights: ['node-a', 'cni-a', 'node-fabric', 'node-b'],
       },
       {
-        title: 'CNI moves the packet between nodes',
+        title: 'O CNI leva o pacote entre os nodes',
         packet: 'node-a -> node-b transport',
         explanation:
-          'Depending on the CNI mode, this may be VXLAN/IP-in-IP encapsulation, direct routing with BGP/static routes, or an eBPF-native path.',
-        mutation: 'The node-to-node hop is implementation detail; the Pod packet is still addressed to 10.244.2.21.',
+          'Dependendo do modo do CNI, pode ser encapsulamento VXLAN/IP-in-IP, roteamento direto com BGP/rotas estáticas ou um caminho nativo em eBPF.',
+        mutation: 'O salto node a node é detalhe de implementação; o pacote do Pod continua endereçado a 10.244.2.21.',
         highlights: ['cni-a', 'node-fabric', 'cni-b', 'cross-node-link'],
       },
       {
-        title: 'Node B delivers to the Pod',
+        title: 'O Node B entrega ao Pod',
         packet: 'backend sees src=10.244.1.12 -> dst=10.244.2.21',
         explanation:
-          'After decapsulation or route delivery, node-b forwards the packet to the payments Pod interface.',
-        mutation: 'The destination Pod sees the source Pod IP, not a random node address.',
+          'Depois do desencapsulamento ou da entrega por rota, o node-b encaminha o pacote para a interface do Pod payments.',
+        mutation: 'O Pod de destino vê o IP do Pod de origem, não um endereço qualquer de node.',
         highlights: ['node-b', 'cni-b', 'pod-payments'],
       },
     ],
@@ -183,44 +183,44 @@ const SCENARIOS: Scenario[] = [
   {
     id: 'cluster-ip',
     title: 'ClusterIP Service',
-    subtitle: 'Stable virtual IP to changing Pods',
+    subtitle: 'IP virtual estável para Pods que mudam',
     lesson:
-      'Services give clients a stable virtual IP and DNS name while the datapath picks one healthy endpoint Pod.',
+      'Services dão aos clientes um IP virtual e um nome DNS estáveis, enquanto o datapath escolhe um Pod endpoint saudável.',
     icon: Layers,
     steps: [
       {
-        title: 'DNS returns a Service VIP',
+        title: 'O DNS devolve um VIP de Service',
         packet: 'payments.default.svc.cluster.local -> 10.96.12.40',
         explanation:
-          'CoreDNS returns the ClusterIP. That IP is virtual; it is not a Pod and usually not assigned to a real interface.',
-        mutation: 'The app now targets a Service IP instead of a Pod IP.',
+          'O CoreDNS devolve o ClusterIP. Esse IP é virtual: não é um Pod e normalmente não está atribuído a nenhuma interface real.',
+        mutation: 'Agora a aplicação mira um IP de Service em vez de um IP de Pod.',
         highlights: ['pod-frontend', 'dns', 'service'],
         tone: 'translated',
       },
       {
-        title: 'Packet leaves for the ClusterIP',
+        title: 'O pacote sai rumo ao ClusterIP',
         packet: 'src=10.244.1.12 -> dst=10.96.12.40:443',
         explanation:
-          'The client thinks it is connecting to one stable endpoint. Kubernetes dataplane rules handle the backend selection.',
-        mutation: 'Destination is still the Service VIP at this moment.',
+          'O cliente acha que está se conectando a um endpoint estável. As regras do dataplane do Kubernetes cuidam da escolha do backend.',
+        mutation: 'Neste momento, o destino ainda é o VIP do Service.',
         highlights: ['pod-frontend', 'service', 'service-link'],
         tone: 'translated',
       },
       {
-        title: 'Service translation picks an endpoint',
+        title: 'A tradução do Service escolhe um endpoint',
         packet: '10.96.12.40:443 -> 10.244.2.21:8443',
         explanation:
-          'kube-proxy in iptables/IPVS mode or an eBPF replacement translates the virtual Service destination to a real endpoint Pod.',
-        mutation: 'Destination IP and port are rewritten to the selected Pod endpoint.',
+          'O kube-proxy em modo iptables/IPVS, ou um substituto em eBPF, traduz o destino virtual do Service para um Pod endpoint real.',
+        mutation: 'O IP e a porta de destino são reescritos para o Pod endpoint escolhido.',
         highlights: ['service', 'kube-proxy', 'pod-payments'],
         tone: 'translated',
       },
       {
-        title: 'Reply follows connection tracking',
-        packet: 'reply returns as the same Service connection',
+        title: 'A resposta segue o connection tracking',
+        packet: 'a resposta volta como a mesma conexão do Service',
         explanation:
-          'Connection tracking or reverse load balancing makes the reply line up with the client connection to the Service.',
-        mutation: 'The client keeps its stable Service abstraction.',
+          'O connection tracking ou o load balancing reverso faz a resposta casar com a conexão do cliente ao Service.',
+        mutation: 'O cliente mantém sua abstração estável de Service.',
         highlights: ['pod-payments', 'service', 'pod-frontend'],
         tone: 'translated',
       },
@@ -228,45 +228,45 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'service-discovery',
-    title: 'EndpointSlice & Headless DNS',
-    subtitle: 'How Services find Pods',
+    title: 'EndpointSlice e DNS headless',
+    subtitle: 'Como os Services encontram os Pods',
     lesson:
       'Services do not send traffic to Pods by magic. Selectors create EndpointSlices, and dataplanes watch those slices to program real backends.',
     icon: Layers,
     steps: [
       {
-        title: 'Service selector matches Pods',
+        title: 'O selector do Service encontra os Pods',
         packet: 'selector app=payments -> Pods 10.244.2.21, 10.244.2.45',
         explanation:
-          'A Service selector finds matching Pods. Kubernetes publishes those backends through EndpointSlice objects instead of making clients track Pods directly.',
-        mutation: 'Workload labels become a backend set.',
+          'O selector do Service encontra os Pods correspondentes. O Kubernetes publica esses backends em objetos EndpointSlice, em vez de obrigar os clientes a acompanhar os Pods diretamente.',
+        mutation: 'As labels do workload viram um conjunto de backends.',
         highlights: ['service', 'endpoint-slice', 'pod-payments', 'pod-worker'],
         tone: 'translated',
       },
       {
-        title: 'EndpointSlice stores ready endpoints',
+        title: 'O EndpointSlice guarda os endpoints prontos',
         packet: 'EndpointSlice: [10.244.2.21:8443, 10.244.2.45:8443]',
         explanation:
-          'EndpointSlices scale better than the older Endpoints object and include readiness, topology, address type, ports, and endpoint metadata.',
-        mutation: 'The Service now has concrete endpoint IPs and ports.',
+          'EndpointSlices escalam melhor que o antigo objeto Endpoints e incluem readiness, topologia, tipo de endereço, portas e metadados do endpoint.',
+        mutation: 'Agora o Service tem IPs e portas de endpoint concretos.',
         highlights: ['endpoint-slice', 'pod-payments', 'pod-worker'],
         tone: 'translated',
       },
       {
-        title: 'Dataplane watches EndpointSlices',
+        title: 'O dataplane observa os EndpointSlices',
         packet: 'watch EndpointSlice -> program Service load balancing',
         explanation:
-          'kube-proxy or an eBPF CNI watches EndpointSlices and programs the local datapath so ClusterIP traffic can be translated to a real Pod.',
-        mutation: 'Endpoint data becomes kernel routing, NAT, IPVS, or eBPF state.',
+          'O kube-proxy ou um CNI eBPF observa os EndpointSlices e programa o datapath local para que o tráfego do ClusterIP seja traduzido para um Pod real.',
+        mutation: 'Os dados dos endpoints viram estado de roteamento do kernel, NAT, IPVS ou eBPF.',
         highlights: ['endpoint-slice', 'kube-proxy', 'service'],
         tone: 'translated',
       },
       {
-        title: 'Headless Service skips the VIP',
+        title: 'O Service headless dispensa o VIP',
         packet: 'clusterIP=None -> DNS A records: 10.244.2.21, 10.244.2.45',
         explanation:
-          'A headless Service does not allocate a ClusterIP. DNS can return endpoint Pod IPs directly, which is common for StatefulSets and clients that need direct peer discovery.',
-        mutation: 'DNS returns Pod IPs instead of a virtual Service IP.',
+          'Um Service headless não aloca ClusterIP. O DNS pode devolver os IPs dos Pods diretamente, o que é comum em StatefulSets e em clientes que precisam descobrir os pares diretamente.',
+        mutation: 'O DNS devolve IPs de Pod em vez de um IP virtual de Service.',
         highlights: ['dns', 'endpoint-slice', 'pod-payments', 'pod-worker'],
         tone: 'translated',
       },
@@ -274,45 +274,45 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'ingress',
-    title: 'Ingress to Pod',
-    subtitle: 'North-south traffic path',
+    title: 'Do Ingress ao Pod',
+    subtitle: 'Caminho do tráfego norte-sul',
     lesson:
-      'Ingress is HTTP routing at the edge. It normally points at Services, and Services point at endpoint Pods.',
+      'Ingress é roteamento HTTP na borda. Normalmente aponta para Services, e os Services apontam para os Pods endpoint.',
     icon: Globe,
     steps: [
       {
-        title: 'External client reaches the edge',
+        title: 'O cliente externo chega à borda',
         packet: 'client -> load balancer / ingress IP',
         explanation:
-          'Traffic from outside the cluster first reaches a load balancer, node port, or ingress controller endpoint.',
-        mutation: 'The packet crosses from outside the cluster into the Kubernetes edge.',
+          'O tráfego de fora do cluster chega primeiro a um load balancer, a uma node port ou ao endpoint do ingress controller.',
+        mutation: 'O pacote atravessa de fora do cluster para a borda do Kubernetes.',
         highlights: ['internet', 'ingress', 'ingress-link'],
         tone: 'external',
       },
       {
-        title: 'Ingress applies HTTP routing',
+        title: 'O Ingress aplica o roteamento HTTP',
         packet: 'Host: shop.example.com, Path: /checkout',
         explanation:
-          'The ingress controller matches host and path rules, then forwards to the configured Service backend.',
-        mutation: 'L7 routing chooses the payments Service.',
+          'O ingress controller casa as regras de host e path e encaminha para o Service backend configurado.',
+        mutation: 'O roteamento L7 escolhe o Service payments.',
         highlights: ['ingress', 'service'],
         tone: 'external',
       },
       {
-        title: 'Service chooses a backend Pod',
+        title: 'O Service escolhe um Pod backend',
         packet: 'Service VIP -> endpoint 10.244.2.21:8443',
         explanation:
-          'The Service still does endpoint selection. The ingress controller is not hard-coding individual Pod IPs.',
-        mutation: 'Destination becomes the selected endpoint Pod.',
+          'É o Service que continua escolhendo o endpoint. O ingress controller não fixa IPs de Pods no código.',
+        mutation: 'O destino passa a ser o Pod endpoint escolhido.',
         highlights: ['service', 'kube-proxy', 'pod-payments'],
         tone: 'translated',
       },
       {
-        title: 'Response returns through the edge',
+        title: 'A resposta volta pela borda',
         packet: 'pod -> service path -> ingress -> client',
         explanation:
-          'Source IP preservation depends on the load balancer, proxy mode, and externalTrafficPolicy settings.',
-        mutation: 'The user receives the response from the public edge, not from a Pod IP.',
+          'Preservar o IP de origem depende do load balancer, do modo de proxy e da configuração de externalTrafficPolicy.',
+        mutation: 'O usuário recebe a resposta da borda pública, não de um IP de Pod.',
         highlights: ['pod-payments', 'ingress', 'internet'],
         tone: 'external',
       },
@@ -320,45 +320,45 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'load-balancer',
-    title: 'LoadBalancer & NodePort',
-    subtitle: 'External IP to Service backend',
+    title: 'LoadBalancer e NodePort',
+    subtitle: 'Do IP externo ao backend do Service',
     lesson:
-      'A LoadBalancer Service normally exposes a cloud load balancer that targets node ports, then Kubernetes forwards to a Service endpoint.',
+      'Um Service LoadBalancer normalmente expõe um load balancer de nuvem que aponta para node ports, e o Kubernetes encaminha para um endpoint do Service.',
     icon: Cloud,
     steps: [
       {
-        title: 'Client reaches the cloud load balancer',
+        title: 'O cliente chega ao load balancer da nuvem',
         packet: 'client 203.0.113.8 -> 198.51.100.40:443',
         explanation:
-          'The public LoadBalancer IP is outside the cluster. The provider load balancer forwards traffic to one or more Kubernetes nodes.',
-        mutation: 'Traffic enters through provider infrastructure before hitting a node.',
+          'O IP público do LoadBalancer fica fora do cluster. O load balancer do provedor encaminha o tráfego para um ou mais nodes do Kubernetes.',
+        mutation: 'O tráfego entra pela infraestrutura do provedor antes de chegar a um node.',
         highlights: ['internet', 'load-balancer', 'ingress-link'],
         tone: 'external',
       },
       {
-        title: 'Load balancer targets a NodePort',
+        title: 'O load balancer aponta para uma NodePort',
         packet: '198.51.100.40:443 -> node-a:30443',
         explanation:
-          'Under the hood, a LoadBalancer Service commonly allocates a NodePort. The external load balancer sends traffic to that port on eligible nodes.',
-        mutation: 'Destination becomes a node IP plus allocated NodePort.',
+          'Por baixo dos panos, um Service LoadBalancer costuma alocar uma NodePort. O load balancer externo manda o tráfego para essa porta nos nodes elegíveis.',
+        mutation: 'O destino passa a ser um IP de node mais a NodePort alocada.',
         highlights: ['load-balancer', 'node-a', 'nodeport'],
         tone: 'external',
       },
       {
-        title: 'NodePort maps into the Service',
+        title: 'A NodePort é mapeada para o Service',
         packet: 'node-a:30443 -> Service 10.96.12.40:443',
         explanation:
-          'The node datapath treats the NodePort as an entry point for the Service, then applies the normal Service endpoint selection path.',
-        mutation: 'NodePort traffic is translated into Service backend traffic.',
+          'O datapath do node trata a NodePort como porta de entrada do Service e depois aplica a escolha normal de endpoint do Service.',
+        mutation: 'O tráfego da NodePort é traduzido em tráfego para o backend do Service.',
         highlights: ['node-a', 'nodeport', 'service', 'kube-proxy'],
         tone: 'translated',
       },
       {
-        title: 'externalTrafficPolicy changes the tradeoff',
-        packet: 'Cluster: wider backend spread, Local: source IP preservation',
+        title: 'O externalTrafficPolicy muda o trade-off',
+        packet: 'Cluster: backends mais distribuídos, Local: preserva o IP de origem',
         explanation:
-          'externalTrafficPolicy=Cluster can forward to endpoints on any node but may hide the original client IP. Local preserves source IP by only using node-local endpoints, but nodes without local endpoints should not receive traffic.',
-        mutation: 'The same public Service has different routing and observability behavior.',
+          'externalTrafficPolicy=Cluster pode encaminhar para endpoints em qualquer node, mas pode esconder o IP original do cliente. Local preserva o IP de origem usando só endpoints do próprio node, mas nodes sem endpoints locais não devem receber tráfego.',
+        mutation: 'O mesmo Service público passa a ter outro comportamento de roteamento e observabilidade.',
         highlights: ['load-balancer', 'node-a', 'service', 'pod-payments'],
         tone: 'external',
       },
@@ -367,87 +367,87 @@ const SCENARIOS: Scenario[] = [
   {
     id: 'network-policy',
     title: 'NetworkPolicy',
-    subtitle: 'Allowed is a policy decision',
+    subtitle: 'Permitir é uma decisão de policy',
     lesson:
-      'NetworkPolicy is a Kubernetes API, but enforcement is done by a CNI plugin that supports policy.',
+      'NetworkPolicy é uma API do Kubernetes, mas quem aplica é um plugin CNI com suporte a policy.',
     icon: Shield,
     steps: [
       {
-        title: 'No policy selects the backend',
+        title: 'Nenhuma policy seleciona o backend',
         packet: 'frontend -> payments:8443 allowed',
         explanation:
-          'If no NetworkPolicy selects a Pod, Kubernetes network policy semantics leave it non-isolated, assuming the cluster has no stricter external policy.',
-        mutation: 'Traffic is allowed by default.',
+          'Se nenhuma NetworkPolicy seleciona um Pod, a semântica de network policy do Kubernetes o deixa sem isolamento, supondo que o cluster não tenha uma policy externa mais restrita.',
+        mutation: 'O tráfego é permitido por padrão.',
         highlights: ['pod-frontend', 'pod-payments', 'policy'],
       },
       {
-        title: 'Default deny isolates the backend',
+        title: 'O default deny isola o backend',
         packet: 'frontend -> payments:8443 blocked',
         explanation:
-          'Once a policy selects the payments Pod for ingress and has no matching allow rule, inbound traffic is denied.',
-        mutation: 'The packet is dropped before the application sees it.',
+          'Quando uma policy seleciona o Pod payments para ingress e não há regra de allow correspondente, o tráfego de entrada é negado.',
+        mutation: 'O pacote é descartado antes de a aplicação vê-lo.',
         highlights: ['pod-frontend', 'policy', 'pod-payments'],
         tone: 'blocked',
       },
       {
-        title: 'Allow rule matches labels and port',
+        title: 'A regra de allow casa labels e porta',
         packet: 'allow from app=frontend to port 8443',
         explanation:
-          'NetworkPolicy rules match peers, namespaces, IP blocks, ports, and direction. Labels are the stable control point.',
-        mutation: 'The same packet is now allowed because it matches policy.',
+          'Regras de NetworkPolicy casam peers, namespaces, blocos de IP, portas e direção. As labels são o ponto de controle estável.',
+        mutation: 'O mesmo pacote agora é permitido porque casa com a policy.',
         highlights: ['pod-frontend', 'policy', 'pod-payments'],
       },
       {
-        title: 'CNI enforces the decision',
+        title: 'O CNI aplica a decisão',
         packet: 'policy verdict: forward',
         explanation:
-          'The API object alone does not filter packets. The CNI plugin must implement NetworkPolicy for the policy to have effect.',
-        mutation: 'Policy enforcement happens in the datapath, not in the application.',
+          'O objeto da API sozinho não filtra pacotes. O plugin CNI precisa implementar NetworkPolicy para a policy ter efeito.',
+        mutation: 'A aplicação da policy acontece no datapath, não na aplicação.',
         highlights: ['cni-a', 'policy', 'cni-b'],
       },
     ],
   },
   {
     id: 'egress',
-    title: 'Pod Egress to Internet',
-    subtitle: 'Leaving the cluster',
+    title: 'Egress do Pod para a internet',
+    subtitle: 'Saindo do cluster',
     lesson:
-      'Inside the cluster, Pod IPs are routable. On the internet, they usually are not, so egress commonly uses node SNAT or a gateway.',
+      'Dentro do cluster, IPs de Pod são roteáveis. Na internet, normalmente não são, então o egress costuma usar SNAT no node ou um gateway.',
     icon: Server,
     steps: [
       {
-        title: 'Pod calls an external API',
+        title: 'O Pod chama uma API externa',
         packet: 'src=10.244.1.12 -> dst=140.82.112.6:443',
         explanation:
-          'The destination is outside the cluster CIDR, so the packet follows the node default route instead of the pod network route.',
-        mutation: 'Destination is external; source is still the Pod IP inside the node.',
+          'O destino está fora do CIDR do cluster, então o pacote segue a rota padrão do node em vez da rota da rede de Pods.',
+        mutation: 'O destino é externo; a origem ainda é o IP do Pod dentro do node.',
         highlights: ['pod-frontend', 'internet', 'egress-link'],
         tone: 'external',
       },
       {
-        title: 'Node prepares internet egress',
+        title: 'O node prepara o egress para a internet',
         packet: 'SNAT 10.244.1.12 -> node-a primary IP',
         explanation:
-          'Most clusters translate Pod source IPs to a node or gateway IP before sending traffic to the internet.',
-        mutation: 'Source address changes so the external network has a return route.',
+          'A maioria dos clusters traduz o IP de origem do Pod para um IP de node ou de gateway antes de mandar o tráfego para a internet.',
+        mutation: 'O endereço de origem muda para que a rede externa tenha uma rota de volta.',
         highlights: ['node-a', 'cni-a', 'internet'],
         tone: 'translated',
       },
       {
-        title: 'Egress policy can restrict destinations',
+        title: 'A policy de egress pode restringir destinos',
         packet: 'allow *.github.com:443, deny 0.0.0.0/0 otherwise',
         explanation:
-          'Some CNIs can enforce egress policy before SNAT, preserving workload identity for policy decisions.',
-        mutation: 'Policy decision happens before the packet leaves the cluster.',
+          'Alguns CNIs aplicam a policy de egress antes do SNAT, preservando a identidade do workload para as decisões de policy.',
+        mutation: 'A decisão de policy acontece antes de o pacote sair do cluster.',
         highlights: ['policy', 'pod-frontend', 'internet'],
         tone: 'blocked',
       },
       {
-        title: 'Reply is tracked back to the Pod',
+        title: 'A resposta é rastreada de volta ao Pod',
         packet: 'external API -> node IP -> 10.244.1.12',
         explanation:
-          'Connection tracking maps the reply to the original Pod connection and returns it to the correct network namespace.',
-        mutation: 'The Pod receives the response as if it talked directly to the external service.',
+          'O connection tracking associa a resposta à conexão original do Pod e a devolve ao network namespace correto.',
+        mutation: 'O Pod recebe a resposta como se tivesse falado diretamente com o serviço externo.',
         highlights: ['internet', 'node-a', 'pod-frontend'],
         tone: 'external',
       },
@@ -460,10 +460,10 @@ function getScenario(id: ScenarioId): Scenario {
 }
 
 function toneLabel(tone: PacketTone | undefined) {
-  if (tone === 'translated') return 'translated';
-  if (tone === 'blocked') return 'blocked';
-  if (tone === 'external') return 'external';
-  return 'forwarded';
+  if (tone === 'translated') return 'traduzido';
+  if (tone === 'blocked') return 'bloqueado';
+  if (tone === 'external') return 'externo';
+  return 'encaminhado';
 }
 
 export default function KubernetesNetworkingCniSimulator() {
@@ -529,24 +529,24 @@ export default function KubernetesNetworkingCniSimulator() {
               <Network className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// packet path lab</p>
+              <p className="font-mono text-xs text-muted-foreground">// laboratório do caminho do pacote</p>
               <h2 className="text-2xl font-bold md:text-3xl">
-                Kubernetes Networking / CNI Simulator
+                Simulador de rede do Kubernetes / CNI
               </h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Follow packets through Pod IP routing, CNI dataplanes, ClusterIP Services, kube-proxy
-            or eBPF translation, Ingress, NetworkPolicy, and internet egress.
+            Acompanhe pacotes pelo roteamento de IPs de Pod, dataplanes CNI, Services ClusterIP, tradução
+            via kube-proxy ou eBPF, Ingress, NetworkPolicy e egress para a internet.
           </p>
         </div>
 
         <Card>
           <CardContent className="space-y-3 p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Current path</span>
+              <span className="text-sm font-medium">Caminho atual</span>
               <span className="text-sm text-muted-foreground">
-                Hop {stepIndex + 1}/{scenario.steps.length}
+                Salto {stepIndex + 1}/{scenario.steps.length}
               </span>
             </div>
             <Progress value={progress} />
@@ -565,7 +565,7 @@ export default function KubernetesNetworkingCniSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Layers className="h-5 w-5" />
-                Packet Scenarios
+                Cenários de pacote
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -604,7 +604,7 @@ export default function KubernetesNetworkingCniSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Route className="h-5 w-5" />
-                CNI Dataplane
+                Dataplane do CNI
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0">
@@ -630,7 +630,7 @@ export default function KubernetesNetworkingCniSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Globe className="h-5 w-5" />
-                External Traffic
+                Tráfego externo
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0">
@@ -649,15 +649,15 @@ export default function KubernetesNetworkingCniSimulator() {
               </div>
               <p className="text-sm text-muted-foreground">
                 {externalTrafficPolicy === 'Cluster'
-                  ? 'Cluster mode can spread traffic to endpoints on any node, often through an extra hop.'
-                  : 'Local mode preserves client source IP, but only nodes with local endpoints should receive traffic.'}
+                  ? 'O modo Cluster pode espalhar o tráfego para endpoints em qualquer node, muitas vezes com um salto extra.'
+                  : 'O modo Local preserva o IP de origem do cliente, mas só nodes com endpoints locais devem receber tráfego.'}
               </p>
             </CardContent>
           </Card>
 
           <Button size="sm" variant="outline" onClick={reset} className="w-full">
             <RotateCcw className="mr-1 h-4 w-4" />
-            Reset lab
+            Reiniciar laboratório
           </Button>
         </div>
 
@@ -680,7 +680,7 @@ export default function KubernetesNetworkingCniSimulator() {
                     </Button>
                     <Button size="sm" onClick={nextStep}>
                       <Play className="mr-1 h-4 w-4" />
-                      Next hop
+                      Próximo salto
                     </Button>
                     <Button size="sm" variant="outline" onClick={nextStep}>
                       <ChevronRight className="h-4 w-4" />
@@ -745,7 +745,7 @@ function PacketFlowDiagram({
         <div className="flex flex-wrap items-center justify-between gap-2">
           <CardTitle className="flex items-center gap-2 text-base">
             <ArrowRight className="h-5 w-5" />
-            Packet flow
+            Fluxo do pacote
           </CardTitle>
           <Badge variant="secondary" className="font-mono text-[11px]">
             {steps.length} hops
@@ -807,16 +807,16 @@ function CurrentHopDetails({ step }: { step: PacketStep }) {
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <ArrowRight className="h-5 w-5" />
-          Current hop
+          Salto atual
         </CardTitle>
       </CardHeader>
       <CardContent className="grid gap-3 p-4 pt-0 md:grid-cols-2">
         <div className="rounded-md border bg-muted/20 p-3">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Packet</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Pacote</p>
           <p className="mt-2 break-words font-mono text-sm">{step.packet}</p>
         </div>
         <div className="rounded-md border bg-muted/20 p-3">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mutation</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mudança</p>
           <p className="mt-2 text-sm text-muted-foreground">{step.mutation}</p>
         </div>
         <div className="rounded-md border border-primary/25 bg-primary/5 p-3 md:col-span-2">
@@ -852,8 +852,8 @@ function ClusterContextMap({
   }> = [
     {
       id: 'internet',
-      title: scenarioId === 'ingress' || scenarioId === 'load-balancer' ? 'External client' : 'Internet',
-      detail: scenarioId === 'ingress' || scenarioId === 'load-balancer' ? '203.0.113.8' : 'public API',
+      title: scenarioId === 'ingress' || scenarioId === 'load-balancer' ? 'Cliente externo' : 'Internet',
+      detail: scenarioId === 'ingress' || scenarioId === 'load-balancer' ? '203.0.113.8' : 'API pública',
       icon: <Globe className="h-4 w-4" />,
       show: active('internet') || scenarioId === 'ingress' || scenarioId === 'load-balancer' || scenarioId === 'egress',
       active: active('internet'),
@@ -877,7 +877,7 @@ function ClusterContextMap({
     {
       id: 'ingress',
       title: 'Ingress',
-      detail: 'host/path routing',
+      detail: 'roteamento por host/path',
       icon: <Server className="h-4 w-4" />,
       show: active('ingress') || scenarioId === 'ingress',
       active: active('ingress'),
@@ -911,7 +911,7 @@ function ClusterContextMap({
       id: 'external-policy',
       title: 'externalTrafficPolicy',
       detail: `${externalTrafficPolicy}: ${
-        externalTrafficPolicy === 'Local' ? 'preserve source IP' : 'spread across nodes'
+        externalTrafficPolicy === 'Local' ? 'preserva o IP de origem' : 'distribui entre nodes'
       }`,
       icon: <Route className="h-4 w-4" />,
       show: scenarioId === 'load-balancer',
@@ -925,10 +925,10 @@ function ClusterContextMap({
         <div className="flex flex-wrap items-center justify-between gap-2">
           <CardTitle className="flex items-center gap-2 text-base">
             <Network className="h-5 w-5" />
-            Cluster map
+            Mapa do cluster
           </CardTitle>
           <Badge variant={blocked ? 'destructive' : translated ? 'default' : 'secondary'}>
-            context only
+            só contexto
           </Badge>
         </div>
       </CardHeader>
@@ -1022,7 +1022,7 @@ function ClusterContextMap({
               <AuxiliaryCard
                 id="kube-proxy"
                 title={dataplane === 'ebpf' ? 'eBPF Service LB' : 'kube-proxy'}
-                detail={dataplane === 'ebpf' ? 'socket / tc hooks' : 'iptables or IPVS'}
+                detail={dataplane === 'ebpf' ? 'socket / tc hooks' : 'iptables ou IPVS'}
                 icon={<Zap className="h-4 w-4" />}
                 active={active('kube-proxy')}
               />
@@ -1082,7 +1082,7 @@ function NodeBox({
       >
         <div className="flex items-center gap-2">
           <Route className="h-4 w-4" />
-          CNI agent: IPAM, routes, veth, policy hooks
+          Agente CNI: IPAM, rotas, veth, hooks de policy
         </div>
       </div>
     </div>
@@ -1167,24 +1167,24 @@ function LearningNotes({
 }) {
   const scenarioNote =
     scenarioId === 'network-policy'
-      ? 'NetworkPolicy requires a capable CNI plugin. A policy object can exist while traffic still flows if the plugin does not enforce it.'
+      ? 'NetworkPolicy exige um plugin CNI compatível. O objeto da policy pode existir e o tráfego continuar passando se o plugin não a aplicar.'
       : scenarioId === 'cluster-ip'
-        ? 'A ClusterIP is a virtual destination. The real endpoint is chosen by kube-proxy or a CNI datapath that replaces kube-proxy.'
+        ? 'Um ClusterIP é um destino virtual. O endpoint real é escolhido pelo kube-proxy ou por um datapath CNI que o substitui.'
         : scenarioId === 'service-discovery'
-          ? 'EndpointSlices bridge a Service selector to the concrete Pod IPs that receive traffic.'
+          ? 'Os EndpointSlices ligam o selector de um Service aos IPs concretos dos Pods que recebem o tráfego.'
           : scenarioId === 'load-balancer'
             ? externalTrafficPolicy === 'Local'
-              ? 'Local preserves client source IP, but nodes without local endpoints are not valid targets.'
-              : 'Cluster maximizes endpoint availability, but the extra hop can obscure the original client source IP.'
+              ? 'Local preserva o IP de origem do cliente, mas nodes sem endpoints locais não são destinos válidos.'
+              : 'Cluster maximiza a disponibilidade de endpoints, mas o salto extra pode esconder o IP de origem do cliente.'
             : scenarioId === 'egress'
-              ? 'Internet egress commonly uses SNAT because Pod CIDRs are normally not routable outside the cluster.'
-              : 'Kubernetes expects Pods and nodes to reach Pod IPs without application-level awareness.';
+              ? 'O egress para a internet costuma usar SNAT porque os Pod CIDRs normalmente não são roteáveis fora do cluster.'
+              : 'O Kubernetes espera que Pods e nodes alcancem IPs de Pod sem que a aplicação precise saber disso.';
 
   const facts = [
-    'CNI configures Pod networking when a Pod sandbox is created.',
-    'Services are stable virtual front doors for changing endpoint Pods.',
-    'EndpointSlices publish the concrete backend addresses behind Services.',
-    'NetworkPolicy is enforced by the networking plugin, not kube-apiserver.',
+    'O CNI configura a rede do Pod quando a sandbox do Pod é criada.',
+    'Services são portas de entrada virtuais e estáveis para Pods endpoint que mudam.',
+    'EndpointSlices publicam os endereços concretos dos backends por trás dos Services.',
+    'A NetworkPolicy é aplicada pelo plugin de rede, não pelo kube-apiserver.',
   ];
 
   return (
@@ -1192,13 +1192,13 @@ function LearningNotes({
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <LockKeyhole className="h-5 w-5" />
-          Learning notes
+          Notas de aprendizado
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 p-4 pt-0">
         <div className="grid gap-2">
           <div className="rounded-md border bg-muted/20 p-2.5">
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Verdict</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Veredito</p>
             <div className="mt-1.5 flex items-center gap-2">
             {step.tone === 'blocked' ? (
               <AlertTriangle className="h-5 w-5 text-red-500" />
@@ -1210,28 +1210,28 @@ function LearningNotes({
           </div>
           <div className="grid gap-2 sm:grid-cols-2 2xl:grid-cols-1">
             <InspectorRow label="Dataplane" value={DATAPLANES[dataplane].label} />
-            <InspectorRow label="Complete" value={scenarioCompletedCount ? 'yes' : 'not yet'} />
+            <InspectorRow label="Concluído" value={scenarioCompletedCount ? 'sim' : 'ainda não'} />
           </div>
         </div>
 
-        <InsightDisclosure title="Why it matters" defaultOpen>
+        <InsightDisclosure title="Por que importa" defaultOpen>
           <p>{scenarioNote}</p>
         </InsightDisclosure>
 
-        <InsightDisclosure title="Dataplane details">
+        <InsightDisclosure title="Detalhes do dataplane">
           <div className="space-y-2">
             <p>{DATAPLANES[dataplane].description}</p>
             <p>{DATAPLANES[dataplane].servicePath}</p>
             <p>{DATAPLANES[dataplane].crossNodePath}</p>
             <p>
               {externalTrafficPolicy === 'Local'
-                ? 'externalTrafficPolicy=Local preserves client source IP and only uses node-local endpoints.'
-                : 'externalTrafficPolicy=Cluster can route to any endpoint, often at the cost of source IP preservation.'}
+                ? 'externalTrafficPolicy=Local preserva o IP de origem do cliente e usa só endpoints do próprio node.'
+                : 'externalTrafficPolicy=Cluster pode rotear para qualquer endpoint, muitas vezes ao custo de perder o IP de origem.'}
             </p>
           </div>
         </InsightDisclosure>
 
-        <InsightDisclosure title="Mental model">
+        <InsightDisclosure title="Modelo mental">
           <div className="space-y-2">
             {facts.map((fact) => (
               <div key={fact} className="flex items-start gap-2">
