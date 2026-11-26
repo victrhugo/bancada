@@ -42,7 +42,7 @@ describe('retry schedule', () => {
   });
 
   it('formats delays readably', () => {
-    expect(formatDelay(0)).toBe('immediately');
+    expect(formatDelay(0)).toBe('imediatamente');
     expect(formatDelay(5)).toBe('5s');
     expect(formatDelay(300)).toBe('5m');
     expect(formatDelay(7200)).toBe('2h');
@@ -66,7 +66,7 @@ describe('response classification', () => {
 
   it('flags a timeout as ambiguous rather than failed', () => {
     // The whole reason receivers must deduplicate.
-    expect(classifyResponse(null).reason).toMatch(/may have processed/i);
+    expect(classifyResponse(null).reason).toMatch(/pode ter processado/i);
   });
 });
 

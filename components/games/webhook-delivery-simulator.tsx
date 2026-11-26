@@ -44,12 +44,12 @@ const DEMO_SECRET = webhookSecret('MfKQ9r8GKYqrTwjUPD8ILPZIo2LaLaSw');
 const ROTATED_SECRET = webhookSecret('kQ8vLpNzR3TgWyBdFhJkMnPqStVwXzA2');
 
 const BEHAVIORS: Array<{ id: EndpointBehavior; label: string; hint: string }> = [
-  { id: 'success', label: '200 OK', hint: 'Delivered immediately' },
-  { id: 'intermittent', label: 'Intermittent', hint: 'Fails twice, then recovers' },
-  { id: 'http_500', label: '500 error', hint: 'Retries until exhausted' },
-  { id: 'timeout', label: 'Timeout', hint: 'Outcome is unknown' },
-  { id: 'http_429', label: '429 rate limited', hint: 'Back off and retry' },
-  { id: 'http_400', label: '400 bad request', hint: 'Drop without retrying' },
+  { id: 'success', label: '200 OK', hint: 'Entregue na hora' },
+  { id: 'intermittent', label: 'Intermitente', hint: 'Falha duas vezes e depois se recupera' },
+  { id: 'http_500', label: 'Erro 500', hint: 'Tenta até esgotar' },
+  { id: 'timeout', label: 'Timeout', hint: 'O resultado é desconhecido' },
+  { id: 'http_429', label: '429 rate limit', hint: 'Espere e tente de novo' },
+  { id: 'http_400', label: '400 requisição inválida', hint: 'Descarta sem tentar de novo' },
 ];
 
 type Tamper = 'none' | 'body' | 'secret' | 'stale';
@@ -57,9 +57,9 @@ type InspectorTab = 'request' | 'signature';
 
 const TAMPERS: Array<{ id: Tamper; label: string }> = [
   { id: 'none', label: 'Untouched' },
-  { id: 'body', label: 'Edit body' },
-  { id: 'secret', label: 'Wrong secret' },
-  { id: 'stale', label: 'Replay later' },
+  { id: 'body', label: 'Editar o corpo' },
+  { id: 'secret', label: 'Segredo errado' },
+  { id: 'stale', label: 'Reenviar depois' },
 ];
 
 interface Delivery {
@@ -83,10 +83,10 @@ const RESULT_STYLES: Record<Attempt['result'], string> = {
 };
 
 const RESULT_LABELS: Record<Attempt['result'], string> = {
-  delivered: 'Delivered',
-  retrying: 'Retry scheduled',
-  dropped: 'Dropped',
-  exhausted: 'Exhausted',
+  delivered: 'Entregue',
+  retrying: 'Retry agendado',
+  dropped: 'Descartado',
+  exhausted: 'Esgotado',
 };
 
 const FLOW_TONES = {
@@ -366,14 +366,14 @@ export default function WebhookDeliverySimulator() {
           : 'neutral';
 
   const receiverValue = !active
-    ? 'Waiting for a delivery'
+    ? 'Aguardando uma entrega'
     : deliveryReachedReceiver
       ? active.dedup?.outcome === 'duplicate_ignored'
-        ? 'Duplicate ignored'
-        : 'Event processed'
+        ? 'Duplicata ignorada'
+        : 'Evento processado'
       : currentAttempt?.status === null
-        ? 'Outcome unknown'
-        : 'Not reached';
+        ? 'Resultado desconhecido'
+        : 'Não alcançado';
 
   useEffect(() => {
     if (!active || selectedAttemptIndex !== null) return;
@@ -385,9 +385,9 @@ export default function WebhookDeliverySimulator() {
   }, [active, selectedAttemptIndex]);
 
   const deliveryStatus = !active
-    ? 'Ready'
+    ? 'Pronto'
     : revealing
-      ? `Following attempt ${active.revealed} of ${active.attempts.length}`
+      ? `Acompanhando a tentativa ${active.revealed} de ${active.attempts.length}`
       : RESULT_LABELS[lastVisibleAttempt!.result];
   const deliveryStatusTone = !active
     ? 'bg-muted-foreground'
@@ -418,7 +418,7 @@ export default function WebhookDeliverySimulator() {
 
         <label className="min-w-0 flex-[1.35]">
           <span className="mb-1.5 block text-xs font-medium text-muted-foreground">
-            Endpoint response
+            Resposta do endpoint
           </span>
           <select
             value={behavior}
@@ -440,14 +440,14 @@ export default function WebhookDeliverySimulator() {
             className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 lg:flex-none"
           >
             <Send className="h-4 w-4" />
-            Send event
+            Enviar evento
           </button>
           {revealing && (
             <button
               type="button"
               onClick={skipAhead}
-              title="Reveal all attempts"
-              aria-label="Reveal all attempts"
+              title="Mostrar todas as tentativas"
+              aria-label="Mostrar todas as tentativas"
               className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted"
             >
               <FastForward className="h-4 w-4" />
@@ -457,8 +457,8 @@ export default function WebhookDeliverySimulator() {
             <button
               type="button"
               onClick={reset}
-              title="Reset simulator"
-              aria-label="Reset simulator"
+              title="Reiniciar o simulador"
+              aria-label="Reiniciar o simulador"
               className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:bg-muted"
             >
               <RotateCcw className="h-4 w-4" />
@@ -467,12 +467,12 @@ export default function WebhookDeliverySimulator() {
         </div>
       </div>
 
-      <section className="border-b border-border p-4" aria-label="Webhook delivery path">
+      <section className="border-b border-border p-4" aria-label="Caminho de entrega do webhook">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="text-sm font-semibold">Delivery path</h2>
+            <h2 className="text-sm font-semibold">Caminho da entrega</h2>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              Follow one message from your app to the receiver.
+              Acompanhe uma mensagem da sua aplicação até quem recebe.
             </p>
           </div>
           <div className="min-w-0 text-right">
@@ -485,7 +485,7 @@ export default function WebhookDeliverySimulator() {
               {deliveryStatus}
             </div>
             <div className="mt-0.5 max-w-64 truncate font-mono text-[10px] text-muted-foreground">
-              {active?.messageId ?? 'Choose an event and endpoint response'}
+              {active?.messageId ?? 'Escolha um evento e a resposta do endpoint'}
             </div>
           </div>
         </div>
@@ -493,41 +493,41 @@ export default function WebhookDeliverySimulator() {
         <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
           <FlowNode
             icon={Braces}
-            label="Your app"
+            label="Sua aplicação"
             value={active?.event.eventType ?? SAMPLE_EVENTS[eventIndex].eventType}
             tone={active ? 'active' : 'neutral'}
           />
           <FlowArrow key={`${flowAnimationKey}-1`} animate={Boolean(active)} />
           <FlowNode
             icon={Inbox}
-            label="Delivery queue"
+            label="Fila de entrega"
             value={
               currentAttempt
                 ? currentAttempt.result === 'retrying'
                   ? selectedRetryDelay !== null
-                    ? `Next attempt in ${formatDelay(selectedRetryDelay)}`
-                    : 'Retry scheduled'
-                  : `Attempt ${currentAttempt.attempt} complete`
-                : 'Durable message'
+                    ? `Próxima tentativa em ${formatDelay(selectedRetryDelay)}`
+                    : 'Retry agendado'
+                  : `Tentativa ${currentAttempt.attempt} concluída`
+                : 'Mensagem durável'
             }
             tone={currentAttempt?.result === 'retrying' ? 'warning' : active ? 'active' : 'neutral'}
           />
           <FlowArrow key={`${flowAnimationKey}-2`} animate={Boolean(active)} delay={140} />
           <FlowNode
             icon={ShieldCheck}
-            label="Signed request"
+            label="Requisição assinada"
             value={active ? 'HMAC-SHA256 attached' : 'ID + time + body'}
             tone={active ? 'active' : 'neutral'}
           />
           <FlowArrow key={`${flowAnimationKey}-3`} animate={Boolean(active)} delay={280} />
           <FlowNode
             icon={Server}
-            label="Customer endpoint"
+            label="Endpoint do cliente"
             value={
               currentAttempt
                 ? currentAttempt.status === null
-                  ? 'Timed out'
-                  : `Responded ${currentAttempt.status}`
+                  ? 'Deu timeout'
+                  : `Respondeu ${currentAttempt.status}`
                 : selectedBehavior.label
             }
             tone={endpointTone}
@@ -539,7 +539,7 @@ export default function WebhookDeliverySimulator() {
           />
           <FlowNode
             icon={Webhook}
-            label="Receiver"
+            label="Quem recebe"
             value={receiverValue}
             tone={
               deliveryReachedReceiver
@@ -552,11 +552,11 @@ export default function WebhookDeliverySimulator() {
         </div>
       </section>
 
-      <section className="border-b border-border p-4" aria-label="Delivery attempts">
+      <section className="border-b border-border p-4" aria-label="Tentativas de entrega">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <Activity className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-sm font-semibold">Retry schedule</h2>
+            <h2 className="text-sm font-semibold">Cronograma de retries</h2>
             {timeWarpDelay !== null && (
               <span
                 key={`${active?.key}-${active?.revealed}`}
@@ -565,7 +565,7 @@ export default function WebhookDeliverySimulator() {
               >
                 <span className="relative z-10 inline-flex items-center gap-1.5">
                   <FastForward className="h-3 w-3" />
-                  Fast-forwarding {formatDelay(timeWarpDelay)}
+                  Avançando {formatDelay(timeWarpDelay)}
                 </span>
                 <span
                   aria-hidden="true"
@@ -577,7 +577,7 @@ export default function WebhookDeliverySimulator() {
           {active && (
             <div className="flex items-center gap-3 font-mono text-[11px] text-muted-foreground">
               <span>{stats.messages} msg</span>
-              <span>{stats.attempts} attempts</span>
+              <span>{stats.attempts} tentativas</span>
               <span>{stats.delivered} delivered</span>
               {stats.duplicatesIgnored > 0 && <span>{stats.duplicatesIgnored} deduped</span>}
             </div>
@@ -603,7 +603,7 @@ export default function WebhookDeliverySimulator() {
                         attemptRefs.current[index] = node;
                       }}
                       aria-label={`Attempt ${index + 1}${
-                        attempt ? ` at ${formatDelay(attempt.atSeconds)}` : ''
+                        attempt ? ` em ${formatDelay(attempt.atSeconds)}` : ''
                       }`}
                       className={`relative z-10 w-full rounded-md border px-2 py-2 text-left transition-colors ${
                         isSelected
@@ -622,7 +622,7 @@ export default function WebhookDeliverySimulator() {
                         {attempt
                           ? formatDelay(attempt.atSeconds)
                           : active
-                            ? 'not needed'
+                            ? 'não precisou'
                             : index === 0
                               ? 'now'
                               : 'waiting'}
@@ -639,8 +639,8 @@ export default function WebhookDeliverySimulator() {
           <div className="mt-4 flex items-center gap-3 rounded-md border border-dashed border-border px-4 py-3">
             <Clock3 className="h-5 w-5 shrink-0 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">
-              Start with <strong className="text-foreground">Intermittent</strong> to watch two
-              failures recover on the third attempt.
+              Comece por <strong className="text-foreground">Intermitente</strong> para ver duas
+              falhas se recuperarem na terceira tentativa.
             </p>
           </div>
         )}
@@ -659,7 +659,7 @@ export default function WebhookDeliverySimulator() {
                     onClick={() => setSelectedAttemptIndex(null)}
                     className="text-xs font-medium text-primary hover:underline"
                   >
-                    Follow latest
+                    Seguir a mais recente
                   </button>
                 )}
               </div>
@@ -682,11 +682,11 @@ export default function WebhookDeliverySimulator() {
                   <div>
                     <p className="font-medium">
                       {active.dedup.outcome === 'duplicate_ignored'
-                        ? 'Receiver ignored the duplicate'
-                        : 'Receiver processed this message once'}
+                        ? 'Quem recebe ignorou a duplicata'
+                        : 'Quem recebe processou esta mensagem uma única vez'}
                     </p>
                     <p className="mt-0.5 text-xs text-muted-foreground">
-                      Keyed by the stable message ID, then acknowledged with 200.
+                      Identificada pelo ID estável da mensagem e confirmada com 200.
                     </p>
                   </div>
                 </div>
@@ -694,7 +694,7 @@ export default function WebhookDeliverySimulator() {
             </div>
 
             <div className="min-w-0">
-              <p className="mb-1.5 text-xs font-medium text-muted-foreground">Endpoint response</p>
+              <p className="mb-1.5 text-xs font-medium text-muted-foreground">Resposta do endpoint</p>
               <pre className="max-h-28 overflow-auto rounded-md bg-muted/50 p-3 font-mono text-[11px] leading-relaxed">
                 {currentAttempt.responseBody}
               </pre>
@@ -704,12 +704,12 @@ export default function WebhookDeliverySimulator() {
       </section>
 
       {active && (
-        <section className="grid min-w-0 lg:grid-cols-[1fr_2fr]" aria-label="Request inspector">
+        <section className="grid min-w-0 lg:grid-cols-[1fr_2fr]" aria-label="Inspetor da requisição">
           <div className="border-b border-border p-4 lg:border-b-0 lg:border-r">
-            <h2 className="text-sm font-semibold">Inspect the delivery</h2>
+            <h2 className="text-sm font-semibold">Inspecione a entrega</h2>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              The same request can be inspected as bytes on the wire or tested against signature
-              failures.
+              A mesma requisição pode ser inspecionada como bytes na rede ou testada contra falhas de
+              assinatura.
             </p>
 
             <div className="mt-4 grid grid-cols-2 rounded-md border border-border bg-muted/30 p-1">
@@ -723,7 +723,7 @@ export default function WebhookDeliverySimulator() {
                     : 'text-muted-foreground'
                 }`}
               >
-                Request
+                Requisição
               </button>
               <button
                 type="button"
@@ -735,7 +735,7 @@ export default function WebhookDeliverySimulator() {
                     : 'text-muted-foreground'
                 }`}
               >
-                Verify signature
+                Verificar assinatura
               </button>
             </div>
 
@@ -748,7 +748,7 @@ export default function WebhookDeliverySimulator() {
                 className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-semibold hover:bg-muted"
               >
                 <RefreshCw className="h-4 w-4" />
-                Redeliver same message
+                Reenviar a mesma mensagem
               </button>
             )}
           </div>
@@ -768,7 +768,7 @@ svix-signature: ${signatureHeader || 'computing...'}`}
                 </div>
                 <div className="min-w-0">
                   <p className="mb-1.5 text-xs font-medium text-muted-foreground">
-                    Raw body {tamper === 'body' && '(edited after signing)'}
+                    Corpo bruto {tamper === 'body' && '(editado depois da assinatura)'}
                   </p>
                   <pre className="max-h-52 overflow-auto rounded-md bg-muted/50 p-3 font-mono text-[11px] leading-relaxed">
                     {presentedBody}
@@ -798,7 +798,7 @@ svix-signature: ${signatureHeader || 'computing...'}`}
                 <div className="mt-3 grid min-w-0 gap-3 md:grid-cols-[1.3fr_1fr]">
                   <div className="min-w-0">
                     <p className="mb-1.5 text-xs font-medium text-muted-foreground">
-                      Signed content
+                      Conteúdo assinado
                     </p>
                     <pre className="max-h-32 overflow-auto rounded-md bg-muted/50 p-3 font-mono text-[11px] leading-relaxed">
                       {buildSignedContent(active.messageId, active.timestamp, presentedBody)}
@@ -821,8 +821,8 @@ svix-signature: ${signatureHeader || 'computing...'}`}
                         )}
                         <p className="text-sm font-semibold">
                           {verification.valid
-                            ? 'Signature valid'
-                            : `Rejected: ${verification.failure?.replace(/_/g, ' ')}`}
+                            ? 'Assinatura válida'
+                            : `Rejeitada: ${verification.failure?.replace(/_/g, ' ')}`}
                         </p>
                       </div>
                       <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
@@ -856,7 +856,7 @@ svix-signature: ${signatureHeader || 'computing...'}`}
                   <span className="font-mono">{delivery.event.eventType}</span>
                   <StatusPill attempt={visibleAttempt} />
                   {delivery.dedup?.outcome === 'duplicate_ignored' && (
-                    <span className="text-amber-700 dark:text-amber-300">Duplicate ignored</span>
+                    <span className="text-amber-700 dark:text-amber-300">Duplicata ignorada</span>
                   )}
                 </div>
               );

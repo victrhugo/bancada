@@ -45,7 +45,7 @@ export function cumulativeDelaySeconds(attempt: number): number {
 
 /** "immediately", "5s", "5m", "2h 5m" and so on. Used in the timeline. */
 export function formatDelay(seconds: number): string {
-  if (seconds <= 0) return 'immediately';
+  if (seconds <= 0) return 'imediatamente';
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
@@ -78,60 +78,60 @@ export function classifyResponse(status: number | null): Classification {
       retryable: true,
       label: 'Timeout',
       reason:
-        'No response before the timeout. The receiver may have processed this anyway, so a retry can produce a duplicate. Retrying is still right; the receiver has to be safe to run twice.',
+        'Nenhuma resposta antes do timeout. Quem recebe pode ter processado a mensagem mesmo assim, então um retry pode gerar duplicidade. Tentar de novo continua sendo o certo; o lado que recebe precisa ser seguro para rodar duas vezes.',
     };
   }
   if (status >= 200 && status < 300) {
-    return { retryable: true, label: `${status} OK`, reason: 'Delivered. The chain ends here.' };
+    return { retryable: true, label: `${status} OK`, reason: 'Entregue. A cadeia termina aqui.' };
   }
   if (status === 429) {
     return {
       retryable: true,
-      label: '429 Rate limited',
+      label: '429 Rate limit',
       reason:
-        'You are sending faster than this endpoint accepts. Retry, but also lower the configured rate for it, or the same thing happens on every event.',
+        'Você está enviando mais rápido do que este endpoint aceita. Tente de novo, mas também reduza a taxa configurada para ele, ou o mesmo vai acontecer em todo evento.',
     };
   }
   if (status === 408) {
     return {
       retryable: true,
       label: '408 Request Timeout',
-      reason: 'The server asked for the request again. Retryable.',
+      reason: 'O servidor pediu a requisição de novo. Pode tentar outra vez.',
     };
   }
   if (status >= 500) {
     return {
       retryable: true,
-      label: `${status} Server error`,
+      label: `${status} Erro no servidor`,
       reason:
-        'The endpoint is broken right now, which is the case retries exist for. Often a deploy in progress.',
+        'O endpoint está quebrado agora, que é exatamente o caso para o qual retries existem. Muitas vezes é um deploy em andamento.',
     };
   }
   if (status === 401 || status === 403) {
     return {
       retryable: false,
-      label: `${status} Auth failure`,
+      label: `${status} Falha de autenticação`,
       reason:
-        'Their credentials are wrong. No number of retries fixes a misconfiguration, so this stops here.',
+        'As credenciais estão erradas. Nenhuma quantidade de retries corrige uma configuração errada, então a entrega para aqui.',
     };
   }
   if (status === 404 || status === 410) {
     return {
       retryable: false,
-      label: `${status} Gone`,
+      label: `${status} Não existe`,
       reason:
-        'The URL does not exist. 410 in particular is an explicit "stop sending", so treat it as final.',
+        'A URL não existe. O 410 em especial é um "pare de enviar" explícito, então trate como definitivo.',
     };
   }
   if (status >= 400) {
     return {
       retryable: false,
-      label: `${status} Bad request`,
+      label: `${status} Requisição inválida`,
       reason:
-        'The endpoint rejected the payload itself. Ten identical retries are ten identical rejections, so this drops immediately instead of burning the schedule.',
+        'O endpoint rejeitou o próprio payload. Dez retries idênticos são dez rejeições idênticas, então a mensagem é descartada na hora em vez de gastar o cronograma.',
     };
   }
-  return { retryable: true, label: `${status}`, reason: 'Unexpected status. Treated as retryable.' };
+  return { retryable: true, label: `${status}`, reason: 'Status inesperado. Tratado como passível de retry.' };
 }
 
 export interface Attempt {
@@ -206,9 +206,9 @@ export function simulateDelivery(
 
     let explanation = cls.reason;
     if (result === 'retrying') {
-      explanation += ` Next attempt in ${formatDelay(RETRY_GAPS_SECONDS[n] ?? 0)}.`;
+      explanation += ` Próxima tentativa em ${formatDelay(RETRY_GAPS_SECONDS[n] ?? 0)}.`;
     } else if (result === 'exhausted') {
-      explanation += ` That was attempt ${n} of ${maxAttempts}, so the message is marked Failed and an operational webhook (message.attempt.exhausted) fires.`;
+      explanation += ` Essa foi a tentativa ${n} de ${maxAttempts}, então a mensagem é marcada como Failed e um webhook operacional (message.attempt.exhausted) é disparado.`;
     }
 
     attempts.push({
@@ -322,7 +322,7 @@ export async function verifyWebhook(params: {
       valid: false,
       failure: 'missing_headers',
       detail:
-        'One of svix-id, svix-timestamp or svix-signature is missing. Reject with 400 before doing any work.',
+        'Falta um dos headers svix-id, svix-timestamp ou svix-signature. Rejeite com 400 antes de fazer qualquer trabalho.',
     };
   }
 
@@ -331,9 +331,9 @@ export async function verifyWebhook(params: {
     return {
       valid: false,
       failure: 'timestamp_out_of_tolerance',
-      detail: `The timestamp is ${formatDelay(skew)} from now, outside the ${formatDelay(
+      detail: `O timestamp está a ${formatDelay(skew)} de agora, fora da tolerância de ${formatDelay(
         TIMESTAMP_TOLERANCE_SECONDS,
-      )} tolerance. This is what stops someone replaying a request they captured earlier. Note that a badly wrong server clock produces this same error.`,
+      )}. É isso que impede alguém de reenviar uma requisição capturada antes. Atenção: um relógio de servidor muito errado gera esse mesmo erro.`,
     };
   }
 
@@ -354,7 +354,7 @@ export async function verifyWebhook(params: {
       valid: false,
       failure: 'malformed_signature',
       detail:
-        'No v1 signature in the header. Each entry looks like "v1,<base64>", space-delimited when more than one secret is live.',
+        'Não há assinatura v1 no header. Cada entrada tem o formato "v1,<base64>", separadas por espaço quando há mais de um segredo ativo.',
       expected,
     };
   }
@@ -363,7 +363,7 @@ export async function verifyWebhook(params: {
     return {
       valid: true,
       detail:
-        'The digest matches, so the body is byte-for-byte what was signed and it was signed with your secret. In real code compare with a constant-time function, not ===.',
+        'O digest confere: o corpo é, byte a byte, o que foi assinado, e foi assinado com o seu segredo. Em código real, compare com uma função de tempo constante, e não com ===.',
       expected,
     };
   }
@@ -372,7 +372,7 @@ export async function verifyWebhook(params: {
     valid: false,
     failure: 'signature_mismatch',
     detail:
-      'The digest does not match. Either the body changed in transit (or was re-serialized before verifying, which is the usual cause), or it was signed with a different secret.',
+      'O digest não confere. Ou o corpo mudou no caminho (ou foi re-serializado antes da verificação, que é a causa mais comum), ou foi assinado com outro segredo.',
     expected,
   };
 }
@@ -400,14 +400,14 @@ export function applyDedup(seen: Set<string>, messageId: string): DedupDecision 
     return {
       outcome: 'duplicate_ignored',
       status: 200,
-      detail: `Already processed ${messageId}. Return 200 so the sender stops retrying, and do not run the handler again.`,
+      detail: `${messageId} já foi processada. Responda 200 para quem envia parar os retries, e não rode o handler de novo.`,
     };
   }
   seen.add(messageId);
   return {
     outcome: 'processed',
     status: 200,
-    detail: `First time seeing ${messageId}. Write the dedup row and do the work in one transaction, so a crash rolls back both and the retry gets a clean attempt.`,
+    detail: `Primeira vez que ${messageId} aparece. Grave a linha de deduplicação e faça o trabalho na mesma transação, para que uma queda desfaça os dois e o retry tenha uma tentativa limpa.`,
   };
 }
 
