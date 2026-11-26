@@ -63,21 +63,21 @@ const STRATEGY_CONFIG: Record<DRStrategy, {
     emoji: '🔥',
     recoveryTime: 5,
     dataLossMinutes: 0,
-    description: 'Always running, instantly ready',
+    description: 'Sempre rodando, pronto na hora',
   },
   warm: {
     name: 'Warm Backup',
     emoji: '🌡️',
     recoveryTime: 60,
     dataLossMinutes: 15,
-    description: 'Ready to start, some setup needed',
+    description: 'Pronto para subir, com alguma configuração',
   },
   cold: {
     name: 'Cold Backup',
     emoji: '❄️',
     recoveryTime: 480,
     dataLossMinutes: 1440,
-    description: 'Needs full setup when disaster hits',
+    description: 'Precisa ser montado do zero quando o desastre acontece',
   },
 };
 
@@ -86,8 +86,8 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
   return [
     {
       phase: 'intro',
-      title: 'Your Business is Running',
-      narrative: 'Meet your app. It serves customers, processes orders, and stores important data. Everything is working perfectly.',
+      title: 'Seu negócio está funcionando',
+      narrative: 'Conheça sua aplicação. Ela atende clientes, processa pedidos e guarda dados importantes. Tudo está funcionando perfeitamente.',
       primaryStatus: 'online',
       backupStatus: strategy === 'hot' ? 'syncing' : 'idle',
       customersServed: true,
@@ -96,9 +96,9 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'normal-ops',
-      title: 'Daily Operations',
-      narrative: 'Every minute, new data is created: customer orders, user accounts, payments. Your backup copies this data ' +
-        (strategy === 'hot' ? 'in real-time.' : strategy === 'warm' ? 'every 15 minutes.' : 'once a day.'),
+      title: 'Operação do dia a dia',
+      narrative: 'A cada minuto, novos dados surgem: pedidos, contas de usuário, pagamentos. Seu backup copia esses dados ' +
+        (strategy === 'hot' ? 'em tempo real.' : strategy === 'warm' ? 'a cada 15 minutos.' : 'uma vez por dia.'),
       primaryStatus: 'online',
       backupStatus: strategy === 'hot' ? 'syncing' : 'idle',
       customersServed: true,
@@ -107,8 +107,8 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'disaster-strikes',
-      title: '⚠️ DISASTER STRIKES!',
-      narrative: 'Your main data center catches fire! Servers go down. The system is completely offline.',
+      title: '⚠️ O DESASTRE ACONTECE!',
+      narrative: 'O seu data center principal pega fogo! Os servidores caem. O sistema está totalmente fora do ar.',
       primaryStatus: 'offline',
       backupStatus: strategy === 'hot' ? 'syncing' : 'idle',
       customersServed: false,
@@ -117,8 +117,8 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'customers-affected',
-      title: 'Customers Can\'t Access Your Service',
-      narrative: 'Every minute of downtime costs you money and trust. Customers see error pages. Orders can\'t be placed. Support tickets pile up.',
+      title: 'Os clientes não conseguem acessar o serviço',
+      narrative: 'Cada minuto fora do ar custa dinheiro e confiança. Os clientes veem páginas de erro, pedidos não podem ser feitos e os chamados de suporte se acumulam.',
       primaryStatus: 'offline',
       backupStatus: 'activating',
       customersServed: false,
@@ -127,12 +127,12 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'recovery-begins',
-      title: 'Activating Backup Systems',
+      title: 'Ativando os sistemas de backup',
       narrative: strategy === 'hot'
-        ? 'Your hot backup instantly takes over! It was running in parallel all along.'
+        ? 'O hot backup assume na hora! Ele estava rodando em paralelo o tempo todo.'
         : strategy === 'warm'
-        ? 'Your team starts the warm backup. Servers boot up and load the latest data snapshot.'
-        : 'Engineers rush to the cold backup site. They must set up everything from scratch.',
+        ? 'O time liga o warm backup. Os servidores sobem e carregam o snapshot de dados mais recente.'
+        : 'Os engenheiros correm para o site de cold backup. É preciso montar tudo do zero.',
       primaryStatus: 'offline',
       backupStatus: 'activating',
       customersServed: strategy === 'hot',
@@ -141,8 +141,8 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'rpo-explained',
-      title: 'Understanding Data Loss (RPO)',
-      narrative: `RPO = Recovery Point Objective = How much data can you afford to lose?\n\nWith your ${config.name}: You lost ${config.dataLossMinutes === 0 ? 'ZERO' : config.dataLossMinutes + ' minutes of'} data because your backup ${strategy === 'hot' ? 'syncs in real-time' : strategy === 'warm' ? 'syncs every 15 minutes' : 'only syncs daily'}.`,
+      title: 'Entendendo a perda de dados (RPO)',
+      narrative: `RPO = Recovery Point Objective = quanto de dados você pode se dar ao luxo de perder?\n\nCom o seu ${config.name}: você perdeu ${config.dataLossMinutes === 0 ? 'ZERO minutos de' : config.dataLossMinutes + ' minutos de'} dados porque o seu backup ${strategy === 'hot' ? 'sincroniza em tempo real' : strategy === 'warm' ? 'sincroniza a cada 15 minutos' : 'só sincroniza uma vez por dia'}.`,
       primaryStatus: 'offline',
       backupStatus: 'activating',
       customersServed: strategy === 'hot',
@@ -151,8 +151,8 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'rto-explained',
-      title: 'Understanding Downtime (RTO)',
-      narrative: `RTO = Recovery Time Objective = How long until you're back online?\n\nWith your ${config.name}: Customers waited ${config.recoveryTime < 60 ? config.recoveryTime + ' minutes' : Math.floor(config.recoveryTime / 60) + ' hours'} for service to return.`,
+      title: 'Entendendo o tempo fora do ar (RTO)',
+      narrative: `RTO = Recovery Time Objective = quanto tempo até voltar ao ar?\n\nCom o seu ${config.name}: os clientes esperaram ${config.recoveryTime < 60 ? config.recoveryTime + ' minutos' : Math.floor(config.recoveryTime / 60) + ' horas'} até o serviço voltar.`,
       primaryStatus: 'recovering',
       backupStatus: 'active',
       customersServed: true,
@@ -161,8 +161,8 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'system-restored',
-      title: 'Back Online!',
-      narrative: 'Your backup system is now serving all customers. Business continues from the backup site.',
+      title: 'De volta ao ar!',
+      narrative: 'O sistema de backup agora atende todos os clientes. O negócio continua a partir do site de backup.',
       primaryStatus: 'offline',
       backupStatus: 'active',
       customersServed: true,
@@ -171,8 +171,8 @@ function createStorySteps(strategy: DRStrategy): StoryStep[] {
     },
     {
       phase: 'summary',
-      title: 'Disaster Recovery Summary',
-      narrative: `With your ${config.name} strategy:\n• Downtime: ${config.recoveryTime < 60 ? config.recoveryTime + ' minutes' : Math.floor(config.recoveryTime / 60) + ' hours'}\n• Data Lost: ${config.dataLossMinutes === 0 ? 'None!' : config.dataLossMinutes + ' minutes worth'}`,
+      title: 'Resumo da recuperação de desastre',
+      narrative: `Com a estratégia ${config.name}:\n• Tempo fora do ar: ${config.recoveryTime < 60 ? config.recoveryTime + ' minutos' : Math.floor(config.recoveryTime / 60) + ' horas'}\n• Dados perdidos: ${config.dataLossMinutes === 0 ? 'nenhum!' : config.dataLossMinutes + ' minutos de dados'}`,
       primaryStatus: 'offline',
       backupStatus: 'active',
       customersServed: true,
@@ -256,11 +256,11 @@ function DataCenterVisual({
         )}>
           {status === 'online' && '● Online'}
           {status === 'offline' && '○ Offline'}
-          {status === 'idle' && '○ Standby'}
-          {status === 'syncing' && '↻ Syncing'}
-          {status === 'activating' && '◐ Starting...'}
-          {status === 'active' && '● Active'}
-          {status === 'recovering' && '◐ Recovering'}
+          {status === 'idle' && '○ Em espera'}
+          {status === 'syncing' && '↻ Sincronizando'}
+          {status === 'activating' && '◐ Iniciando...'}
+          {status === 'active' && '● Ativo'}
+          {status === 'recovering' && '◐ Recuperando'}
         </Badge>
       </div>
     </motion.div>
@@ -306,7 +306,7 @@ function CustomerVisual({ served }: { served: boolean }) {
         'text-xs font-medium',
         served ? 'text-green-600' : 'text-red-600',
       )}>
-        {served ? 'Customers Happy!' : 'Customers Waiting...'}
+        {served ? 'Clientes satisfeitos!' : 'Clientes esperando...'}
       </span>
     </motion.div>
   );
@@ -344,7 +344,7 @@ function DataFlowArrow({ active, direction }: { active: boolean; direction: 'rig
         )} />
       </motion.div>
       <span className="text-xs text-muted-foreground">
-        {active ? 'Data flowing' : 'No connection'}
+        {active ? 'Dados fluindo' : 'Sem conexão'}
       </span>
     </div>
   );
@@ -501,15 +501,15 @@ export default function BCDRSimulator() {
             >
               🏢💥☁️
             </motion.div>
-            <h2 className="text-2xl font-bold mb-2">What happens when disaster strikes?</h2>
+            <h2 className="text-2xl font-bold mb-2">O que acontece quando o desastre chega?</h2>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Learn how businesses recover from disasters like fires, floods, or cyberattacks.
-              See the difference between Hot, Warm, and Cold backup strategies.
+              Aprenda como empresas se recuperam de desastres como incêndios, enchentes ou ataques
+              cibernéticos. Veja a diferença entre as estratégias de backup hot, warm e cold.
             </p>
           </div>
 
           <div className="bg-muted/50 p-4 rounded-lg">
-            <h3 className="font-semibold mb-3">Choose your backup strategy:</h3>
+            <h3 className="font-semibold mb-3">Escolha sua estratégia de backup:</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {(Object.keys(STRATEGY_CONFIG) as DRStrategy[]).map((s) => (
                 <button
@@ -535,7 +535,7 @@ export default function BCDRSimulator() {
           <div className="text-center">
             <Button size="lg" onClick={handleStart} className="gap-2">
               <Play className="w-5 h-5" />
-              Start Simulation
+              Iniciar simulação
             </Button>
           </div>
         </CardContent>
@@ -549,7 +549,7 @@ export default function BCDRSimulator() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Shield className="w-6 h-6 text-blue-500" />
-            BCDR Simulator
+            Simulador de BCDR
             <Badge variant="outline">{config.emoji} {config.name}</Badge>
           </CardTitle>
           <div className="flex gap-2">
@@ -595,7 +595,7 @@ export default function BCDRSimulator() {
               animate={{ opacity: [1, 0.3, 1] }}
               transition={{ repeat: Infinity, duration: 1 }}
             />
-            <span>Auto-playing... Press Space to pause, or wait for the next step</span>
+            <span>Reproduzindo automaticamente... aperte Espaço para pausar ou espere o próximo passo</span>
           </motion.div>
         )}
       </CardHeader>
@@ -627,7 +627,7 @@ export default function BCDRSimulator() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 py-6">
           <DataCenterVisual
             status={step.primaryStatus}
-            label="Main Site"
+            label="Site principal"
             isPrimary={true}
             showFire={showFire}
           />
@@ -639,7 +639,7 @@ export default function BCDRSimulator() {
           
           <DataCenterVisual
             status={step.backupStatus}
-            label="Backup Site"
+            label="Site de backup"
             isPrimary={false}
           />
           
@@ -660,29 +660,29 @@ export default function BCDRSimulator() {
           >
             <MetricCard
               icon={Clock}
-              label="RTO (Downtime)"
+              label="RTO (tempo fora do ar)"
               value={config.recoveryTime < 60 ? `${config.recoveryTime}m` : `${Math.floor(config.recoveryTime / 60)}h`}
-              subtext="Time to recover"
+              subtext="Tempo para recuperar"
               variant={config.recoveryTime <= 15 ? 'success' : config.recoveryTime <= 60 ? 'warning' : 'danger'}
             />
             <MetricCard
               icon={Database}
-              label="RPO (Data Loss)"
-              value={config.dataLossMinutes === 0 ? 'None' : `${config.dataLossMinutes}m`}
-              subtext="Data at risk"
+              label="RPO (perda de dados)"
+              value={config.dataLossMinutes === 0 ? 'Nenhuma' : `${config.dataLossMinutes}m`}
+              subtext="Dados em risco"
               variant={config.dataLossMinutes === 0 ? 'success' : config.dataLossMinutes <= 15 ? 'warning' : 'danger'}
             />
             <MetricCard
               icon={Shield}
-              label="Strategy"
+              label="Estratégia"
               value={config.name}
               subtext={config.emoji}
             />
             <MetricCard
               icon={CheckCircle}
               label="Status"
-              value={step.customersServed ? 'Serving' : 'Down'}
-              subtext={step.customersServed ? 'Customers happy' : 'Customers waiting'}
+              value={step.customersServed ? 'Atendendo' : 'Fora do ar'}
+              subtext={step.customersServed ? 'Clientes satisfeitos' : 'Clientes esperando'}
               variant={step.customersServed ? 'success' : 'danger'}
             />
           </motion.div>
@@ -717,9 +717,9 @@ export default function BCDRSimulator() {
             <Keyboard className="w-3 h-3" />
             Shortcuts:
           </span>
-          <span><kbd className="px-1 py-0.5 bg-muted rounded text-xs">Space</kbd> Play/Pause</span>
-          <span><kbd className="px-1 py-0.5 bg-muted rounded text-xs">←</kbd><kbd className="px-1 py-0.5 bg-muted rounded text-xs">→</kbd> Navigate</span>
-          <span><kbd className="px-1 py-0.5 bg-muted rounded text-xs">R</kbd> Reset</span>
+          <span><kbd className="px-1 py-0.5 bg-muted rounded text-xs">Espaço</kbd> Reproduzir/Pausar</span>
+          <span><kbd className="px-1 py-0.5 bg-muted rounded text-xs">←</kbd><kbd className="px-1 py-0.5 bg-muted rounded text-xs">→</kbd> Navegar</span>
+          <span><kbd className="px-1 py-0.5 bg-muted rounded text-xs">R</kbd> Reiniciar</span>
         </div>
 
         {/* Strategy comparison at summary */}
@@ -729,35 +729,35 @@ export default function BCDRSimulator() {
             animate={{ opacity: 1 }}
             className="border rounded-lg p-4 bg-muted/30"
           >
-            <h3 className="font-semibold mb-3">Compare All Strategies</h3>
+            <h3 className="font-semibold mb-3">Compare todas as estratégias</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-2">Strategy</th>
-                    <th className="text-center py-2">Recovery Time</th>
-                    <th className="text-center py-2">Data Loss Risk</th>
-                    <th className="text-center py-2">Best For</th>
+                    <th className="text-left py-2">Estratégia</th>
+                    <th className="text-center py-2">Tempo de recuperação</th>
+                    <th className="text-center py-2">Risco de perda de dados</th>
+                    <th className="text-center py-2">Ideal para</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className={cn('border-b', strategy === 'hot' && 'bg-primary/10')}>
                     <td className="py-2">🔥 Hot</td>
-                    <td className="text-center text-green-600">~5 minutes</td>
-                    <td className="text-center text-green-600">None</td>
-                    <td className="text-center text-xs">Banks, Hospitals</td>
+                    <td className="text-center text-green-600">~5 minutos</td>
+                    <td className="text-center text-green-600">Nenhum</td>
+                    <td className="text-center text-xs">Bancos, hospitais</td>
                   </tr>
                   <tr className={cn('border-b', strategy === 'warm' && 'bg-primary/10')}>
                     <td className="py-2">🌡️ Warm</td>
-                    <td className="text-center text-yellow-600">~1 hour</td>
+                    <td className="text-center text-yellow-600">~1 hora</td>
                     <td className="text-center text-yellow-600">15 min</td>
                     <td className="text-center text-xs">E-commerce, SaaS</td>
                   </tr>
                   <tr className={cn(strategy === 'cold' && 'bg-primary/10')}>
                     <td className="py-2">❄️ Cold</td>
-                    <td className="text-center text-red-600">~8 hours</td>
-                    <td className="text-center text-red-600">24 hours</td>
-                    <td className="text-center text-xs">Archives, Dev/Test</td>
+                    <td className="text-center text-red-600">~8 horas</td>
+                    <td className="text-center text-red-600">24 horas</td>
+                    <td className="text-center text-xs">Arquivos, dev/teste</td>
                   </tr>
                 </tbody>
               </table>
@@ -765,7 +765,7 @@ export default function BCDRSimulator() {
             <div className="mt-4 text-center">
               <Button onClick={handleReset} variant="default" className="gap-2">
                 <RotateCcw className="w-4 h-4" />
-                Try Another Strategy
+                Testar outra estratégia
               </Button>
             </div>
           </motion.div>

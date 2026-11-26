@@ -54,13 +54,13 @@ interface Achievement {
 
 // Achievements list
 const ACHIEVEMENTS_LIST: Achievement[] = [
-  { id: 'first_server', title: 'First Infection', description: 'Compromise your first server', unlocked: false, icon: '🦠' },
-  { id: 'servers_5', title: 'Spreading', description: 'Infect 5 servers', unlocked: false, icon: '🔥' },
-  { id: 'servers_10', title: 'Outbreak', description: 'Infect 10 servers', unlocked: false, icon: '💥' },
-  { id: 'servers_20', title: 'Pandemic', description: 'Infect 20 servers', unlocked: false, icon: '🌍' },
-  { id: 'servers_50', title: 'System Failure', description: 'Infect 50 servers', unlocked: false, icon: '💀' },
-  { id: 'speed_demon', title: 'Lightning Bug', description: 'Reach maximum speed', unlocked: false, icon: '⚡' },
-  { id: 'survivor', title: 'Persistent Threat', description: 'Survive for 60 seconds', unlocked: false, icon: '⏰' },
+  { id: 'first_server', title: 'Primeira infecção', description: 'Comprometa o seu primeiro servidor', unlocked: false, icon: '🦠' },
+  { id: 'servers_5', title: 'Espalhando', description: 'Infecte 5 servidores', unlocked: false, icon: '🔥' },
+  { id: 'servers_10', title: 'Surto', description: 'Infecte 10 servidores', unlocked: false, icon: '💥' },
+  { id: 'servers_20', title: 'Pandemia', description: 'Infecte 20 servidores', unlocked: false, icon: '🌍' },
+  { id: 'servers_50', title: 'Pane geral', description: 'Infecte 50 servidores', unlocked: false, icon: '💀' },
+  { id: 'speed_demon', title: 'Bug relâmpago', description: 'Atinja a velocidade máxima', unlocked: false, icon: '⚡' },
+  { id: 'survivor', title: 'Ameaça persistente', description: 'Sobreviva por 60 segundos', unlocked: false, icon: '⏰' },
 ];
 
 export default function BugHunter() {
@@ -370,7 +370,7 @@ return (
            </h2>
          </div>
          <p className="text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto">
-         Control a glitch that infects healthy servers. Grow longer with each infection, but don't crash!
+         Controle um bug que infecta servidores saudáveis. Cresça a cada infecção, mas não bata!
        </p>
       </div>
 
@@ -385,7 +385,7 @@ return (
                   className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
                 >
                   <Play className="w-5 h-5 mr-2" />
-                  Start Game
+                  Iniciar jogo
                 </Button>
               ) : (
                 <>
@@ -395,9 +395,9 @@ return (
                     variant="outline"
                   >
                     {isPaused ? (
-                      <><Play className="w-5 h-5 mr-2" /> Resume</>
+                      <><Play className="w-5 h-5 mr-2" /> Continuar</>
                     ) : (
-                      <><Pause className="w-5 h-5 mr-2" /> Pause</>
+                      <><Pause className="w-5 h-5 mr-2" /> Pausar</>
                     )}
                   </Button>
                   <Button
@@ -406,7 +406,7 @@ return (
                     variant="outline"
                   >
                     <RotateCcw className="w-5 h-5 mr-2" />
-                    Reset
+                    Reiniciar
                   </Button>
                 </>
               )}
@@ -422,36 +422,36 @@ return (
              <CardHeader>
                <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
                  <Trophy className="w-5 h-5 text-yellow-400" />
-                 Score
+                 Pontuação
                </CardTitle>
              </CardHeader>
              <CardContent className="space-y-4">
                <div className="space-y-2">
                  <div className="flex justify-between items-center">
-                   <span className="text-sm text-slate-600 dark:text-gray-400">Current</span>
+                   <span className="text-sm text-slate-600 dark:text-gray-400">Atual</span>
                    <span className="text-3xl font-bold text-slate-900 dark:text-white">{score}</span>
                  </div>
                  <div className="flex justify-between items-center">
-                   <span className="text-sm text-slate-600 dark:text-gray-400">High Score</span>
+                   <span className="text-sm text-slate-600 dark:text-gray-400">Recorde</span>
                    <span className="text-xl font-bold text-yellow-400">{highScore}</span>
                  </div>
                </div>
                
                <div className="pt-4 border-t border-slate-300 dark:border-slate-700/50 space-y-2">
                  <div className="flex justify-between items-center">
-                   <span className="text-sm text-slate-600 dark:text-gray-400">Servers Infected</span>
+                   <span className="text-sm text-slate-600 dark:text-gray-400">Servidores infectados</span>
                    <span className="text-lg font-bold text-red-400">{serversInfected}</span>
                  </div>
                  <div className="flex justify-between items-center">
-                   <span className="text-sm text-slate-600 dark:text-gray-400">Bug Length</span>
+                   <span className="text-sm text-slate-600 dark:text-gray-400">Tamanho do bug</span>
                    <span className="text-lg font-bold text-orange-400">{bug.length}</span>
                  </div>
                  <div className="flex justify-between items-center">
-                   <span className="text-sm text-slate-600 dark:text-gray-400">Time</span>
+                   <span className="text-sm text-slate-600 dark:text-gray-400">Tempo</span>
                    <span className="text-lg font-bold text-blue-400">{gameTime}s</span>
                  </div>
                  <div className="flex justify-between items-center">
-                   <span className="text-sm text-slate-600 dark:text-gray-400">Speed</span>
+                   <span className="text-sm text-slate-600 dark:text-gray-400">Velocidade</span>
                    <span className="text-lg font-bold text-purple-400">
                       {Math.round((1000 / speed) * 10) / 10} moves/s
                     </span>
@@ -528,16 +528,16 @@ return (
                      >
                        <div className="text-center p-8 max-w-md bg-white dark:bg-slate-900 rounded-2xl border-2 border-slate-300 dark:border-slate-700 shadow-2xl">
                         <Bug className="w-16 h-16 text-red-500 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">How to Play</h3>
+                        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Como jogar</h3>
                         <div className="text-left space-y-2 text-slate-700 dark:text-gray-300 mb-6">
-                           <p>• Control the <span className="text-red-400 font-semibold">bug</span> to infect <span className="text-green-400 font-semibold">healthy servers</span></p>
-                            <p>• The bug grows longer with each infection</p>
-                            <p>• Avoid crashing into walls or yourself</p>
-                            <p>• Speed increases as you infect more servers</p>
-                            <p>• Unlock achievements as you progress</p>
+                           <p>• Controle o <span className="text-red-400 font-semibold">bug</span> para infectar <span className="text-green-400 font-semibold">servidores saudáveis</span></p>
+                            <p>• O bug cresce a cada infecção</p>
+                            <p>• Não bata nas paredes nem em você mesmo</p>
+                            <p>• A velocidade aumenta conforme você infecta mais servidores</p>
+                            <p>• Desbloqueie conquistas conforme avança</p>
                           </div>
                           <Button onClick={startGame} size="lg">
-                            Start Game
+                            Iniciar jogo
                           </Button>
                         </div>
                       </motion.div>
@@ -555,8 +555,8 @@ return (
                      >
                        <div className="text-center">
                          <Pause className="w-16 h-16 text-slate-900 dark:text-white mx-auto mb-4" />
-                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Paused</h3>
-                         <p className="text-slate-700 dark:text-gray-400">Press Space to resume</p>
+                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Pausado</h3>
+                         <p className="text-slate-700 dark:text-gray-400">Aperte Espaço para continuar</p>
                        </div>
                      </motion.div>
                     )}
@@ -574,25 +574,25 @@ return (
                        <div className="text-center p-8 bg-slate-100/90 dark:bg-slate-900/90 rounded-2xl border-2 border-red-500/50 shadow-2xl max-w-md">
                          <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
                          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-                           {gameOverReason === 'wall' ? 'Bug Patched!' : 'System Crash!'}
+                           {gameOverReason === 'wall' ? 'Bug corrigido!' : 'O sistema travou!'}
                          </h3>
                          <p className="text-slate-600 dark:text-gray-400 mb-4">
                            {gameOverReason === 'wall'
-                             ? 'The bug hit a firewall and was patched!'
-                             : 'The bug corrupted itself and crashed!'}
+                             ? 'O bug bateu em um firewall e foi corrigido!'
+                             : 'O bug corrompeu a si mesmo e travou!'}
                          </p>
                          <div className="grid grid-cols-2 gap-4 mb-6">
                            <div className="p-4 bg-slate-200/80 dark:bg-slate-800/50 rounded-lg">
                              <div className="text-3xl font-bold text-orange-400">
                                {score}
                              </div>
-                             <div className="text-sm text-slate-600 dark:text-gray-400">Final Score</div>
+                             <div className="text-sm text-slate-600 dark:text-gray-400">Pontuação final</div>
                            </div>
                            <div className="p-4 bg-slate-200/80 dark:bg-slate-800/50 rounded-lg">
                              <div className="text-3xl font-bold text-red-400">
                                {serversInfected}
                              </div>
-                             <div className="text-sm text-slate-600 dark:text-gray-400">Infected</div>
+                             <div className="text-sm text-slate-600 dark:text-gray-400">Infectados</div>
                            </div>
                          </div>
                           {score === highScore && highScore > 0 && (
@@ -607,7 +607,7 @@ return (
                             className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
                           >
                             <RotateCcw className="w-4 h-4 mr-2" />
-                            Try Again
+                            Tentar de novo
                           </Button>
                         </div>
                       </motion.div>
@@ -646,13 +646,13 @@ return (
                     <div className="w-6 h-6 rounded bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center">
                       <Bug className="w-4 h-4 text-white" />
                     </div>
-                   <span className="text-slate-600 dark:text-gray-400">Bug (You)</span>
+                   <span className="text-slate-600 dark:text-gray-400">Bug (você)</span>
                  </div>
                  <div className="flex items-center gap-2">
                    <div className="w-6 h-6 rounded bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
                      <Server className="w-4 h-4 text-white" />
                    </div>
-                   <span className="text-slate-600 dark:text-gray-400">Healthy Server</span>
+                   <span className="text-slate-600 dark:text-gray-400">Servidor saudável</span>
                  </div>
                </div>
              </CardContent>
@@ -665,25 +665,25 @@ return (
              <CardHeader>
                <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
                  <Info className="w-5 h-5 text-blue-400" />
-                 Controls
+                 Controles
                </CardTitle>
              </CardHeader>
              <CardContent className="space-y-3 text-sm">
                <div className="flex items-center gap-3">
                  <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-400 dark:border-slate-700 text-slate-900 dark:text-white font-mono">↑ ↓ ← →</kbd>
-                 <span className="text-slate-600 dark:text-gray-400">Move</span>
+                 <span className="text-slate-600 dark:text-gray-400">Mover</span>
                </div>
                <div className="flex items-center gap-3">
                  <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-400 dark:border-slate-700 text-slate-900 dark:text-white font-mono">W A S D</kbd>
-                 <span className="text-slate-600 dark:text-gray-400">Alternative</span>
+                 <span className="text-slate-600 dark:text-gray-400">Alternativa</span>
                </div>
                <div className="flex items-center gap-3">
-                 <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-400 dark:border-slate-700 text-slate-900 dark:text-white font-mono">Space</kbd>
-                 <span className="text-slate-600 dark:text-gray-400">Pause</span>
+                 <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-400 dark:border-slate-700 text-slate-900 dark:text-white font-mono">Espaço</kbd>
+                 <span className="text-slate-600 dark:text-gray-400">Pausar</span>
                </div>
                <div className="flex items-center gap-3">
                  <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded border border-slate-400 dark:border-slate-700 text-slate-900 dark:text-white font-mono">Enter</kbd>
-                 <span className="text-slate-600 dark:text-gray-400">Start</span>
+                 <span className="text-slate-600 dark:text-gray-400">Iniciar</span>
                </div>
              </CardContent>
            </Card>
@@ -695,7 +695,7 @@ return (
          <CardHeader>
            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
              <Award className="w-5 h-5 text-yellow-400" />
-             Achievements
+             Conquistas
            </CardTitle>
             <CardDescription>
               {achievements.filter(a => a.unlocked).length} / {achievements.length} unlocked
@@ -740,14 +740,14 @@ return (
              </div>
              <div>
                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
-                 Real-World Security Lessons
+                 Lições de segurança do mundo real
                </h3>
                <ul className="text-sm text-slate-700 dark:text-gray-300 space-y-1">
-                 <li>• <strong>Lateral Movement:</strong> Like the bug spreading, attackers move through networks after initial breach</li>
-                  <li>• <strong>Rapid Propagation:</strong> Malware can quickly spread to vulnerable systems (like WannaCry ransomware)</li>
-                  <li>• <strong>Containment:</strong> Early detection and isolation prevent widespread infection</li>
-                  <li>• <strong>Defense in Depth:</strong> Multiple security layers slow down attackers (the walls in the game)</li>
-                  <li>• <strong>Monitoring:</strong> Track system behavior to detect anomalies before they spread</li>
+                 <li>• <strong>Movimento lateral:</strong> como o bug se espalhando, atacantes avançam pela rede depois da invasão inicial</li>
+                  <li>• <strong>Propagação rápida:</strong> malwares podem se espalhar rápido por sistemas vulneráveis (como o ransomware WannaCry)</li>
+                  <li>• <strong>Contenção:</strong> detecção precoce e isolamento evitam uma infecção generalizada</li>
+                  <li>• <strong>Defesa em profundidade:</strong> várias camadas de segurança atrasam os atacantes (as paredes do jogo)</li>
+                  <li>• <strong>Monitoramento:</strong> acompanhe o comportamento do sistema para detectar anomalias antes que se espalhem</li>
                 </ul>
               </div>
             </div>
