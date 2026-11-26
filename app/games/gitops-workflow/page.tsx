@@ -12,9 +12,9 @@ export default function GitOpsWorkflowPage() {
     <SimulatorShell
       slug="gitops-workflow"
       seoLearningPoints={[
-        'Understand the GitOps deployment model',
-        'Trace changes from commit to production',
-        'Learn reconciliation and drift detection',
+        'Entender o modelo de deploy do GitOps',
+        'Acompanhar mudanças do commit até a produção',
+        'Aprender reconciliação e detecção de drift',
       ]}
     >
       <GitOpsWorkflow />

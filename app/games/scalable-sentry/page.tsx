@@ -12,10 +12,10 @@ export default function ScalableSentryPage() {
     <SimulatorShell
       slug="scalable-sentry"
       seoLearningPoints={[
-        'Design auto-scaling architectures',
-        'Implement load balancing strategies',
-        'Build high-availability systems',
-        'Handle traffic spikes gracefully',
+        'Projetar arquiteturas com auto-scaling',
+        'Aplicar estratégias de balanceamento de carga',
+        'Construir sistemas de alta disponibilidade',
+        'Lidar bem com picos de tráfego',
       ]}
     >
       <ScalableSentry />

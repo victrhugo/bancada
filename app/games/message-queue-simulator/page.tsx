@@ -10,51 +10,51 @@ export async function generateMetadata(): Promise<Metadata> {
 function MessageQueueEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this message queue simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador de filas de mensagens</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>How producers send messages through a broker to consumers</li>
-            <li>How Kafka partitions and consumer groups create parallelism</li>
-            <li>How RabbitMQ exchanges, bindings, queues, and acknowledgments fit together</li>
-            <li>Why lag, backpressure, and rebalancing matter during production incidents</li>
-            <li>How poison messages move into a dead letter queue for later inspection</li>
+            <li>Como producers enviam mensagens a consumers passando por um broker</li>
+            <li>Como partições e consumer groups do Kafka criam paralelismo</li>
+            <li>Como exchanges, bindings, filas e acknowledgments do RabbitMQ se encaixam</li>
+            <li>Por que lag, backpressure e rebalanceamento importam durante incidentes em produção</li>
+            <li>Como mensagens envenenadas (poison messages) vão para uma dead letter queue para inspeção</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">Concepts covered</h4>
+          <h4 className="mb-3 text-sm font-semibold">Conceitos cobertos</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Kafka:</strong> topics, partitions, offsets,
-              consumer groups, ordering, and at-least-once delivery
+              <strong className="text-foreground">Kafka:</strong> tópicos, partições, offsets,
+              consumer groups, ordenação e entrega at-least-once
             </li>
             <li>
-              <strong className="text-foreground">RabbitMQ:</strong> exchanges, queues, bindings,
-              prefetch, acknowledgments, retries, and DLX policies
+              <strong className="text-foreground">RabbitMQ:</strong> exchanges, filas, bindings,
+              prefetch, acknowledgments, retries e políticas de DLX
             </li>
             <li>
-              <strong className="text-foreground">Operations:</strong> lag monitoring, rebalancing,
-              poison message handling, and backpressure response
+              <strong className="text-foreground">Operação:</strong> monitoramento de lag,
+              rebalanceamento, tratamento de poison messages e resposta ao backpressure
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Browser-safe by design</h4>
+        <h4 className="mb-2 text-sm font-semibold">Seguro para o navegador</h4>
         <p className="text-sm text-muted-foreground">
-          This simulator does not run Kafka or RabbitMQ. It models the queue mechanics in the
-          browser so you can see cause and effect before operating a real broker in production.
+          Este simulador não roda Kafka nem RabbitMQ. Ele reproduz a mecânica das filas no navegador
+          para você ver causa e efeito antes de operar um broker real em produção.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">The production lesson</h4>
+        <h4 className="mb-2 text-sm font-semibold">A lição de produção</h4>
         <p className="text-sm text-muted-foreground">
-          Message queues decouple systems, but they do not remove failure. You still need idempotent
-          consumers, lag alerts, retry limits, dead letter handling, and a clear ownership model for
-          messages that cannot be processed.
+          Filas de mensagens desacoplam sistemas, mas não eliminam falhas. Você continua precisando de
+          consumers idempotentes, alertas de lag, limite de retries, tratamento de dead letters e uma
+          definição clara de quem cuida das mensagens que não podem ser processadas.
         </p>
       </div>
     </>
@@ -65,15 +65,15 @@ export default function MessageQueueSimulatorPage() {
   return (
     <SimulatorShell
       slug="message-queue-simulator"
-      fallbackTitle="Message Queue Simulator"
-      fallbackDescription="Visualize how message queues work across Kafka and RabbitMQ patterns. Explore producers, topics, partitions, exchanges, queues, consumer groups, lag, rebalancing, backpressure, ordering, and dead letter queues."
+      fallbackTitle="Simulador de Filas de Mensagens"
+      fallbackDescription="Veja como funcionam as filas de mensagens nos padrões do Kafka e do RabbitMQ. Explore producers, tópicos, partições, exchanges, filas, consumer groups, lag, rebalanceamento, backpressure, ordenação e dead letter queues."
       educational={<MessageQueueEducational />}
-      shareText="Visualize Kafka and RabbitMQ message queue behavior with this interactive simulator."
+      shareText="Visualize o comportamento das filas do Kafka e do RabbitMQ com este simulador interativo."
       seoLearningPoints={[
-        'How producers, brokers, and consumers interact',
-        'How Kafka partitions and consumer groups affect lag and ordering',
-        'How RabbitMQ exchanges and queue bindings route messages',
-        'How dead letter queues protect systems from poison messages',
+        'Como producers, brokers e consumers interagem',
+        'Como partições e consumer groups do Kafka afetam lag e ordenação',
+        'Como exchanges e bindings do RabbitMQ roteiam mensagens',
+        'Como dead letter queues protegem sistemas de poison messages',
       ]}
     >
       <MessageQueueSimulator />

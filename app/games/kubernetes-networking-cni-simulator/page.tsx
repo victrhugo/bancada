@@ -10,59 +10,59 @@ export async function generateMetadata(): Promise<Metadata> {
 function KubernetesNetworkingEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this Kubernetes networking simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador de redes Kubernetes</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>How Pods communicate by Pod IP on the same node and across nodes</li>
-            <li>What a CNI plugin does when a Pod network namespace is created</li>
-            <li>Why ClusterIP Services are virtual IPs that map to real endpoint Pods</li>
-            <li>How EndpointSlices connect Service selectors to concrete backend addresses</li>
-            <li>Where kube-proxy, IPVS, iptables, and eBPF-style service routing fit</li>
-            <li>How Ingress, LoadBalancer, and NodePort traffic reaches a backend Pod</li>
-            <li>How externalTrafficPolicy changes source IP preservation and routing tradeoffs</li>
-            <li>Why NetworkPolicy requires enforcement by a capable networking plugin</li>
+            <li>Como os Pods se comunicam pelo IP do Pod, no mesmo node e entre nodes</li>
+            <li>O que um plugin CNI faz quando o namespace de rede de um Pod é criado</li>
+            <li>Por que Services ClusterIP são IPs virtuais que apontam para Pods reais</li>
+            <li>Como os EndpointSlices ligam os selectors de um Service aos endereços dos backends</li>
+            <li>Onde entram kube-proxy, IPVS, iptables e o roteamento de Services no estilo eBPF</li>
+            <li>Como o tráfego de Ingress, LoadBalancer e NodePort chega a um Pod de backend</li>
+            <li>Como o externalTrafficPolicy muda a preservação do IP de origem e as escolhas de roteamento</li>
+            <li>Por que a NetworkPolicy precisa de um plugin de rede capaz de aplicá-la</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">Packet paths covered</h4>
+          <h4 className="mb-3 text-sm font-semibold">Caminhos de pacote cobertos</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Pod networking:</strong> same-node and cross-node
-              Pod-to-Pod flows
+              <strong className="text-foreground">Rede de Pods:</strong> fluxos entre Pods no mesmo
+              node e entre nodes
             </li>
             <li>
-              <strong className="text-foreground">Service networking:</strong> DNS, ClusterIP,
-              EndpointSlices, endpoint selection, headless Services, and reply tracking
+              <strong className="text-foreground">Rede de Services:</strong> DNS, ClusterIP,
+              EndpointSlices, escolha de endpoint, Services headless e rastreamento de respostas
             </li>
             <li>
-              <strong className="text-foreground">Edge traffic:</strong> external client to
-              LoadBalancer, NodePort, Ingress, Service, and Pod
+              <strong className="text-foreground">Tráfego de borda:</strong> cliente externo até
+              LoadBalancer, NodePort, Ingress, Service e Pod
             </li>
             <li>
-              <strong className="text-foreground">Security:</strong> default-deny, allow rules,
-              egress controls, and CNI policy enforcement
+              <strong className="text-foreground">Segurança:</strong> default-deny, regras de
+              liberação, controle de saída e aplicação de políticas pelo CNI
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">CNI vs Service routing</h4>
+        <h4 className="mb-2 text-sm font-semibold">CNI vs roteamento de Services</h4>
         <p className="text-sm text-muted-foreground">
-          CNI plugins make Pod networking work: interfaces, IPAM, routes, overlays or native
-          routing, and often policy. Kubernetes Services are a separate abstraction that map stable
-          virtual IPs and DNS names to changing endpoint Pods.
+          Os plugins CNI fazem a rede dos Pods funcionar: interfaces, IPAM, rotas, overlays ou
+          roteamento nativo e, muitas vezes, políticas. Os Services do Kubernetes são uma abstração
+          separada, que liga IPs virtuais e nomes DNS estáveis a Pods que mudam o tempo todo.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Browser-safe by design</h4>
+        <h4 className="mb-2 text-sm font-semibold">Seguro para o navegador</h4>
         <p className="text-sm text-muted-foreground">
-          This simulator does not connect to a real cluster. It models the packet path and dataplane
-          decisions in the browser so you can learn how Kubernetes networking behaves before
-          debugging iptables, eBPF maps, CNI agents, or cloud load balancers in production.
+          Este simulador não se conecta a um cluster real. Ele reproduz no navegador o caminho dos
+          pacotes e as decisões do dataplane, para você entender a rede do Kubernetes antes de
+          investigar iptables, mapas eBPF, agentes CNI ou load balancers de nuvem em produção.
         </p>
       </div>
     </>
@@ -73,10 +73,10 @@ export default function KubernetesNetworkingCniSimulatorPage() {
   return (
     <SimulatorShell
       slug="kubernetes-networking-cni-simulator"
-      fallbackTitle="Kubernetes Networking / CNI Simulator"
-      fallbackDescription="Visualize Kubernetes networking and CNI packet paths. Learn Pod-to-Pod routing, ClusterIP Services, kube-proxy, eBPF, Ingress, NetworkPolicy, and egress in an interactive browser simulator."
+      fallbackTitle="Simulador de Redes Kubernetes / CNI"
+      fallbackDescription="Visualize a rede do Kubernetes e os caminhos de pacotes do CNI. Aprenda roteamento entre Pods, Services ClusterIP, kube-proxy, eBPF, Ingress, NetworkPolicy e saída para a internet em um simulador interativo."
       educational={<KubernetesNetworkingEducational />}
-      shareText="Learn Kubernetes networking and CNI packet paths with this interactive simulator."
+      shareText="Aprenda redes do Kubernetes e caminhos de pacotes do CNI com este simulador interativo."
     >
       <KubernetesNetworkingCniSimulator />
     </SimulatorShell>

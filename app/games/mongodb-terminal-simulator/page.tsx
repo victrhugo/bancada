@@ -8,53 +8,53 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const seoLearningPoints = [
-  'Read documents with find() and filter them with a query document',
-  'Return only the fields you need with a projection',
-  'Compare values with $lt, $gt, $gte, $lte, and match a set with $in',
-  'Shape a cursor with sort, skip, and limit for ordering and pagination',
-  'Count matches with countDocuments without pulling the documents back',
-  'Write data with insertOne, updateOne, and deleteMany and read the results',
-  'Summarise documents with an aggregation pipeline: $match, $group, and $sort',
-  'Test yourself in Challenge mode by writing queries from a plain-English prompt',
+  'Ler documentos com find() e filtrá-los com um documento de consulta',
+  'Retornar só os campos necessários com uma projeção',
+  'Comparar valores com $lt, $gt, $gte, $lte e buscar em um conjunto com $in',
+  'Moldar um cursor com sort, skip e limit para ordenar e paginar',
+  'Contar resultados com countDocuments sem trazer os documentos',
+  'Gravar dados com insertOne, updateOne e deleteMany e ler o retorno',
+  'Resumir documentos com um pipeline de agregação: $match, $group e $sort',
+  'Testar-se no modo Desafio escrevendo consultas a partir de um enunciado em português',
 ];
 
 function MongodbEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this MongoDB simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador de MongoDB</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>How find() reads documents and how a query document filters them</li>
-            <li>How projections return only the fields you want, and how _id behaves</li>
-            <li>How operators like $lt, $gt, $in, $and, and $or express conditions</li>
-            <li>How sort, skip, and limit order and paginate a cursor</li>
-            <li>How countDocuments answers &quot;how many&quot; without returning the documents</li>
-            <li>How insertOne, updateOne, and deleteMany change data and what they return</li>
-            <li>How the aggregation pipeline groups and summarises with $match, $group, and $sort</li>
+            <li>Como o find() lê documentos e como um documento de consulta os filtra</li>
+            <li>Como as projeções retornam só os campos desejados, e como o _id se comporta</li>
+            <li>Como operadores como $lt, $gt, $in, $and e $or expressam condições</li>
+            <li>Como sort, skip e limit ordenam e paginam um cursor</li>
+            <li>Como o countDocuments responde &quot;quantos&quot; sem retornar os documentos</li>
+            <li>Como insertOne, updateOne e deleteMany alteram dados e o que retornam</li>
+            <li>Como o pipeline de agregação agrupa e resume com $match, $group e $sort</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">Key operations covered</h4>
+          <h4 className="mb-3 text-sm font-semibold">Operações principais</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Read:</strong> find, findOne, query documents,
-              projections, dot-notation fields
+              <strong className="text-foreground">Ler:</strong> find, findOne, documentos de
+              consulta, projeções, campos com notação de ponto
             </li>
             <li>
-              <strong className="text-foreground">Filter:</strong> $eq, $ne, $lt, $gt, $gte, $lte,
+              <strong className="text-foreground">Filtrar:</strong> $eq, $ne, $lt, $gt, $gte, $lte,
               $in, $nin, $exists, $and, $or
             </li>
             <li>
-              <strong className="text-foreground">Shape:</strong> sort, skip, limit, countDocuments
+              <strong className="text-foreground">Moldar:</strong> sort, skip, limit, countDocuments
             </li>
             <li>
-              <strong className="text-foreground">Aggregate:</strong> $match, $group with $sum and
-              $avg, $sort, $project, $count
+              <strong className="text-foreground">Agregar:</strong> $match, $group com $sum e $avg,
+              $sort, $project, $count
             </li>
             <li>
-              <strong className="text-foreground">Write:</strong> insertOne, insertMany, updateOne,
+              <strong className="text-foreground">Escrever:</strong> insertOne, insertMany, updateOne,
               updateMany, deleteOne, deleteMany
             </li>
           </ul>
@@ -62,20 +62,20 @@ function MongodbEducational() {
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">How the playground runs your queries</h4>
+        <h4 className="mb-2 text-sm font-semibold">Como o playground executa suas consultas</h4>
         <p className="text-sm text-muted-foreground">
-          Every command runs live in your browser against three small collections (customers,
-          products, orders), evaluated by a lightweight query and aggregation engine. Nothing is sent
-          to a server, so you can experiment freely. The data mirrors the SQL simulator&apos;s tables,
-          so you can compare how the same records look as documents versus rows.
+          Cada comando roda ao vivo no seu navegador sobre três pequenas coleções (customers,
+          products, orders), avaliado por um motor leve de consulta e agregação. Nada é enviado a um
+          servidor, então você pode experimentar à vontade. Os dados espelham as tabelas do simulador
+          de SQL, para você comparar como os mesmos registros ficam como documentos e como linhas.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Practice on a real MongoDB</h4>
+        <h4 className="mb-2 text-sm font-semibold">Pratique em um MongoDB real</h4>
         <p className="text-sm text-muted-foreground">
-          A simulator builds intuition fast, but running these against a real database makes them
-          stick. You can spin up a free cluster on{' '}
+          O simulador constrói intuição rápido, mas é rodando os comandos em um banco de verdade que
+          eles ficam na memória. Você pode criar um cluster gratuito no{' '}
           <a
             href="https://www.mongodb.com/products/platform/atlas-database"
             target="_blank"
@@ -84,7 +84,7 @@ function MongodbEducational() {
           >
             MongoDB Atlas
           </a>{' '}
-          or run managed MongoDB on{' '}
+          ou usar um MongoDB gerenciado na{' '}
           <a
             href="https://www.digitalocean.com/"
             target="_blank"
@@ -93,39 +93,38 @@ function MongodbEducational() {
           >
             DigitalOcean
           </a>{' '}
-          (new accounts get $200 in credits), then paste the same commands into <code>mongosh</code> to
-          run them for real.
+          e colar os mesmos comandos no <code>mongosh</code> para rodá-los de verdade.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Prefer SQL, or want to compare?</h4>
+        <h4 className="mb-2 text-sm font-semibold">Prefere SQL ou quer comparar?</h4>
         <p className="text-sm text-muted-foreground">
-          The{' '}
+          O{' '}
           <a
             href="/games/sql-terminal-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
-            SQL Terminal Simulator
+            Simulador de Terminal SQL
           </a>{' '}
-          uses the same e-commerce data as tables, so you can see the exact difference between a
-          document find() and a SQL SELECT. The{' '}
+          usa os mesmos dados de e-commerce em forma de tabelas, para você ver a diferença exata entre
+          um find() em documentos e um SELECT em SQL. O simulador de{' '}
           <a
             href="/games/dbms-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
-            Database Types Simulator
+            Sistemas de Gerenciamento de Banco de Dados
           </a>{' '}
-          explains when a document database is the right tool in the first place.
+          explica quando um banco de documentos é a ferramenta certa.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Why learn MongoDB this way?</h4>
+        <h4 className="mb-2 text-sm font-semibold">Por que aprender MongoDB assim?</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>Document queries click fastest when you can change a filter and see the documents change.</li>
-          <li>find(), projections, and the aggregation pipeline cover most day-to-day MongoDB work.</li>
-          <li>Reading real results builds the instinct you need for app code, debugging, and interviews.</li>
+          <li>Consultas em documentos fazem sentido mais rápido quando você muda um filtro e vê os documentos mudarem.</li>
+          <li>find(), projeções e o pipeline de agregação cobrem a maior parte do trabalho diário com MongoDB.</li>
+          <li>Ler resultados reais constrói o instinto que você precisa para código de aplicação, debugging e entrevistas.</li>
         </ul>
       </div>
     </>
@@ -136,11 +135,11 @@ export default function MongodbTerminalSimulatorPage() {
   return (
     <SimulatorShell
       slug="mongodb-terminal-simulator"
-      fallbackTitle="MongoDB Terminal Simulator"
-      fallbackDescription="Practice MongoDB queries in an interactive browser terminal. Learn find, projections, query operators, sort, skip, limit, countDocuments, writes, and the aggregation pipeline against a small e-commerce dataset."
+      fallbackTitle="Simulador de Terminal MongoDB"
+      fallbackDescription="Pratique consultas MongoDB em um terminal interativo no navegador. Aprenda find, projeções, operadores, sort, skip, limit, countDocuments, escritas e o pipeline de agregação em um pequeno conjunto de dados de e-commerce."
       educational={<MongodbEducational />}
       seoLearningPoints={seoLearningPoints}
-      shareText="Practice MongoDB in a browser with this interactive MongoDB Terminal Simulator, from find() and projections to the aggregation pipeline."
+      shareText="Pratique MongoDB no navegador com este simulador interativo, do find() e projeções ao pipeline de agregação."
     >
       <MongodbTerminalSimulator />
     </SimulatorShell>

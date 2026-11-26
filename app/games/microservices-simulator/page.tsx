@@ -10,37 +10,37 @@ export async function generateMetadata(): Promise<Metadata> {
 function MicroservicesEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">Understanding Microservices Architecture</h3>
+      <h3 className="mb-4 text-xl font-semibold">Entendendo a arquitetura de microsserviços</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 font-semibold text-sm">What you&apos;ll learn</h4>
+          <h4 className="mb-3 font-semibold text-sm">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>Microservices vs monolithic architecture patterns</li>
-            <li>Service-to-service communication (sync vs async)</li>
-            <li>Independent scaling of services</li>
-            <li>Failure handling and resilience patterns</li>
-            <li>Service discovery and API gateways</li>
-            <li>Distributed system challenges</li>
+            <li>Padrões de arquitetura: microsserviços vs monolito</li>
+            <li>Comunicação entre serviços (síncrona vs assíncrona)</li>
+            <li>Escala independente de cada serviço</li>
+            <li>Tratamento de falhas e padrões de resiliência</li>
+            <li>Service discovery e API gateways</li>
+            <li>Os desafios dos sistemas distribuídos</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Key benefits</h4>
+          <h4 className="mb-3 font-semibold text-sm">Principais benefícios</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Independent Deployment:</strong> Deploy services
-              separately.
+              <strong className="text-foreground">Deploy independente:</strong> publique cada serviço
+              separadamente.
             </li>
             <li>
-              <strong className="text-foreground">Technology Diversity:</strong> Use best tools
-              per service.
+              <strong className="text-foreground">Diversidade de tecnologia:</strong> use a melhor
+              ferramenta para cada serviço.
             </li>
             <li>
-              <strong className="text-foreground">Fault Isolation:</strong> Failures don&apos;t
-              cascade.
+              <strong className="text-foreground">Isolamento de falhas:</strong> uma falha não se
+              espalha em cascata.
             </li>
             <li>
-              <strong className="text-foreground">Independent Scaling:</strong> Scale services
-              based on demand.
+              <strong className="text-foreground">Escala independente:</strong> escale cada serviço
+              conforme a demanda.
             </li>
           </ul>
         </div>
@@ -48,59 +48,53 @@ function MicroservicesEducational() {
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <div className="rounded-md border border-primary/20 bg-primary/5 p-4">
-          <h4 className="mb-2 font-semibold text-sm">When to use microservices</h4>
+          <h4 className="mb-2 font-semibold text-sm">Quando usar microsserviços</h4>
           <ul className="space-y-1 text-sm text-muted-foreground">
-            <li>Large, complex applications</li>
-            <li>Large development teams (50+ people)</li>
-            <li>Rapidly changing requirements</li>
-            <li>Need independent deployments</li>
-            <li>Different scaling needs per component</li>
+            <li>Aplicações grandes e complexas</li>
+            <li>Times de desenvolvimento grandes (mais de 50 pessoas)</li>
+            <li>Requisitos que mudam rapidamente</li>
+            <li>Necessidade de deploys independentes</li>
+            <li>Necessidades de escala diferentes por componente</li>
           </ul>
         </div>
         <div className="rounded-md border border-primary/20 bg-primary/5 p-4">
-          <h4 className="mb-2 font-semibold text-sm">When to avoid</h4>
+          <h4 className="mb-2 font-semibold text-sm">Quando evitar</h4>
           <ul className="space-y-1 text-sm text-muted-foreground">
-            <li>Small applications</li>
-            <li>Small teams (&lt;10 people)</li>
-            <li>Simple CRUD applications</li>
-            <li>Tight coupling between features</li>
-            <li>Network latency is critical</li>
+            <li>Aplicações pequenas</li>
+            <li>Times pequenos (menos de 10 pessoas)</li>
+            <li>Aplicações CRUD simples</li>
+            <li>Funcionalidades muito acopladas entre si</li>
+            <li>Quando a latência de rede é crítica</li>
           </ul>
         </div>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Pro tips</h4>
+        <h4 className="mb-2 font-semibold text-sm">Dicas</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>Start with a monolith and decompose when needed.</li>
-          <li>Use API gateways for centralized routing and auth.</li>
-          <li>Implement circuit breakers to prevent cascade failures.</li>
-          <li>Monitor distributed traces across all services.</li>
-          <li>Use message queues for async communication.</li>
-          <li>Each service should have its own database.</li>
+          <li>Comece com um monolito e divida quando for necessário.</li>
+          <li>Use API gateways para centralizar roteamento e autenticação.</li>
+          <li>Implemente circuit breakers para evitar falhas em cascata.</li>
+          <li>Monitore traces distribuídos por todos os serviços.</li>
+          <li>Use filas de mensagens para comunicação assíncrona.</li>
+          <li>Cada serviço deve ter o próprio banco de dados.</li>
         </ul>
       </div>
 
       <div className="mt-6">
-        <h4 className="mb-3 font-semibold text-sm">Real-world examples</h4>
+        <h4 className="mb-3 font-semibold text-sm">Exemplos reais</h4>
         <div className="grid gap-3 md:grid-cols-3">
           <div className="rounded-md border bg-background p-3 text-sm">
             <strong className="text-foreground">Netflix:</strong>
-            <p className="mt-1 text-muted-foreground">
-              500+ microservices handling billions of requests.
-            </p>
+            <p className="mt-1 text-muted-foreground">Centenas de microsserviços atendendo bilhões de requisições.</p>
           </div>
           <div className="rounded-md border bg-background p-3 text-sm">
             <strong className="text-foreground">Amazon:</strong>
-            <p className="mt-1 text-muted-foreground">
-              Decomposed monolith to microservices in early 2000s.
-            </p>
+            <p className="mt-1 text-muted-foreground">Dividiu o monolito em microsserviços no início dos anos 2000.</p>
           </div>
           <div className="rounded-md border bg-background p-3 text-sm">
             <strong className="text-foreground">Uber:</strong>
-            <p className="mt-1 text-muted-foreground">
-              Moved from monolith to 2000+ microservices.
-            </p>
+            <p className="mt-1 text-muted-foreground">Migrou de um monolito para milhares de microsserviços.</p>
           </div>
         </div>
       </div>
@@ -113,7 +107,7 @@ export default function MicroservicesSimulatorPage() {
     <SimulatorShell
       slug="microservices-simulator"
       educational={<MicroservicesEducational />}
-      shareText="Check out this Microservices Architecture Simulator! Perfect for learning distributed systems."
+      shareText="Conheça este simulador de arquitetura de microsserviços! Ótimo para aprender sistemas distribuídos."
     >
       <MicroservicesSimulator />
     </SimulatorShell>

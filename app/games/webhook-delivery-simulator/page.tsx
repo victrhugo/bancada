@@ -8,48 +8,49 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const seoLearningPoints = [
-  'Why a webhook delivery is a durable state machine rather than a single HTTP POST',
-  'How exponential backoff spreads eight retry attempts across roughly 27 hours',
-  'Which HTTP responses are worth retrying and which should be dropped immediately',
-  'Why a timeout is the ambiguous case that makes idempotency mandatory',
-  'How HMAC-SHA256 webhook signatures are built over the id, timestamp and raw body',
-  'Why verifying a re-serialized JSON body always fails, and what to do instead',
-  'How a timestamp tolerance window limits replay attacks',
-  'How receivers deduplicate deliveries using a message ID that is stable across retries',
+  'Por que a entrega de um webhook é uma máquina de estados durável, e não um único HTTP POST',
+  'Como o backoff exponencial espalha oito tentativas ao longo de cerca de 27 horas',
+  'Quais respostas HTTP valem um retry e quais devem ser descartadas na hora',
+  'Por que o timeout é o caso ambíguo que torna a idempotência obrigatória',
+  'Como as assinaturas HMAC-SHA256 de webhooks são calculadas sobre o id, o timestamp e o corpo bruto',
+  'Por que verificar um corpo JSON re-serializado sempre falha, e o que fazer no lugar',
+  'Como uma janela de tolerância de timestamp limita ataques de replay',
+  'Como quem recebe deduplica entregas usando um ID de mensagem estável entre retries',
 ];
 
 function WebhookDeliveryEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this webhook delivery simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador de entrega de webhooks</h3>
       <div className="grid gap-6 md:grid-cols-3">
         <div>
-          <h4 className="mb-2 text-sm font-semibold">1. Persist and retry</h4>
+          <h4 className="mb-2 text-sm font-semibold">1. Persista e tente de novo</h4>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            A delivery must survive a restart. Retry timeouts, 429s, and server errors with backoff;
-            drop malformed requests that another attempt cannot fix.
+            Uma entrega precisa sobreviver a um restart. Faça retry com backoff em timeouts, 429s e
+            erros de servidor; descarte requisições malformadas que outra tentativa não vai resolver.
           </p>
         </div>
         <div>
-          <h4 className="mb-2 text-sm font-semibold">2. Verify raw bytes</h4>
+          <h4 className="mb-2 text-sm font-semibold">2. Verifique os bytes brutos</h4>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            The signature covers the message ID, timestamp, and raw body. Verify before parsing so
-            whitespace or serialization changes cannot invalidate an authentic request.
+            A assinatura cobre o ID da mensagem, o timestamp e o corpo bruto. Verifique antes de fazer
+            o parsing, para que mudanças de espaços ou de serialização não invalidem uma requisição
+            autêntica.
           </p>
         </div>
         <div>
-          <h4 className="mb-2 text-sm font-semibold">3. Deduplicate</h4>
+          <h4 className="mb-2 text-sm font-semibold">3. Deduplique</h4>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Delivery is at-least-once. Store the stable message ID with the business update in one
-            transaction, then return 200 when the same message arrives again.
+            A entrega é at-least-once. Guarde o ID estável da mensagem junto com a atualização de
+            negócio em uma única transação e responda 200 quando a mesma mensagem chegar de novo.
           </p>
         </div>
       </div>
 
       <div className="mt-6 border-t border-border pt-5">
-        <h4 className="mb-2 text-sm font-semibold">From simulator to production</h4>
+        <h4 className="mb-2 text-sm font-semibold">Do simulador para a produção</h4>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          This simulator uses the published{' '}
+          Este simulador usa o cronograma de retries publicado pela{' '}
           <a
             href="https://docs.svix.com/retries"
             className="font-medium text-primary underline underline-offset-2"
@@ -58,22 +59,22 @@ function WebhookDeliveryEducational() {
           >
             Svix
           </a>{' '}
-          retry schedule and genuine Standard Webhooks signatures. A production delivery system adds
-          a durable queue, endpoint controls, attempt history, replay, and a customer portal on top
-          of these mechanics. For the underlying queue and throttling concepts, try
-          the{' '}
+          e assinaturas reais no padrão Standard Webhooks. Um sistema de entrega em produção adiciona
+          uma fila durável, controles por endpoint, histórico de tentativas, reenvio e um portal para
+          clientes em cima dessa mecânica. Para os conceitos de fila e throttling por trás disso,
+          experimente o{' '}
           <a
             href="/games/message-queue-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
-            message queue simulator
+            simulador de filas de mensagens
           </a>{' '}
-          and{' '}
+          e o{' '}
           <a
             href="/games/rate-limit-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
-            rate limit simulator
+            simulador de rate limit
           </a>
           .
         </p>
@@ -86,11 +87,11 @@ export default function WebhookDeliverySimulatorPage() {
   return (
     <SimulatorShell
       slug="webhook-delivery-simulator"
-      fallbackTitle="Webhook Delivery Simulator"
-      fallbackDescription="Send a webhook through retries, signature verification, and receiver-side deduplication."
+      fallbackTitle="Simulador de Entrega de Webhooks"
+      fallbackDescription="Envie um webhook passando por retries, verificação de assinatura e deduplicação no lado de quem recebe."
       educational={<WebhookDeliveryEducational />}
       seoLearningPoints={seoLearningPoints}
-      shareText="Watch what production actually does with a webhook: retries, exponential backoff, HMAC signature verification and idempotency, all in the browser."
+      shareText="Veja o que a produção realmente faz com um webhook: retries, backoff exponencial, verificação de assinatura HMAC e idempotência, tudo no navegador."
     >
       <WebhookDeliverySimulator />
     </SimulatorShell>

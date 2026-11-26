@@ -13,9 +13,9 @@ export default function BugHunterPage() {
       slug="bug-hunter"
       fallbackTitle="Bug Hunter"
       seoLearningPoints={[
-        'Identify common coding bugs',
-        'Debug shell scripts and config files',
-        'Improve code review skills',
+        'Identificar bugs comuns de código',
+        'Depurar scripts shell e arquivos de configuração',
+        'Melhorar suas habilidades de code review',
       ]}
     >
       <BugHunter />

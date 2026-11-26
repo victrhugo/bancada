@@ -10,66 +10,66 @@ export async function generateMetadata(): Promise<Metadata> {
 function LinuxTerminalEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this tutorial</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este tutorial</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 font-semibold text-sm">What you&apos;ll learn</h4>
+          <h4 className="mb-3 font-semibold text-sm">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>Navigate the Linux file system with confidence</li>
-            <li>Create, copy, move, and delete files and directories</li>
-            <li>View and search file contents with cat, grep, head, tail</li>
-            <li>Understand and modify file permissions</li>
-            <li>Use pipes and redirection to chain commands</li>
-            <li>Check system resources with df, free, and env</li>
+            <li>Navegar pelo sistema de arquivos do Linux com segurança</li>
+            <li>Criar, copiar, mover e apagar arquivos e diretórios</li>
+            <li>Ver e buscar o conteúdo de arquivos com cat, grep, head e tail</li>
+            <li>Entender e alterar permissões de arquivos</li>
+            <li>Usar pipes e redirecionamento para encadear comandos</li>
+            <li>Verificar recursos do sistema com df, free e env</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Key commands covered</h4>
+          <h4 className="mb-3 font-semibold text-sm">Comandos principais</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Navigation:</strong> pwd, ls, cd
+              <strong className="text-foreground">Navegação:</strong> pwd, ls, cd
             </li>
             <li>
-              <strong className="text-foreground">File Operations:</strong> touch, mkdir, cp, mv,
-              rm
+              <strong className="text-foreground">Arquivos:</strong> touch, mkdir, cp, mv, rm
             </li>
             <li>
-              <strong className="text-foreground">Viewing:</strong> cat, head, tail, grep, wc, find
+              <strong className="text-foreground">Visualização:</strong> cat, head, tail, grep, wc,
+              find
             </li>
             <li>
-              <strong className="text-foreground">System:</strong> whoami, hostname, df, free, env
+              <strong className="text-foreground">Sistema:</strong> whoami, hostname, df, free, env
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Tips for success</h4>
+        <h4 className="mb-2 font-semibold text-sm">Dicas para ir bem</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
           <li>
-            Use the <strong className="text-foreground">Up/Down arrow keys</strong> to navigate
-            command history.
+            Use as <strong className="text-foreground">setas para cima e para baixo</strong> para
+            navegar pelo histórico de comandos.
           </li>
           <li>
-            Type <strong className="text-foreground">help</strong> to see all available commands.
+            Digite <strong className="text-foreground">help</strong> para ver todos os comandos
+            disponíveis.
           </li>
           <li>
-            Type <strong className="text-foreground">clear</strong> to clear the terminal screen.
+            Digite <strong className="text-foreground">clear</strong> para limpar a tela do terminal.
           </li>
           <li>
-            Click the <strong className="text-foreground">Show Hint</strong> button if you get
-            stuck.
+            Clique em <strong className="text-foreground">Mostrar dica</strong> se travar.
           </li>
         </ul>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Why learn Linux?</h4>
+        <h4 className="mb-2 font-semibold text-sm">Por que aprender Linux?</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>Linux powers over 90% of the world&apos;s cloud infrastructure.</li>
-          <li>Essential for DevOps, SRE, and backend development roles.</li>
-          <li>Foundation for containerization (Docker, Kubernetes).</li>
-          <li>Understanding Linux makes you a more effective developer.</li>
+          <li>O Linux roda a grande maioria da infraestrutura de nuvem do mundo.</li>
+          <li>É essencial para quem trabalha com DevOps, SRE e desenvolvimento backend.</li>
+          <li>É a base dos containers (Docker, Kubernetes).</li>
+          <li>Entender Linux faz de você um desenvolvedor mais eficiente.</li>
         </ul>
       </div>
     </>
@@ -80,10 +80,10 @@ export default function LinuxTerminalPage() {
   return (
     <SimulatorShell
       slug="linux-terminal"
-      fallbackTitle="Learn Linux - Interactive Tutorial"
-      fallbackDescription="Practice Linux commands in an interactive terminal simulator. Learn essential commands for DevOps work through hands-on challenges."
+      fallbackTitle="Aprenda Linux: Tutorial Interativo"
+      fallbackDescription="Pratique comandos Linux em um simulador de terminal interativo. Aprenda os comandos essenciais para o trabalho com DevOps por meio de desafios práticos."
       educational={<LinuxTerminalEducational />}
-      shareText="Learn Linux commands interactively! Great tutorial for beginners."
+      shareText="Aprenda comandos Linux de forma interativa! Um ótimo tutorial para quem está começando."
     >
       <LinuxTerminal />
     </SimulatorShell>

@@ -8,106 +8,106 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const seoLearningPoints = [
-  'Write SELECT queries and project only the columns you need',
-  'Filter rows with WHERE using comparison operators and LIKE',
-  'Sort and cap results with ORDER BY, DESC, and LIMIT',
-  'Summarise data with count, sum, avg, min, max, GROUP BY, and HAVING',
-  'Combine tables with JOINs and keep unmatched rows with LEFT JOIN',
-  'Change data with INSERT, UPDATE, and DELETE and read their command tags',
-  'Compare rows against a subquery and name subqueries with WITH (CTEs)',
-  'Rank rows within groups using window functions',
-  'Test yourself in Challenge mode by writing queries from a plain-English prompt',
+  'Escrever consultas SELECT e projetar só as colunas necessárias',
+  'Filtrar linhas com WHERE usando operadores de comparação e LIKE',
+  'Ordenar e limitar resultados com ORDER BY, DESC e LIMIT',
+  'Resumir dados com count, sum, avg, min, max, GROUP BY e HAVING',
+  'Combinar tabelas com JOINs e manter linhas sem correspondência com LEFT JOIN',
+  'Alterar dados com INSERT, UPDATE e DELETE e ler os command tags que eles retornam',
+  'Comparar linhas com uma subconsulta e nomear subconsultas com WITH (CTEs)',
+  'Ranquear linhas dentro de grupos usando window functions',
+  'Testar-se no modo Desafio escrevendo consultas a partir de um enunciado em português',
 ];
 
 function SqlTerminalEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this SQL simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador de SQL</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>How SELECT reads rows and how to project specific columns</li>
-            <li>How WHERE filters rows with operators like =, &lt;, &gt;, &lt;&gt;, and LIKE</li>
-            <li>How ORDER BY, ASC/DESC, and LIMIT shape a result set</li>
-            <li>How DISTINCT and the aggregates count, sum, avg, min, and max summarise data</li>
-            <li>How GROUP BY buckets rows and HAVING filters those groups</li>
-            <li>How JOINs, LEFT JOINs, subqueries, and window functions work across tables</li>
-            <li>How INSERT, UPDATE, and DELETE change data, and how CTEs (WITH) name a subquery</li>
+            <li>Como o SELECT lê linhas e como projetar colunas específicas</li>
+            <li>Como o WHERE filtra linhas com operadores como =, &lt;, &gt;, &lt;&gt; e LIKE</li>
+            <li>Como ORDER BY, ASC/DESC e LIMIT moldam o resultado</li>
+            <li>Como DISTINCT e as agregações count, sum, avg, min e max resumem dados</li>
+            <li>Como o GROUP BY agrupa linhas e o HAVING filtra esses grupos</li>
+            <li>Como JOINs, LEFT JOINs, subconsultas e window functions trabalham entre tabelas</li>
+            <li>Como INSERT, UPDATE e DELETE alteram dados, e como CTEs (WITH) nomeiam uma subconsulta</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">Key statements covered</h4>
+          <h4 className="mb-3 text-sm font-semibold">Comandos principais</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Read:</strong> SELECT, SELECT DISTINCT, column
-              projection, table.column prefixes, AS aliases
+              <strong className="text-foreground">Ler:</strong> SELECT, SELECT DISTINCT, projeção de
+              colunas, prefixos tabela.coluna, aliases com AS
             </li>
             <li>
-              <strong className="text-foreground">Filter:</strong> WHERE with AND/OR, comparison
-              operators, LIKE, and numeric vs string literals
+              <strong className="text-foreground">Filtrar:</strong> WHERE com AND/OR, operadores de
+              comparação, LIKE e literais numéricos vs texto
             </li>
             <li>
-              <strong className="text-foreground">Aggregate:</strong> count, sum, avg, min, max,
-              round, GROUP BY, HAVING
+              <strong className="text-foreground">Agregar:</strong> count, sum, avg, min, max, round,
+              GROUP BY, HAVING
             </li>
             <li>
-              <strong className="text-foreground">Shape:</strong> ORDER BY, LIMIT
+              <strong className="text-foreground">Moldar:</strong> ORDER BY, LIMIT
             </li>
             <li>
-              <strong className="text-foreground">Relate:</strong> JOIN, LEFT JOIN, subqueries, WITH
-              (CTEs), and rank() window functions
+              <strong className="text-foreground">Relacionar:</strong> JOIN, LEFT JOIN, subconsultas,
+              WITH (CTEs) e a window function rank()
             </li>
             <li>
-              <strong className="text-foreground">Write:</strong> INSERT, UPDATE, DELETE and their
-              psql command tags
+              <strong className="text-foreground">Escrever:</strong> INSERT, UPDATE, DELETE e seus
+              command tags no psql
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">How the playground runs your queries</h4>
+        <h4 className="mb-2 text-sm font-semibold">Como o playground executa suas consultas</h4>
         <p className="text-sm text-muted-foreground">
-          Single-table SELECT queries are evaluated live in your browser against a small e-commerce
-          schema (customers, products, orders, order_items). The guided join, subquery, and window
-          lessons return output captured from a real PostgreSQL instance, so the results you see match
-          what Postgres actually returns. Nothing is sent to a server, so you can experiment freely.
+          Consultas SELECT em uma única tabela são avaliadas ao vivo no seu navegador, em um pequeno
+          schema de e-commerce (customers, products, orders, order_items). As lições guiadas de join,
+          subconsulta e window functions retornam saídas capturadas de uma instância real do
+          PostgreSQL, então os resultados batem com o que o Postgres de fato retorna. Nada é enviado a
+          um servidor, então você pode experimentar à vontade.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Practice on real Postgres</h4>
+        <h4 className="mb-2 text-sm font-semibold">Pratique em um Postgres real</h4>
         <p className="text-sm text-muted-foreground">
-          A simulator is a great place to build intuition, but running these queries against a real
-          database makes them stick. You can{' '}
+          O simulador é ótimo para construir intuição, mas é rodando essas consultas em um banco de
+          verdade que elas ficam na memória. Você pode{' '}
           <a
             href="https://neon.com"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-primary underline underline-offset-2"
           >
-            spin up a free Postgres in seconds with Neon
+            criar um Postgres gratuito em segundos no Neon
           </a>{' '}
-          and paste the same queries in to run them for real, or{' '}
+          e colar as mesmas consultas para rodá-las de verdade, ou{' '}
           <a
             href="https://www.digitalocean.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-primary underline underline-offset-2"
           >
-            run managed PostgreSQL on DigitalOcean
-          </a>{' '}
-          (new accounts get $200 in credits). Load a table or two, then re-run the lessons here against
-          your own data.
+            usar um PostgreSQL gerenciado na DigitalOcean
+          </a>
+          . Carregue uma ou duas tabelas e refaça as lições daqui com os seus próprios dados.
         </p>
       </div>
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Why learn SQL this way?</h4>
+        <h4 className="mb-2 text-sm font-semibold">Por que aprender SQL assim?</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>SQL clicks fastest when you can change a query and immediately see the rows change.</li>
-          <li>The same handful of clauses (SELECT, WHERE, GROUP BY, JOIN) cover most day-to-day queries.</li>
-          <li>Reading real result sets builds the instinct you need for reports, debugging, and interviews.</li>
+          <li>SQL faz sentido mais rápido quando você muda a consulta e vê as linhas mudarem na hora.</li>
+          <li>O mesmo punhado de cláusulas (SELECT, WHERE, GROUP BY, JOIN) cobre a maioria das consultas do dia a dia.</li>
+          <li>Ler resultados reais constrói o instinto que você precisa para relatórios, debugging e entrevistas.</li>
         </ul>
       </div>
     </>
@@ -118,11 +118,11 @@ export default function SqlTerminalSimulatorPage() {
   return (
     <SimulatorShell
       slug="sql-terminal-simulator"
-      fallbackTitle="SQL Terminal Simulator"
-      fallbackDescription="Practice SQL in an interactive browser terminal. Learn SELECT, WHERE, ORDER BY, DISTINCT, aggregates, GROUP BY, HAVING, JOINs, subqueries, and window functions against a small e-commerce schema."
+      fallbackTitle="Simulador de Terminal SQL"
+      fallbackDescription="Pratique SQL em um terminal interativo no navegador. Aprenda SELECT, WHERE, ORDER BY, DISTINCT, agregações, GROUP BY, HAVING, JOINs, subconsultas e window functions em um pequeno schema de e-commerce."
       educational={<SqlTerminalEducational />}
       seoLearningPoints={seoLearningPoints}
-      shareText="Practice SQL in a browser with this interactive SQL Terminal Simulator, from SELECT to JOINs and window functions."
+      shareText="Pratique SQL no navegador com este simulador interativo de terminal SQL, do SELECT aos JOINs e window functions."
     >
       <SqlTerminalSimulator />
     </SimulatorShell>

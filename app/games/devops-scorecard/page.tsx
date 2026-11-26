@@ -10,65 +10,64 @@ export async function generateMetadata(): Promise<Metadata> {
 function DevOpsScorecardEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About the DevOps Scorecard</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre o Scorecard DevOps</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 font-semibold text-sm">How it works</h4>
+          <h4 className="mb-3 font-semibold text-sm">Como funciona</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>Rate your skills across 8 core DevOps areas</li>
-            <li>Each skill is rated from 1 (Beginner) to 5 (Expert)</li>
-            <li>Get instant feedback and personalized insights</li>
-            <li>Share your results with your team or on social media</li>
-            <li>Track your progress over time</li>
-            <li>Identify areas for professional development</li>
+            <li>Avalie suas habilidades em 8 áreas centrais de DevOps</li>
+            <li>Cada habilidade recebe uma nota de 1 (iniciante) a 5 (especialista)</li>
+            <li>Receba retorno imediato e recomendações personalizadas</li>
+            <li>Compartilhe o resultado com o time ou nas redes sociais</li>
+            <li>Acompanhe sua evolução ao longo do tempo</li>
+            <li>Identifique áreas para o seu desenvolvimento profissional</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Skill categories</h4>
+          <h4 className="mb-3 font-semibold text-sm">Categorias de habilidades</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Foundational:</strong> Linux, networking,
-              scripting, Git.
+              <strong className="text-foreground">Fundamentos:</strong> Linux, redes, scripts, Git.
             </li>
             <li>
-              <strong className="text-foreground">Infrastructure as Code:</strong> Terraform,
+              <strong className="text-foreground">Infraestrutura como código:</strong> Terraform,
               Ansible, Kubernetes.
             </li>
             <li>
-              <strong className="text-foreground">Cloud Platforms:</strong> AWS, Azure, GCP,
-              multi-cloud.
+              <strong className="text-foreground">Plataformas de nuvem:</strong> AWS, Azure, GCP,
+              multicloud.
             </li>
             <li>
-              <strong className="text-foreground">CI/CD:</strong> Jenkins, automated testing,
-              deployments.
+              <strong className="text-foreground">CI/CD:</strong> Jenkins, testes automatizados,
+              deploys.
             </li>
             <li>
-              <strong className="text-foreground">Monitoring:</strong> Prometheus, ELK stack,
-              observability.
+              <strong className="text-foreground">Monitoramento:</strong> Prometheus, ELK stack,
+              observabilidade.
             </li>
             <li>
-              <strong className="text-foreground">Security:</strong> Secrets management,
-              compliance.
+              <strong className="text-foreground">Segurança:</strong> gestão de segredos, conformidade.
             </li>
             <li>
-              <strong className="text-foreground">Soft Skills:</strong> Leadership, communication.
+              <strong className="text-foreground">Habilidades comportamentais:</strong> liderança,
+              comunicação.
             </li>
             <li>
-              <strong className="text-foreground">Advanced:</strong> SRE, chaos engineering,
-              service mesh.
+              <strong className="text-foreground">Avançado:</strong> SRE, chaos engineering, service
+              mesh.
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Career development tips</h4>
+        <h4 className="mb-2 font-semibold text-sm">Dicas para a carreira</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>Use your scorecard to identify skill gaps and create a learning plan.</li>
-          <li>Focus on foundational skills before advancing to specialized areas.</li>
-          <li>Balance technical skills with soft skills for career growth.</li>
-          <li>Consider industry certifications to validate your expertise.</li>
-          <li>Share your results to start conversations about career development.</li>
+          <li>Use o scorecard para encontrar lacunas e montar um plano de estudos.</li>
+          <li>Fortaleça os fundamentos antes de partir para áreas especializadas.</li>
+          <li>Equilibre habilidades técnicas e comportamentais para crescer na carreira.</li>
+          <li>Considere certificações do mercado para validar o seu conhecimento.</li>
+          <li>Compartilhe o resultado para puxar conversas sobre desenvolvimento de carreira.</li>
         </ul>
       </div>
     </>
@@ -80,7 +79,7 @@ export default function DevOpsScorecardPage() {
     <SimulatorShell
       slug="devops-scorecard"
       educational={<DevOpsScorecardEducational />}
-      shareText="Just discovered the DevOps Scorecard! Perfect for assessing DevOps skills and planning career development."
+      shareText="Acabei de descobrir o Scorecard DevOps! Ótimo para avaliar habilidades em DevOps e planejar a carreira."
     >
       <DevOpsScorecard />
     </SimulatorShell>

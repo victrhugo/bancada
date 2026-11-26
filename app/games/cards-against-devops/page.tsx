@@ -12,9 +12,9 @@ export default function CardsAgainstDevOpsPage() {
     <SimulatorShell
       slug="cards-against-devops"
       seoLearningPoints={[
-        'Learn DevOps terminology through humor',
-        'Understand common DevOps scenarios',
-        'Team building and knowledge sharing',
+        'Aprender o vocabulário de DevOps com humor',
+        'Entender cenários comuns de DevOps',
+        'Integrar o time e compartilhar conhecimento',
       ]}
     >
       <CardsAgainstDevOps />
