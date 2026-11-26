@@ -72,23 +72,23 @@ type ScenarioType = 'http' | 'https' | 'https-cdn' | 'https-cdn-cache';
 
 const scenarios: Record<ScenarioType, { name: string; description: string; stages: string[] }> = {
   http: {
-    name: 'Basic HTTP',
-    description: 'Simple unencrypted HTTP request',
+    name: 'HTTP básico',
+    description: 'Requisição HTTP simples, sem criptografia',
     stages: ['browser', 'dns', 'tcp', 'loadbalancer', 'webserver', 'appserver', 'database'],
   },
   https: {
     name: 'HTTPS',
-    description: 'Encrypted HTTPS with TLS',
+    description: 'HTTPS criptografado com TLS',
     stages: ['browser', 'dns', 'tcp', 'tls', 'loadbalancer', 'webserver', 'appserver', 'database'],
   },
   'https-cdn': {
     name: 'HTTPS + CDN',
-    description: 'With CDN edge server',
+    description: 'Com servidor de borda da CDN',
     stages: ['browser', 'dns', 'tcp', 'tls', 'cdn', 'loadbalancer', 'webserver', 'appserver', 'database'],
   },
   'https-cdn-cache': {
-    name: 'HTTPS + CDN (Cached)',
-    description: 'CDN cache hit - fastest!',
+    name: 'HTTPS + CDN (em cache)',
+    description: 'Cache hit na CDN: o mais rápido!',
     stages: ['browser', 'dns', 'tcp', 'tls', 'cdn'],
   },
 };
@@ -97,128 +97,128 @@ const scenarios: Record<ScenarioType, { name: string; description: string; stage
 const allStages: Record<string, Omit<JourneyStage, 'x' | 'y'>> = {
   browser: {
     id: 'browser',
-    name: 'Browser',
-    description: 'User initiates request',
+    name: 'Navegador',
+    description: 'O usuário inicia a requisição',
     icon: <Globe className="w-6 h-6" />,
     color: '#3b82f6',
     duration: 10,
     details: [
-      'Parse URL',
-      'Check browser cache',
-      'Create HTTP request',
-      'Add headers (User-Agent, Accept, etc.)',
+      'Interpreta a URL',
+      'Verifica o cache do navegador',
+      'Monta a requisição HTTP',
+      'Adiciona headers (User-Agent, Accept etc.)',
     ],
   },
   dns: {
     id: 'dns',
-    name: 'DNS Resolution',
-    description: 'Convert domain to IP',
+    name: 'Resolução DNS',
+    description: 'Converte o domínio em IP',
     icon: <Radio className="w-6 h-6" />,
     color: '#8b5cf6',
     duration: 50,
     details: [
-      'Check local DNS cache',
-      'Query recursive resolver',
-      'Root DNS → TLD DNS → Authoritative DNS',
-      'Receive IP address (e.g., 172.67.154.128)',
+      'Verifica o cache DNS local',
+      'Consulta o resolver recursivo',
+      'DNS raiz → DNS do TLD → DNS autoritativo',
+      'Recebe o endereço IP (ex.: 172.67.154.128)',
     ],
   },
   tcp: {
     id: 'tcp',
-    name: 'TCP Handshake',
-    description: '3-way handshake',
+    name: 'Handshake TCP',
+    description: 'Handshake em 3 vias',
     icon: <GitBranch className="w-6 h-6" />,
     color: '#06b6d4',
     duration: 30,
     details: [
-      '1. SYN: Client → Server',
-      '2. SYN-ACK: Server → Client',
-      '3. ACK: Client → Server',
-      'Connection established!',
+      '1. SYN: cliente → servidor',
+      '2. SYN-ACK: servidor → cliente',
+      '3. ACK: cliente → servidor',
+      'Conexão estabelecida!',
     ],
   },
   tls: {
     id: 'tls',
-    name: 'TLS Handshake',
-    description: 'Establish encryption',
+    name: 'Handshake TLS',
+    description: 'Estabelece a criptografia',
     icon: <Lock className="w-6 h-6" />,
     color: '#10b981',
     duration: 100,
     details: [
-      'ClientHello: Supported ciphers',
-      'ServerHello: Certificate chain',
-      'Verify certificate validity',
-      'Exchange keys, establish session',
+      'ClientHello: cifras suportadas',
+      'ServerHello: cadeia de certificados',
+      'Verifica a validade do certificado',
+      'Troca as chaves e estabelece a sessão',
     ],
   },
   cdn: {
     id: 'cdn',
-    name: 'CDN / Edge',
-    description: 'Content delivery network',
+    name: 'CDN / borda',
+    description: 'Rede de distribuição de conteúdo',
     icon: <Cloud className="w-6 h-6" />,
     color: '#f59e0b',
     duration: 20,
     details: [
-      'Check edge cache',
-      'Cache-Control & ETag headers',
-      'HIT: Return cached response',
-      'MISS: Forward to origin',
+      'Verifica o cache na borda',
+      'Headers Cache-Control e ETag',
+      'HIT: devolve a resposta do cache',
+      'MISS: encaminha para a origem',
     ],
   },
   loadbalancer: {
     id: 'loadbalancer',
     name: 'Load Balancer',
-    description: 'Distribute traffic',
+    description: 'Distribui o tráfego',
     icon: <Network className="w-6 h-6" />,
     color: '#ec4899',
     duration: 5,
     details: [
-      'Health check backends',
-      'Algorithm: Round-robin/Least-conn',
-      'Session persistence (sticky)',
-      'Forward to healthy backend',
+      'Faz health check dos backends',
+      'Algoritmo: round-robin/least-conn',
+      'Persistência de sessão (sticky)',
+      'Encaminha para um backend saudável',
     ],
   },
   webserver: {
     id: 'webserver',
-    name: 'Web Server',
+    name: 'Servidor web',
     description: 'nginx/Apache',
     icon: <Server className="w-6 h-6" />,
     color: '#ef4444',
     duration: 10,
     details: [
-      'Parse HTTP request',
-      'Check static files',
-      'Apply rate limiting',
-      'Proxy to application server',
+      'Interpreta a requisição HTTP',
+      'Verifica arquivos estáticos',
+      'Aplica rate limiting',
+      'Faz proxy para o servidor de aplicação',
     ],
   },
   appserver: {
     id: 'appserver',
-    name: 'Application',
-    description: 'Business logic',
+    name: 'Aplicação',
+    description: 'Regras de negócio',
     icon: <Cpu className="w-6 h-6" />,
     color: '#f97316',
     duration: 50,
     details: [
-      'Route request to handler',
-      'Authenticate & authorize',
-      'Execute business logic',
-      'Query database if needed',
+      'Roteia a requisição para o handler',
+      'Autentica e autoriza',
+      'Executa as regras de negócio',
+      'Consulta o banco se precisar',
     ],
   },
   database: {
     id: 'database',
-    name: 'Database',
-    description: 'Data persistence',
+    name: 'Banco de dados',
+    description: 'Persistência de dados',
     icon: <Database className="w-6 h-6" />,
     color: '#14b8a6',
     duration: 30,
     details: [
-      'Connection pool: Get connection',
-      'Parse & optimize query',
-      'Execute query, fetch rows',
-      'Return connection to pool',
+      'Pool de conexões: pega uma conexão',
+      'Interpreta e otimiza a query',
+      'Executa a query e busca as linhas',
+      'Devolve a conexão ao pool',
     ],
   },
 };
@@ -524,13 +524,13 @@ export default function PacketJourney() {
           <div>
             <h2 className="text-4xl font-bold text-primary flex items-center gap-3">
               <Sparkles className="w-8 h-8 text-primary" />
-              Network Packet Journey
+              A jornada do pacote de rede
             </h2>
             <p className={cn(
               "mt-2",
               isDark ? "text-slate-300" : "text-gray-600"
             )}>
-              Follow a packet through the entire network stack - from browser to database and back!
+              Acompanhe um pacote por toda a pilha de rede: do navegador ao banco de dados e de volta!
             </p>
           </div>
           <div className="flex gap-2">
@@ -545,7 +545,7 @@ export default function PacketJourney() {
               )}
             >
               <Info className="w-4 h-4 mr-2" />
-              Learn
+              Aprender
          </Button>
        </div>
      </div>
@@ -562,10 +562,10 @@ export default function PacketJourney() {
                 <Sparkles className="h-4 w-4 text-primary" />
                 <AlertDescription className="text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                   <span>
-                    <strong>Pro tip:</strong> Use keyboard shortcuts - <kbd className={cn("px-2 py-1 rounded text-xs", isDark ? "bg-slate-700" : "bg-gray-200")}>Space</kbd> to play/pause, <kbd className={cn("px-2 py-1 rounded text-xs", isDark ? "bg-slate-700" : "bg-gray-200")}>R</kbd> to reset, <kbd className={cn("px-2 py-1 rounded text-xs", isDark ? "bg-slate-700" : "bg-gray-200")}>Esc</kbd> to close details
+                    <strong>Dica:</strong> use os atalhos de teclado: <kbd className={cn("px-2 py-1 rounded text-xs", isDark ? "bg-slate-700" : "bg-gray-200")}>Espaço</kbd> para reproduzir/pausar, <kbd className={cn("px-2 py-1 rounded text-xs", isDark ? "bg-slate-700" : "bg-gray-200")}>R</kbd> para reiniciar, <kbd className={cn("px-2 py-1 rounded text-xs", isDark ? "bg-slate-700" : "bg-gray-200")}>Esc</kbd> para fechar os detalhes
                   </span>
                   <Button size="sm" variant="ghost" onClick={() => setShowHint(false)} className="text-xs h-6">
-                    Got it
+                    Entendi
                   </Button>
                 </AlertDescription>
               </Alert>
@@ -622,11 +622,11 @@ export default function PacketJourney() {
               )}>
                 <Info className="h-4 w-4" />
                 <AlertDescription className="text-sm">
-                  <strong>How it works:</strong> Watch as a single HTTP/HTTPS request travels through multiple layers:
-                  DNS resolution (domain → IP), TCP handshake (connection), TLS handshake (encryption), CDN/edge
-                  caching, load balancing, web server, application logic, and database queries. Each hop adds latency
-                  but provides essential functionality. The round-trip shows how responses travel back through the same
-                  path!
+                  <strong>Como funciona:</strong> veja uma única requisição HTTP/HTTPS passar por várias camadas:
+                  resolução DNS (domínio → IP), handshake TCP (conexão), handshake TLS (criptografia), cache na
+                  CDN/borda, load balancing, servidor web, lógica da aplicação e consultas ao banco. Cada salto soma latência,
+                  mas entrega uma função essencial. A ida e volta mostra como a resposta retorna pelo mesmo
+                  caminho!
                 </AlertDescription>
               </Alert>
             </motion.div>
@@ -729,19 +729,19 @@ export default function PacketJourney() {
                   {!isRunning ? (
                     <>
                       <Play className="w-5 h-5 mr-2" />
-                      Begin Journey
+                      Começar a jornada
                     </>
                   ) : (
                     <>
                       <ArrowRight className="w-5 h-5 mr-2" />
-                      Next Stage
+                      Próxima etapa
                     </>
                   )}
                 </Button>
                 {isRunning && !journeyComplete && (
                   <Badge variant="outline" className="bg-green-500/20 border-green-400 text-xs px-2 py-1">
                     <Info className="w-3 h-3 mr-1" />
-                    Space / Enter / →
+                    Espaço / Enter / →
                   </Badge>
                 )}
               </>
@@ -750,7 +750,7 @@ export default function PacketJourney() {
                 {!isRunning ? (
                   <Button onClick={startJourney} className="bg-green-600 hover:bg-green-700" size="lg">
                     <Play className="w-5 h-5 mr-2" />
-                    Start Journey
+                    Iniciar a jornada
                   </Button>
                 ) : (
                   <Button onClick={togglePause} className="bg-yellow-600 hover:bg-yellow-700" size="lg">
@@ -789,7 +789,7 @@ export default function PacketJourney() {
                 : "bg-gray-100 border-gray-300 hover:bg-gray-200 text-gray-700"
             )}>
               <RotateCcw className="w-4 h-4 mr-2" />
-              Reset
+              Reiniciar
             </Button>
           </div>
 
@@ -802,7 +802,7 @@ export default function PacketJourney() {
               className="text-slate-400 hover:text-slate-200 h-7 text-xs"
             >
               {showAdvanced ? <ChevronUp className="w-3 h-3 mr-1" /> : <ChevronDown className="w-3 h-3 mr-1" />}
-              Advanced Options
+              Opções avançadas
             </Button>
 
             <AnimatePresence>
@@ -815,7 +815,7 @@ export default function PacketJourney() {
                 >
                   {/* Failure Injection */}
                   <div>
-                    <label className="text-xs font-medium mb-1.5 block text-slate-400">Inject Failure:</label>
+                    <label className="text-xs font-medium mb-1.5 block text-slate-400">Injetar falha:</label>
                     <div className="flex flex-wrap gap-1.5">
                       <Badge
                         onClick={() => setInjectFailure(null)}
@@ -828,7 +828,7 @@ export default function PacketJourney() {
                         variant={injectFailure === null ? 'default' : 'outline'}
                       >
                         <CheckCircle2 className="w-3 h-3 mr-1" />
-                        None
+                        Nenhuma
                       </Badge>
                       {journeyStages.slice(1, -1).map((stage) => (
                         <Badge
@@ -859,7 +859,7 @@ export default function PacketJourney() {
                       className="w-3 h-3"
                     />
                     <label htmlFor="showTimeline" className="text-xs cursor-pointer text-slate-400">
-                      Show timing waterfall
+                      Mostrar cascata de tempos
                     </label>
                   </div>
                 </motion.div>
@@ -882,10 +882,10 @@ export default function PacketJourney() {
                 <div className="flex items-center gap-2">
                   <Activity className="w-5 h-5 text-cyan-400" />
                   <div>
-                    <CardTitle className="text-lg">Live Journey</CardTitle>
+                    <CardTitle className="text-lg">Jornada ao vivo</CardTitle>
                     {isRunning && !journeyComplete && (
                       <p className="text-xs text-slate-400 mt-0.5">
-                        {isReturning ? '← Returning' : '→ Outbound'} • Stage {currentStageIndex + 1} of {journeyStages.length}
+                        {isReturning ? '← Voltando' : '→ Indo'} • Etapa {currentStageIndex + 1} de {journeyStages.length}
                       </p>
                     )}
                   </div>
@@ -894,7 +894,7 @@ export default function PacketJourney() {
                   {isRunning && !journeyComplete && (
                     <Badge variant="outline" className="bg-green-500/20 border-green-400">
                       <Activity className="w-3 h-3 mr-1 animate-pulse" />
-                      In Transit
+                      Em trânsito
                     </Badge>
                   )}
                   {journeyComplete && (
@@ -925,7 +925,7 @@ export default function PacketJourney() {
               {isRunning && !journeyComplete && (
                 <div className="mt-3 space-y-1.5">
                   <div className="flex items-center justify-between text-xs text-slate-400">
-                    <span>Journey Progress</span>
+                    <span>Progresso da jornada</span>
                     <span>{Math.round(((currentStageIndex + (isReturning ? journeyStages.length : 0)) / (journeyStages.length * 2)) * 100)}%</span>
                   </div>
                   <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
@@ -1274,10 +1274,10 @@ export default function PacketJourney() {
                     )}>
                       <p className="text-lg font-semibold text-blue-400 mb-2 flex items-center gap-2">
                         <Sparkles className="w-5 h-5" />
-                        Ready to Begin!
+                        Pronto para começar!
                       </p>
                       <p className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-700")}>
-                        Press <kbd className={cn("px-2 py-1 rounded text-xs font-mono", isDark ? "bg-slate-700" : "bg-gray-200")}>Space</kbd> or click "Start Journey" below
+                        Aperte <kbd className={cn("px-2 py-1 rounded text-xs font-mono", isDark ? "bg-slate-700" : "bg-gray-200")}>Espaço</kbd> ou clique em "Iniciar a jornada" abaixo
                       </p>
                     </div>
                   </div>
@@ -1328,13 +1328,13 @@ export default function PacketJourney() {
                     <div className="flex items-center gap-3">
                       <CheckCircle2 className="w-8 h-8 text-green-400" />
                       <div>
-                        <h3 className="font-bold text-lg">Journey Complete!</h3>
+                        <h3 className="font-bold text-lg">Jornada concluída!</h3>
                         <p className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-700")}>
-                          Round-trip completed in <strong>{totalTime.toFixed(0)}ms</strong>
+                          Ida e volta concluída em <strong>{totalTime.toFixed(0)}ms</strong>
                           {' '}({(totalJourneyTime * 2).toFixed(0)}ms simulated)
                         </p>
                         <p className="text-xs text-slate-400 mt-1">
-                          Real-world timing varies based on network conditions, server load, and geographic distance
+                          No mundo real, o tempo varia conforme a rede, a carga dos servidores e a distância geográfica
                         </p>
                       </div>
                     </div>
@@ -1354,12 +1354,12 @@ export default function PacketJourney() {
                     <div className="flex items-center gap-3">
                       <XCircle className="w-8 h-8 text-red-400" />
                       <div>
-                        <h3 className="font-bold text-lg">Connection Failed!</h3>
+                        <h3 className="font-bold text-lg">Falha na conexão!</h3>
                         <p className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-700")}>
-                          Failure at <strong>{allStages[injectFailure]?.name}</strong> stage
+                          Falha na etapa <strong>{allStages[injectFailure]?.name}</strong>
                         </p>
                         <p className="text-xs text-slate-400 mt-1">
-                          In production, this would trigger retries, fallbacks, circuit breakers, or error pages
+                          Em produção, isso dispararia retries, fallbacks, circuit breakers ou páginas de erro
                         </p>
                       </div>
                     </div>
@@ -1382,7 +1382,7 @@ export default function PacketJourney() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Timer className="w-5 h-5" />
-                    Current Stage
+                    Etapa atual
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -1417,7 +1417,7 @@ export default function PacketJourney() {
                     </div>
 
                     <div className="space-y-1">
-                      <p className={cn("text-xs font-semibold", isDark ? "text-slate-400" : "text-gray-700")}>What's happening:</p>
+                      <p className={cn("text-xs font-semibold", isDark ? "text-slate-400" : "text-gray-700")}>O que está acontecendo:</p>
                       {journeyStages[currentStageIndex].details.map((detail, i) => (
                         <motion.div
                           key={i}
@@ -1461,7 +1461,7 @@ export default function PacketJourney() {
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Layers className="w-5 h-5" />
-                    Journey Stages
+                    Etapas da jornada
                   </CardTitle>
                   {isRunning && (
                     <Badge variant="outline" className={cn(
@@ -1589,9 +1589,9 @@ export default function PacketJourney() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                Timing Waterfall
+                Cascata de tempos
               </CardTitle>
-              <CardDescription>Cumulative latency at each stage</CardDescription>
+              <CardDescription>Latência acumulada em cada etapa</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -1637,11 +1637,11 @@ export default function PacketJourney() {
 
               <div className="mt-4 pt-4 border-t border-slate-600">
                 <div className="flex justify-between items-center">
-                  <span className="font-bold">Total Journey Time:</span>
+                  <span className="font-bold">Tempo total da jornada:</span>
                   <span className="text-2xl font-bold text-blue-400">{totalJourneyTime}ms</span>
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  Round-trip (request + response): {totalJourneyTime * 2}ms
+                  Ida e volta (requisição + resposta): {totalJourneyTime * 2}ms
                 </p>
               </div>
             </CardContent>
@@ -1656,7 +1656,7 @@ export default function PacketJourney() {
                 <Sparkles className="w-8 h-8 text-primary" />
                 <div>
                   <div className="text-2xl font-bold">{journeyStages.length}</div>
-                  <div className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Network Hops</div>
+                  <div className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Saltos de rede</div>
                 </div>
               </div>
             </CardContent>
@@ -1668,7 +1668,7 @@ export default function PacketJourney() {
                 <Timer className="w-8 h-8 text-primary" />
                 <div>
                   <div className="text-2xl font-bold">{totalJourneyTime}ms</div>
-                  <div className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Total Latency</div>
+                  <div className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Latência total</div>
                 </div>
               </div>
             </CardContent>
@@ -1680,7 +1680,7 @@ export default function PacketJourney() {
                 <TrendingUp className="w-8 h-8 text-green-500" />
                 <div>
                   <div className="text-2xl font-bold">{(totalJourneyTime * 2).toFixed(0)}ms</div>
-                  <div className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Round-Trip Time</div>
+                  <div className={cn("text-sm", isDark ? "text-slate-300" : "text-gray-600")}>Tempo de ida e volta</div>
                 </div>
               </div>
             </CardContent>
@@ -1697,20 +1697,20 @@ export default function PacketJourney() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5" />
-              Scenario Comparison
+              Comparação de cenários
             </CardTitle>
-            <CardDescription>See how different configurations affect performance</CardDescription>
+            <CardDescription>Veja como cada configuração afeta a performance</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className={cn("border-b", isDark ? "border-slate-700" : "border-gray-200")}>
-                    <th className="text-left py-3 px-2 font-semibold">Scenario</th>
-                    <th className="text-center py-3 px-2 font-semibold">Stages</th>
-                    <th className="text-center py-3 px-2 font-semibold">One-Way</th>
-                    <th className="text-center py-3 px-2 font-semibold">Round-Trip</th>
-                    <th className="text-left py-3 px-2 font-semibold">Best For</th>
+                    <th className="text-left py-3 px-2 font-semibold">Cenário</th>
+                    <th className="text-center py-3 px-2 font-semibold">Etapas</th>
+                    <th className="text-center py-3 px-2 font-semibold">Só ida</th>
+                    <th className="text-center py-3 px-2 font-semibold">Ida e volta</th>
+                    <th className="text-left py-3 px-2 font-semibold">Ideal para</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1749,10 +1749,10 @@ export default function PacketJourney() {
                         <td className={cn("text-center py-3 px-2 font-mono", isDark ? "text-slate-300" : "text-gray-900")}>{oneWay}ms</td>
                         <td className="text-center py-3 px-2 font-mono font-semibold text-cyan-400">{roundTrip}ms</td>
                         <td className={cn("py-3 px-2 text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                          {key === 'http' && 'Development, testing'}
-                          {key === 'https' && 'Production, secure data'}
-                          {key === 'https-cdn' && 'Global users, static content'}
-                          {key === 'https-cdn-cache' && 'Repeated requests, optimal speed'}
+                          {key === 'http' && 'Desenvolvimento, testes'}
+                          {key === 'https' && 'Produção, dados sensíveis'}
+                          {key === 'https-cdn' && 'Usuários no mundo todo, conteúdo estático'}
+                          {key === 'https-cdn-cache' && 'Requisições repetidas, máxima velocidade'}
                         </td>
                       </tr>
                     );
@@ -1767,12 +1767,12 @@ export default function PacketJourney() {
                 : "bg-blue-50 border-blue-200"
             )}>
               <p className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-700")}>
-                <strong className={cn(isDark ? "text-slate-300" : "text-gray-900")}>💡 Insight:</strong> The CDN cached scenario is {' '}
+                <strong className={cn(isDark ? "text-slate-300" : "text-gray-900")}>💡 Insight:</strong> o cenário com cache na CDN é {' '}
                 {Math.round((
                   (scenarios['https-cdn'].stages.map(id => allStages[id]).reduce((sum, s) => sum + s.duration, 0) -
                   scenarios['https-cdn-cache'].stages.map(id => allStages[id]).reduce((sum, s) => sum + s.duration, 0)) /
                   scenarios['https-cdn'].stages.map(id => allStages[id]).reduce((sum, s) => sum + s.duration, 0)
-                ) * 100)}% faster than the full CDN journey! This is why caching is crucial for performance.
+                ) * 100)}% mais rápido que a jornada completa pela CDN! É por isso que cache é essencial para a performance.
               </p>
             </div>
           </CardContent>
@@ -1784,24 +1784,24 @@ export default function PacketJourney() {
             <div className="space-y-3">
               <h3 className="font-bold flex items-center gap-2">
                 <Info className="w-5 h-5" />
-                Did You Know?
+                Você sabia?
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <strong>Speed of Light:</strong> Even at the speed of light, a packet takes ~30ms to travel
-                  from New York to London (3,500 miles). Network latency is bound by physics!
+                  <strong>Velocidade da luz:</strong> mesmo na velocidade da luz, um pacote leva uns 40 ms para ir
+                  de São Paulo a Lisboa (cerca de 8.000 km). A latência de rede tem limite físico!
                 </div>
                 <div>
-                  <strong>CDN Magic:</strong> Content Delivery Networks cache data at edge servers close to users,
-                  reducing latency from 200ms+ to under 20ms!
+                  <strong>A mágica da CDN:</strong> as redes de distribuição de conteúdo guardam dados em servidores de borda perto dos usuários,
+                  reduzindo a latência de mais de 200 ms para menos de 20 ms!
                 </div>
                 <div>
-                  <strong>DNS Caching:</strong> Your browser caches DNS lookups for hours, so subsequent
-                  requests to the same domain skip the DNS resolution step entirely!
+                  <strong>Cache de DNS:</strong> o navegador guarda as consultas DNS por horas, então as próximas
+                  requisições ao mesmo domínio pulam a resolução DNS!
                 </div>
                 <div>
-                  <strong>HTTP/3:</strong> The latest HTTP protocol uses QUIC (UDP-based) to establish
-                  connections faster, combining TCP + TLS handshakes into one step!
+                  <strong>HTTP/3:</strong> a versão mais recente do HTTP usa QUIC (baseado em UDP) para abrir
+                  conexões mais rápido, juntando os handshakes TCP e TLS em um único passo!
                 </div>
               </div>
             </div>
