@@ -1,6 +1,6 @@
 {
   "id": "rate-limiting-apis-quiz",
-  "title": "Rate Limiting for APIs Quiz",
+  "title": "Quiz de Rate Limiting em APIs",
   "description": "Teste como você projetaria e operaria rate limiting de APIs em produção: token bucket, leaky bucket, janelas fixas e deslizantes, contadores distribuídos, headers de resposta e os modos de falha que pegam em escala.",
   "category": "API Design",
   "icon": "Gauge",

@@ -41,6 +41,14 @@ import {
 import Link from 'next/link';
 
 // Icon mapping for serializable icon names
+const BADGE_LABELS: Record<string, string> = {
+  New: 'Novo',
+  Popular: 'Popular',
+  Hot: 'Em alta',
+  Fun: 'Divertido',
+  'Coming Soon': 'Em breve',
+};
+
 const iconMap: Record<string, LucideIcon> = {
   Bug,
   MailWarning,
@@ -167,11 +175,7 @@ function GameCard({ game, featured = false }: { game: SerializableGame; featured
               <Badge variant="secondary" className="text-xs flex items-center gap-1">
                 {game.badgeText === 'New' && <Sparkles className="h-3 w-3" />}
                 {game.badgeText === 'Popular' && <Zap className="h-3 w-3" />}
-                {game.badgeText === 'New'
-                  ? 'Novo'
-                  : game.badgeText === 'Popular'
-                    ? 'Popular'
-                    : game.badgeText}
+                {BADGE_LABELS[game.badgeText] ?? game.badgeText}
               </Badge>
             )}
             {game.featured && (

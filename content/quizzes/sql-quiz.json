@@ -1,6 +1,6 @@
 {
   "id": "sql-quiz",
-  "title": "SQL & Database Design Quiz",
+  "title": "Quiz de SQL e Design de Banco de Dados",
   "description": "Domine o design de banco de dados e SQL através de cenários de negócio reais cobrindo queries, otimização, padrões de design e modelagem de dados",
   "category": "SQL",
   "icon": "Database",

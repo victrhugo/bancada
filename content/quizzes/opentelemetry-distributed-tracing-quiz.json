@@ -1,6 +1,6 @@
 {
   "id": "opentelemetry-distributed-tracing-quiz",
-  "title": "OpenTelemetry Distributed Tracing Quiz",
+  "title": "Quiz de Tracing Distribuído com OpenTelemetry",
   "description": "Teste seu conhecimento sobre tracing com OpenTelemetry com cenários reais cobrindo instrumentação, propagação de contexto, o Collector, estratégias de sampling e leitura de waterfalls de trace em produção.",
   "category": "Observability",
   "icon": "Activity",

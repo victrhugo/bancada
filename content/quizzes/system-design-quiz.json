@@ -1,6 +1,6 @@
 {
   "id": "system-design-quiz",
-  "title": "System Design Fundamentals Quiz",
+  "title": "Quiz de Fundamentos de System Design",
   "description": "Teste suas habilidades de system design com questões sobre load balancing, cache, sharding, replicação, filas, modelos de consistência e trade-offs de sistemas distribuídos.",
   "category": "System Design",
   "icon": "Code",
