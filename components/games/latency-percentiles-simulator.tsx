@@ -61,8 +61,8 @@ interface PercentileStats {
 
 const SCENARIOS: Record<ScenarioId, ScenarioConfig> = {
   steady: {
-    title: 'Healthy API',
-    subtitle: 'Most requests cluster tightly. P90, P95, and P99 are close together.',
+    title: 'API saudável',
+    subtitle: 'A maioria das requisições fica bem agrupada. P90, P95 e P99 ficam próximos.',
     baseMs: 78,
     jitterMs: 16,
     tailMultiplier: 2.1,
@@ -71,8 +71,8 @@ const SCENARIOS: Record<ScenarioId, ScenarioConfig> = {
     icon: CheckCircle2,
   },
   cache: {
-    title: 'Cache Churn',
-    subtitle: 'Cache misses add a visible upper band while the median still looks fine.',
+    title: 'Rotatividade de cache',
+    subtitle: 'Cache misses criam uma faixa superior visível enquanto a mediana ainda parece boa.',
     baseMs: 58,
     jitterMs: 22,
     tailMultiplier: 3.2,
@@ -81,8 +81,8 @@ const SCENARIOS: Record<ScenarioId, ScenarioConfig> = {
     icon: Layers3,
   },
   noisy: {
-    title: 'Noisy Neighbor',
-    subtitle: 'Shared CPU and disk contention stretch the slow tail without breaking every request.',
+    title: 'Vizinho barulhento',
+    subtitle: 'A disputa por CPU e disco compartilhados estica a cauda lenta sem quebrar todas as requisições.',
     baseMs: 92,
     jitterMs: 34,
     tailMultiplier: 4.8,
@@ -91,8 +91,8 @@ const SCENARIOS: Record<ScenarioId, ScenarioConfig> = {
     icon: AlertTriangle,
   },
   'cold-start': {
-    title: 'Cold Starts',
-    subtitle: 'A small number of very slow requests dominate P99 and max latency.',
+    title: 'Cold starts',
+    subtitle: 'Poucas requisições muito lentas dominam o P99 e a latência máxima.',
     baseMs: 70,
     jitterMs: 20,
     tailMultiplier: 7.4,
@@ -101,8 +101,8 @@ const SCENARIOS: Record<ScenarioId, ScenarioConfig> = {
     icon: Sparkles,
   },
   deploy: {
-    title: 'Rolling Deploy',
-    subtitle: 'Warmup, image pulls, and connection churn create a fat tail during release windows.',
+    title: 'Deploy gradual',
+    subtitle: 'Aquecimento, download de imagens e troca de conexões criam uma cauda grossa durante as janelas de deploy.',
     baseMs: 84,
     jitterMs: 28,
     tailMultiplier: 5.8,
@@ -123,28 +123,28 @@ const PERCENTILES: Array<{
     key: 'p50',
     label: 'P50',
     rank: 50,
-    description: 'The median. Half of requests are faster and half are slower.',
+    description: 'A mediana. Metade das requisições é mais rápida e metade é mais lenta.',
     color: '#14b8a6',
   },
   {
     key: 'p90',
     label: 'P90',
     rank: 90,
-    description: '90% of requests finish at or below this latency.',
+    description: '90% das requisições terminam nesta latência ou abaixo dela.',
     color: '#0ea5e9',
   },
   {
     key: 'p95',
     label: 'P95',
     rank: 95,
-    description: 'Only the slowest 5% are above this line.',
+    description: 'Só os 5% mais lentos ficam acima desta linha.',
     color: '#f59e0b',
   },
   {
     key: 'p99',
     label: 'P99',
     rank: 99,
-    description: 'Only the slowest 1% are above this line.',
+    description: 'Só o 1% mais lento fica acima desta linha.',
     color: '#ef4444',
   },
 ];
@@ -282,9 +282,9 @@ function PercentileRuler({
     <div className="rounded-lg border bg-background p-3">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 className="text-sm font-semibold">Sorted request ruler</h3>
+          <h3 className="text-sm font-semibold">Régua de requisições ordenadas</h3>
           <p className="text-xs leading-snug text-muted-foreground">
-            Requests are sorted fastest to slowest. Percentiles are rank positions, not averages.
+            As requisições estão ordenadas da mais rápida para a mais lenta. Percentis são posições, não médias.
           </p>
         </div>
         <Badge variant="outline" className="font-mono">
@@ -342,21 +342,21 @@ function PercentileRuler({
 
       <div className="mt-3 grid gap-2 sm:grid-cols-3">
         <div className="rounded-md border border-emerald-500/30 bg-emerald-500/5 p-2.5">
-          <p className="text-xs font-semibold text-emerald-600">First 90%</p>
+          <p className="text-xs font-semibold text-emerald-600">Primeiros 90%</p>
           <p className="mt-1 text-xs leading-snug text-muted-foreground">
-            Normal user experience. This is what average dashboards over-emphasize.
+            Experiência normal do usuário. É o que os dashboards de média destacam demais.
           </p>
         </div>
         <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-2.5">
-          <p className="text-xs font-semibold text-amber-600">Next 9%</p>
+          <p className="text-xs font-semibold text-amber-600">Próximos 9%</p>
           <p className="mt-1 text-xs leading-snug text-muted-foreground">
-            Slow requests. P95 is usually where support tickets start to appear.
+            Requisições lentas. Normalmente é no P95 que os chamados de suporte começam a aparecer.
           </p>
         </div>
         <div className="rounded-md border border-red-500/30 bg-red-500/5 p-2.5">
-          <p className="text-xs font-semibold text-red-600">Slowest 1%</p>
+          <p className="text-xs font-semibold text-red-600">1% mais lento</p>
           <p className="mt-1 text-xs leading-snug text-muted-foreground">
-            The tail. P99 tells you whether rare paths are painful.
+            A cauda. O P99 mostra se os caminhos raros são dolorosos.
           </p>
         </div>
       </div>
@@ -381,9 +381,9 @@ function HistogramChart({
     <div className="rounded-lg border bg-background p-3">
       <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 className="text-sm font-semibold">Latency distribution</h3>
+          <h3 className="text-sm font-semibold">Distribuição de latência</h3>
           <p className="text-xs leading-snug text-muted-foreground">
-            The bars show request counts by latency bucket. Vertical lines mark percentile cutoffs.
+            As barras mostram a quantidade de requisições por faixa de latência. As linhas verticais marcam os cortes de percentil.
           </p>
         </div>
         <Badge className="font-mono" style={{ backgroundColor: selectedConfig.color }}>
@@ -413,7 +413,7 @@ function HistogramChart({
                         : 'bg-linear-to-t from-emerald-500 to-teal-400',
                   )}
                   style={{ height: `${bin.height}%` }}
-                  title={`${bin.start}-${bin.end}ms: ${bin.count} requests`}
+                  title={`${bin.start}-${bin.end}ms: ${bin.count} requisições`}
                 />
               </div>
             );
@@ -457,9 +457,9 @@ function RequestHeatmap({ samples, stats }: { samples: Sample[]; stats: Percenti
     <div className="rounded-lg border bg-background p-3">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <h3 className="text-sm font-semibold">Request stream</h3>
+          <h3 className="text-sm font-semibold">Fluxo de requisições</h3>
           <p className="text-xs leading-snug text-muted-foreground">
-            Each square is one request in arrival order.
+            Cada quadrado é uma requisição, na ordem de chegada.
           </p>
         </div>
         <Badge variant="secondary" className="font-mono">
@@ -480,7 +480,7 @@ function RequestHeatmap({ samples, stats }: { samples: Sample[]; stats: Percenti
                     ? 'bg-emerald-500'
                     : 'bg-sky-500',
             )}
-            title={`request ${sample.id}: ${sample.latency}ms`}
+            title={`requisição ${sample.id}: ${sample.latency}ms`}
           />
         ))}
       </div>
@@ -511,10 +511,10 @@ function ChallengePanel({
 }) {
   const answer =
     stats.p99 > stats.p50 * 4
-      ? 'P99 is the important alarm here. The median is calm, but the slowest 1% are much worse.'
+      ? 'O P99 é o alarme importante aqui. A mediana está tranquila, mas o 1% mais lento está muito pior.'
       : stats.p95 > stats.p50 * 2
-        ? 'P95 is the useful early-warning metric. A meaningful minority of users are already slow.'
-        : 'P90 is enough for this scenario. The tail is present, but it is not dramatically separated.';
+        ? 'O P95 é a métrica útil de alerta antecipado. Uma minoria relevante de usuários já está lenta.'
+        : 'O P90 basta para este cenário. A cauda existe, mas não está muito descolada.';
   const ScenarioIcon = SCENARIOS[scenario].icon;
 
   return (
@@ -524,8 +524,8 @@ function ChallengePanel({
           <ScenarioIcon className="h-4 w-4" />
         </div>
         <div>
-          <h3 className="text-sm font-semibold">Incident readout</h3>
-          <p className="text-xs text-muted-foreground">Which metric would catch the user pain?</p>
+          <h3 className="text-sm font-semibold">Leitura do incidente</h3>
+          <p className="text-xs text-muted-foreground">Qual métrica pegaria a dor do usuário?</p>
         </div>
       </div>
       <div className="grid gap-2 sm:grid-cols-3">
@@ -590,23 +590,23 @@ export default function LatencyPercentilesSimulator() {
             <div>
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <Badge variant="outline" className="font-mono">
-                  percentiles are rank cutoffs
+                  percentis são cortes por posição
                 </Badge>
                 <Badge variant="secondary" className="font-mono">
-                  {stats.total} requests
+                  {stats.total} requisições
                 </Badge>
               </div>
               <CardTitle className="text-lg sm:text-xl">
-                Explore P90, P95, and P99 latency
+                Explore as latências P90, P95 e P99
               </CardTitle>
               <p className="mt-1.5 max-w-3xl text-sm leading-snug text-muted-foreground">
-                Generate a latency sample, sort every request, and watch how a tiny slow tail
-                changes the numbers your dashboards show.
+                Gere uma amostra de latência, ordene cada requisição e veja como uma pequena cauda lenta
+                muda os números que seus dashboards mostram.
               </p>
             </div>
             <Button type="button" variant="outline" size="sm" onClick={reset} className="w-fit gap-2">
               <RotateCcw className="h-4 w-4" />
-              Reset
+              Reiniciar
             </Button>
           </div>
         </CardHeader>
@@ -643,11 +643,11 @@ export default function LatencyPercentilesSimulator() {
             <div className="rounded-lg border bg-muted/20 p-3">
               <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
                 <SlidersHorizontal className="h-4 w-4 text-primary" />
-                Shape the latency sample
+                Molde a amostra de latência
               </div>
               <div className="grid gap-4 md:grid-cols-3">
                 <SimulatorControlSlider
-                  label="Requests"
+                  label="Requisições"
                   value={requestCount}
                   min={100}
                   max={1000}
@@ -655,7 +655,7 @@ export default function LatencyPercentilesSimulator() {
                   onChange={setRequestCount}
                 />
                 <SimulatorControlSlider
-                  label="Slow tail"
+                  label="Cauda lenta"
                   value={tailPercent}
                   min={1}
                   max={15}
@@ -678,7 +678,7 @@ export default function LatencyPercentilesSimulator() {
             <div className="rounded-lg border bg-muted/20 p-3">
               <div className="mb-3 flex items-center gap-2 text-sm font-semibold">
                 <Target className="h-4 w-4 text-primary" />
-                Highlight a percentile
+                Destaque um percentil
               </div>
               <div className="flex flex-wrap gap-2">
                 {PERCENTILES.map((item) => (
@@ -693,10 +693,10 @@ export default function LatencyPercentilesSimulator() {
                 ))}
               </div>
               <p className="mt-3 text-sm leading-snug text-muted-foreground">
-                <strong className="text-foreground">{selectedConfig.label}</strong> means{' '}
-                {selectedConfig.rank}% of requests finished in{' '}
+                <strong className="text-foreground">{selectedConfig.label}</strong> significa que{' '}
+                {selectedConfig.rank}% das requisições terminaram em{' '}
                 <strong className="text-foreground">{formatMs(stats[selectedPercentile])}</strong>{' '}
-                or less. The remaining {100 - selectedConfig.rank}% were slower.
+                ou menos. Os outros {100 - selectedConfig.rank}% foram mais lentos.
               </p>
               <p className="mt-1.5 text-xs leading-snug text-muted-foreground">
                 {selectedConfig.description}
@@ -708,38 +708,38 @@ export default function LatencyPercentilesSimulator() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <SimulatorMetricCard
-          label="Average"
+          label="Média"
           value={formatMs(stats.avg)}
           icon={Gauge}
-          detail="Can hide a painful tail"
+          detail="Pode esconder uma cauda dolorosa"
         />
         <SimulatorMetricCard
           label="P50"
           value={formatMs(stats.p50)}
           icon={Timer}
           tone="good"
-          detail="Median request"
+          detail="Requisição mediana"
         />
         <SimulatorMetricCard
           label="P90"
           value={formatMs(stats.p90)}
           icon={BarChart3}
           tone="good"
-          detail="10% are slower"
+          detail="10% são mais lentas"
         />
         <SimulatorMetricCard
           label="P95"
           value={formatMs(stats.p95)}
           icon={LineChart}
           tone={stats.p95 > stats.p50 * 2 ? 'warn' : 'good'}
-          detail="5% are slower"
+          detail="5% são mais lentas"
         />
         <SimulatorMetricCard
           label="P99"
           value={formatMs(stats.p99)}
           icon={Zap}
           tone={tailGap > 4 ? 'bad' : tailGap > 2.5 ? 'warn' : 'good'}
-          detail="1% are slower"
+          detail="1% é mais lento"
         />
       </div>
 
@@ -748,13 +748,13 @@ export default function LatencyPercentilesSimulator() {
         <div className="space-y-4">
           <RequestHeatmap samples={samples} stats={stats} />
           <SimulatorAdvisorCard
-            title="Read the tail before you tune"
+            title="Leia a cauda antes de otimizar"
             icon={Activity}
             tone={tailGap > 4 ? 'bad' : tailGap > 2.5 ? 'warn' : 'primary'}
           >
-            P99 is {tailGap.toFixed(1)}x the median in this sample. If average and P50 look fine
-            while P99 jumps, optimize the rare slow path: cache misses, cold starts, retries, lock
-            waits, noisy nodes, or downstream calls.
+            Nesta amostra, o P99 é {tailGap.toFixed(1)}x a mediana. Se a média e o P50 parecem bons
+            enquanto o P99 dispara, otimize o caminho raro e lento: cache misses, cold starts, retries,
+            espera por locks, nodes barulhentos ou chamadas a dependências.
           </SimulatorAdvisorCard>
         </div>
       </div>
@@ -766,23 +766,23 @@ export default function LatencyPercentilesSimulator() {
         <div className="rounded-lg border bg-background p-3">
           <div className="mb-3 flex items-center gap-2">
             <Activity className="h-4 w-4 text-primary" />
-            <h3 className="text-sm font-semibold">What the numbers say</h3>
+            <h3 className="text-sm font-semibold">O que os números dizem</h3>
           </div>
           <div className="space-y-2 text-sm leading-snug text-muted-foreground">
             <p>
-              <strong className="text-foreground">P90:</strong> {formatMs(stats.p90)} means 90%
-              of sampled requests completed by that point. It describes the upper edge of normal.
+              <strong className="text-foreground">P90:</strong> {formatMs(stats.p90)} significa que 90%
+              das requisições da amostra terminaram até esse ponto. Ele descreve o limite superior do normal.
             </p>
             <p>
-              <strong className="text-foreground">P95:</strong> {formatMs(stats.p95)} leaves only
-              5% of requests above it. It is a practical SLO metric because it catches recurring
-              pain without being as jumpy as P99.
+              <strong className="text-foreground">P95:</strong> {formatMs(stats.p95)} deixa só
+              5% das requisições acima dele. É uma métrica prática para SLO porque pega dores recorrentes
+              sem oscilar tanto quanto o P99.
             </p>
             <p>
-              <strong className="text-foreground">P99:</strong> {formatMs(stats.p99)} isolates
-              the slowest 1%. In this run, that group averages{' '}
+              <strong className="text-foreground">P99:</strong> {formatMs(stats.p99)} isola
+              o 1% mais lento. Nesta rodada, esse grupo tem média de{' '}
               <strong className="text-foreground">{formatMs(stats.slowestOnePercent)}</strong>,
-              while the median is only <strong className="text-foreground">{formatMs(stats.p50)}</strong>.
+              enquanto a mediana é só <strong className="text-foreground">{formatMs(stats.p50)}</strong>.
             </p>
           </div>
         </div>
