@@ -64,72 +64,78 @@ interface SimulatorState {
 const scenarios: Scenario[] = [
   {
     id: 'normal',
-    title: 'Normal operation',
+    title: 'Operação normal',
     badge: 'healthy',
-    description: 'Producers publish steadily and consumers keep up with the backlog.',
+    description: 'Os producers publicam em ritmo constante e os consumers dão conta do backlog.',
     produceRate: 6,
     consumerRate: 3,
     defaultConsumers: 2,
     defaultPartitions: 3,
-    note: 'A balanced queue keeps lag low because consumer capacity roughly matches producer throughput.',
+    note: 'Uma fila equilibrada mantém o lag baixo porque a capacidade dos consumers acompanha o throughput dos producers.',
   },
   {
     id: 'lag',
-    title: 'Consumer lag',
+    title: 'Lag do consumer',
     badge: 'lag',
-    description: 'A slow consumer group falls behind while the broker keeps accepting messages.',
+    description: 'Um consumer group lento fica para trás enquanto o broker continua aceitando mensagens.',
     produceRate: 9,
     consumerRate: 2,
     defaultConsumers: 2,
     defaultPartitions: 4,
-    note: 'Lag is not always an outage. It becomes dangerous when the backlog grows faster than it drains.',
+    note: 'Lag nem sempre é incidente. Fica perigoso quando o backlog cresce mais rápido do que é drenado.',
   },
   {
     id: 'rebalance',
-    title: 'Rebalancing',
+    title: 'Rebalanceamento',
     badge: 'join/leave',
-    description: 'Consumers join or leave and ownership shifts across partitions or queues.',
+    description: 'Consumers entram ou saem e a posse das partições ou filas muda de dono.',
     produceRate: 7,
     consumerRate: 3,
     defaultConsumers: 2,
     defaultPartitions: 4,
-    note: 'Rebalancing increases capacity, but it can pause processing while ownership changes.',
+    note: 'O rebalanceamento aumenta a capacidade, mas pode pausar o processamento enquanto a posse muda.',
   },
   {
     id: 'ordering',
-    title: 'Ordering guarantees',
+    title: 'Garantias de ordenação',
     badge: 'per-key',
-    description: 'Messages with the same key stay ordered inside one partition or queue path.',
+    description: 'Mensagens com a mesma chave ficam ordenadas dentro de uma partição ou caminho de fila.',
     produceRate: 5,
     consumerRate: 2,
     defaultConsumers: 2,
     defaultPartitions: 3,
-    note: 'Kafka ordering is per partition. RabbitMQ ordering is per queue path and can change with parallel consumers.',
+    note: 'No Kafka, a ordem vale por partição. No RabbitMQ, vale por caminho de fila e pode mudar com consumers em paralelo.',
   },
   {
     id: 'dlq',
-    title: 'Dead letter handling',
+    title: 'Tratamento de dead letter',
     badge: 'poison',
-    description: 'Poison messages fail retries and move to a dead letter queue for inspection.',
+    description: 'Mensagens envenenadas falham nos retries e vão para uma dead letter queue para inspeção.',
     produceRate: 6,
     consumerRate: 3,
     defaultConsumers: 2,
     defaultPartitions: 3,
     failureEvery: 2,
-    note: 'DLQs keep one bad message from blocking the whole stream, but they still need alerting and replay tooling.',
+    note: 'DLQs evitam que uma mensagem ruim trave o fluxo inteiro, mas ainda precisam de alertas e ferramentas de replay.',
   },
   {
     id: 'backpressure',
     title: 'Backpressure',
     badge: 'overload',
-    description: 'Producers overwhelm consumer capacity and the broker becomes a pressure buffer.',
+    description: 'Os producers superam a capacidade dos consumers e o broker vira um buffer de pressão.',
     produceRate: 12,
     consumerRate: 2,
     defaultConsumers: 2,
     defaultPartitions: 4,
-    note: 'Backpressure is the signal that producers, consumers, or the broker need flow control.',
+    note: 'Backpressure é o sinal de que producers, consumers ou o broker precisam de controle de fluxo.',
   },
 ];
+
+const HEALTH_LABELS: Record<string, string> = {
+  healthy: 'Saudável',
+  watch: 'Atenção',
+  degraded: 'Degradado',
+};
 
 const modeCopy: Record<
   QueueMode,
@@ -143,20 +149,20 @@ const modeCopy: Record<
   }
 > = {
   kafka: {
-    title: 'Kafka topic',
-    broker: 'Topic log',
-    storage: 'Append-only partitions retain messages by offset.',
-    routing: 'Key hash chooses a partition; ordering is preserved within that partition.',
-    delivery: 'Consumers commit offsets after processing for at-least-once delivery.',
-    consumer: 'Consumer groups share partitions. One partition is read by one consumer in a group.',
+    title: 'Tópico Kafka',
+    broker: 'Log do tópico',
+    storage: 'Partições append-only guardam as mensagens por offset.',
+    routing: 'O hash da chave escolhe a partição; a ordem é preservada dentro dela.',
+    delivery: 'Os consumers fazem commit do offset depois de processar, garantindo entrega at-least-once.',
+    consumer: 'Consumer groups dividem as partições. Cada partição é lida por um único consumer do grupo.',
   },
   rabbitmq: {
-    title: 'RabbitMQ exchange',
-    broker: 'Exchange + queues',
-    storage: 'Queues hold messages until consumers ack or reject them.',
-    routing: 'Direct, fanout, and topic exchanges route messages through bindings.',
-    delivery: 'Acknowledgments remove messages; nacks can retry or dead-letter.',
-    consumer: 'Consumers compete on queues. Prefetch controls how many messages each can hold.',
+    title: 'Exchange RabbitMQ',
+    broker: 'Exchange + filas',
+    storage: 'As filas guardam as mensagens até os consumers darem ack ou rejeitarem.',
+    routing: 'Exchanges direct, fanout e topic roteiam mensagens por meio de bindings.',
+    delivery: 'Acks removem as mensagens; nacks podem gerar retry ou ir para dead letter.',
+    consumer: 'Os consumers competem pelas filas. O prefetch controla quantas mensagens cada um pode segurar.',
   },
 };
 
@@ -173,8 +179,8 @@ function createState(scenario: Scenario): SimulatorState {
     partitions: scenario.defaultPartitions,
     isPlaying: false,
     log: [
-      `producer published ${scenario.produceRate * 2} messages`,
-      `consumer group started with ${scenario.defaultConsumers} consumers`,
+      `producer publicou ${scenario.produceRate * 2} mensagens`,
+      `consumer group iniciado com ${scenario.defaultConsumers} consumers`,
     ],
   };
 }
@@ -250,7 +256,7 @@ export default function MessageQueueSimulator() {
     setState((current) => ({
       ...current,
       produced: current.produced + scenario.produceRate,
-      log: appendLog(current, `produced ${scenario.produceRate} messages to ${modeCopy[mode].broker}`),
+      log: appendLog(current, `${scenario.produceRate} mensagens produzidas para ${modeCopy[mode].broker}`),
     }));
   }, [appendLog, mode, scenario.produceRate]);
 
@@ -268,9 +274,9 @@ export default function MessageQueueSimulator() {
           : current.produced + Math.ceil(scenario.produceRate / 2);
       const rebalanceNote =
         scenario.id === 'rebalance' && current.tick % 3 === 0
-          ? `rebalance assigned ${current.partitions} ${mode === 'kafka' ? 'partitions' : 'queues'}`
-          : `processed ${processed}, backlog ${Math.max(currentBacklog - processed - failures, 0)}`;
-      const failureNote = failures > 0 ? `moved ${failures} poison message to DLQ` : rebalanceNote;
+          ? `rebalance atribuiu ${current.partitions} ${mode === 'kafka' ? 'partições' : 'filas'}`
+          : `${processed} processadas, backlog ${Math.max(currentBacklog - processed - failures, 0)}`;
+      const failureNote = failures > 0 ? `${failures} mensagem envenenada movida para a DLQ` : rebalanceNote;
 
       return {
         ...current,
@@ -288,7 +294,7 @@ export default function MessageQueueSimulator() {
     setState((current) => ({
       ...current,
       consumers: Math.min(5, current.consumers + 1),
-      log: appendLog(current, `consumer-${Math.min(5, current.consumers + 1)} joined group`),
+      log: appendLog(current, `consumer-${Math.min(5, current.consumers + 1)} entrou no grupo`),
     }));
   }, [appendLog]);
 
@@ -296,7 +302,7 @@ export default function MessageQueueSimulator() {
     setState((current) => ({
       ...current,
       consumers: Math.max(1, current.consumers - 1),
-      log: appendLog(current, `consumer left; ${Math.max(1, current.consumers - 1)} remain`),
+      log: appendLog(current, `consumer saiu; restam ${Math.max(1, current.consumers - 1)}`),
     }));
   }, [appendLog]);
 
@@ -305,7 +311,7 @@ export default function MessageQueueSimulator() {
       ...current,
       failed: current.failed + 1,
       dlq: current.dlq + 1,
-      log: appendLog(current, 'poison message retried and sent to DLQ'),
+      log: appendLog(current, 'mensagem envenenada reprocessada e enviada para a DLQ'),
     }));
   }, [appendLog]);
 
@@ -329,13 +335,13 @@ export default function MessageQueueSimulator() {
               <MessageSquare className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// message queue lab</p>
-              <h2 className="text-2xl font-bold md:text-3xl">Message Queue Simulator</h2>
+              <p className="font-mono text-xs text-muted-foreground">// laboratório de filas de mensagens</p>
+              <h2 className="text-2xl font-bold md:text-3xl">Simulador de filas de mensagens</h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Visualize producers, brokers, partitions, queues, consumer groups, lag, rebalancing,
-            backpressure, and dead letter handling across Kafka and RabbitMQ style systems.
+            Visualize producers, brokers, partições, filas, consumer groups, lag, rebalanceamento,
+            backpressure e tratamento de dead letter em sistemas no estilo Kafka e RabbitMQ.
           </p>
         </div>
 
@@ -395,12 +401,12 @@ export default function MessageQueueSimulator() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <MessageSquare className="h-5 w-5" />
-                  Live Message Flow
+                  Fluxo de mensagens ao vivo
                 </CardTitle>
                 <div className="flex flex-wrap items-center gap-2">
                   <Button size="sm" variant="outline" onClick={produce}>
                     <Plus className="mr-1 h-4 w-4" />
-                    Produce
+                    Produzir
                   </Button>
                   <Button
                     size="sm"
@@ -412,15 +418,15 @@ export default function MessageQueueSimulator() {
                     ) : (
                       <Play className="mr-1 h-4 w-4" />
                     )}
-                    {state.isPlaying ? 'Pause' : 'Play'}
+                    {state.isPlaying ? 'Pausar' : 'Reproduzir'}
                   </Button>
                   <Button size="sm" variant="outline" onClick={step}>
                     <Zap className="mr-1 h-4 w-4" />
-                    Step
+                    Avançar
                   </Button>
                   <Button size="sm" variant="ghost" onClick={reset}>
                     <RotateCcw className="mr-1 h-4 w-4" />
-                    Reset
+                    Reiniciar
                   </Button>
                 </div>
               </div>
@@ -476,7 +482,7 @@ export default function MessageQueueSimulator() {
                 <FlowNode
                   title="Consumers"
                   icon={<Users className="h-5 w-5" />}
-                  subtitle={`${state.consumers} active`}
+                  subtitle={`${state.consumers} ativos`}
                   tone="emerald"
                 >
                   <div className="grid gap-2">
@@ -499,7 +505,7 @@ export default function MessageQueueSimulator() {
                 <FlowNode
                   title="DLQ"
                   icon={<Inbox className="h-5 w-5" />}
-                  subtitle={`${state.dlq} failed`}
+                  subtitle={`${state.dlq} com falha`}
                   tone={state.dlq > 0 ? 'red' : 'muted'}
                 >
                   {state.dlq > 0 ? (
@@ -526,7 +532,7 @@ export default function MessageQueueSimulator() {
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Database className="h-5 w-5" />
-                  {mode === 'kafka' ? 'Partition Ownership' : 'Queue Bindings'}
+                  {mode === 'kafka' ? 'Posse das partições' : 'Bindings das filas'}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 p-4 pt-0">
@@ -535,12 +541,12 @@ export default function MessageQueueSimulator() {
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
                         <p className="font-medium">
-                          {mode === 'kafka' ? `Partition ${partition.id}` : `Queue ${partition.id}`}
+                          {mode === 'kafka' ? `Partição ${partition.id}` : `Fila ${partition.id}`}
                         </p>
                         <p className="text-xs text-muted-foreground">
                           {mode === 'kafka'
-                            ? `offset ${partition.offset}, key ${partition.key}`
-                            : `binding ${partition.key}.*, ${partition.pending} ready`}
+                            ? `offset ${partition.offset}, chave ${partition.key}`
+                            : `binding ${partition.key}.*, ${partition.pending} prontas`}
                         </p>
                       </div>
                       <Badge variant="secondary">{partition.owner}</Badge>
@@ -554,7 +560,7 @@ export default function MessageQueueSimulator() {
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <ListRestart className="h-5 w-5" />
-                  Event Log
+                  Log de eventos
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 pt-0">
@@ -577,7 +583,7 @@ export default function MessageQueueSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Settings2 className="h-5 w-5" />
-                Controls
+                Controles
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0">
@@ -588,17 +594,17 @@ export default function MessageQueueSimulator() {
                 </Button>
                 <Button size="sm" variant="outline" onClick={removeConsumer}>
                   <Trash2 className="mr-1 h-4 w-4" />
-                  Remove
+                  Remover
                 </Button>
               </div>
               <Button size="sm" variant="outline" onClick={triggerFailure} className="w-full">
                 <MessageSquareWarning className="mr-1 h-4 w-4" />
-                Trigger poison message
+                Disparar mensagem envenenada
               </Button>
 
               <div className="rounded-md border p-3">
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="text-sm font-medium">Consumer lag</span>
+                  <span className="text-sm font-medium">Lag do consumer</span>
                   <span className={cn('text-sm font-semibold', getStatusColor(lagSeverity, 35, 65))}>
                     {lagSeverity}%
                   </span>
@@ -607,7 +613,7 @@ export default function MessageQueueSimulator() {
               </div>
 
               <div className="rounded-md border p-3">
-                <p className="mb-1 text-xs font-mono text-muted-foreground">// selected scenario</p>
+                <p className="mb-1 text-xs font-mono text-muted-foreground">// cenário selecionado</p>
                 <p className="font-medium">{scenario.title}</p>
                 <p className="mt-2 text-sm text-muted-foreground">{scenario.note}</p>
               </div>
@@ -618,13 +624,13 @@ export default function MessageQueueSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <ShieldCheck className="h-5 w-5" />
-                Delivery Guarantees
+                Garantias de entrega
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
-              <Guarantee label="At most once" detail="Ack before work; fast but messages can disappear." />
-              <Guarantee label="At least once" detail="Ack after work; safe but handlers must be idempotent." active />
-              <Guarantee label="Exactly once" detail="Requires broker and consumer coordination, not just a retry loop." />
+              <Guarantee label="At most once" detail="Ack antes do trabalho; rápido, mas mensagens podem sumir." />
+              <Guarantee label="At least once" detail="Ack depois do trabalho; seguro, mas os handlers precisam ser idempotentes." active />
+              <Guarantee label="Exactly once" detail="Exige coordenação entre broker e consumer, não só um loop de retry." />
             </CardContent>
           </Card>
 
@@ -632,7 +638,7 @@ export default function MessageQueueSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <AlertTriangle className="h-5 w-5" />
-                System Health
+                Saúde do sistema
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0">
@@ -644,9 +650,9 @@ export default function MessageQueueSimulator() {
                   health === 'degraded' && 'border-red-500/30 bg-red-500/10'
                 )}
               >
-                <p className="text-sm font-medium capitalize">{health}</p>
+                <p className="text-sm font-medium">{HEALTH_LABELS[health]}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Throughput {throughput}/tick, capacity {capacity}/tick, backlog {backlog}
+                  Throughput {throughput}/tick, capacidade {capacity}/tick, backlog {backlog}
                 </p>
               </div>
               <p className="text-sm text-muted-foreground">{modeCopy[mode].delivery}</p>
@@ -658,23 +664,23 @@ export default function MessageQueueSimulator() {
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <ComparisonCard
-          title="Kafka mental model"
+          title="Modelo mental do Kafka"
           icon={<Layers className="h-5 w-5" />}
           points={[
-            'Topics are append-only logs split into partitions.',
-            'Offsets are the consumer group checkpoint.',
-            'Scaling is limited by partition count per consumer group.',
-            'Ordering is reliable only inside a partition.',
+            'Tópicos são logs append-only divididos em partições.',
+            'Offsets são o checkpoint do consumer group.',
+            'A escala é limitada pelo número de partições por consumer group.',
+            'A ordem só é confiável dentro de uma partição.',
           ]}
         />
         <ComparisonCard
-          title="RabbitMQ mental model"
+          title="Modelo mental do RabbitMQ"
           icon={<GitBranch className="h-5 w-5" />}
           points={[
-            'Exchanges route messages into queues through bindings.',
-            'Messages leave a queue when they are acknowledged.',
-            'Prefetch and ack mode control backpressure.',
-            'DLX policies route rejected or expired messages to dead letter queues.',
+            'Exchanges roteiam mensagens para filas por meio de bindings.',
+            'As mensagens saem da fila quando recebem ack.',
+            'Prefetch e o modo de ack controlam o backpressure.',
+            'Políticas de DLX roteiam mensagens rejeitadas ou expiradas para dead letter queues.',
           ]}
         />
       </div>
