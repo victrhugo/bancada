@@ -1434,7 +1434,7 @@ Network docker-sim_default  Removed`;
                 {showHint && (
                   <div className="mt-3 rounded-md border border-yellow-200 bg-yellow-50 p-2.5 dark:border-yellow-800 dark:bg-yellow-950/30">
                     <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                      Hint: {currentCommand.hint}
+                      Dica: {currentCommand.hint}
                     </p>
                   </div>
                 )}

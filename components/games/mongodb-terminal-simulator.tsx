@@ -61,175 +61,175 @@ interface LessonCommand {
 const LESSONS: Lesson[] = [
   {
     id: 'find',
-    title: 'find() basics',
-    description: 'Read documents from a collection',
+    title: 'Básico do find()',
+    description: 'Leia documentos de uma collection',
     icon: <Table className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Return every document in the customers collection.',
+        instruction: 'Retorne todos os documentos da collection customers.',
         hint: 'Use "db.customers.find()".',
         expectedCommand: 'db.customers.find()',
         explanation:
-          'find() with no filter returns every document in the collection, like SELECT * in SQL.',
+          'O find() sem filtro retorna todos os documentos da collection, como um SELECT * no SQL.',
       },
       {
-        instruction: 'Return only the customers based in the USA.',
-        hint: 'Pass a filter document: db.customers.find({ country: "USA" }).',
+        instruction: 'Retorne só os clientes dos EUA (USA).',
+        hint: 'Passe um documento de filtro: db.customers.find({ country: "USA" }).',
         expectedCommand: 'db.customers.find({ country: "USA" })',
         explanation:
-          'The first argument to find() is a filter document. { country: "USA" } keeps documents where the country field equals "USA".',
+          'O primeiro argumento do find() é um documento de filtro. { country: "USA" } mantém os documentos em que o campo country é igual a "USA".',
       },
     ],
   },
   {
     id: 'projection',
-    title: 'Projections',
-    description: 'Return only the fields you need',
+    title: 'Projeções',
+    description: 'Retorne só os campos que você precisa',
     icon: <Columns3 className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Return the name and country of every customer, without the _id field.',
-        hint: 'The second argument to find() is a projection: db.customers.find({}, { name: 1, country: 1, _id: 0 }).',
+        instruction: 'Retorne o name e o country de todos os clientes, sem o campo _id.',
+        hint: 'O segundo argumento do find() é uma projeção: db.customers.find({}, { name: 1, country: 1, _id: 0 }).',
         expectedCommand: 'db.customers.find({}, { name: 1, country: 1, _id: 0 })',
         explanation:
-          'The second argument to find() is a projection. 1 includes a field, 0 excludes it. _id is returned by default unless you set it to 0.',
+          'O segundo argumento do find() é uma projeção. 1 inclui um campo, 0 exclui. O _id vem por padrão, a menos que você coloque 0.',
       },
     ],
   },
   {
     id: 'operators',
-    title: 'Query operators',
-    description: 'Compare with $lt, $gt, $gte, $lte',
+    title: 'Operadores de consulta',
+    description: 'Compare com $lt, $gt, $gte e $lte',
     icon: <Filter className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Return the products that cost less than 50.',
-        hint: 'Use a comparison operator: db.products.find({ price: { $lt: 50 } }).',
+        instruction: 'Retorne os produtos que custam menos de 50.',
+        hint: 'Use um operador de comparação: db.products.find({ price: { $lt: 50 } }).',
         expectedCommand: 'db.products.find({ price: { $lt: 50 } })',
         explanation:
-          'Operators like $lt (less than), $gt, $gte, and $lte go inside a nested document for the field: { price: { $lt: 50 } }.',
+          'Operadores como $lt (menor que), $gt, $gte e $lte vão num documento aninhado do campo: { price: { $lt: 50 } }.',
       },
     ],
   },
   {
     id: 'sort-limit',
-    title: 'Sort and limit',
-    description: 'Order documents and cap the result',
+    title: 'Ordenar e limitar',
+    description: 'Ordene os documentos e limite o resultado',
     icon: <ArrowUpDown className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Return the five most expensive products.',
-        hint: 'Chain cursor methods: db.products.find().sort({ price: -1 }).limit(5).',
+        instruction: 'Retorne os cinco produtos mais caros.',
+        hint: 'Encadeie métodos do cursor: db.products.find().sort({ price: -1 }).limit(5).',
         expectedCommand: 'db.products.find().sort({ price: -1 }).limit(5)',
         explanation:
-          'sort({ price: -1 }) orders high to low (1 is ascending). limit(5) caps the cursor at five documents. Cursor methods chain onto find().',
+          'sort({ price: -1 }) ordena do maior para o menor (1 é crescente). limit(5) limita o cursor a cinco documentos. Os métodos do cursor são encadeados no find().',
       },
     ],
   },
   {
     id: 'skip',
-    title: 'Paging with skip',
-    description: 'Return the next page of results',
+    title: 'Paginação com skip',
+    description: 'Retorne a próxima página de resultados',
     icon: <Layers className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Return the second page of five products, ordered by price from high to low.',
-        hint: 'Combine skip and limit: db.products.find().sort({ price: -1 }).skip(5).limit(5).',
+        instruction: 'Retorne a segunda página de cinco produtos, ordenados do maior preço para o menor.',
+        hint: 'Combine skip e limit: db.products.find().sort({ price: -1 }).skip(5).limit(5).',
         expectedCommand: 'db.products.find().sort({ price: -1 }).skip(5).limit(5)',
         explanation:
-          'skip(5) jumps past the first five documents; limit(5) then returns the next five. That is offset-style pagination on a cursor.',
+          'skip(5) pula os cinco primeiros documentos; limit(5) devolve os cinco seguintes. É paginação por offset num cursor.',
       },
     ],
   },
   {
     id: 'in',
-    title: 'Matching a set with $in',
-    description: 'Match any value from a list',
+    title: 'Casando um conjunto com $in',
+    description: 'Case qualquer valor de uma lista',
     icon: <Combine className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Return the orders whose status is either shipped or pending.',
-        hint: 'Use $in with an array: db.orders.find({ status: { $in: ["shipped", "pending"] } }).',
+        instruction: 'Retorne os pedidos com status shipped ou pending.',
+        hint: 'Use $in com um array: db.orders.find({ status: { $in: ["shipped", "pending"] } }).',
         expectedCommand: 'db.orders.find({ status: { $in: ["shipped", "pending"] } })',
         explanation:
-          '$in matches when the field equals any value in the array. It is the document way of writing SQL’s IN (...).',
+          'O $in casa quando o campo é igual a qualquer valor do array. É o jeito de escrever o IN (...) do SQL em documentos.',
       },
     ],
   },
   {
     id: 'count',
-    title: 'Counting documents',
-    description: 'Count matches without returning them',
+    title: 'Contando documentos',
+    description: 'Conte os resultados sem trazê-los',
     icon: <Sigma className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Count how many orders have been delivered.',
-        hint: 'Use countDocuments with a filter: db.orders.countDocuments({ status: "delivered" }).',
+        instruction: 'Conte quantos pedidos foram entregues (delivered).',
+        hint: 'Use countDocuments com um filtro: db.orders.countDocuments({ status: "delivered" }).',
         expectedCommand: 'db.orders.countDocuments({ status: "delivered" })',
         explanation:
-          'countDocuments(filter) returns the number of matching documents, so you get a count without pulling the documents back.',
+          'O countDocuments(filter) devolve o número de documentos que casam, então você tem a contagem sem trazer os documentos.',
       },
     ],
   },
   {
     id: 'write',
     title: 'insert, update, delete',
-    description: 'Write documents and read the result',
+    description: 'Grave documentos e leia o resultado',
     icon: <Pencil className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Insert a new customer with _id 9, name Ivy Chen, country USA.',
+        instruction: 'Insira um novo cliente com _id 9, name Ivy Chen e country USA.',
         hint: 'Use insertOne: db.customers.insertOne({ _id: 9, name: "Ivy Chen", country: "USA" }).',
         expectedCommand: 'db.customers.insertOne({ _id: 9, name: "Ivy Chen", country: "USA" })',
         explanation:
-          'insertOne adds a document and returns { acknowledged: true, insertedId }. This demo does not persist the change, so the dataset stays fixed for the other lessons.',
+          'O insertOne adiciona um documento e devolve { acknowledged: true, insertedId }. Esta demo não salva a mudança, então os dados continuam iguais para as outras lições.',
       },
       {
-        instruction: 'Set the price of the product with _id 1 to 54.99.',
-        hint: 'Use updateOne with $set: db.products.updateOne({ _id: 1 }, { $set: { price: 54.99 } }).',
+        instruction: 'Mude o price do produto com _id 1 para 54.99.',
+        hint: 'Use updateOne com $set: db.products.updateOne({ _id: 1 }, { $set: { price: 54.99 } }).',
         expectedCommand: 'db.products.updateOne({ _id: 1 }, { $set: { price: 54.99 } })',
         explanation:
-          'updateOne(filter, update) changes the first matching document. $set assigns fields. The result reports matchedCount and modifiedCount.',
+          'O updateOne(filter, update) altera o primeiro documento que casa. O $set atribui campos. O resultado traz matchedCount e modifiedCount.',
       },
       {
-        instruction: 'Delete every cancelled order.',
+        instruction: 'Apague todos os pedidos cancelados (cancelled).',
         hint: 'Use deleteMany: db.orders.deleteMany({ status: "cancelled" }).',
         expectedCommand: 'db.orders.deleteMany({ status: "cancelled" })',
         explanation:
-          'deleteMany removes every matching document and returns { deletedCount }. Here two orders are cancelled, so deletedCount is 2. Nothing is persisted.',
+          'O deleteMany remove todos os documentos que casam e devolve { deletedCount }. Aqui, dois pedidos estão cancelados, então deletedCount é 2. Nada é salvo.',
       },
     ],
   },
   {
     id: 'aggregate-group',
-    title: 'Aggregation: $group',
-    description: 'Summarise documents into groups',
+    title: 'Agregação: $group',
+    description: 'Resuma documentos em grupos',
     icon: <Group className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Count the orders in each status, most common first.',
-        hint: 'Pipe $group into $sort: db.orders.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }, { $sort: { count: -1 } }]).',
+        instruction: 'Conte os pedidos por status, do mais comum para o menos comum.',
+        hint: 'Encadeie $group e $sort: db.orders.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }, { $sort: { count: -1 } }]).',
         expectedCommand:
           'db.orders.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }, { $sort: { count: -1 } }])',
         explanation:
-          'aggregate() runs an array of stages. $group buckets by _id (here the $status field) and { $sum: 1 } counts documents per bucket. $sort then orders the groups.',
+          'O aggregate() roda um array de estágios. O $group agrupa por _id (aqui, o campo $status) e { $sum: 1 } conta os documentos de cada grupo. Depois o $sort ordena os grupos.',
       },
     ],
   },
   {
     id: 'aggregate-match',
-    title: 'Aggregation: $match + $group',
-    description: 'Filter, then group and average',
+    title: 'Agregação: $match + $group',
+    description: 'Filtre, depois agrupe e tire a média',
     icon: <BarChart3 className="h-5 w-5" />,
     commands: [
       {
         instruction:
-          'For products priced 20 or more, show each category with its product count and average price, highest average first.',
-        hint: 'Chain $match, $group, and $sort in the pipeline.',
+          'Para os produtos com preço de 20 ou mais, mostre cada categoria com a quantidade de produtos e o preço médio, da maior média para a menor.',
+        hint: 'Encadeie $match, $group e $sort no pipeline.',
         expectedCommand:
           'db.products.aggregate([{ $match: { price: { $gte: 20 } } }, { $group: { _id: "$category", n: { $sum: 1 }, avgPrice: { $avg: "$price" } } }, { $sort: { avgPrice: -1 } }])',
         explanation:
-          '$match filters documents before grouping (like SQL’s WHERE). $group then computes { $sum: 1 } and { $avg: "$price" } per category, and $sort orders the result by the average.',
+          'O $match filtra os documentos antes de agrupar (como o WHERE do SQL). Depois o $group calcula { $sum: 1 } e { $avg: "$price" } por categoria, e o $sort ordena o resultado pela média.',
       },
     ],
   },
@@ -237,17 +237,17 @@ const LESSONS: Lesson[] = [
 
 const TOTAL_DOCS = COLLECTIONS.reduce((sum, collection) => sum + collection.count, 0);
 
-const HELP_TEXT = `Available commands:
-  db.<collection>.find(filter, projection)   query documents
-  ...find().sort({...}).skip(n).limit(n)      shape the cursor
-  db.<collection>.countDocuments(filter)      count matches
+const HELP_TEXT = `Comandos disponíveis:
+  db.<collection>.find(filter, projection)   consulta documentos
+  ...find().sort({...}).skip(n).limit(n)      molda o cursor
+  db.<collection>.countDocuments(filter)      conta resultados
   db.<collection>.insertOne / updateOne / deleteMany
-  db.<collection>.aggregate([ ...stages ])    run a pipeline
-  show collections                            list the collections
-  help                                        show this message
-  clear                                       clear the terminal
+  db.<collection>.aggregate([ ...stages ])    roda um pipeline
+  show collections                            lista as collections
+  help                                        mostra esta mensagem
+  clear                                       limpa o terminal
 
-Try:
+Experimente:
   db.customers.find({ country: "USA" })
   db.products.find().sort({ price: -1 }).limit(5)
   db.orders.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }])`;
@@ -258,7 +258,7 @@ function outputFor(input: string): ExecuteResult {
   const result = runMongo(input);
   if (result.kind === 'error') return { output: `Error: ${result.error}`, type: 'error' };
   if (result.kind === 'docs' && result.docs.length === 0) {
-    return { output: '(no documents matched)' };
+    return { output: '(nenhum documento encontrado)' };
   }
   return { output: formatResult(result) };
 }
@@ -292,33 +292,33 @@ interface Challenge {
 const CHALLENGES: Challenge[] = [
   {
     id: 'uk-customers',
-    question: 'Return the names of every customer in the UK (no _id), alphabetically.',
+    question: 'Retorne os nomes de todos os clientes do Reino Unido (UK), sem _id, em ordem alfabética.',
     solution: 'db.customers.find({ country: "UK" }, { name: 1, _id: 0 }).sort({ name: 1 })',
   },
   {
     id: 'top-3-expensive',
-    question: 'Return the 3 most expensive products (name and price, no _id), most expensive first.',
+    question: 'Retorne os 3 produtos mais caros (name e price, sem _id), do mais caro para o mais barato.',
     solution: 'db.products.find({}, { name: 1, price: 1, _id: 0 }).sort({ price: -1 }).limit(3)',
   },
   {
     id: 'delivered-count',
-    question: 'How many orders have the status "delivered"?',
+    question: 'Quantos pedidos têm o status "delivered"?',
     solution: 'db.orders.countDocuments({ status: "delivered" })',
   },
   {
     id: 'cheap-products',
-    question: 'Return the products under 20 (name and price, no _id), cheapest first.',
+    question: 'Retorne os produtos abaixo de 20 (name e price, sem _id), do mais barato para o mais caro.',
     solution: 'db.products.find({ price: { $lt: 20 } }, { name: 1, price: 1, _id: 0 }).sort({ price: 1 })',
   },
   {
     id: 'products-per-category',
-    question: 'How many products are in each category? Most products first.',
+    question: 'Quantos produtos há em cada categoria? Da maior quantidade para a menor.',
     solution:
       'db.products.aggregate([{ $group: { _id: "$category", n: { $sum: 1 } } }, { $sort: { n: -1 } }])',
   },
   {
     id: 'cheapest-product',
-    question: 'Return the single cheapest product (name and price, no _id).',
+    question: 'Retorne o produto mais barato (name e price, sem _id).',
     solution: 'db.products.find({}, { name: 1, price: 1, _id: 0 }).sort({ price: 1 }).limit(1)',
   },
 ];
@@ -335,7 +335,7 @@ function gradeChallenge(
     lines.push({ type: 'error', content: `Error: ${userResult.error}`, timestamp: now() });
     lines.push({
       type: 'error',
-      content: "Not quite — that command didn't run. Fix it and try again.",
+      content: 'Quase: esse comando não rodou. Corrija e tente de novo.',
       timestamp: now(),
     });
     return { lines, solved: false };
@@ -344,7 +344,7 @@ function gradeChallenge(
   const output = formatResult(userResult);
   lines.push({
     type: 'output',
-    content: userResult.kind === 'docs' && userResult.docs.length === 0 ? '(no documents matched)' : output,
+    content: userResult.kind === 'docs' && userResult.docs.length === 0 ? '(nenhum documento encontrado)' : output,
     timestamp: now(),
   });
 
@@ -352,7 +352,7 @@ function gradeChallenge(
   if (resultsMatch(userResult, reference)) {
     lines.push({
       type: 'success',
-      content: 'Correct! Your result matches the reference solution.',
+      content: 'Correto! Seu resultado bate com a solução de referência.',
       timestamp: now(),
     });
     return { lines, solved: true };
@@ -360,7 +360,7 @@ function gradeChallenge(
 
   lines.push({
     type: 'error',
-    content: "Not quite — your result doesn't match the expected output. Check the fields, filter, and order.",
+    content: 'Quase: seu resultado não bate com a saída esperada. Confira os campos, o filtro e a ordem.',
     timestamp: now(),
   });
   return { lines, solved: false };
@@ -516,16 +516,16 @@ export default function MongodbTerminalSimulator() {
               <Leaf className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// mongo shell playground</p>
-              <h2 className="text-2xl font-bold md:text-3xl">MongoDB Terminal Simulator</h2>
+              <p className="font-mono text-xs text-muted-foreground">// playground do shell do MongoDB</p>
+              <h2 className="text-2xl font-bold md:text-3xl">Simulador de terminal MongoDB</h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Practice MongoDB queries against a small e-commerce dataset in a safe browser terminal.
-            Every command runs live: filter and project with find(), shape the cursor with sort, skip,
-            and limit, write with insertOne, updateOne, and deleteMany, and summarise with the
-            aggregation pipeline. The data mirrors the SQL simulator, so you can see the same records
-            as documents.
+            Pratique queries de MongoDB num pequeno conjunto de dados de e-commerce, num terminal seguro no navegador.
+            Todo comando roda ao vivo: filtre e projete com find(), molde o cursor com sort, skip
+            e limit, grave com insertOne, updateOne e deleteMany e resuma com o pipeline de
+            agregação. Os dados são os mesmos do simulador de SQL, então você vê os mesmos registros
+            como documentos.
           </p>
           <div className="mt-4 inline-flex rounded-md border bg-background p-1">
             <button
@@ -539,7 +539,7 @@ export default function MongodbTerminalSimulator() {
               )}
             >
               <BookOpen className="h-4 w-4" />
-              Lessons
+              Lições
             </button>
             <button
               type="button"
@@ -552,7 +552,7 @@ export default function MongodbTerminalSimulator() {
               )}
             >
               <Target className="h-4 w-4" />
-              Challenges
+              Desafio
             </button>
           </div>
         </div>
@@ -561,7 +561,7 @@ export default function MongodbTerminalSimulator() {
           <CardContent className="space-y-3 p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">
-                {mode === 'lessons' ? 'Progress' : 'Challenges solved'}
+                {mode === 'lessons' ? 'Progresso' : 'Desafios resolvidos'}
               </span>
               <span className="text-sm text-muted-foreground">
                 {mode === 'lessons'
@@ -593,7 +593,7 @@ export default function MongodbTerminalSimulator() {
                 <CardHeader className="p-4 pb-2">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <BookOpen className="h-5 w-5" />
-                    Lessons
+                    Lições
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 p-4 pt-0">
@@ -643,7 +643,7 @@ export default function MongodbTerminalSimulator() {
 
               <Button size="sm" variant="outline" onClick={resetLab} className="w-full">
                 <RotateCcw className="mr-1 h-4 w-4" />
-                Reset lab
+                Reiniciar laboratório
               </Button>
             </div>
 
@@ -654,10 +654,10 @@ export default function MongodbTerminalSimulator() {
                     <div>
                       <div className="mb-2 flex flex-wrap items-center gap-2">
                         <Badge variant="secondary">
-                          Lesson {currentLessonIndex + 1} / {LESSONS.length}
+                          Lição {currentLessonIndex + 1} / {LESSONS.length}
                         </Badge>
                         <Badge>
-                          Step {currentCommandIndex + 1} / {currentLesson.commands.length}
+                          Passo {currentCommandIndex + 1} / {currentLesson.commands.length}
                         </Badge>
                       </div>
                       <p className="text-sm font-medium sm:text-base">{currentCommand?.instruction}</p>
@@ -670,11 +670,11 @@ export default function MongodbTerminalSimulator() {
                     <div className="flex shrink-0 gap-2">
                       <Button size="sm" variant="outline" onClick={() => setShowHint((value) => !value)}>
                         <Lightbulb className="mr-1 h-4 w-4" />
-                        Hint
+                        Dica
                       </Button>
                       <Button size="sm" onClick={runCurrentCommand}>
                         <Play className="mr-1 h-4 w-4" />
-                        Run
+                        Executar
                       </Button>
                     </div>
                   </div>
@@ -705,10 +705,10 @@ export default function MongodbTerminalSimulator() {
                   >
                     {terminalHistory.length === 0 && (
                       <div className="mb-4 text-emerald-400">
-                        <p>Welcome to the MongoDB shell playground.</p>
+                        <p>Boas-vindas ao playground do shell do MongoDB.</p>
                         <p className="mt-2 text-muted-foreground">
-                          Type &quot;help&quot;, run &quot;show collections&quot;, or follow the current
-                          task above.
+                          Digite &quot;help&quot;, rode &quot;show collections&quot; ou siga a
+                          tarefa atual acima.
                         </p>
                       </div>
                     )}
@@ -756,7 +756,7 @@ export default function MongodbTerminalSimulator() {
                 <CardHeader className="p-4 pb-2">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Target className="h-5 w-5" />
-                    Challenges
+                    Desafios
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 p-4 pt-0">
@@ -787,7 +787,7 @@ export default function MongodbTerminalSimulator() {
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="text-xs font-semibold text-muted-foreground">
-                              Challenge {index + 1}
+                              Desafio {index + 1}
                             </p>
                             <p className="mt-0.5 text-sm">{challenge.question}</p>
                           </div>
@@ -800,7 +800,7 @@ export default function MongodbTerminalSimulator() {
 
               <Button size="sm" variant="outline" onClick={resetChallenges} className="w-full">
                 <RotateCcw className="mr-1 h-4 w-4" />
-                Reset challenges
+                Reiniciar desafios
               </Button>
             </div>
 
@@ -811,12 +811,12 @@ export default function MongodbTerminalSimulator() {
                     <div>
                       <div className="mb-2 flex flex-wrap items-center gap-2">
                         <Badge variant="secondary">
-                          Challenge {activeChallenge + 1} / {CHALLENGES.length}
+                          Desafio {activeChallenge + 1} / {CHALLENGES.length}
                         </Badge>
                         {solvedChallenges.has(activeChallenge) && (
                           <Badge className="gap-1 bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/15">
                             <CheckCircle className="h-3.5 w-3.5" />
-                            Solved
+                            Resolvido
                           </Badge>
                         )}
                       </div>
@@ -824,13 +824,13 @@ export default function MongodbTerminalSimulator() {
                         {CHALLENGES[activeChallenge].question}
                       </p>
                       <p className="mt-1.5 text-xs text-muted-foreground">
-                        Write your own query in the terminal below and press Enter. Your result is graded
-                        against the expected output.
+                        Escreva sua própria query no terminal abaixo e aperte Enter. O resultado é comparado
+                        com a saída esperada.
                       </p>
                       {revealed.has(activeChallenge) && (
                         <div className="mt-2 rounded-md border border-primary/30 bg-primary/10 p-2">
                           <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                            Reference solution
+                            Solução de referência
                           </p>
                           <code className="block whitespace-pre-wrap break-words font-mono text-xs text-foreground">
                             {CHALLENGES[activeChallenge].solution}
@@ -841,7 +841,7 @@ export default function MongodbTerminalSimulator() {
                     <div className="flex shrink-0 gap-2">
                       <Button size="sm" variant="outline" onClick={revealSolution}>
                         <Lightbulb className="mr-1 h-4 w-4" />
-                        Show solution
+                        Mostrar solução
                       </Button>
                     </div>
                   </div>
@@ -872,10 +872,10 @@ export default function MongodbTerminalSimulator() {
                   >
                     {challengeHistory.length === 0 && (
                       <div className="mb-4 text-emerald-400">
-                        <p>Challenge mode — write the query yourself.</p>
+                        <p>Modo desafio: escreva a query você mesmo.</p>
                         <p className="mt-2 text-muted-foreground">
-                          Type a query to answer the current challenge, run &quot;show collections&quot;,
-                          or &quot;help&quot; for commands.
+                          Digite uma query para responder ao desafio atual, rode &quot;show collections&quot;
+                          ou &quot;help&quot; para ver os comandos.
                         </p>
                       </div>
                     )}
@@ -959,17 +959,17 @@ export default function MongodbTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Terminal className="h-5 w-5" />
-                Cheat sheet
+                Cola rápida
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0 text-xs text-muted-foreground">
-              <p><code className="text-foreground">find(filter, projection)</code> read documents</p>
-              <p><code className="text-foreground">{'{ field: 1, _id: 0 }'}</code> include / exclude fields</p>
-              <p><code className="text-foreground">{'$lt $gt $gte $lte $ne'}</code> comparisons</p>
-              <p><code className="text-foreground">{'$in'}</code> / <code className="text-foreground">{'$and'}</code> / <code className="text-foreground">{'$or'}</code> combine</p>
-              <p><code className="text-foreground">sort / skip / limit</code> shape the cursor</p>
-              <p><code className="text-foreground">countDocuments(filter)</code> count matches</p>
-              <p><code className="text-foreground">insertOne / updateOne / deleteMany</code> write</p>
+              <p><code className="text-foreground">find(filter, projection)</code> lê documentos</p>
+              <p><code className="text-foreground">{'{ field: 1, _id: 0 }'}</code> inclui / exclui campos</p>
+              <p><code className="text-foreground">{'$lt $gt $gte $lte $ne'}</code> comparações</p>
+              <p><code className="text-foreground">{'$in'}</code> / <code className="text-foreground">{'$and'}</code> / <code className="text-foreground">{'$or'}</code> combinam</p>
+              <p><code className="text-foreground">sort / skip / limit</code> moldam o cursor</p>
+              <p><code className="text-foreground">countDocuments(filter)</code> conta resultados</p>
+              <p><code className="text-foreground">insertOne / updateOne / deleteMany</code> gravam</p>
               <p><code className="text-foreground">aggregate([ $match, $group, $sort ])</code> pipeline</p>
             </CardContent>
           </Card>
@@ -982,16 +982,16 @@ export default function MongodbTerminalSimulator() {
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">Lab complete</p>
+                <p className="font-semibold">Laboratório concluído</p>
                 <p className="text-sm text-muted-foreground">
-                  You practiced the core MongoDB workflow from find() and projections through operators,
-                  sorting, paging, writes, and the aggregation pipeline. Switch to Challenges to write
-                  queries from scratch.
+                  Você praticou o fluxo essencial do MongoDB, do find() e das projeções aos operadores,
+                  ordenação, paginação, gravação e pipeline de agregação. Vá para o modo Desafio para escrever
+                  queries do zero.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetLab}>
-              Start over
+              Começar de novo
             </Button>
           </CardContent>
         </Card>
@@ -1003,15 +1003,15 @@ export default function MongodbTerminalSimulator() {
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">All challenges solved</p>
+                <p className="font-semibold">Todos os desafios resolvidos</p>
                 <p className="text-sm text-muted-foreground">
-                  Nice work — you wrote every query yourself. Reset to practice again, or head back
-                  to the lessons.
+                  Mandou bem: você escreveu todas as queries sozinho. Reinicie para praticar de novo ou volte
+                  para as lições.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetChallenges}>
-              Reset challenges
+              Reiniciar desafios
             </Button>
           </CardContent>
         </Card>
