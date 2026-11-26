@@ -48,33 +48,33 @@ interface GitScenario {
 const scenarios: GitScenario[] = [
   {
     id: 'merge-conflict-basic',
-    title: 'Basic Merge Conflict',
-    description: 'You have changes in both main and feature branches that conflict.',
+    title: 'Conflito de merge básico',
+    description: 'Você tem mudanças conflitantes na main e na feature branch.',
     situation:
-      'You are on the main branch and want to merge feature-auth, but there are conflicts in app.js',
+      'Você está na main e quer fazer merge da feature-auth, mas há conflitos no app.js',
     branches: [
       { name: 'main', commits: ['Initial commit', 'Update app.js'], current: true },
       { name: 'feature-auth', commits: ['Initial commit', 'Add auth to app.js'] },
     ],
-    conflict: 'Both branches modified app.js differently',
+    conflict: 'As duas branches alteraram o app.js de jeitos diferentes',
     options: [
       'git merge feature-auth',
       'git merge feature-auth &&\ngit add . && git commit',
-      'git merge feature-auth\n→ resolve conflicts\n→ git add .\n→ git commit',
+      'git merge feature-auth\n→ resolver os conflitos\n→ git add .\n→ git commit',
       'git rebase feature-auth',
     ],
     correctAnswer: 2,
     explanation:
-      'When merging with conflicts, you must: 1) Start the merge, 2) Resolve conflicts manually, 3) Add resolved files, 4) Commit the merge.',
+      'Num merge com conflitos, você precisa: 1) iniciar o merge, 2) resolver os conflitos na mão, 3) adicionar os arquivos resolvidos e 4) fazer o commit do merge.',
     difficulty: 'beginner',
     points: 10,
   },
   {
     id: 'fast-forward-merge',
-    title: 'Fast-Forward Merge',
-    description: 'Your feature branch is ahead of main with no conflicts.',
+    title: 'Merge fast-forward',
+    description: 'Sua feature branch está à frente da main e sem conflitos.',
     situation:
-      'feature-ui is 3 commits ahead of main, and main has no new commits since branching.',
+      'A feature-ui está 3 commits à frente da main, e a main não recebeu commits novos desde que a branch foi criada.',
     branches: [
       { name: 'main', commits: ['Initial commit', 'Setup project'], current: true },
       {
@@ -90,16 +90,16 @@ const scenarios: GitScenario[] = [
     ],
     correctAnswer: 0,
     explanation:
-      'This is a fast-forward merge situation. Git will simply move the main pointer forward to match feature-ui.',
+      'É um caso de merge fast-forward. O Git só avança o ponteiro da main até a feature-ui.',
     difficulty: 'beginner',
     points: 8,
   },
   {
     id: 'rebase-vs-merge',
-    title: 'Clean History with Rebase',
-    description: 'You want to maintain a linear history when integrating your feature branch.',
+    title: 'Histórico limpo com rebase',
+    description: 'Você quer manter um histórico linear ao integrar sua feature branch.',
     situation:
-      'You have been working on feature-api while main has received new commits. You want a clean, linear history.',
+      'Você trabalhou na feature-api enquanto a main recebia commits novos. Você quer um histórico limpo e linear.',
     branches: [
       {
         name: 'main',
@@ -120,16 +120,16 @@ const scenarios: GitScenario[] = [
     ],
     correctAnswer: 3,
     explanation:
-      'Rebase will replay your feature commits on top of the latest main, creating a linear history without merge commits.',
+      'O rebase reaplica os commits da sua feature sobre a main mais recente, criando um histórico linear sem merge commits.',
     difficulty: 'intermediate',
     points: 15,
   },
   {
     id: 'undo-last-commit',
-    title: 'Oops! Wrong Commit',
-    description: 'You just committed changes but realized you made a mistake.',
+    title: 'Ops! Commit errado',
+    description: 'Você acabou de fazer commit e percebeu que errou.',
     situation:
-      'You committed "Fix typo" but the commit contains additional unintended changes that should not be included.',
+      'Você fez o commit "Fix typo", mas ele levou junto mudanças que não deveriam entrar.',
     branches: [
       {
         name: 'main',
@@ -145,16 +145,16 @@ const scenarios: GitScenario[] = [
     ],
     correctAnswer: 3,
     explanation:
-      'reset --soft HEAD~1 undoes the commit but keeps your changes staged, allowing you to modify and recommit correctly.',
+      'O reset --soft HEAD~1 desfaz o commit, mas mantém as mudanças em stage, para você ajustar e fazer o commit certo.',
     difficulty: 'intermediate',
     points: 12,
   },
   {
     id: 'stash-workflow',
-    title: 'Interrupted Workflow',
-    description: 'You are working on a feature but need to quickly fix a bug on main.',
+    title: 'Fluxo interrompido',
+    description: 'Você está numa feature, mas precisa corrigir rápido um bug na main.',
     situation:
-      'You have uncommitted changes on feature-search but need to switch to main to fix an urgent bug.',
+      'Você tem mudanças sem commit na feature-search, mas precisa ir para a main corrigir um bug urgente.',
     branches: [
       { name: 'main', commits: ['Initial commit', 'Add search'], current: false },
       {
@@ -167,20 +167,20 @@ const scenarios: GitScenario[] = [
       'git commit -m "WIP" &&\ngit checkout main',
       'git stash &&\ngit checkout main',
       'git reset --hard &&\ngit checkout main',
-      'git checkout main\n(force)',
+      'git checkout main\n(forçado)',
     ],
     correctAnswer: 1,
     explanation:
-      'git stash saves your uncommitted changes temporarily, allowing you to switch branches cleanly and restore them later with git stash pop.',
+      'O git stash guarda temporariamente as mudanças sem commit, para você trocar de branch com segurança e recuperá-las depois com git stash pop.',
     difficulty: 'intermediate',
     points: 12,
   },
   {
     id: 'interactive-rebase',
-    title: 'Clean Up Commit History',
-    description: 'You have multiple small commits that should be combined before merging.',
+    title: 'Limpar o histórico de commits',
+    description: 'Você tem vários commits pequenos que deveriam virar um só antes do merge.',
     situation:
-      'You have 4 commits: "Add login", "Fix typo", "Another typo fix", "Update login". You want to clean this up before merging.',
+      'Você tem 4 commits: "Add login", "Fix typo", "Another typo fix" e "Update login". Quer organizar isso antes do merge.',
     branches: [
       {
         name: 'feature-login',
@@ -196,16 +196,16 @@ const scenarios: GitScenario[] = [
     ],
     correctAnswer: 1,
     explanation:
-      'Interactive rebase (git rebase -i) allows you to squash, reorder, or edit commits to create a cleaner history.',
+      'O rebase interativo (git rebase -i) permite juntar (squash), reordenar ou editar commits para deixar o histórico mais limpo.',
     difficulty: 'advanced',
     points: 20,
   },
   {
     id: 'cherry-pick-scenario',
-    title: 'Selective Commit Integration',
-    description: 'You need only one specific commit from another branch.',
+    title: 'Integrar um commit específico',
+    description: 'Você precisa de só um commit de outra branch.',
     situation:
-      'The experimental-features branch has many commits, but you only want the "Add error handling" commit on main.',
+      'A branch experimental-features tem vários commits, mas você só quer o commit "Add error handling" na main.',
     branches: [
       { name: 'main', commits: ['Initial commit', 'Core features'], current: true },
       {
@@ -227,7 +227,7 @@ const scenarios: GitScenario[] = [
     ],
     correctAnswer: 2,
     explanation:
-      'Cherry-pick allows you to apply a specific commit from another branch without merging the entire branch.',
+      'O cherry-pick aplica um commit específico de outra branch sem fazer merge da branch inteira.',
     difficulty: 'advanced',
     points: 18,
   },
@@ -356,13 +356,13 @@ export default function GitCommandQuiz() {
 
   const getScoreRating = () => {
     const percentage = (score / totalPoints) * 100;
-    if (percentage >= 90) return { rating: 'Git Guru!', icon: Trophy, color: 'text-yellow-500' };
-    if (percentage >= 75) return { rating: 'Git Expert', icon: Star, color: 'text-purple-500' };
+    if (percentage >= 90) return { rating: 'Guru do Git!', icon: Trophy, color: 'text-yellow-500' };
+    if (percentage >= 75) return { rating: 'Especialista em Git', icon: Star, color: 'text-purple-500' };
     if (percentage >= 60)
-      return { rating: 'Git Proficient', icon: CheckCircle, color: 'text-blue-500' };
+      return { rating: 'Manda bem no Git', icon: CheckCircle, color: 'text-blue-500' };
     if (percentage >= 40)
-      return { rating: 'Git Learner', icon: GitBranch, color: 'text-green-500' };
-    return { rating: 'Keep Learning!', icon: GitCommit, color: 'text-gray-500' };
+      return { rating: 'Aprendiz de Git', icon: GitBranch, color: 'text-green-500' };
+    return { rating: 'Continue estudando!', icon: GitCommit, color: 'text-gray-500' };
   };
 
   if (!gameStarted) {
@@ -390,10 +390,10 @@ export default function GitCommandQuiz() {
                 transition={{ delay: 0.4 }}
               >
                 <CardTitle className="text-4xl md:text-5xl font-bold mb-4 text-primary">
-                  Git Command Quiz
+                  Quiz de comandos Git
                 </CardTitle>
                 <CardDescription className="text-lg md:text-xl text-muted-foreground">
-                  Learn Git through real-world scenarios and learn the commands that matter
+                  Aprenda Git com cenários do dia a dia e domine os comandos que importam
                 </CardDescription>
               </motion.div>
             </CardHeader>
@@ -408,36 +408,36 @@ export default function GitCommandQuiz() {
                 <div className="text-center p-6 bg-card rounded-md border border-green-200 dark:border-green-800">
                   <Badge className="mb-3 bg-green-500 hover:bg-green-600 text-white border-0 px-4 py-1">
                     <Target className="w-3 h-3 mr-1" />
-                    Beginner
+                    Iniciante
                   </Badge>
                   <p className="text-sm text-muted-foreground font-medium">
-                    Basic merge conflicts and workflows
+                    Conflitos de merge básicos e fluxos de trabalho
                   </p>
-                  <div className="mt-2 text-xs text-green-600 dark:text-green-400">3 scenarios</div>
+                  <div className="mt-2 text-xs text-green-600 dark:text-green-400">3 cenários</div>
                 </div>
 
                 <div className="text-center p-6 bg-card rounded-md border border-yellow-200 dark:border-yellow-800">
                   <Badge className="mb-3 bg-yellow-500 hover:bg-yellow-600 text-white border-0 px-4 py-1">
                     <Zap className="w-3 h-3 mr-1" />
-                    Intermediate
+                    Intermediário
                   </Badge>
                   <p className="text-sm text-muted-foreground font-medium">
-                    Rebasing, stashing, and cleanup
+                    Rebase, stash e limpeza
                   </p>
                   <div className="mt-2 text-xs text-yellow-600 dark:text-yellow-400">
-                    3 scenarios
+                    3 cenários
                   </div>
                 </div>
 
                 <div className="text-center p-6 bg-card rounded-md border border-red-200 dark:border-red-800">
                   <Badge className="mb-3 bg-red-500 hover:bg-red-600 text-white border-0 px-4 py-1">
                     <BookOpen className="w-3 h-3 mr-1" />
-                    Advanced
+                    Avançado
                   </Badge>
                   <p className="text-sm text-muted-foreground font-medium">
-                    Interactive rebase and cherry-picking
+                    Rebase interativo e cherry-pick
                   </p>
-                  <div className="mt-2 text-xs text-red-600 dark:text-red-400">2 scenarios</div>
+                  <div className="mt-2 text-xs text-red-600 dark:text-red-400">2 cenários</div>
                 </div>
               </motion.div>
 
@@ -450,15 +450,15 @@ export default function GitCommandQuiz() {
                 <div className="inline-flex items-center gap-6 text-sm text-muted-foreground bg-white/30 dark:bg-gray-800/30 rounded-full px-6 py-3 border border-border/50">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span>{scenarios.length} scenarios</span>
+                    <span>{scenarios.length} cenários</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                    <span>{totalPoints} total points</span>
+                    <span>{totalPoints} pontos no total</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span>Learn by doing</span>
+                    <span>Aprenda na prática</span>
                   </div>
                 </div>
               </motion.div>
@@ -475,7 +475,7 @@ export default function GitCommandQuiz() {
                   className="px-8 py-4 text-lg"
                 >
                   <Play className="mr-2 h-5 w-5" />
-                  Start Quiz
+                  Começar o quiz
                 </Button>
               </motion.div>
             </CardContent>
@@ -506,7 +506,7 @@ export default function GitCommandQuiz() {
               >
                 <RatingIcon className="h-8 w-8 text-primary" />
               </motion.div>
-              <CardTitle className="text-3xl mb-2">Quiz Complete!</CardTitle>
+              <CardTitle className="text-3xl mb-2">Quiz concluído!</CardTitle>
               <CardDescription className="text-xl">
                 <span className={color}>{rating}</span>
               </CardDescription>
@@ -531,7 +531,7 @@ export default function GitCommandQuiz() {
                     <div className="text-2xl font-bold text-green-500">
                       {completedScenarios.length}
                     </div>
-                    <div className="text-sm text-muted-foreground">Correct</div>
+                    <div className="text-sm text-muted-foreground">Acertos</div>
                   </motion.div>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -541,7 +541,7 @@ export default function GitCommandQuiz() {
                     <div className="text-2xl font-bold text-red-500">
                       {scenarios.length - completedScenarios.length}
                     </div>
-                    <div className="text-sm text-muted-foreground">Incorrect</div>
+                    <div className="text-sm text-muted-foreground">Erros</div>
                   </motion.div>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -551,7 +551,7 @@ export default function GitCommandQuiz() {
                     <div className="text-2xl font-bold text-blue-500">
                       {Math.round((score / totalPoints) * 100)}%
                     </div>
-                    <div className="text-sm text-muted-foreground">Score</div>
+                    <div className="text-sm text-muted-foreground">Pontuação</div>
                   </motion.div>
                 </div>
 
@@ -566,7 +566,7 @@ export default function GitCommandQuiz() {
                     size="lg"
                   >
                     <RotateCcw className="mr-2 h-4 w-4" />
-                    Play Again
+                    Jogar de novo
                   </Button>
                 </motion.div>
               </div>
@@ -585,12 +585,12 @@ export default function GitCommandQuiz() {
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-3">
               <Badge variant="outline" className="px-3 py-1">
-                Scenario {currentScenario + 1} of {scenarios.length}
+                Cenário {currentScenario + 1} de {scenarios.length}
               </Badge>
               <Badge
                 className={`${getDifficultyColor(scenario.difficulty)} text-white border-0 px-3 py-1`}
               >
-                {scenario.difficulty}
+                {{ beginner: 'Iniciante', intermediate: 'Intermediário', advanced: 'Avançado' }[scenario.difficulty]}
               </Badge>
               <Badge
                 variant="secondary"
@@ -601,7 +601,7 @@ export default function GitCommandQuiz() {
               </Badge>
             </div>
             <div className="text-sm text-muted-foreground font-medium">
-              Score: <span className="font-bold text-primary text-lg">{score}</span>
+              Pontuação: <span className="font-bold text-primary text-lg">{score}</span>
             </div>
           </div>
           <Progress value={progress} className="h-2" />
@@ -622,7 +622,7 @@ export default function GitCommandQuiz() {
           <div className="bg-muted/30 p-4 rounded-lg border-l-4 border-blue-500">
             <h4 className="font-semibold mb-2 flex items-center gap-2">
               <GitBranch className="h-4 w-4" />
-              Repository State
+              Estado do repositório
             </h4>
             <p className="text-sm text-muted-foreground mb-3">{scenario.situation}</p>
 
@@ -660,7 +660,7 @@ export default function GitCommandQuiz() {
 
           {/* Answer Options */}
           <div className="space-y-3">
-            <h4 className="font-semibold">What's the correct approach?</h4>
+            <h4 className="font-semibold">Qual é a abordagem certa?</h4>
             {scenario.options.map((option, index) => (
               <motion.div key={index} whileTap={{ scale: 0.98 }}>
                 <Button
@@ -718,7 +718,7 @@ export default function GitCommandQuiz() {
               className="text-muted-foreground hover:text-primary"
             >
               <Lightbulb className="mr-2 h-4 w-4" />
-              {showHint ? 'Hide Hint' : 'Show Hint'}
+              {showHint ? 'Esconder dica' : 'Mostrar dica'}
             </Button>
           )}
 
@@ -733,12 +733,12 @@ export default function GitCommandQuiz() {
                 <Alert className="border-blue-500/50 bg-blue-50/50 dark:bg-blue-950/20">
                   <Lightbulb className="h-4 w-4" />
                   <AlertDescription>
-                    Think about what happens in each step:{' '}
+                    Pense no que acontece em cada passo:{' '}
                     {scenario.difficulty === 'beginner'
-                      ? 'Start with the basic git command, then consider what to do with conflicts.'
+                      ? 'Comece pelo comando básico do git e depois pense no que fazer com os conflitos.'
                       : scenario.difficulty === 'intermediate'
-                        ? 'Consider whether you want to preserve history or create a clean linear timeline.'
-                        : 'Think about the end goal and which Git feature is designed for this specific use case.'}
+                        ? 'Pense se você quer preservar o histórico ou criar uma linha do tempo limpa e linear.'
+                        : 'Pense no objetivo final e em qual recurso do Git foi feito para esse caso.'}
                   </AlertDescription>
                 </Alert>
               </motion.div>
@@ -769,7 +769,7 @@ export default function GitCommandQuiz() {
                     )}
                     <div>
                       <div className="font-semibold mb-2">
-                        {selectedAnswer === scenario.correctAnswer ? 'Correct!' : 'Not quite right'}
+                        {selectedAnswer === scenario.correctAnswer ? 'Correto!' : 'Não é bem isso'}
                       </div>
                       <AlertDescription>{scenario.explanation}</AlertDescription>
                     </div>
@@ -783,7 +783,7 @@ export default function GitCommandQuiz() {
           <div className="flex justify-between pt-4">
             <Button variant="outline" onClick={handleRestart}>
               <RotateCcw className="mr-2 h-4 w-4" />
-              Restart
+              Recomeçar
             </Button>
 
             <div className="space-x-2">
@@ -792,13 +792,13 @@ export default function GitCommandQuiz() {
                   onClick={handleSubmit}
                   disabled={selectedAnswer === null}
                 >
-                  Submit Answer
+                  Enviar resposta
                 </Button>
               ) : (
                 <Button
                   onClick={handleNext}
                 >
-                  {currentScenario < scenarios.length - 1 ? 'Next Scenario' : 'See Results'}
+                  {currentScenario < scenarios.length - 1 ? 'Próximo cenário' : 'Ver resultado'}
                   <Sparkles className="ml-2 h-4 w-4" />
                 </Button>
               )}
