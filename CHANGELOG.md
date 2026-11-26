@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - AI tutor at `/tutor`: retrieval-augmented answers over the site content (hybrid BM25 + Gemini embeddings with Reciprocal Rank Fusion, grounded generation with Gemini Flash, numbered citations). See `docs/rag-tutor.md`.
+- The tutor is now a chatbot: conversation memory, follow-up question rewriting before retrieval, streamed answers (NDJSON) and a floating chat on every page that favors the content of the current page.
 - `pnpm rag:index` builds the incremental RAG index (`data/rag/index.json`).
 - On Vercel the site now builds in server mode so `/api/tutor` runs as a serverless function; every other target keeps the static export.
 - AI Engineering module: roadmap, RAG pipeline simulator, hands-on RAG exercise with pgvector, quiz, flashcards, production checklist, and interview questions.

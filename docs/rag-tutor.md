@@ -1,6 +1,7 @@
 # Tutor com IA (RAG)
 
-O `/tutor` responde perguntas em português usando o conteúdo da Bancada como base e cita as fontes.
+O tutor é um chatbot com RAG: responde em português usando o conteúdo da Bancada como base, cita as
+fontes e lembra da conversa. Está em `/tutor` e num balão flutuante em todas as páginas.
 
 ## Como funciona
 
@@ -22,13 +23,28 @@ O `/tutor` responde perguntas em português usando o conteúdo da Bancada como b
    - Modelos tentados em ordem: `GEMINI_CHAT_MODELS` (padrão
      `gemini-flash-lite-latest,gemini-flash-latest`).
    - Se a geração falhar (cota, instabilidade), a API devolve só as fontes.
-4. **API** (`app/api/tutor/route.api.ts`): `POST /api/tutor { "question": "..." }`, com limite
-   de 8 perguntas por minuto por IP e no máximo 500 caracteres.
+4. **Conversa (chatbot)**
+   - **Memória:** o navegador envia as últimas 3 trocas (pergunta + resposta) junto com a
+     pergunta nova. O servidor corta respostas longas para o prompt continuar pequeno.
+   - **Reescrita da pergunta:** quando há histórico, um passo curto do LLM transforma uma
+     continuação ("e no Kubernetes?") numa pergunta completa ("Como ver os logs de um container
+     no Kubernetes?") antes da busca. Se esse passo falhar, a busca usa a pergunta anterior +
+     a atual. A pergunta reescrita aparece na tela ("buscou: …").
+   - **Streaming:** a resposta chega token a token. A API devolve NDJSON: `meta` (fontes, tipo
+     de busca, pergunta reescrita), vários `delta` (texto), `notice` (avisos) e `done`.
+   - **Contexto da página:** o balão envia a página atual; os trechos dela ganham um bônus na
+     fusão dos rankings (como se fossem o 1º lugar de um terceiro buscador), mas só quando já
+     são relevantes para a pergunta.
+   - A conversa fica no `sessionStorage` (some ao fechar a aba) e é compartilhada entre o
+     balão e a página `/tutor`.
+5. **API** (`app/api/tutor/route.api.ts`): `POST /api/tutor { "question", "history"?, "page"? }`,
+   com limite de 8 perguntas por minuto por IP, no máximo 500 caracteres por pergunta e 10
+   mensagens de histórico.
 
 ## Deploy
 
 - Na Vercel (`VERCEL` definido), o Next roda em modo servidor e a rota `/api/tutor` vira uma
-  função serverless. Em qualquer outro lugar (Docker, Cloudflare, `out/` local) o site continua
+  função serverless. O balão só é incluído nesse modo (`NEXT_PUBLIC_TUTOR_ENABLED`). Em qualquer outro lugar (Docker, Cloudflare, `out/` local) o site continua
   como export estático; a extensão `.api.ts` só é registrada no modo servidor.
 - Variável obrigatória na Vercel: `GEMINI_API_KEY` (chave gratuita em
   <https://aistudio.google.com/apikey>). Sem ela, o tutor mostra só os trechos encontrados.
@@ -38,7 +54,7 @@ O `/tutor` responde perguntas em português usando o conteúdo da Bancada como b
 
 - Embeddings: 1.000 requisições por dia, e **cada trecho conta como uma requisição**. Gerar o
   índice completo leva dois dias. Rode `pnpm rag:index` de novo no dia seguinte: ele continua de
-  onde parou. Em tempo de execução, cada pergunta usa 1 embedding.
+  onde parou. Em tempo de execução, cada pergunta usa 1 embedding e até 2 chamadas ao LLM (reescrita, só em continuações, e resposta).
 - Enquanto o índice não tem vetores, a busca usa só BM25 (a resposta indica "busca por
   palavras-chave").
 - Os dados enviados no plano gratuito podem ser usados pelo Google para melhorar os modelos. Aqui

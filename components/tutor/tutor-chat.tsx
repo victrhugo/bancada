@@ -1,8 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { Fragment, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { AlertTriangle, ArrowUp, BookOpen, Loader2, Search, Sparkles } from 'lucide-react';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from 'react';
+import {
+  AlertTriangle,
+  ArrowUp,
+  BookOpen,
+  Loader2,
+  RotateCcw,
+  Search,
+  Sparkles,
+  Square,
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,19 +34,22 @@ interface Source {
   snippet: string;
 }
 
-interface TutorResponse {
-  answer: string | null;
-  sources: Source[];
-  retrieval: 'hybrid' | 'keyword';
-  model: string | null;
-  notice?: string;
-  error?: string;
-}
+type TutorEvent =
+  | { type: 'meta'; sources: Source[]; retrieval: 'hybrid' | 'keyword'; searchQuery?: string }
+  | { type: 'delta'; text: string }
+  | { type: 'done'; model: string | null }
+  | { type: 'notice'; text: string };
 
 interface Turn {
   question: string;
-  response?: TutorResponse;
+  answer: string;
+  sources: Source[];
+  retrieval?: 'hybrid' | 'keyword';
+  searchQuery?: string;
+  model?: string | null;
+  notice?: string;
   error?: string;
+  status: 'searching' | 'streaming' | 'done';
 }
 
 const EXAMPLES = [
@@ -50,7 +70,7 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 /** Render **bold**, `code` and [n] citations; paragraphs and "- " lists. */
-function renderInline(text: string, sources: Source[]): ReactNode[] {
+function renderInline(text: string, sources: Source[], prefix: string): ReactNode[] {
   const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[\d+(?:,\s*\d+)*\])/g);
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**'))
@@ -70,7 +90,7 @@ function renderInline(text: string, sources: Source[]): ReactNode[] {
             return source ? (
               <a
                 key={n}
-                href={`#fonte-${n}`}
+                href={`#${prefix}-fonte-${n}`}
                 title={source.title}
                 className="mx-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded bg-primary/15 px-1 align-super text-[10px] font-semibold text-primary no-underline hover:bg-primary/25"
               >
@@ -85,7 +105,7 @@ function renderInline(text: string, sources: Source[]): ReactNode[] {
   });
 }
 
-function Answer({ text, sources }: { text: string; sources: Source[] }) {
+function Answer({ text, sources, prefix }: { text: string; sources: Source[]; prefix: string }) {
   // Split out fenced code first so blank lines inside code do not break it apart.
   const segments = text.split(/(```[\s\S]*?```)/g);
   const blocks = segments.flatMap((seg) => (seg.startsWith('```') ? [seg] : seg.split(/\n{2,}/)));
@@ -122,11 +142,15 @@ function Answer({ text, sources }: { text: string; sources: Source[] }) {
               g.list ? (
                 <ul key={j} className="list-disc space-y-1 pl-5">
                   {g.lines.map((l, k) => (
-                    <li key={k}>{renderInline(l.replace(/^\s*([-*]|\d+\.)\s+/, ''), sources)}</li>
+                    <li key={k}>
+                      {renderInline(l.replace(/^\s*([-*]|\d+\.)\s+/, ''), sources, prefix)}
+                    </li>
                   ))}
                 </ul>
               ) : (
-                <p key={j}>{renderInline(g.lines.join(' ').replace(/^#+\s*/, ''), sources)}</p>
+                <p key={j}>
+                  {renderInline(g.lines.join(' ').replace(/^#+\s*/, ''), sources, prefix)}
+                </p>
               )
             )}
           </Fragment>
@@ -136,19 +160,30 @@ function Answer({ text, sources }: { text: string; sources: Source[] }) {
   );
 }
 
-function Sources({ sources }: { sources: Source[] }) {
+function Sources({
+  sources,
+  prefix,
+  compact = false,
+}: {
+  sources: Source[];
+  prefix: string;
+  compact?: boolean;
+}) {
   return (
     <div className="mt-4 space-y-2">
       <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         <BookOpen className="h-3.5 w-3.5" /> Fontes
       </p>
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className={cn('grid grid-cols-1 gap-2', !compact && 'sm:grid-cols-2')}>
         {sources.map((s) => (
           <Link
             key={s.n}
-            id={`fonte-${s.n}`}
+            id={`${prefix}-fonte-${s.n}`}
             href={s.url}
-            className="group rounded-md border bg-background p-3 transition-colors hover:border-primary/50"
+            className={cn(
+              'group min-w-0 overflow-hidden rounded-md border bg-background transition-colors hover:border-primary/50',
+              compact ? 'px-3 py-2' : 'p-3'
+            )}
           >
             <div className="mb-1 flex items-center gap-2">
               <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/15 text-[11px] font-semibold text-primary">
@@ -162,7 +197,9 @@ function Sources({ sources }: { sources: Source[] }) {
               </Badge>
             </div>
             {s.section && <p className="truncate text-xs text-muted-foreground">{s.section}</p>}
-            <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{s.snippet}</p>
+            {!compact && (
+              <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{s.snippet}</p>
+            )}
           </Link>
         ))}
       </div>
@@ -170,38 +207,139 @@ function Sources({ sources }: { sources: Source[] }) {
   );
 }
 
-export function TutorChat() {
+const STORAGE_KEY = 'bancada-tutor-chat';
+const STATIC_MESSAGE =
+  'O tutor só funciona na versão publicada do site (ele precisa de uma função no servidor). Nesta versão estática ele não está disponível.';
+
+function loadTurns(): Turn[] {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    const turns = raw ? (JSON.parse(raw) as Turn[]) : [];
+    return Array.isArray(turns) ? turns.filter((t) => t.status === 'done') : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveTurns(turns: Turn[]) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(turns.slice(-20)));
+  } catch {
+    // private mode or quota: the chat still works, it just is not restored
+  }
+}
+
+/** Conversation memory sent to the API: completed turns only, answers trimmed server-side. */
+function toHistory(turns: Turn[]) {
+  return turns
+    .filter((t) => t.status === 'done' && t.answer)
+    .slice(-3)
+    .flatMap((t) => [
+      { role: 'user' as const, content: t.question },
+      { role: 'assistant' as const, content: t.answer },
+    ]);
+}
+
+export interface TutorChatProps {
+  /** `page` is the full /tutor layout; `widget` is the compact floating panel. */
+  variant?: 'page' | 'widget';
+  /** Path the reader is on, so retrieval can favor that page's content. */
+  page?: string;
+}
+
+export function TutorChat({ variant = 'page', page }: TutorChatProps) {
+  const compact = variant === 'widget';
   const [question, setQuestion] = useState('');
   const [turns, setTurns] = useState<Turn[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  // Restore the conversation after a reload; shared by the page and the floating widget.
+  // Done after mount (not in the initial state) so server and client render the same HTML.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setTurns(loadTurns()), []);
+  useEffect(() => {
+    if (!loading) saveTurns(turns);
+  }, [turns, loading]);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (compact && el) el.scrollTop = el.scrollHeight;
+  }, [turns, compact]);
+
+  const update = useCallback((patch: (t: Turn) => Turn) => {
+    setTurns((prev) => [...prev.slice(0, -1), patch(prev[prev.length - 1])]);
+  }, []);
 
   async function ask(text: string) {
     const q = text.trim();
-    if (q.length < 3 || loading) return;
+    if (q.length < 2 || loading) return;
+    const history = toHistory(turns);
     setQuestion('');
     setLoading(true);
-    setTurns((prev) => [...prev, { question: q }]);
-    let turn: Turn = { question: q };
+    setTurns((prev) => [...prev, { question: q, answer: '', sources: [], status: 'searching' }]);
+
+    const controller = new AbortController();
+    abortRef.current = controller;
     try {
       const res = await fetch('/api/tutor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: q, history, page }),
+        signal: controller.signal,
       });
       if (res.status === 404 || res.status === 405) {
-        turn.error =
-          'O tutor só funciona na versão publicada do site (ele precisa de uma função no servidor). Nesta versão estática ele não está disponível.';
+        update((t) => ({ ...t, error: STATIC_MESSAGE, status: 'done' }));
+      } else if (!res.ok || !res.body) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        update((t) => ({ ...t, error: data.error ?? 'Erro inesperado.', status: 'done' }));
       } else {
-        const data = (await res.json()) as TutorResponse;
-        turn = res.ok
-          ? { question: q, response: data }
-          : { question: q, error: data.error ?? 'Erro inesperado.' };
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          let nl: number;
+          while ((nl = buffer.indexOf('\n')) >= 0) {
+            const line = buffer.slice(0, nl).trim();
+            buffer = buffer.slice(nl + 1);
+            if (!line) continue;
+            const event = JSON.parse(line) as TutorEvent;
+            if (event.type === 'meta') {
+              update((t) => ({
+                ...t,
+                sources: event.sources,
+                retrieval: event.retrieval,
+                searchQuery: event.searchQuery,
+                status: 'streaming',
+              }));
+            } else if (event.type === 'delta') {
+              update((t) => ({ ...t, answer: t.answer + event.text, status: 'streaming' }));
+            } else if (event.type === 'notice') {
+              update((t) => ({ ...t, notice: event.text }));
+            } else if (event.type === 'done') {
+              update((t) => ({ ...t, model: event.model, status: 'done' }));
+            }
+          }
+        }
+        update((t) => ({ ...t, status: 'done' }));
       }
-    } catch {
-      turn.error = 'Não consegui falar com o tutor. Verifique sua conexão e tente de novo.';
+    } catch (error) {
+      const aborted = (error as Error).name === 'AbortError';
+      update((t) => ({
+        ...t,
+        status: 'done',
+        notice: aborted ? 'Resposta interrompida.' : t.notice,
+        error:
+          aborted || t.answer
+            ? t.error
+            : 'Não consegui falar com o tutor. Verifique sua conexão e tente de novo.',
+      }));
     }
-    setTurns((prev) => [...prev.slice(0, -1), turn]);
+    abortRef.current = null;
     setLoading(false);
     inputRef.current?.focus();
   }
@@ -211,14 +349,34 @@ export function TutorChat() {
     void ask(question);
   }
 
+  function reset() {
+    abortRef.current?.abort();
+    setTurns([]);
+    saveTurns([]);
+  }
+
+  const examples = compact ? EXAMPLES.slice(0, 2) : EXAMPLES;
+
   return (
-    <div className="rounded-xl border bg-card shadow-sm">
-      <div className="space-y-6 p-4 sm:p-6">
+    <div
+      className={cn(
+        'flex flex-col bg-card',
+        compact ? 'h-full min-h-0' : 'rounded-xl border shadow-sm'
+      )}
+    >
+      <div
+        ref={scrollRef}
+        className={cn('space-y-6', compact ? 'min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-4' : 'p-4 sm:p-6')}
+      >
         {turns.length === 0 && (
           <div>
-            <p className="mb-3 text-sm text-muted-foreground">Experimente uma destas perguntas:</p>
+            <p className="mb-3 text-sm text-muted-foreground">
+              {compact
+                ? 'Pergunte qualquer coisa sobre o conteúdo do site. Eu respondo com base nele e mostro as fontes.'
+                : 'Experimente uma destas perguntas:'}
+            </p>
             <div className="flex flex-wrap gap-2">
-              {EXAMPLES.map((e) => (
+              {examples.map((e) => (
                 <button
                   key={e}
                   type="button"
@@ -237,43 +395,50 @@ export function TutorChat() {
             <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
               {turn.question}
             </div>
-            <div className="rounded-lg border bg-muted/20 p-4">
-              {!turn.response && !turn.error && (
+            <div className={cn('rounded-lg border bg-muted/20', compact ? 'p-3' : 'p-4')}>
+              {turn.status === 'searching' && (
                 <p className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Loader2 className="h-4 w-4 animate-spin" /> Buscando no conteúdo da Bancada e
-                  escrevendo a resposta...
+                  <Loader2 className="h-4 w-4 animate-spin" /> Buscando no conteúdo da Bancada...
                 </p>
               )}
-              {turn.error && (
-                <p className="flex items-start gap-2 text-sm text-amber-600 dark:text-amber-400">
-                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" /> {turn.error}
-                </p>
-              )}
-              {turn.response && (
-                <>
-                  <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
-                    <span className="inline-flex items-center gap-1">
-                      <Search className="h-3 w-3" />
-                      {turn.response.retrieval === 'hybrid'
-                        ? 'busca híbrida (palavras-chave + embeddings)'
-                        : 'busca por palavras-chave (BM25)'}
+              {turn.retrieval && (
+                <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1">
+                    <Search className="h-3 w-3" />
+                    {turn.retrieval === 'hybrid'
+                      ? 'busca híbrida (palavras-chave + embeddings)'
+                      : 'busca por palavras-chave (BM25)'}
+                  </span>
+                  {turn.searchQuery && (
+                    <span className="italic" title="Pergunta reescrita com o contexto da conversa">
+                      buscou: “{turn.searchQuery}”
                     </span>
-                    {turn.response.model && (
-                      <span className="inline-flex items-center gap-1">
-                        <Sparkles className="h-3 w-3" /> {turn.response.model}
-                      </span>
-                    )}
-                  </div>
-                  {turn.response.answer && (
-                    <Answer text={turn.response.answer} sources={turn.response.sources} />
                   )}
-                  {turn.response.notice && (
-                    <p className="flex items-start gap-2 text-sm text-amber-600 dark:text-amber-400">
-                      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" /> {turn.response.notice}
-                    </p>
+                  {turn.model && (
+                    <span className="inline-flex items-center gap-1">
+                      <Sparkles className="h-3 w-3" /> {turn.model}
+                    </span>
                   )}
-                  {turn.response.sources.length > 0 && <Sources sources={turn.response.sources} />}
-                </>
+                </div>
+              )}
+              {turn.answer && (
+                <Answer text={turn.answer} sources={turn.sources} prefix={`${variant}-${i}`} />
+              )}
+              {turn.status === 'streaming' && !turn.answer && !turn.notice && (
+                <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" /> Escrevendo a resposta...
+                </p>
+              )}
+              {turn.status === 'streaming' && turn.answer && (
+                <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-primary/60 align-middle" />
+              )}
+              {(turn.notice || turn.error) && (
+                <p className="mt-2 flex items-start gap-2 text-sm text-amber-600 dark:text-amber-400">
+                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" /> {turn.error ?? turn.notice}
+                </p>
+              )}
+              {turn.status === 'done' && turn.sources.length > 0 && (
+                <Sources sources={turn.sources} prefix={`${variant}-${i}`} compact={compact} />
               )}
             </div>
           </div>
@@ -292,26 +457,53 @@ export function TutorChat() {
             }
           }}
           maxLength={500}
-          rows={2}
-          placeholder="Pergunte sobre DevOps, cloud, bancos de dados ou IA..."
+          rows={compact ? 1 : 2}
+          placeholder={
+            turns.length
+              ? 'Pergunte mais...'
+              : compact
+                ? 'Faça uma pergunta...'
+                : 'Pergunte sobre DevOps, cloud, bancos de dados ou IA...'
+          }
           aria-label="Sua pergunta para o tutor"
           className="min-h-[44px] resize-none"
           disabled={loading}
         />
-        <Button
-          type="submit"
-          size="icon"
-          disabled={loading || question.trim().length < 3}
-          aria-label="Enviar pergunta"
-          className={cn('h-11 w-11 shrink-0')}
-        >
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowUp className="h-4 w-4" />}
-        </Button>
+        {loading ? (
+          <Button
+            type="button"
+            size="icon"
+            variant="outline"
+            onClick={() => abortRef.current?.abort()}
+            aria-label="Parar resposta"
+            className="h-11 w-11 shrink-0"
+          >
+            <Square className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            size="icon"
+            disabled={question.trim().length < 2}
+            aria-label="Enviar pergunta"
+            className="h-11 w-11 shrink-0"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </Button>
+        )}
       </form>
-      <p className="px-4 pb-3 text-[11px] text-muted-foreground">
-        As respostas são geradas por IA a partir do conteúdo do site e podem conter erros. Confira
-        nas fontes.
-      </p>
+      <div className="flex items-center justify-between gap-2 px-4 pb-3 text-[11px] text-muted-foreground">
+        <p>Respostas geradas por IA a partir do site; podem conter erros. Confira nas fontes.</p>
+        {turns.length > 0 && !loading && (
+          <button
+            type="button"
+            onClick={reset}
+            className="inline-flex shrink-0 items-center gap-1 hover:text-foreground"
+          >
+            <RotateCcw className="h-3 w-3" /> Nova conversa
+          </button>
+        )}
+      </div>
     </div>
   );
 }

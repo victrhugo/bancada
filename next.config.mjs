@@ -115,6 +115,8 @@ const nextConfig = {
   ...(isStaticExport ? { output: 'export' } : {}),
   // `.api.ts` files are server-only routes, registered only when not exporting.
   pageExtensions: isStaticExport ? ['tsx', 'ts', 'jsx', 'js'] : ['tsx', 'ts', 'jsx', 'js', 'api.ts'],
+  // Lets the client know whether the RAG tutor API exists in this build.
+  env: { NEXT_PUBLIC_TUTOR_ENABLED: isStaticExport ? '0' : '1' },
   trailingSlash: false,
   // Enable Turbopack explicitly (default in Next.js 16)
   turbopack: {},

@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   bm25Scores,
   buildBm25,
-  buildPrompt,
+  buildChatMessages,
+  buildRewritePrompt,
+  trimHistory,
   cosineInt8,
   decodeVector,
   encodeVector,
@@ -108,14 +110,54 @@ describe('hybridSearch', () => {
   });
 });
 
-describe('buildPrompt', () => {
+describe('chat prompts', () => {
+  const bm25 = buildBm25(chunks);
+  const results = hybridSearch(chunks, bm25, [], 'rollback kubernetes', null);
+
   it('numbers the sources and keeps the grounding rules', () => {
+    const messages = buildChatMessages('Como faço rollback?', results);
+    expect(messages[0].role).toBe('system');
+    expect(messages[0].content).toContain('SOMENTE as fontes');
+    const last = messages[messages.length - 1];
+    expect(last.content).toContain('[1] Rollback no Kubernetes');
+    expect(last.content).toContain('Pergunta: Como faço rollback?');
+  });
+
+  it('places the conversation between the rules and the new question', () => {
+    const history = [
+      { role: 'user' as const, content: 'O que é um Deployment?' },
+      { role: 'assistant' as const, content: 'Um Deployment gerencia réplicas.' },
+    ];
+    const messages = buildChatMessages('E como faço rollback?', results, history);
+    expect(messages.map((m) => m.role)).toEqual(['system', 'user', 'assistant', 'user']);
+  });
+
+  it('trims long history so the prompt stays small', () => {
+    const long = { role: 'assistant' as const, content: 'x'.repeat(5000) };
+    const trimmed = trimHistory(Array(10).fill(long), 6, 600);
+    expect(trimmed).toHaveLength(6);
+    expect(trimmed[0].content.length).toBeLessThanOrEqual(601);
+  });
+
+  it('asks the rewrite step for a standalone question with the conversation', () => {
+    const [system, user] = buildRewritePrompt('e no Docker?', [
+      { role: 'user', content: 'Como ver logs no Kubernetes?' },
+    ]);
+    expect(system.content).toContain('pergunta completa e independente');
+    expect(user.content).toContain('Pessoa: Como ver logs no Kubernetes?');
+    expect(user.content).toContain('Última pergunta: e no Docker?');
+  });
+});
+
+describe('page boost', () => {
+  it('favors chunks from the page the reader is on', () => {
     const bm25 = buildBm25(chunks);
-    const results = hybridSearch(chunks, bm25, [], 'rollback kubernetes', null);
-    const { system, user } = buildPrompt('Como faço rollback?', results);
-    expect(system).toContain('SOMENTE as fontes');
-    expect(user).toContain('[1] Rollback no Kubernetes');
-    expect(user).toContain('Pergunta: Como faço rollback?');
+    const without = hybridSearch(chunks, bm25, [], 'rag embeddings chunking índice', null);
+    const withPage = hybridSearch(chunks, bm25, [], 'rag embeddings chunking índice', null, {
+      pageUrl: '/b',
+    });
+    expect(withPage[0].chunk.url).toBe('/b');
+    expect(without[0].chunk.url).not.toBe('/b');
   });
 });
 

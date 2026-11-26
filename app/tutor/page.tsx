@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Bot, Database, FileSearch, Quote, Sparkles } from 'lucide-react';
+import { Bot, Database, FileSearch, MessagesSquare, Quote, Sparkles, Zap } from 'lucide-react';
 import { TutorChat } from '@/components/tutor/tutor-chat';
 
 const STEPS = [
@@ -22,6 +22,16 @@ const STEPS = [
     icon: Quote,
     title: '4. Citações',
     text: 'Cada afirmação aponta para a fonte com [n]. Clique na fonte para estudar o conteúdo original.',
+  },
+  {
+    icon: MessagesSquare,
+    title: '5. Memória e reescrita',
+    text: 'O tutor lembra das últimas mensagens. Antes de buscar, ele reescreve continuações como "e no Kubernetes?" numa pergunta completa, para a busca encontrar os trechos certos.',
+  },
+  {
+    icon: Zap,
+    title: '6. Streaming e contexto da página',
+    text: 'A resposta aparece enquanto é escrita. No balão flutuante, os trechos da página em que você está ganham prioridade na busca.',
   },
 ];
 

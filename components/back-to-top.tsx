@@ -41,7 +41,7 @@ export function BackToTop() {
      onKeyDown={handleKeyDown}
      aria-label="Voltar ao topo"
      className="
-       fixed bottom-8 right-8 z-50
+       fixed bottom-24 right-7 z-50
        p-3 rounded-full
        bg-primary text-primary-foreground
        shadow-lg hover:shadow-xl
