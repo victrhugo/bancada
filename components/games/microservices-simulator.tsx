@@ -151,7 +151,7 @@ export default function MicroservicesSimulator() {
         id: 'api-gateway-1',
         type: 'api-gateway',
         name: 'API Gateway',
-        description: 'Entry point for all requests. Routes traffic to other services.',
+        description: 'Porta de entrada de todas as requisições. Roteia o tráfego para os outros serviços.',
         status: 'healthy',
         instances: 2,
         cpu: 30,
@@ -163,7 +163,7 @@ export default function MicroservicesSimulator() {
         id: 'user-1',
         type: 'user',
         name: 'User Service',
-        description: 'Handles user authentication and profile management.',
+        description: 'Cuida da autenticação dos usuários e da gestão de perfis.',
         status: 'healthy',
         instances: 3,
         cpu: 45,
@@ -175,7 +175,7 @@ export default function MicroservicesSimulator() {
         id: 'product-1',
         type: 'product',
         name: 'Product Service',
-        description: 'Manages product catalog and inventory queries.',
+        description: 'Gerencia o catálogo de produtos e as consultas de estoque.',
         status: 'healthy',
         instances: 3,
         cpu: 50,
@@ -193,7 +193,7 @@ export default function MicroservicesSimulator() {
         id: 'cart-1',
         type: 'cart',
         name: 'Cart Service',
-        description: 'Manages shopping cart operations.',
+        description: 'Gerencia as operações do carrinho de compras.',
         status: 'healthy',
         instances: 2,
         cpu: 35,
@@ -205,7 +205,7 @@ export default function MicroservicesSimulator() {
         id: 'order-1',
         type: 'order',
         name: 'Order Service',
-        description: 'Processes and tracks orders.',
+        description: 'Processa e acompanha os pedidos.',
         status: 'healthy',
         instances: 3,
         cpu: 55,
@@ -463,41 +463,41 @@ export default function MicroservicesSimulator() {
               <Card className="p-6">
                 <h2 className="flex items-center gap-2 text-2xl font-bold mb-4">
                   <Boxes className="w-6 h-6" />
-                  Welcome to Microservices Simulator!
+                  Boas-vindas ao simulador de microsserviços!
                 </h2>
                 <p className="mb-4 text-muted-foreground">
-                  Learn how modern applications are built using independent, scalable services.
-                  Each service can be deployed, scaled, and maintained separately.
+                  Aprenda como aplicações modernas são construídas com serviços independentes e escaláveis.
+                  Cada serviço pode ter deploy, escala e manutenção separados.
                 </p>
                 <div className="space-y-3 mb-6">
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">🎯</div>
                     <div>
-                      <div className="font-medium">Interactive Tutorial</div>
-                      <div className="text-sm text-muted-foreground">Step-by-step guided tour</div>
+                      <div className="font-medium">Tutorial interativo</div>
+                      <div className="text-sm text-muted-foreground">Tour guiado passo a passo</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">🛠️</div>
                     <div>
-                      <div className="font-medium">Hands-On Learning</div>
-                      <div className="text-sm text-muted-foreground">Scale services, simulate failures</div>
+                      <div className="font-medium">Aprendizado prático</div>
+                      <div className="text-sm text-muted-foreground">Escale serviços e simule falhas</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">📊</div>
                     <div>
-                      <div className="font-medium">Real-Time Metrics</div>
-                      <div className="text-sm text-muted-foreground">Monitor performance and health</div>
+                      <div className="font-medium">Métricas em tempo real</div>
+                      <div className="text-sm text-muted-foreground">Acompanhe performance e saúde</div>
                     </div>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <Button onClick={startTutorial} className="flex-1 bg-blue-600 hover:bg-blue-700">
-                    Start Tutorial
+                    Começar o tutorial
                   </Button>
                   <Button onClick={skipTutorial} variant="outline" className="flex-1">
-                    Skip and Explore
+                    Pular e explorar
                   </Button>
                 </div>
               </Card>
@@ -512,14 +512,14 @@ export default function MicroservicesSimulator() {
             <div>
               <CardTitle className="flex items-center gap-2 text-2xl">
                 <Boxes className="w-6 h-6" />
-                Microservices Architecture Simulator
+                Simulador de arquitetura de microsserviços
               </CardTitle>
               <CardDescription className="mt-2">
-                Design and deploy microservices. See communication patterns, handle failures, and scale independently.
+                Projete e faça deploy de microsserviços. Veja padrões de comunicação, lide com falhas e escale cada serviço de forma independente.
               </CardDescription>
             </div>
             <Badge variant="secondary" className="text-sm">
-              Interactive Learning
+              Aprendizado interativo
             </Badge>
           </div>
         </CardHeader>
@@ -535,12 +535,12 @@ export default function MicroservicesSimulator() {
               )}
             >
               {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-              {isRunning ? 'Pause' : 'Start'}
+              {isRunning ? 'Pausar' : 'Iniciar'}
             </Button>
 
             <Button onClick={handleReset} variant="outline" className="gap-2">
               <RotateCcw className="w-4 h-4" />
-              Reset
+              Reiniciar
           </Button>
 
           <Button
@@ -550,7 +550,7 @@ export default function MicroservicesSimulator() {
               className="ml-auto"
             >
               <Activity className="w-4 h-4 mr-2" />
-              {showMetrics ? 'Hide' : 'Show'} Metrics
+              {showMetrics ? 'Esconder' : 'Mostrar'} métricas
             </Button>
           </div>
 
@@ -558,13 +558,13 @@ export default function MicroservicesSimulator() {
           {showMetrics && (
             <div className="grid grid-cols-3 gap-3 p-4 rounded-lg bg-muted/30">
               <div>
-                <div className="text-xs text-muted-foreground">Total Requests</div>
+                <div className="text-xs text-muted-foreground">Total de requisições</div>
                 <div className="flex items-center gap-2">
                   <div className="text-2xl font-bold">{totalRequests}</div>
                 </div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground">Success Rate</div>
+                <div className="text-xs text-muted-foreground">Taxa de sucesso</div>
                 <div className="flex items-center gap-2">
                   <div className={cn('text-2xl font-bold', successRate >= 95 ? 'text-green-500' : successRate >= 80 ? 'text-yellow-500' : 'text-red-500')}>
                     {successRate.toFixed(1)}%
@@ -575,7 +575,7 @@ export default function MicroservicesSimulator() {
                 </div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground">Successful / Failed</div>
+                <div className="text-xs text-muted-foreground">Sucesso / falha</div>
                 <div className="flex items-center gap-2">
                   <div className="text-xl font-bold text-green-500">{successfulRequests}</div>
                   <div className="text-muted-foreground">/</div>
@@ -648,7 +648,7 @@ export default function MicroservicesSimulator() {
                   className="absolute cursor-pointer"
                   tabIndex={0}
                   role="button"
-                  aria-label={`${service.name} - ${service.status} status`}
+                  aria-label={`${service.name} - status ${({ healthy: 'saudável', degraded: 'degradado', down: 'fora do ar', unhealthy: 'com falha' } as Record<string, string>)[service.status] ?? service.status}`}
                   style={{
                     left: service.position.x,
                     top: service.position.y,
@@ -748,7 +748,7 @@ export default function MicroservicesSimulator() {
                     )}
                   >
                     <Network className="w-4 h-4" />
-                    {showAdvancedServices ? 'Remove Extra Services' : 'Add More Services'}
+                    {showAdvancedServices ? 'Remover serviços extras' : 'Adicionar mais serviços'}
                   </Button>
                 </motion.div>
               )}
@@ -772,7 +772,7 @@ export default function MicroservicesSimulator() {
                         {/* Progress Indicator */}
                         <div className="flex items-center justify-between">
                           <Badge variant="secondary" className="bg-blue-600 text-white text-xs">
-                            Step {tutorialStep === 'click-service' ? '1' : tutorialStep === 'start-sim' ? '2' : '3'} of 3
+                            Passo {tutorialStep === 'click-service' ? '1' : tutorialStep === 'start-sim' ? '2' : '3'} de 3
                           </Badge>
                           <Button
                             onClick={skipTutorial}
@@ -780,7 +780,7 @@ export default function MicroservicesSimulator() {
                             size="sm"
                             className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
                           >
-                            Skip
+                            Pular
                           </Button>
                         </div>
 
@@ -789,30 +789,30 @@ export default function MicroservicesSimulator() {
                           {tutorialStep === 'click-service' && (
                             <>
                               <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100">
-                                👆 Click the API Gateway
+                                👆 Clique no API Gateway
                               </h4>
                               <p className="text-xs text-blue-700 dark:text-blue-200">
-                                The API Gateway is the entry point for all requests. Click it to see its details and metrics.
+                                O API Gateway é a porta de entrada de todas as requisições. Clique nele para ver os detalhes e as métricas.
                               </p>
                             </>
                           )}
                           {tutorialStep === 'start-sim' && (
                             <>
                               <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100">
-                                ▶️ Start the Simulation
+                                ▶️ Inicie a simulação
                               </h4>
                               <p className="text-xs text-blue-700 dark:text-blue-200">
-                                Press the green "Start" button above to watch requests flow between services in real-time.
+                                Aperte o botão verde "Iniciar" acima para ver as requisições circulando entre os serviços em tempo real.
                               </p>
                             </>
                           )}
                           {tutorialStep === 'scale-service' && (
                             <>
                               <h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100">
-                                ⬆️ Scale the User Service
+                                ⬆️ Escale o User Service
                               </h4>
                               <p className="text-xs text-blue-700 dark:text-blue-200">
-                                Click the User Service, then press "Scale Up" to add more instances and handle increased load.
+                                Clique no User Service e aperte "Aumentar" para adicionar instâncias e aguentar mais carga.
                               </p>
                             </>
                           )}
@@ -860,9 +860,9 @@ export default function MicroservicesSimulator() {
                       )}
                       <div className="flex items-center gap-2 mt-2">
                         <Badge variant="outline" className={getStatusColor(selectedService.status)}>
-                          {selectedService.status}
+                          {({ healthy: 'saudável', degraded: 'degradado', down: 'fora do ar', unhealthy: 'com falha' } as Record<string, string>)[selectedService.status] ?? selectedService.status}
                         </Badge>
-                        <Badge variant="secondary">{selectedService.instances} instances</Badge>
+                        <Badge variant="secondary">{selectedService.instances} instâncias</Badge>
                       </div>
                     </div>
                     <Button onClick={() => setSelectedService(null)} variant="ghost" size="sm">
@@ -872,7 +872,7 @@ export default function MicroservicesSimulator() {
 
                   <div className="grid grid-cols-3 gap-4 mt-4">
                     <div>
-                      <div className="text-xs text-muted-foreground">CPU Usage</div>
+                      <div className="text-xs text-muted-foreground">Uso de CPU</div>
                       <div className="text-xl font-bold">{selectedService.cpu.toFixed(0)}%</div>
                       <div className="w-full h-2 mt-1 overflow-hidden rounded-full bg-muted">
                         <div
@@ -882,7 +882,7 @@ export default function MicroservicesSimulator() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-muted-foreground">Memory</div>
+                      <div className="text-xs text-muted-foreground">Memória</div>
                       <div className="text-xl font-bold">{selectedService.memory.toFixed(0)}%</div>
                       <div className="w-full h-2 mt-1 overflow-hidden rounded-full bg-muted">
                         <div
@@ -892,7 +892,7 @@ export default function MicroservicesSimulator() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-muted-foreground">Latency</div>
+                      <div className="text-xs text-muted-foreground">Latência</div>
                       <div className="text-xl font-bold">{selectedService.latency.toFixed(0)}ms</div>
                     </div>
                   </div>
@@ -904,7 +904,7 @@ export default function MicroservicesSimulator() {
                       size="sm"
                       disabled={selectedService.instances >= 10}
                     >
-                      Scale Up
+                      Aumentar
                     </Button>
                     <Button
                       onClick={() => scaleService(selectedService.id, -1)}
@@ -912,14 +912,14 @@ export default function MicroservicesSimulator() {
                       size="sm"
                       disabled={selectedService.instances <= 1}
                     >
-                      Scale Down
+                      Diminuir
                     </Button>
                     <Button
                       onClick={() => toggleServiceHealth(selectedService.id)}
                       variant="outline"
                       size="sm"
                     >
-                      Toggle Health
+                      Alternar saúde
                     </Button>
                   </div>
                 </Card>
@@ -931,13 +931,13 @@ export default function MicroservicesSimulator() {
                 <Card className="p-4 bg-muted/20">
                   <h3 className="flex items-center gap-2 mb-3 text-sm font-semibold">
                     <Info className="w-4 h-4" />
-                    How to Use
+                    Como usar
                   </h3>
                   <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>• Click services to view metrics</li>
-                    <li>• Scale them up/down to handle load</li>
-                    <li>• Toggle health to simulate failures</li>
-                    <li>• Watch requests flow between services</li>
+                    <li>• Clique nos serviços para ver as métricas</li>
+                    <li>• Aumente ou diminua para lidar com a carga</li>
+                    <li>• Alterne a saúde para simular falhas</li>
+                    <li>• Veja as requisições passando entre os serviços</li>
                   </ul>
                 </Card>
               )}
