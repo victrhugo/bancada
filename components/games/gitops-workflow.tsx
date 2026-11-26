@@ -59,54 +59,54 @@ interface Challenge {
 const challenges: Challenge[] = [
   {
     id: 'drift',
-    title: 'Configuration Drift',
-    description: 'Someone manually changed the replica count in production',
+    title: 'Drift de configuração',
+    description: 'Alguém mudou na mão o número de réplicas em produção',
     scenario:
-      'Your production deployment shows 5 replicas, but Git declares only 3. The GitOps operator detected configuration drift.',
-    question: 'What should the GitOps operator do?',
+      'O deployment de produção mostra 5 réplicas, mas o Git declara só 3. O operador GitOps detectou drift de configuração.',
+    question: 'O que o operador GitOps deve fazer?',
     options: [
-      'Leave it as is - manual changes are fine',
-      'Automatically reconcile to match Git (3 replicas)',
-      'Alert the team but keep 5 replicas',
-      'Merge the change back to Git',
+      'Deixar como está: mudanças manuais não têm problema',
+      'Reconciliar automaticamente para bater com o Git (3 réplicas)',
+      'Alertar o time, mas manter 5 réplicas',
+      'Levar a mudança de volta para o Git com um merge',
     ],
     correctAnswer: 1,
     explanation:
-      'GitOps principle: Git is the single source of truth. The operator should automatically reconcile the cluster state to match what\'s declared in Git. This ensures consistency and prevents configuration drift.',
+      'Princípio do GitOps: o Git é a única fonte da verdade. O operador deve reconciliar automaticamente o estado do cluster com o que está declarado no Git. Isso garante consistência e evita drift de configuração.',
   },
   {
     id: 'rollback',
-    title: 'Deployment Rollback',
-    description: 'A new deployment is causing errors in production',
+    title: 'Rollback de deployment',
+    description: 'Um deployment novo está causando erros em produção',
     scenario:
-      'Version v2.0.0 was deployed but is showing errors. The health status is degraded. You need to rollback quickly.',
-    question: 'What\'s the GitOps way to rollback?',
+      'A versão v2.0.0 foi para produção, mas está dando erro. O health status está degraded. Você precisa fazer rollback rápido.',
+    question: 'Qual é o jeito GitOps de fazer rollback?',
     options: [
-      'Run kubectl rollout undo directly',
-      'Delete the failing pods manually',
-      'Revert the Git commit and let GitOps sync',
-      'Scale down the deployment to 0',
+      'Rodar kubectl rollout undo direto',
+      'Apagar na mão os pods com falha',
+      'Reverter o commit no Git e deixar o GitOps sincronizar',
+      'Escalar o deployment para 0',
     ],
     correctAnswer: 2,
     explanation:
-      'In GitOps, you rollback by reverting the commit in Git. The GitOps operator will detect the change and automatically deploy the previous version. This maintains Git as the source of truth and creates an audit trail.',
+      'No GitOps, o rollback é feito revertendo o commit no Git. O operador detecta a mudança e faz o deploy da versão anterior automaticamente. Assim o Git continua sendo a fonte da verdade e fica um histórico para auditoria.',
   },
   {
     id: 'sync-policy',
-    title: 'Sync Policy Decision',
-    description: 'Choosing between manual and automatic sync',
+    title: 'Escolha da política de sync',
+    description: 'Escolhendo entre sync manual e automático',
     scenario:
-      'You\'re setting up GitOps for a critical production environment. Should you enable automatic sync or require manual approval?',
-    question: 'Which sync policy is best for critical production workloads?',
+      'Você está configurando GitOps para um ambiente de produção crítico. É melhor ativar o sync automático ou exigir aprovação manual?',
+    question: 'Qual política de sync é melhor para workloads críticos de produção?',
     options: [
-      'Automatic sync - always stay in sync',
-      'Manual sync - review every change',
-      'Automatic sync with self-heal and prune',
-      'No sync - manual kubectl only',
+      'Sync automático: sempre sincronizado',
+      'Sync manual: revisar cada mudança',
+      'Sync automático com self-heal e prune',
+      'Sem sync: só kubectl manual',
     ],
     correctAnswer: 2,
     explanation:
-      'Best practice: Enable automatic sync with self-heal (corrects drift) and prune (removes orphaned resources). Use Git protections (branch policies, reviews) for safety. This gives you automation without sacrificing control.',
+      'Boa prática: ative o sync automático com self-heal (corrige o drift) e prune (remove recursos órfãos). Use as proteções do Git (regras de branch, reviews) para ter segurança. Assim você tem automação sem abrir mão do controle.',
   },
 ];
 
@@ -195,7 +195,7 @@ export default function GitOpsWorkflow() {
   // Effect: When auto-sync is enabled and there's drift or pending sync, auto-heal
   useEffect(() => {
     if (autoSync && (hasDrift || pendingSync)) {
-      addInsight('🔄 Auto-sync enabled - initiating reconciliation...');
+      addInsight('🔄 Auto-sync ativado: iniciando a reconciliação...');
       setSyncStatus('syncing');
       setHealthStatus('progressing');
       setPendingSync(false);
@@ -205,9 +205,9 @@ export default function GitOpsWorkflow() {
         setHealthStatus('healthy');
         setHasDrift(false);
         if (hasDrift) {
-          addInsight('✅ Drift corrected automatically - cluster reconciled with Git');
+          addInsight('✅ Drift corrigido automaticamente: cluster reconciliado com o Git');
         } else {
-          addInsight('✅ Auto-sync completed - cluster synced with Git');
+          addInsight('✅ Auto-sync concluído: cluster sincronizado com o Git');
         }
       }, 2000);
     }
@@ -224,13 +224,13 @@ export default function GitOpsWorkflow() {
       sha,
       message: `${template.type}: ${message}`,
       author,
-      timestamp: 'Just now',
+      timestamp: 'Agora mesmo',
       deployed: false,
     };
     
     setCommits((prev) => [newCommit, ...prev]);
     setNextCommitId((prev) => prev + 1);
-    addInsight(`📝 New commit by ${author}: ${newCommit.message}`);
+    addInsight(`📝 Novo commit de ${author}: ${newCommit.message}`);
   }, [nextCommitId, addInsight]);
 
   const handleDeploy = useCallback(
@@ -252,8 +252,8 @@ export default function GitOpsWorkflow() {
 
       if (autoSync) {
         // Auto sync enabled - automatically deploy
-        addInsight(`🚀 Commit ${commitHash} pushed to Git`);
-        addInsight('🔄 Auto-sync enabled - deploying automatically...');
+        addInsight(`🚀 Commit ${commitHash} enviado ao Git`);
+        addInsight('🔄 Auto-sync ativado: fazendo deploy automaticamente...');
         setSyncStatus('syncing');
         setHealthStatus('progressing');
 
@@ -266,12 +266,12 @@ export default function GitOpsWorkflow() {
         setTimeout(() => {
           setSyncStatus('synced');
           setHealthStatus('healthy');
-          addInsight(`✅ Deployment successful - ${commitHash} deployed to cluster`);
+          addInsight(`✅ Deploy concluído: ${commitHash} aplicado no cluster`);
         }, 2500);
       } else {
         // Auto sync disabled - manual sync required
-        addInsight(`🚀 Commit ${commitHash} pushed to Git`);
-        addInsight('⚠️ Auto-sync disabled - manual sync required');
+        addInsight(`🚀 Commit ${commitHash} enviado ao Git`);
+        addInsight('⚠️ Auto-sync desativado: é preciso sincronizar manualmente');
         setSyncStatus('out-of-sync');
         setHealthStatus('unknown');
         setPendingSync(true);
@@ -283,7 +283,7 @@ export default function GitOpsWorkflow() {
   const handleManualSync = useCallback(() => {
     if (!pendingSync) return;
     
-    addInsight('🔄 Manual sync triggered...');
+    addInsight('🔄 Sync manual disparado...');
     setSyncStatus('syncing');
     setHealthStatus('progressing');
     setPendingSync(false);
@@ -296,7 +296,7 @@ export default function GitOpsWorkflow() {
       setSyncStatus('synced');
       setHealthStatus('healthy');
       setHasDrift(false);
-      addInsight('✅ Manual sync successful - cluster synced with Git');
+      addInsight('✅ Sync manual concluído: cluster sincronizado com o Git');
     }, 2000);
   }, [pendingSync, addInsight, setHasDrift]);
 
@@ -304,26 +304,26 @@ export default function GitOpsWorkflow() {
     setSyncStatus('out-of-sync');
     setHealthStatus('degraded');
     setHasDrift(true);
-    addInsight('⚠️ Configuration drift detected - manual change in cluster!');
-    addInsight('🔍 Replicas: Git declares 3, cluster has 5');
+    addInsight('⚠️ Drift de configuração detectado: mudança manual no cluster!');
+    addInsight('🔍 Réplicas: o Git declara 3, o cluster tem 5');
 
     if (autoSync) {
       setTimeout(() => {
         setSyncStatus('syncing');
-        addInsight('🔄 Auto-heal: Reconciling to match Git...');
+        addInsight('🔄 Auto-heal: reconciliando para bater com o Git...');
         setAnimationPhase('argocd-to-k8s');
         setTimeout(() => setAnimationPhase('idle'), 1000);
         setTimeout(() => {
           setSyncStatus('synced');
           setHealthStatus('healthy');
           setHasDrift(false);
-          addInsight('✅ Drift corrected automatically - cluster now has 3 replicas');
+          addInsight('✅ Drift corrigido automaticamente: agora o cluster tem 3 réplicas');
         }, 1500);
       }, 2000);
     } else {
       setTimeout(() => {
-        addInsight('⚠️ Auto-heal disabled - drift persists');
-        addInsight('💡 Tip: Enable auto-sync to automatically correct drift');
+        addInsight('⚠️ Auto-heal desativado: o drift continua');
+        addInsight('💡 Dica: ative o auto-sync para corrigir o drift automaticamente');
       }, 1500);
     }
   }, [autoSync, addInsight]);
@@ -375,7 +375,7 @@ export default function GitOpsWorkflow() {
          <div className="flex items-center justify-between mb-6">
            <Badge variant="secondary" className="text-sm">
              <GitBranch className="w-3 h-3 mr-1" />
-              GitOps Learning
+              Aprendendo GitOps
             </Badge>
           </div>
 
@@ -387,9 +387,9 @@ export default function GitOpsWorkflow() {
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4">
               <GitBranch className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-4xl font-bold mb-4">GitOps Workflow Simulator</h2>
+            <h2 className="text-4xl font-bold mb-4">Simulador de fluxo GitOps</h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Learn GitOps principles through interactive scenarios
+              Aprenda os princípios do GitOps com cenários interativos
             </p>
           </motion.div>
 
@@ -398,34 +398,34 @@ export default function GitOpsWorkflow() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Info className="w-5 h-5 mr-2 text-blue-500" />
-                  What is GitOps?
+                  O que é GitOps?
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  GitOps is a modern approach to continuous deployment where Git serves as the single source of truth
-                  for declarative infrastructure and applications.
+                  GitOps é uma abordagem moderna de entrega contínua em que o Git é a única fonte da verdade
+                  para infraestrutura e aplicações declarativas.
                 </p>
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="p-4 rounded-lg bg-blue-100/60 dark:bg-blue-950/20">
                     <GitCommit className="w-6 h-6 text-blue-500 mb-2" />
-                    <h3 className="font-semibold mb-1">Git as Source of Truth</h3>
+                    <h3 className="font-semibold mb-1">Git como fonte da verdade</h3>
                     <p className="text-sm text-muted-foreground">
-                      All desired state is stored in Git repositories
+                      Todo o estado desejado fica guardado em repositórios Git
                     </p>
                   </div>
                   <div className="p-4 rounded-lg bg-purple-100/60 dark:bg-purple-950/20">
                     <RefreshCw className="w-6 h-6 text-purple-500 mb-2" />
-                    <h3 className="font-semibold mb-1">Automated Sync</h3>
+                    <h3 className="font-semibold mb-1">Sync automatizado</h3>
                     <p className="text-sm text-muted-foreground">
-                      Operators continuously reconcile actual state with desired state
+                      Operadores reconciliam o tempo todo o estado real com o estado desejado
                     </p>
                   </div>
                   <div className="p-4 rounded-lg bg-green-100/60 dark:bg-green-950/20">
                     <Eye className="w-6 h-6 text-green-500 mb-2" />
-                    <h3 className="font-semibold mb-1">Drift Detection</h3>
+                    <h3 className="font-semibold mb-1">Detecção de drift</h3>
                     <p className="text-sm text-muted-foreground">
-                      Automatic detection and correction of configuration drift
+                      Detecção e correção automática de drift de configuração
                     </p>
                   </div>
                 </div>
@@ -434,25 +434,25 @@ export default function GitOpsWorkflow() {
 
             <Card>
               <CardHeader>
-                <CardTitle>What You'll Learn</CardTitle>
+                <CardTitle>O que você vai aprender</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>How GitOps operators synchronize Git state with Kubernetes clusters</span>
+                    <span>Como os operadores GitOps sincronizam o estado do Git com clusters Kubernetes</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Understanding sync status, health status, and configuration drift</span>
+                    <span>Entender sync status, health status e drift de configuração</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>When to use automatic sync vs manual approval</span>
+                    <span>Quando usar sync automático ou aprovação manual</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>How to handle deployments, rollbacks, and drift correction</span>
+                    <span>Como lidar com deploys, rollbacks e correção de drift</span>
                   </li>
                 </ul>
               </CardContent>
@@ -461,7 +461,7 @@ export default function GitOpsWorkflow() {
 
           <div className="flex justify-center">
             <Button size="lg" onClick={() => setPhase('interactive')} className="text-lg px-8">
-              Start Learning
+              Começar
               <Play className="w-5 h-5 ml-2" />
             </Button>
           </div>
@@ -479,10 +479,10 @@ export default function GitOpsWorkflow() {
            <div className="flex gap-2">
              <Button variant="outline" size="sm" onClick={resetGame}>
                 <RotateCcw className="w-4 h-4 mr-2" />
-                Reset
+                Reiniciar
               </Button>
               <Button size="sm" onClick={() => setPhase('challenges')}>
-                Continue to Challenges
+                Ir para os desafios
               </Button>
             </div>
           </div>
@@ -492,7 +492,7 @@ export default function GitOpsWorkflow() {
             animate={{ opacity: 1 }}
             className="text-3xl font-bold mb-6 text-center"
           >
-          GitOps Workflow Simulator
+          Simulador de fluxo GitOps
         </motion.h1>
 
           {/* Workflow Flow Visualization */}
@@ -505,8 +505,8 @@ export default function GitOpsWorkflow() {
                     <GitBranch className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold">Git Repository</p>
-                    <p className="text-xs text-muted-foreground">Source of Truth</p>
+                    <p className="text-sm font-semibold">Repositório Git</p>
+                    <p className="text-xs text-muted-foreground">Fonte da verdade</p>
                   </div>
                 </div>
 
@@ -549,7 +549,7 @@ export default function GitOpsWorkflow() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-semibold">ArgoCD</p>
-                    <p className="text-xs text-muted-foreground">GitOps Operator</p>
+                    <p className="text-xs text-muted-foreground">Operador GitOps</p>
                   </div>
                 </div>
 
@@ -592,7 +592,7 @@ export default function GitOpsWorkflow() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-semibold">Kubernetes</p>
-                    <p className="text-xs text-muted-foreground">Live Cluster</p>
+                    <p className="text-xs text-muted-foreground">Cluster ao vivo</p>
                   </div>
                 </div>
               </div>
@@ -609,7 +609,7 @@ export default function GitOpsWorkflow() {
                       className="flex items-center gap-2 text-sm"
                     >
                       <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                      <span className="text-blue-600 dark:text-blue-400 font-medium">Commit pushed to Git repository...</span>
+                      <span className="text-blue-600 dark:text-blue-400 font-medium">Commit enviado ao repositório Git...</span>
                     </motion.div>
                   )}
                   {animationPhase === 'argocd-to-k8s' && (
@@ -621,7 +621,7 @@ export default function GitOpsWorkflow() {
                       className="flex items-center gap-2 text-sm"
                     >
                       <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                      <span className="text-green-600 dark:text-green-400 font-medium">ArgoCD syncing to Kubernetes cluster...</span>
+                      <span className="text-green-600 dark:text-green-400 font-medium">ArgoCD sincronizando com o cluster Kubernetes...</span>
                     </motion.div>
                   )}
                   {animationPhase === 'idle' && syncStatus === 'synced' && (
@@ -632,7 +632,7 @@ export default function GitOpsWorkflow() {
                       className="flex items-center gap-2 text-sm text-muted-foreground"
                     >
                       <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      <span>System in sync - waiting for changes...</span>
+                      <span>Sistema sincronizado: aguardando mudanças...</span>
                     </motion.div>
                   )}
                   {animationPhase === 'idle' && pendingSync && (
@@ -643,7 +643,7 @@ export default function GitOpsWorkflow() {
                       className="flex items-center gap-2 text-sm"
                     >
                       <Clock className="w-4 h-4 text-orange-500" />
-                      <span className="text-orange-600 dark:text-orange-400 font-medium">Manual sync required (auto-sync disabled)</span>
+                      <span className="text-orange-600 dark:text-orange-400 font-medium">Sync manual necessário (auto-sync desativado)</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -658,17 +658,17 @@ export default function GitOpsWorkflow() {
              <CardHeader>
                 <CardTitle className="flex items-center text-base">
                  <GitBranch className="w-5 h-5 mr-2" />
-                  Git Repository
+                  Repositório Git
                </CardTitle>
                 <CardDescription className="text-xs">
-                 Push new commits and deploy to Kubernetes cluster
+                 Envie novos commits e faça deploy no cluster Kubernetes
                </CardDescription>
              </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                <div className="mb-4">
                 <Button onClick={generateRandomCommit} variant="outline" className="w-full">
                   <GitCommit className="w-4 h-4 mr-2" />
-                  Create New Commit
+                  Criar novo commit
                 </Button>
               </div>
 
@@ -698,12 +698,12 @@ export default function GitOpsWorkflow() {
                        {commit.deployed ? (
                           <Badge variant="secondary" className="ml-2 text-[10px] h-5">
                             <CheckCircle2 className="w-2.5 h-2.5 mr-1" />
-                            Done
+                            Feito
                          </Badge>
                        ) : (
                           <Button size="sm" onClick={() => handleDeploy(commit.id)} className="ml-2 h-6 text-[10px] px-2">
                             <GitPullRequest className="w-3 h-3" />
-                           Deploy
+                           Fazer deploy
                          </Button>
                        )}
                       </div>
@@ -718,10 +718,10 @@ export default function GitOpsWorkflow() {
             <CardHeader>
               <CardTitle className="flex items-center text-base">
                 <RefreshCw className="w-5 h-5 mr-2" />
-                ArgoCD Operator
+                Operador ArgoCD
               </CardTitle>
               <CardDescription className="text-xs">
-                Monitors Git and syncs to Kubernetes
+                Monitora o Git e sincroniza com o Kubernetes
               </CardDescription>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col space-y-3">
@@ -738,9 +738,9 @@ export default function GitOpsWorkflow() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-[10px]">
-                    <span className="text-muted-foreground">Mode:</span>
+                    <span className="text-muted-foreground">Modo:</span>
                     <Badge variant="outline" className="text-[10px] h-4 px-1">
-                      Auto-sync: {autoSync ? 'On' : 'Off'}
+                      Auto-sync: {autoSync ? 'Ligado' : 'Desligado'}
                     </Badge>
                   </div>
                   <div className="flex justify-between text-[10px]">
@@ -805,7 +805,7 @@ export default function GitOpsWorkflow() {
                       : "bg-orange-500 hover:bg-orange-600 text-white border-orange-600 dark:bg-orange-500 dark:hover:bg-orange-600"
                   )}
                 >
-                  {autoSync ? '✅ Enabled' : '⚠️ Disabled'}
+                  {autoSync ? '✅ Ativado' : '⚠️ Desativado'}
                 </Button>
               </div>
 
@@ -826,7 +826,7 @@ export default function GitOpsWorkflow() {
           <div className="flex-1 flex flex-col">
               <h3 className="text-xs font-semibold mb-2 flex items-center">
                 <Activity className="w-3.5 h-3.5 mr-1.5" />
-                Activity Log
+                Log de atividades
               </h3>
               <div className="flex-1 overflow-y-auto pr-2 space-y-1.5">
                  <AnimatePresence mode="popLayout">
@@ -853,9 +853,9 @@ export default function GitOpsWorkflow() {
              <CardHeader>
                 <CardTitle className="flex items-center text-base">
                  <Cloud className="w-5 h-5 mr-2" />
-                  Kubernetes Cluster
+                  Cluster Kubernetes
                </CardTitle>
-                <CardDescription className="text-xs">Live production state</CardDescription>
+                <CardDescription className="text-xs">Estado atual de produção</CardDescription>
              </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                <div className="space-y-4">
@@ -896,28 +896,28 @@ export default function GitOpsWorkflow() {
                        </code>
                      </div>
                      <div className="flex justify-between">
-                       <span className="text-muted-foreground">Last Sync:</span>
-                        <span className="font-mono text-[10px]">Just now</span>
+                       <span className="text-muted-foreground">Último sync:</span>
+                        <span className="font-mono text-[10px]">Agora mesmo</span>
                      </div>
                    </div>
                  </div>
 
                   <Button variant="outline" onClick={handleDriftScenario} className="w-full text-xs h-8">
                    <Zap className="w-4 h-4 mr-2" />
-                   Simulate Configuration Drift
+                   Simular drift de configuração
                  </Button>
 
                  {pendingSync && (
                     <Alert className="border-orange-500 p-2.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
                      <AlertDescription>
-                        <strong className="text-xs">Manual Sync Required</strong>
+                        <strong className="text-xs">Sync manual necessário</strong>
                         <p className="text-[10px] mt-1">
-                         Auto-sync is disabled. Click below to manually sync the cluster.
+                         O auto-sync está desativado. Clique abaixo para sincronizar o cluster manualmente.
                        </p>
                         <Button onClick={handleManualSync} className="mt-2 w-full text-xs h-7" size="sm">
                          <RefreshCw className="w-3 h-3 mr-2" />
-                         Sync Now
+                         Sincronizar agora
                        </Button>
                       </AlertDescription>
                     </Alert>
@@ -942,7 +942,7 @@ export default function GitOpsWorkflow() {
          <div className="flex items-center justify-between mb-6">
            <div className="flex gap-2">
              <Badge variant="secondary">
-               Challenge {currentChallenge + 1}/{challenges.length}
+               Desafio {currentChallenge + 1}/{challenges.length}
               </Badge>
               <Badge variant="secondary">
                 Score: {score}/{challenges.length}
@@ -967,7 +967,7 @@ export default function GitOpsWorkflow() {
                 <Alert className="mb-6">
                   <Info className="w-4 h-4" />
                   <AlertDescription>
-                    <strong>Scenario:</strong> {challenge.scenario}
+                    <strong>Cenário:</strong> {challenge.scenario}
                   </AlertDescription>
                 </Alert>
 
@@ -1025,7 +1025,7 @@ export default function GitOpsWorkflow() {
                       <Alert className={cn(isCorrect ? 'border-green-500' : 'border-orange-500')}>
                         <Info className="w-4 h-4" />
                         <AlertDescription>
-                          <strong>{isCorrect ? '✅ Correct!' : '📚 Learning Moment:'}</strong>
+                          <strong>{isCorrect ? '✅ Correto!' : '📚 Hora de aprender:'}</strong>
                           <p className="mt-2">{challenge.explanation}</p>
                         </AlertDescription>
                       </Alert>
@@ -1038,7 +1038,7 @@ export default function GitOpsWorkflow() {
             {showExplanation && (
               <div className="flex justify-center">
                 <Button size="lg" onClick={handleNextChallenge}>
-                  {currentChallenge < challenges.length - 1 ? 'Next Challenge' : 'View Results'}
+                  {currentChallenge < challenges.length - 1 ? 'Próximo desafio' : 'Ver resultado'}
                 </Button>
               </div>
             )}
@@ -1060,48 +1060,48 @@ export default function GitOpsWorkflow() {
           <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-6">
             <CheckCircle2 className="w-12 h-12 text-white" />
           </div>
-          <h2 className="text-4xl font-bold mb-4">Great Work!</h2>
+          <h2 className="text-4xl font-bold mb-4">Mandou bem!</h2>
           <p className="text-xl text-muted-foreground">
-            You\'ve completed the GitOps Workflow Simulator
+            Você concluiu o simulador de fluxo GitOps
           </p>
         </motion.div>
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Your Results</CardTitle>
+            <CardTitle>Seu resultado</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center mb-6">
               <div className="text-5xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
                 {score}/{challenges.length}
               </div>
-              <p className="text-muted-foreground">Challenges Completed</p>
+              <p className="text-muted-foreground">Desafios concluídos</p>
             </div>
 
             <div className="grid gap-4">
               <div className="p-4 rounded-lg bg-blue-100/60 dark:bg-blue-950/20">
                 <div className="flex items-center gap-2 mb-2">
                   <GitBranch className="w-5 h-5 text-blue-500" />
-                  <h3 className="font-semibold">Key Takeaways</h3>
+                  <h3 className="font-semibold">Principais aprendizados</h3>
                 </div>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>✓ Git is the single source of truth for all infrastructure and application state</li>
-                  <li>✓ GitOps operators continuously reconcile desired state with actual state</li>
-                  <li>✓ Automatic sync with self-heal prevents configuration drift</li>
-                  <li>✓ Rollbacks are done by reverting Git commits, maintaining audit trail</li>
+                  <li>✓ O Git é a única fonte da verdade para todo o estado da infraestrutura e das aplicações</li>
+                  <li>✓ Operadores GitOps reconciliam o tempo todo o estado desejado com o estado real</li>
+                  <li>✓ Sync automático com self-heal evita drift de configuração</li>
+                  <li>✓ Rollbacks são feitos revertendo commits no Git, mantendo o histórico de auditoria</li>
                 </ul>
               </div>
 
               <div className="p-4 rounded-lg bg-purple-100/60 dark:bg-purple-950/20">
                 <div className="flex items-center gap-2 mb-2">
                   <FileCode className="w-5 h-5 text-purple-500" />
-                  <h3 className="font-semibold">Next Steps</h3>
+                  <h3 className="font-semibold">Próximos passos</h3>
                 </div>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Explore ArgoCD, Flux, or other GitOps tools</li>
-                  <li>• Set up a GitOps pipeline for your own projects</li>
-                  <li>• Learn about GitOps security best practices</li>
-                  <li>• Experiment with multi-cluster GitOps deployments</li>
+                  <li>• Explore ArgoCD, Flux ou outras ferramentas de GitOps</li>
+                  <li>• Monte um pipeline GitOps para os seus projetos</li>
+                  <li>• Estude boas práticas de segurança em GitOps</li>
+                  <li>• Experimente deploys GitOps em vários clusters</li>
                 </ul>
               </div>
             </div>
@@ -1111,7 +1111,7 @@ export default function GitOpsWorkflow() {
         <div className="flex gap-4 justify-center">
           <Button variant="outline" size="lg" onClick={resetGame}>
             <RotateCcw className="w-4 h-4 mr-2" />
-            Try Again
+            Tentar de novo
          </Button>
        </div>
      </div>
