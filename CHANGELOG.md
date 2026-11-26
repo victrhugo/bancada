@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced upstream author resources in the roadmap with official documentation.
 - Centralized the public site URL in `lib/site.ts` (`NEXT_PUBLIC_SITE_URL`), so canonical tags, the sitemap, robots.txt and social images point to the real host.
 - Translated the fixed labels on generated social images to Portuguese.
+- Translated the games catalog, quiz titles, game pages and the interface of every simulator to Portuguese (pt-BR). Terminal commands, protocol messages and real tool output stay in English on purpose.
+- Translated the search index static pages and added the AI roadmap to site search.
+- Binary simulator predict-mode feedback is now in Portuguese (tests updated).
 - Upgraded dependencies and pinned transitive versions to clear all high and critical audit findings.
 - Fixed all TypeScript errors and made the typecheck a required CI step.
 
