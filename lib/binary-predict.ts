@@ -15,13 +15,14 @@ export type PredictMode = 'byte' | 'perms';
 export const PREDICT_WIDTH: Record<PredictMode, number> = { byte: 8, perms: 9 };
 
 const PERM_LETTERS = ['r', 'w', 'x'] as const;
-const PERM_GROUPS = ['owner', 'group', 'other'] as const;
-const PERM_WORDS = ['read', 'write', 'execute'] as const;
+const PERM_GROUPS = ['dono', 'grupo', 'outros'] as const;
+const PERM_GROUPS_OF = ['do dono', 'do grupo', 'dos outros'] as const;
+const PERM_WORDS = ['leitura', 'escrita', 'execução'] as const;
 
 export interface BitDiff {
   /** Index into the bit string, left to right. */
   index: number;
-  /** Human name for the bit: "owner write", or "place value 32". */
+  /** Human name for the bit: "escrita do dono", or "valor posicional 32". */
   label: string;
   /** What the bit is worth: 4/2/1 within a permission triad, or its place value. */
   value: number;
@@ -57,12 +58,12 @@ export function parseGuess(mode: PredictMode, raw: string): string | null {
 /** What a single bit position is called and what it is worth. */
 export function bitInfo(mode: PredictMode, index: number): { label: string; value: number } {
   if (mode === 'perms') {
-    const group = PERM_GROUPS[Math.floor(index / 3)];
+    const group = PERM_GROUPS_OF[Math.floor(index / 3)];
     const slot = index % 3;
-    return { label: `${group} ${PERM_WORDS[slot]}`, value: 2 ** (2 - slot) };
+    return { label: `${PERM_WORDS[slot]} ${group}`, value: 2 ** (2 - slot) };
   }
   const value = 2 ** (PREDICT_WIDTH.byte - 1 - index);
-  return { label: `place value ${value}`, value };
+  return { label: `valor posicional ${value}`, value };
 }
 
 /**
@@ -84,8 +85,8 @@ export function diagnose(mode: PredictMode, actual: string, guess: string): BitD
 /** One sentence per wrong bit, naming it and saying which way the error went. */
 export function explainDiff(d: BitDiff): string {
   return d.missed
-    ? `${d.label} is on and worth ${d.value}, but your answer leaves it out.`
-    : `${d.label} is off, but your answer counts its ${d.value}.`;
+    ? `O bit "${d.label}" está ligado e vale ${d.value}, mas sua resposta deixa ele de fora.`
+    : `O bit "${d.label}" está desligado, mas sua resposta soma o valor ${d.value} dele.`;
 }
 
 /** The arithmetic, shown after the answer so the sum is visible, not implied. */

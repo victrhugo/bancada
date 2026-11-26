@@ -42,16 +42,16 @@ describe('parseGuess', () => {
 
 describe('bitInfo', () => {
   it('names each permission bit by group and action', () => {
-    expect(bitInfo('perms', 0)).toEqual({ label: 'owner read', value: 4 });
-    expect(bitInfo('perms', 1)).toEqual({ label: 'owner write', value: 2 });
-    expect(bitInfo('perms', 2)).toEqual({ label: 'owner execute', value: 1 });
-    expect(bitInfo('perms', 3)).toEqual({ label: 'group read', value: 4 });
-    expect(bitInfo('perms', 8)).toEqual({ label: 'other execute', value: 1 });
+    expect(bitInfo('perms', 0)).toEqual({ label: 'leitura do dono', value: 4 });
+    expect(bitInfo('perms', 1)).toEqual({ label: 'escrita do dono', value: 2 });
+    expect(bitInfo('perms', 2)).toEqual({ label: 'execução do dono', value: 1 });
+    expect(bitInfo('perms', 3)).toEqual({ label: 'leitura do grupo', value: 4 });
+    expect(bitInfo('perms', 8)).toEqual({ label: 'execução dos outros', value: 1 });
   });
 
   it('names byte bits by place value, high bit first', () => {
-    expect(bitInfo('byte', 0)).toEqual({ label: 'place value 128', value: 128 });
-    expect(bitInfo('byte', 7)).toEqual({ label: 'place value 1', value: 1 });
+    expect(bitInfo('byte', 0)).toEqual({ label: 'valor posicional 128', value: 128 });
+    expect(bitInfo('byte', 7)).toEqual({ label: 'valor posicional 1', value: 1 });
   });
 });
 
@@ -67,11 +67,11 @@ describe('diagnose', () => {
     const diffs = diagnose('perms', actual, guess);
 
     expect(diffs).toHaveLength(1);
-    expect(diffs[0].label).toBe('group write');
+    expect(diffs[0].label).toBe('escrita do grupo');
     expect(diffs[0].value).toBe(2);
     expect(diffs[0].missed).toBe(false); // the bit is off, the learner counted it
     expect(explainDiff(diffs[0])).toBe(
-      'group write is off, but your answer counts its 2.'
+      'O bit "escrita do grupo" está desligado, mas sua resposta soma o valor 2 dele.'
     );
   });
 
@@ -81,10 +81,10 @@ describe('diagnose', () => {
     const diffs = diagnose('perms', actual, guess);
 
     expect(diffs).toHaveLength(1);
-    expect(diffs[0].label).toBe('owner execute');
+    expect(diffs[0].label).toBe('execução do dono');
     expect(diffs[0].missed).toBe(true);
     expect(explainDiff(diffs[0])).toBe(
-      'owner execute is on and worth 1, but your answer leaves it out.'
+      'O bit "execução do dono" está ligado e vale 1, mas sua resposta deixa ele de fora.'
     );
   });
 
@@ -92,21 +92,21 @@ describe('diagnose', () => {
     const diffs = diagnose('perms', parseGuess('perms', '750')!, parseGuess('perms', '705')!);
     // group loses r+x (4+1), other gains r+x
     expect(diffs.map((d) => d.label)).toEqual([
-      'group read',
-      'group execute',
-      'other read',
-      'other execute',
+      'leitura do grupo',
+      'execução do grupo',
+      'leitura dos outros',
+      'execução dos outros',
     ]);
     expect(diffs.filter((d) => d.missed).map((d) => d.label)).toEqual([
-      'group read',
-      'group execute',
+      'leitura do grupo',
+      'execução do grupo',
     ]);
   });
 
   it('works the same way for a byte', () => {
     const diffs = diagnose('byte', parseGuess('byte', '42')!, parseGuess('byte', '46')!);
     expect(diffs).toHaveLength(1);
-    expect(diffs[0].label).toBe('place value 4');
+    expect(diffs[0].label).toBe('valor posicional 4');
     expect(diffs[0].missed).toBe(false);
   });
 
@@ -117,9 +117,9 @@ describe('diagnose', () => {
   it('distinguishes errors that share an arithmetic difference', () => {
     const a = diagnose('byte', parseGuess('byte', '5')!, parseGuess('byte', '1')!);
     const b = diagnose('byte', parseGuess('byte', '8')!, parseGuess('byte', '12')!);
-    expect(a[0].label).toBe('place value 4');
+    expect(a[0].label).toBe('valor posicional 4');
     expect(a[0].missed).toBe(true);
-    expect(b[0].label).toBe('place value 4');
+    expect(b[0].label).toBe('valor posicional 4');
     expect(b[0].missed).toBe(false);
   });
 });
@@ -127,14 +127,14 @@ describe('diagnose', () => {
 describe('breakdown', () => {
   it('shows the sum for each permission group', () => {
     expect(breakdown('perms', parseGuess('perms', '755')!)).toEqual([
-      'owner rwx = 4 + 2 + 1 = 7',
-      'group r-x = 4 + 1 = 5',
-      'other r-x = 4 + 1 = 5',
+      'dono rwx = 4 + 2 + 1 = 7',
+      'grupo r-x = 4 + 1 = 5',
+      'outros r-x = 4 + 1 = 5',
     ]);
   });
 
   it('handles a group with no permissions', () => {
-    expect(breakdown('perms', parseGuess('perms', '640')!)[2]).toBe('other --- = 0 = 0');
+    expect(breakdown('perms', parseGuess('perms', '640')!)[2]).toBe('outros --- = 0 = 0');
   });
 
   it('shows the addition for a byte', () => {
@@ -203,7 +203,7 @@ describe('predict mode wiring in the simulator', () => {
 
   it('hides every chip that would give the answer away', () => {
     // chmod NNN, hex and the addition all restate the number being asked for.
-    for (const leak of ['chmod ${permOctal(bits)} file.sh', 'as maths', "'hex'"]) {
+    for (const leak of ['chmod ${permOctal(bits)} file.sh', 'como soma', "'hex'"]) {
       const at = src.indexOf(leak);
       expect(at).toBeGreaterThan(-1);
       // each is inside a `{!predicting && (` block opened above it
