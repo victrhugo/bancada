@@ -57,199 +57,199 @@ interface DbmsConfig {
 const dbmsTypes: Record<DbmsType, DbmsConfig> = {
   relational: {
     id: 'relational',
-    name: 'Relational (SQL)',
-    category: 'Traditional',
+    name: 'Relacional (SQL)',
+    category: 'Tradicional',
     examples: ['PostgreSQL', 'MySQL', 'SQL Server', 'Oracle'],
     iconName: 'Table2',
     color: 'from-blue-500 to-cyan-600',
     characteristics: [
-      'Structured data with schema',
-      'Tables with rows and columns',
-      'ACID transactions',
-      'SQL query language',
-      'Relationships via foreign keys',
-      'Strong consistency',
+      'Dados estruturados com schema',
+      'Tabelas com linhas e colunas',
+      'Transações ACID',
+      'Linguagem de consulta SQL',
+      'Relacionamentos via foreign keys',
+      'Consistência forte',
     ],
     useCases: [
-      'Financial systems',
-      'E-commerce transactions',
-      'User management',
-      'Inventory systems',
-      'Structured data with relationships',
+      'Sistemas financeiros',
+      'Transações de e-commerce',
+      'Gestão de usuários',
+      'Sistemas de estoque',
+      'Dados estruturados com relacionamentos',
     ],
     capTradeoffs: { consistency: 10, availability: 7, partition: 5 },
     queryExample: `SELECT u.name, o.amount\nFROM users u\nJOIN orders o ON u.id = o.user_id\nWHERE o.amount > 50;`,
-    dataModelExample: `Users Table\n+----+----------+-------+\n| id | name     | email |\n+----+----------+-------+\n| 1  | John Doe | john@ |\n+----+----------+-------+\n\nOrders Table\n+----+---------+--------+\n| id | user_id | amount |\n+----+---------+--------+\n| 1  | 1       | 99.99  |\n+----+---------+--------+`,
-    pros: ['ACID guarantees', 'Complex queries with JOINs', 'Data integrity', 'Mature tooling'],
-    cons: ['Rigid schema', 'Vertical scaling limits', 'Complex migrations', 'Performance at scale'],
+    dataModelExample: `Tabela users\n+----+----------+-------+\n| id | name     | email |\n+----+----------+-------+\n| 1  | John Doe | john@ |\n+----+----------+-------+\n\nTabela orders\n+----+---------+--------+\n| id | user_id | amount |\n+----+---------+--------+\n| 1  | 1       | 99.99  |\n+----+---------+--------+`,
+    pros: ['Garantias ACID', 'Consultas complexas com JOINs', 'Integridade dos dados', 'Ferramentas maduras'],
+    cons: ['Schema rígido', 'Limites de escala vertical', 'Migrations complexas', 'Performance em grande escala'],
   },
   document: {
     id: 'document',
-    name: 'Document Database',
+    name: 'Banco de documentos',
     category: 'NoSQL',
     examples: ['MongoDB', 'CouchDB', 'Firestore'],
     iconName: 'FileText',
     color: 'from-green-500 to-emerald-600',
     characteristics: [
-      'Schema-less (flexible schema)',
-      'Store JSON-like documents',
-      'Nested data structures',
-      'No joins (denormalized)',
-      'Horizontal scaling',
-      'Eventually consistent',
+      'Schema-less (schema flexível)',
+      'Guarda documentos parecidos com JSON',
+      'Estruturas de dados aninhadas',
+      'Sem joins (desnormalizado)',
+      'Escala horizontal',
+      'Consistência eventual',
     ],
     useCases: [
-      'Content management systems',
-      'User profiles',
-      'Product catalogs',
-      'Blogs and articles',
-      'Mobile app backends',
+      'Sistemas de gestão de conteúdo',
+      'Perfis de usuário',
+      'Catálogos de produtos',
+      'Blogs e artigos',
+      'Backends de apps mobile',
     ],
     capTradeoffs: { consistency: 7, availability: 9, partition: 9 },
     queryExample: `db.users.find({\n  "orders.amount": { "$gt": 50 }\n}).project({\n  name: 1,\n  "orders.amount": 1\n})`,
     dataModelExample: `{\n  "_id": "123",\n  "name": "John Doe",\n  "email": "john@example.com",\n  "orders": [\n    { "id": 1, "amount": 99.99 },\n    { "id": 2, "amount": 49.99 }\n  ]\n}`,
-    pros: ['Flexible schema', 'Easy horizontal scaling', 'Fast reads', 'Nested data support'],
-    cons: ['No ACID across documents', 'Data duplication', 'Complex joins difficult', 'Eventual consistency'],
+    pros: ['Schema flexível', 'Escala horizontal fácil', 'Leituras rápidas', 'Suporte a dados aninhados'],
+    cons: ['Sem ACID entre documentos', 'Duplicação de dados', 'Joins complexos são difíceis', 'Consistência eventual'],
   },
   'key-value': {
     id: 'key-value',
-    name: 'Key-Value Store',
+    name: 'Banco chave-valor',
     category: 'NoSQL',
     examples: ['Redis', 'Memcached', 'DynamoDB'],
     iconName: 'Key',
     color: 'from-red-500 to-orange-600',
     characteristics: [
-      'Simplest NoSQL model',
-      'Key maps to value',
-      'Very fast lookups O(1)',
-      'No complex queries',
-      'Often in-memory',
-      'TTL support',
+      'O modelo NoSQL mais simples',
+      'Cada chave aponta para um valor',
+      'Buscas muito rápidas, O(1)',
+      'Sem consultas complexas',
+      'Normalmente em memória',
+      'Suporte a TTL',
     ],
     useCases: [
-      'Caching',
-      'Session storage',
+      'Cache',
+      'Armazenamento de sessões',
       'Rate limiting',
-      'Real-time analytics',
+      'Analytics em tempo real',
       'Leaderboards',
     ],
     capTradeoffs: { consistency: 8, availability: 10, partition: 8 },
     queryExample: `GET user:123\nSET session:abc '{"user_id":123}' EX 3600\nINCR page:views\nZADD leaderboard 1000 "player1"`,
     dataModelExample: `Key: "user:123"\nValue: {"name": "John", "email": "john@example.com"}\n\nKey: "session:abc"\nValue: {"user_id": 123, "expires": 1234567890}\n\nKey: "counter:page:views"\nValue: 42`,
-    pros: ['Extremely fast', 'Simple to use', 'High throughput', 'Easy to scale'],
-    cons: ['No complex queries', 'No relationships', 'Limited data types', 'Not for complex data'],
+    pros: ['Extremamente rápido', 'Simples de usar', 'Alto throughput', 'Fácil de escalar'],
+    cons: ['Sem consultas complexas', 'Sem relacionamentos', 'Tipos de dados limitados', 'Não serve para dados complexos'],
   },
   'column-family': {
     id: 'column-family',
-    name: 'Column-Family Store',
+    name: 'Banco column-family',
     category: 'NoSQL',
     examples: ['Cassandra', 'HBase', 'ScyllaDB'],
     iconName: 'Layers',
     color: 'from-purple-500 to-pink-600',
     characteristics: [
-      'Data stored in column families',
-      'Wide rows with many columns',
-      'Optimized for writes',
-      'Distributed architecture',
-      'Tunable consistency',
-      'No joins',
+      'Dados guardados em famílias de colunas',
+      'Linhas largas com muitas colunas',
+      'Otimizado para escrita',
+      'Arquitetura distribuída',
+      'Consistência ajustável',
+      'Sem joins',
     ],
     useCases: [
-      'Time-series data',
-      'Event logging',
-      'IoT sensor data',
-      'High write volume',
-      'Historical data storage',
+      'Dados de séries temporais',
+      'Registro de eventos',
+      'Dados de sensores IoT',
+      'Alto volume de escrita',
+      'Armazenamento de dados históricos',
     ],
     capTradeoffs: { consistency: 7, availability: 10, partition: 10 },
     queryExample: `SELECT * FROM sensor_data\nWHERE device_id = 'dev123'\n  AND timestamp > '2024-01-01'\nORDER BY timestamp DESC;`,
     dataModelExample: `Row Key: device_123\nColumn Family: measurements\n  timestamp:2024-01-01T10:00:00 -> {temp: 22.5}\n  timestamp:2024-01-01T10:01:00 -> {temp: 22.7}\n  timestamp:2024-01-01T10:02:00 -> {temp: 22.6}`,
-    pros: ['High write throughput', 'Linear scaling', 'Fault tolerant', 'Tunable consistency'],
-    cons: ['Complex data modeling', 'No joins', 'Limited query flexibility', 'Steep learning curve'],
+    pros: ['Alto throughput de escrita', 'Escala linear', 'Tolerante a falhas', 'Consistência ajustável'],
+    cons: ['Modelagem de dados complexa', 'Sem joins', 'Pouca flexibilidade nas consultas', 'Curva de aprendizado íngreme'],
   },
   graph: {
     id: 'graph',
-    name: 'Graph Database',
+    name: 'Banco de grafos',
     category: 'NoSQL',
     examples: ['Neo4j', 'Amazon Neptune', 'ArangoDB'],
     iconName: 'GitBranch',
     color: 'from-indigo-500 to-violet-600',
     characteristics: [
-      'Nodes and relationships',
-      'Optimized for connections',
-      'Graph traversal queries',
-      'ACID support',
-      'Property graphs',
-      'Deep relationship queries',
+      'Nós e relacionamentos',
+      'Otimizado para conexões',
+      'Consultas de travessia de grafo',
+      'Suporte a ACID',
+      'Grafos de propriedades',
+      'Consultas de relacionamentos profundos',
     ],
     useCases: [
-      'Social networks',
-      'Recommendation engines',
-      'Fraud detection',
-      'Knowledge graphs',
-      'Network topology',
+      'Redes sociais',
+      'Motores de recomendação',
+      'Detecção de fraude',
+      'Grafos de conhecimento',
+      'Topologia de rede',
     ],
     capTradeoffs: { consistency: 9, availability: 7, partition: 6 },
     queryExample: `MATCH (user:User {name: "John"})\n      -[:FRIEND]->(friend)\n      -[:BOUGHT]->(product)\nWHERE product.price > 50\nRETURN friend.name, product.name`,
     dataModelExample: `(User:John)\n  -[:FRIEND]->(User:Alice)\n  -[:BOUGHT]->(Product:Laptop)\n  \n(User:Alice)\n  -[:BOUGHT]->(Product:Laptop)\n  -[:BOUGHT]->(Product:Mouse)`,
-    pros: ['Fast relationship queries', 'Intuitive data model', 'Complex traversals', 'Pattern matching'],
-    cons: ['Not for simple lookups', 'Scaling challenges', 'Specialized use case', 'Query complexity'],
+    pros: ['Consultas de relacionamento rápidas', 'Modelo de dados intuitivo', 'Travessias complexas', 'Busca por padrões'],
+    cons: ['Não serve para buscas simples', 'Desafios para escalar', 'Caso de uso especializado', 'Consultas complexas'],
   },
   'time-series': {
     id: 'time-series',
-    name: 'Time-Series Database',
+    name: 'Banco de séries temporais',
     category: 'Specialized',
     examples: ['InfluxDB', 'TimescaleDB', 'Prometheus'],
     iconName: 'Clock',
     color: 'from-yellow-500 to-amber-600',
     characteristics: [
-      'Optimized for time-stamped data',
-      'Continuous data flow',
-      'Data retention policies',
-      'Downsampling support',
-      'High write throughput',
-      'Built-in aggregations',
+      'Otimizado para dados com timestamp',
+      'Fluxo contínuo de dados',
+      'Políticas de retenção de dados',
+      'Suporte a downsampling',
+      'Alto throughput de escrita',
+      'Agregações nativas',
     ],
     useCases: [
-      'Monitoring and metrics',
-      'IoT sensor data',
-      'Financial tick data',
-      'Application performance',
-      'Infrastructure monitoring',
+      'Monitoramento e métricas',
+      'Dados de sensores IoT',
+      'Dados de cotações financeiras',
+      'Performance de aplicações',
+      'Monitoramento de infraestrutura',
     ],
     capTradeoffs: { consistency: 8, availability: 9, partition: 8 },
     queryExample: `SELECT mean("temperature")\nFROM "sensor_data"\nWHERE time > now() - 1h\nGROUP BY time(5m), "device_id"`,
     dataModelExample: `Measurement: cpu_usage\nTags: {host: "server-1", region: "us-east"}\nFields: {value: 75.5}\nTimestamp: 2024-01-01T10:00:00Z\n\nMeasurement: cpu_usage\nTags: {host: "server-1", region: "us-east"}\nFields: {value: 78.2}\nTimestamp: 2024-01-01T10:01:00Z`,
-    pros: ['Optimized for time data', 'Efficient storage', 'Built-in aggregations', 'Data retention'],
-    cons: ['Specialized use case', 'Not for general data', 'Update limitations', 'Delete constraints'],
+    pros: ['Otimizado para dados temporais', 'Armazenamento eficiente', 'Agregações nativas', 'Retenção de dados'],
+    cons: ['Caso de uso especializado', 'Não serve para dados em geral', 'Limitações para atualizar', 'Restrições para apagar'],
   },
 };
 
 // Quiz Questions
 const quizQuestions = [
   {
-    question: 'You need ACID transactions for a financial system. Which DBMS should you choose?',
+    question: 'Você precisa de transações ACID para um sistema financeiro. Qual DBMS escolher?',
     options: ['MongoDB', 'PostgreSQL', 'Redis', 'Cassandra'],
     correctAnswer: 1,
-    explanation: 'PostgreSQL (relational) provides full ACID guarantees, which are critical for financial transactions where consistency and integrity are paramount.',
+    explanation: 'O PostgreSQL (relacional) oferece garantias ACID completas, essenciais em transações financeiras, onde consistência e integridade são prioridade.',
   },
   {
-    question: 'Which database is best for storing session data with fast lookups and TTL support?',
+    question: 'Qual banco é melhor para guardar sessões com buscas rápidas e suporte a TTL?',
     options: ['MySQL', 'Neo4j', 'Redis', 'HBase'],
     correctAnswer: 2,
-    explanation: 'Redis (key-value store) is perfect for session storage with its in-memory speed, simple key-value model, and built-in TTL (Time To Live) support.',
+    explanation: 'O Redis (chave-valor) é perfeito para sessões: velocidade de memória, modelo chave-valor simples e suporte nativo a TTL (Time To Live).',
   },
   {
-    question: 'For a social network with friend recommendations, which database works best?',
+    question: 'Para uma rede social com recomendação de amigos, qual banco funciona melhor?',
     options: ['PostgreSQL', 'Cassandra', 'Neo4j', 'DynamoDB'],
     correctAnswer: 2,
-    explanation: 'Neo4j (graph database) is optimized for relationship queries like "friends of friends" which are essential for social networks and recommendations.',
+    explanation: 'O Neo4j (banco de grafos) é otimizado para consultas de relacionamento como "amigos de amigos", essenciais em redes sociais e recomendações.',
   },
   {
-    question: 'You have IoT sensors generating millions of time-stamped readings. Best choice?',
+    question: 'Você tem sensores IoT gerando milhões de leituras com timestamp. Melhor escolha?',
     options: ['InfluxDB', 'MongoDB', 'Redis', 'MySQL'],
     correctAnswer: 0,
-    explanation: 'InfluxDB (time-series database) is specifically designed for high-volume time-stamped data with efficient storage, retention policies, and aggregations.',
+    explanation: 'O InfluxDB (séries temporais) foi feito para grandes volumes de dados com timestamp, com armazenamento eficiente, políticas de retenção e agregações.',
   },
 ];
 
@@ -320,13 +320,13 @@ export default function DbmsSimulator() {
           >
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full">
               <Database className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Interactive Learning</span>
+              <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Aprendizado interativo</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-              Database Management Systems
+              Sistemas de gerenciamento de banco de dados
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Learn about different types of databases, their use cases, and trade-offs through interactive exploration
+              Conheça os diferentes tipos de banco de dados, seus casos de uso e trade-offs explorando de forma interativa
             </p>
           </motion.div>
 
@@ -339,7 +339,7 @@ export default function DbmsSimulator() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                  What You'll Learn
+                  O que você vai aprender
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -347,36 +347,36 @@ export default function DbmsSimulator() {
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium">DBMS Types</p>
+                      <p className="font-medium">Tipos de DBMS</p>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        Relational, Document, Key-Value, Column-Family, Graph, Time-Series
+                        Relacional, documentos, chave-valor, column-family, grafos, séries temporais
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium">Use Cases</p>
+                      <p className="font-medium">Casos de uso</p>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        When to use each type for real-world applications
+                        Quando usar cada tipo em aplicações reais
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium">CAP Theorem</p>
+                      <p className="font-medium">Teorema CAP</p>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        Understand trade-offs between consistency, availability, and partition tolerance
+                        Entenda os trade-offs entre consistência, disponibilidade e tolerância a partição
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium">Query Patterns</p>
+                      <p className="font-medium">Padrões de consulta</p>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        See how queries differ across database types
+                        Veja como as consultas mudam entre os tipos de banco
                       </p>
                     </div>
                   </div>
@@ -393,7 +393,7 @@ export default function DbmsSimulator() {
           >
             <Button size="lg" onClick={() => setPhase('explorer')} className="gap-2">
               <Play className="h-5 w-5" />
-             Start Exploring
+             Começar a explorar
            </Button>
          </motion.div>
        </div>
@@ -415,13 +415,13 @@ export default function DbmsSimulator() {
             className="flex flex-wrap items-center justify-between mb-6 gap-4"
           >
             <div>
-              <h2 className="text-2xl font-bold">Database Explorer</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Select a database type to learn more</p>
+              <h2 className="text-2xl font-bold">Explorador de bancos de dados</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Escolha um tipo de banco para saber mais</p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => setPhase('playground')} className="gap-2">
                 <ArrowRight className="h-4 w-4" />
-               Try Playground
+               Abrir playground
              </Button>
            </div>
          </motion.div>
@@ -495,7 +495,7 @@ export default function DbmsSimulator() {
                   <CardContent>
                     <div className="space-y-4">
                       <div>
-                        <p className="text-sm font-medium mb-2">Popular Examples:</p>
+                        <p className="text-sm font-medium mb-2">Exemplos populares:</p>
                         <div className="flex flex-wrap gap-2">
                           {currentDbms.examples.map((example) => (
                             <Badge key={example} variant="secondary">
@@ -511,7 +511,7 @@ export default function DbmsSimulator() {
                 {/* Characteristics Card */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Key Characteristics</CardTitle>
+                    <CardTitle className="text-lg">Características principais</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
@@ -528,7 +528,7 @@ export default function DbmsSimulator() {
                 {/* Use Cases Card */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Best Use Cases</CardTitle>
+                    <CardTitle className="text-lg">Melhores casos de uso</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
@@ -548,7 +548,7 @@ export default function DbmsSimulator() {
                 {/* Data Model Example */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Data Model</CardTitle>
+                    <CardTitle className="text-lg">Modelo de dados</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <pre className="text-xs bg-slate-100 dark:bg-slate-900 p-4 rounded-lg overflow-x-auto">
@@ -560,7 +560,7 @@ export default function DbmsSimulator() {
                 {/* Query Example */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Query Example</CardTitle>
+                    <CardTitle className="text-lg">Exemplo de consulta</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <pre className="text-xs bg-slate-100 dark:bg-slate-900 p-4 rounded-lg overflow-x-auto">
@@ -572,14 +572,14 @@ export default function DbmsSimulator() {
                 {/* CAP Theorem */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">CAP Theorem Trade-offs</CardTitle>
-                    <CardDescription>Rated 1-10 for each property</CardDescription>
+                    <CardTitle className="text-lg">Trade-offs do teorema CAP</CardTitle>
+                    <CardDescription>Nota de 1 a 10 para cada propriedade</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       <div>
                         <div className="flex justify-between text-sm mb-1">
-                          <span>Consistency</span>
+                          <span>Consistência</span>
                           <span className="font-medium">{currentDbms.capTradeoffs.consistency}/10</span>
                         </div>
                         <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -591,7 +591,7 @@ export default function DbmsSimulator() {
                       </div>
                       <div>
                         <div className="flex justify-between text-sm mb-1">
-                          <span>Availability</span>
+                          <span>Disponibilidade</span>
                           <span className="font-medium">{currentDbms.capTradeoffs.availability}/10</span>
                         </div>
                         <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -603,7 +603,7 @@ export default function DbmsSimulator() {
                       </div>
                       <div>
                         <div className="flex justify-between text-sm mb-1">
-                          <span>Partition Tolerance</span>
+                          <span>Tolerância a partição</span>
                           <span className="font-medium">{currentDbms.capTradeoffs.partition}/10</span>
                         </div>
                         <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -620,12 +620,12 @@ export default function DbmsSimulator() {
                 {/* Pros and Cons */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Pros & Cons</CardTitle>
+                    <CardTitle className="text-lg">Prós e contras</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div>
-                        <p className="text-sm font-medium mb-2 text-green-600 dark:text-green-400">Advantages</p>
+                        <p className="text-sm font-medium mb-2 text-green-600 dark:text-green-400">Vantagens</p>
                         <ul className="space-y-1">
                           {currentDbms.pros.map((pro, idx) => (
                             <li key={idx} className="flex items-start gap-2">
@@ -636,7 +636,7 @@ export default function DbmsSimulator() {
                         </ul>
                       </div>
                       <div>
-                        <p className="text-sm font-medium mb-2 text-red-600 dark:text-red-400">Limitations</p>
+                        <p className="text-sm font-medium mb-2 text-red-600 dark:text-red-400">Limitações</p>
                         <ul className="space-y-1">
                           {currentDbms.cons.map((con, idx) => (
                             <li key={idx} className="flex items-start gap-2">
@@ -667,9 +667,9 @@ export default function DbmsSimulator() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-8"
           >
-            <h2 className="text-3xl font-bold mb-4">Decision Playground</h2>
+            <h2 className="text-3xl font-bold mb-4">Playground de decisão</h2>
             <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Use this decision tree to help you choose the right database for your use case
+              Use esta árvore de decisão para escolher o banco certo para o seu caso de uso
             </p>
           </motion.div>
 
@@ -680,36 +680,36 @@ export default function DbmsSimulator() {
           >
             <Card className="mb-6">
               <CardHeader>
-                <CardTitle>Which DBMS Should I Use?</CardTitle>
-                <CardDescription>Answer these questions to find the best match</CardDescription>
+                <CardTitle>Qual DBMS devo usar?</CardTitle>
+                <CardDescription>Responda estas perguntas para achar a melhor opção</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   {/* Decision Tree Visualization */}
                   <div className="bg-slate-100 dark:bg-slate-900 p-6 rounded-lg">
                     <div className="space-y-4 text-sm">
-                      <div className="font-medium">Need ACID transactions?</div>
+                      <div className="font-medium">Precisa de transações ACID?</div>
                       <div className="ml-4 space-y-2">
-                        <div>✅ Yes → <Badge className="bg-blue-500">Relational Database</Badge></div>
+                        <div>✅ Sim → <Badge className="bg-blue-500">Banco relacional</Badge></div>
                         <div>
                           ❌ No
                           <div className="ml-4 mt-2 space-y-2">
-                            <div className="font-medium">Need complex relationships?</div>
+                            <div className="font-medium">Precisa de relacionamentos complexos?</div>
                             <div className="ml-4 space-y-2">
-                              <div>✅ Yes → <Badge className="bg-indigo-500">Graph Database</Badge></div>
+                              <div>✅ Sim → <Badge className="bg-indigo-500">Banco de grafos</Badge></div>
                               <div>
                                 ❌ No
                                 <div className="ml-4 mt-2 space-y-2">
-                                  <div className="font-medium">Need fast simple lookups?</div>
+                                  <div className="font-medium">Precisa de buscas simples e rápidas?</div>
                                   <div className="ml-4 space-y-2">
-                                    <div>✅ Yes → <Badge className="bg-red-500">Key-Value Store</Badge></div>
+                                    <div>✅ Sim → <Badge className="bg-red-500">Banco chave-valor</Badge></div>
                                     <div>
                                       ❌ No
                                       <div className="ml-4 mt-2 space-y-2">
-                                        <div className="font-medium">Need flexible schema?</div>
+                                        <div className="font-medium">Precisa de schema flexível?</div>
                                         <div className="ml-4 space-y-2">
-                                          <div>✅ Yes → <Badge className="bg-green-500">Document Database</Badge></div>
-                                          <div>❌ No → <Badge className="bg-purple-500">Column-Family Store</Badge></div>
+                                          <div>✅ Sim → <Badge className="bg-green-500">Banco de documentos</Badge></div>
+                                          <div>❌ Não → <Badge className="bg-purple-500">Banco column-family</Badge></div>
                                         </div>
                                       </div>
                                     </div>
@@ -725,34 +725,34 @@ export default function DbmsSimulator() {
 
                   {/* Common Use Cases */}
                   <div>
-                    <h3 className="font-medium mb-3">Common Scenarios</h3>
+                    <h3 className="font-medium mb-3">Cenários comuns</h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       <Alert>
                         <Shield className="h-4 w-4" />
                         <AlertDescription>
-                          <p className="font-medium mb-1">E-Commerce</p>
-                          <p className="text-xs">Relational for orders, Document for catalog, Redis for sessions</p>
+                          <p className="font-medium mb-1">E-commerce</p>
+                          <p className="text-xs">Relacional para pedidos, documentos para o catálogo, Redis para sessões</p>
                         </AlertDescription>
                       </Alert>
                       <Alert>
                         <Users className="h-4 w-4" />
                         <AlertDescription>
-                          <p className="font-medium mb-1">Social Network</p>
-                          <p className="text-xs">Graph for connections, Document for profiles, Redis for cache</p>
+                          <p className="font-medium mb-1">Rede social</p>
+                          <p className="text-xs">Grafo para conexões, documentos para perfis, Redis para cache</p>
                         </AlertDescription>
                       </Alert>
                       <Alert>
                         <Network className="h-4 w-4" />
                         <AlertDescription>
-                          <p className="font-medium mb-1">IoT Platform</p>
-                          <p className="text-xs">Time-series for sensors, Column-family for logs, Redis for state</p>
+                          <p className="font-medium mb-1">Plataforma IoT</p>
+                          <p className="text-xs">Séries temporais para sensores, column-family para logs, Redis para estado</p>
                         </AlertDescription>
                       </Alert>
                       <Alert>
                         <TrendingUp className="h-4 w-4" />
                         <AlertDescription>
-                          <p className="font-medium mb-1">Analytics Platform</p>
-                          <p className="text-xs">Column-family for events, Time-series for metrics, Relational for metadata</p>
+                          <p className="font-medium mb-1">Plataforma de analytics</p>
+                          <p className="text-xs">Column-family para eventos, séries temporais para métricas, relacional para metadados</p>
                         </AlertDescription>
                       </Alert>
                     </div>
@@ -770,10 +770,10 @@ export default function DbmsSimulator() {
           >
             <Button onClick={() => setPhase('quiz')} className="gap-2">
               <ArrowRight className="h-4 w-4" />
-              Take Quiz
+              Fazer o quiz
             </Button>
             <Button variant="outline" onClick={() => setPhase('explorer')} className="gap-2">
-              Back to Explorer
+              Voltar ao explorador
             </Button>
           </motion.div>
         </div>
@@ -794,9 +794,9 @@ export default function DbmsSimulator() {
             className="mb-8"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold">Knowledge Check</h2>
+              <h2 className="text-2xl font-bold">Teste de conhecimento</h2>
               <Badge variant="secondary">
-                Question {currentQuestion + 1} of {quizQuestions.length}
+                Pergunta {currentQuestion + 1} de {quizQuestions.length}
               </Badge>
             </div>
             <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -869,7 +869,7 @@ export default function DbmsSimulator() {
                         <Info className="h-4 w-4" />
                         <AlertDescription>
                           <p className="font-medium mb-1">
-                            {selectedAnswer === question.correctAnswer ? 'Correct!' : 'Not quite!'}
+                            {selectedAnswer === question.correctAnswer ? 'Correto!' : 'Quase!'}
                           </p>
                           <p className="text-sm">{question.explanation}</p>
                         </AlertDescription>
@@ -886,17 +886,17 @@ export default function DbmsSimulator() {
               <Button onClick={handleNextQuestion} className="gap-2">
                 {currentQuestion < quizQuestions.length - 1 ? (
                   <>
-                    Next Question
+                    Próxima pergunta
                     <ArrowRight className="h-4 w-4" />
                   </>
                 ) : (
-                  'See Results'
+                  'Ver resultado'
                 )}
               </Button>
             )}
             <Button variant="outline" onClick={resetGame} className="gap-2">
               <RotateCcw className="h-4 w-4" />
-              Start Over
+              Começar de novo
             </Button>
           </div>
         </div>
@@ -916,9 +916,9 @@ export default function DbmsSimulator() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 mb-6">
             <CheckCircle2 className="h-10 w-10 text-white" />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Quiz Complete!</h2>
+          <h2 className="text-3xl font-bold mb-4">Quiz concluído!</h2>
           <p className="text-lg text-slate-600 dark:text-slate-400">
-            You scored <span className="font-bold text-blue-600 dark:text-blue-400">{score}</span> out of{' '}
+            Você acertou <span className="font-bold text-blue-600 dark:text-blue-400">{score}</span> de{' '}
             <span className="font-bold">{quizQuestions.length}</span>
           </p>
         </motion.div>
@@ -930,43 +930,43 @@ export default function DbmsSimulator() {
         >
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle>Key Takeaways</CardTitle>
+              <CardTitle>Principais aprendizados</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Match DBMS to Use Case</p>
+                    <p className="font-medium">Combine o DBMS com o caso de uso</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Different databases excel at different tasks - choose based on your requirements
+                      Cada banco brilha em tarefas diferentes: escolha com base nos seus requisitos
                     </p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Understand CAP Trade-offs</p>
+                    <p className="font-medium">Entenda os trade-offs do CAP</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      You can't have perfect consistency, availability, and partition tolerance simultaneously
+                      Não dá para ter consistência, disponibilidade e tolerância a partição perfeitas ao mesmo tempo
                     </p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Polyglot Persistence is Common</p>
+                    <p className="font-medium">Persistência poliglota é comum</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Modern applications often use multiple databases for different components
+                      Aplicações modernas costumam usar vários bancos para componentes diferentes
                     </p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-medium">Consider Operational Complexity</p>
+                    <p className="font-medium">Considere a complexidade operacional</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Each database type has different operational requirements and trade-offs
+                      Cada tipo de banco tem requisitos operacionais e trade-offs diferentes
                     </p>
                   </div>
                 </li>
@@ -983,7 +983,7 @@ export default function DbmsSimulator() {
         >
           <Button onClick={resetGame} className="gap-2">
             <RotateCcw className="h-4 w-4" />
-           Play Again
+           Jogar de novo
          </Button>
        </motion.div>
      </div>
