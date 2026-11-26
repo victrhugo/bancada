@@ -1,11 +1,12 @@
 import Fuse from 'fuse.js';
+import type { FuseResultMatch, IFuseOptions } from 'fuse.js';
 import type { SearchItem } from './search-types';
 export type { SearchItem, SearchItemType } from './search-types';
 export { TYPE_LABELS, TYPE_COLORS } from './search-types';
 
 export interface SearchResult extends SearchItem {
   score?: number;
-  matches?: Fuse.FuseResultMatch[];
+  matches?: readonly FuseResultMatch[];
 }
 
 export interface SearchFilters {
@@ -24,7 +25,7 @@ export const DEFAULT_FILTERS: SearchFilters = {
   sortDirection: 'desc',
 };
 
-const FUSE_OPTIONS: Fuse.IFuseOptions<SearchItem> = {
+const FUSE_OPTIONS: IFuseOptions<SearchItem> = {
   keys: [
     { name: 'title', weight: 2.0 },
     { name: 'description', weight: 1.0 },
@@ -116,7 +117,7 @@ export function extractFiltersFromItems(items: SearchItem[]): {
   return { types, categories, tags };
 }
 
-export function highlightMatches(text: string, matches?: Fuse.FuseResultMatch[]): string {
+export function highlightMatches(text: string, matches?: readonly FuseResultMatch[]): string {
   if (!matches || matches.length === 0) {
     return text;
   }

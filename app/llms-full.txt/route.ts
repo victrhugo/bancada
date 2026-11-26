@@ -1,4 +1,5 @@
 import { getAllExercises } from '@/lib/exercises';
+import { SITE_URL } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
@@ -11,7 +12,7 @@ export const dynamic = 'force-static';
  * excluded since they are not prose-based.
  */
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
+  const baseUrl = SITE_URL;
 
   const exercises = await getAllExercises();
 

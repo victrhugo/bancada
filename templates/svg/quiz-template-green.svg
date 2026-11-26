@@ -38,7 +38,7 @@
   </g>
 
   <!-- Quiz label -->
-  <text x="150" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" fill="#34d399">TEST YOUR KNOWLEDGE</text>
+  <text x="150" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" fill="#34d399">TESTE SEU CONHECIMENTO</text>
 
   <!-- Title -->
   <text x="80" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="bold" fill="#ffffff">{{TITLE}}</text>

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 /**
  * TCP vs UDP Visual Simulator
- * Designed for bancada.app
+ * Designed for Bancada
  * * Features:
  * - Particle-based network simulation
  * - TCP 3-Way Handshake visualization
@@ -65,13 +65,30 @@ const StatCard = ({ label, value, color, icon: Icon, subtext }: { label: string;
 
 // --- Main Application ---
 
+interface Packet {
+  id: number;
+  x: number;
+  y: number;
+  type: string;
+  status: string;
+  mode: string;
+  progress: number;
+  retransmitted: boolean;
+}
+
+interface LogEntry {
+  id: number;
+  text: string;
+  type: string;
+}
+
 export default function TcpVsUdpSimulator() {
   // State
   const [mode, setMode] = useState(MODES.TCP);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [packets, setPackets] = useState([]);
+  const [packets, setPackets] = useState<Packet[]>([]);
   const [stats, setStats] = useState({ sent: 0, received: 0, lost: 0, retransmits: 0 });
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
   const [connState, setConnState] = useState(CONNECTION_STATES.DISCONNECTED);
   const [educationalMessage, setEducationalMessage] = useState("");
   
@@ -81,11 +98,11 @@ export default function TcpVsUdpSimulator() {
   const [jitter, setJitter] = useState(0); // Random movement noise
   
   // Refs
-  const requestRef = useRef();
+  const requestRef = useRef<number | undefined>(undefined);
   const packetIdCounter = useRef(0);
-  const tcpWindow = useRef(new Set()); // IDs of packets in flight for TCP
+  const tcpWindow = useRef(new Set<number>()); // IDs of packets in flight for TCP
   const lastSpawnTime = useRef(0);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // --- Logic Engines ---
 
@@ -291,7 +308,7 @@ export default function TcpVsUdpSimulator() {
 
         return { ...p, progress: newProgress, y: newY };
 
-      }).filter(Boolean);
+      }).filter((p): p is Packet => p !== null);
 
       return nextPackets;
     });
@@ -302,7 +319,7 @@ export default function TcpVsUdpSimulator() {
   useEffect(() => {
     let lastTime = performance.now();
     
-    const animate = (time) => {
+    const animate = (time: number) => {
       const delta = time - lastTime;
       
       if (delta > 20) { 
@@ -351,7 +368,9 @@ export default function TcpVsUdpSimulator() {
       requestRef.current = requestAnimationFrame(animate);
     }
 
-    return () => cancelAnimationFrame(requestRef.current);
+    return () => {
+      if (requestRef.current !== undefined) cancelAnimationFrame(requestRef.current);
+    };
   }, [isPlaying, updateSimulation, mode, speed, spawnPacket, logMessage, connState]);
 
   // Reset
@@ -364,7 +383,7 @@ export default function TcpVsUdpSimulator() {
     setIsPlaying(false);
   };
 
-  const handleModeChange = (newMode) => {
+  const handleModeChange = (newMode: string) => {
     setMode(newMode);
     handleReset();
     logMessage(`Switched to ${newMode} Protocol`);

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import * as Icons from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Flashcards de DevOps',
@@ -75,7 +76,7 @@ export default async function FlashcardsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {flashcardSets.map((set) => {
-              const IconComponent = Icons[set.icon as keyof typeof Icons] || BookOpen
+              const IconComponent = (Icons[set.icon as keyof typeof Icons] as LucideIcon | undefined) ?? BookOpen
               const difficultyColors = {
                 beginner: 'bg-green-500',
                 intermediate: 'bg-yellow-500',

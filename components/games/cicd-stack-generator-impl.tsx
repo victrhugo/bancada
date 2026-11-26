@@ -210,19 +210,26 @@ const FUNNY_RATINGS = [
   },
 ];
 
+type FunnyRating = (typeof FUNNY_RATINGS)[number];
+
+interface SpinResult {
+  combo: string[];
+  rating: FunnyRating;
+}
+
 export default function CICDStackGenerator() {
   const [reels, setReels] = useState([
     { spinning: false, value: CI_CD_TOOLS[0], displayItems: [...CI_CD_TOOLS] },
     { spinning: false, value: INFRASTRUCTURE_TOOLS[0], displayItems: [...INFRASTRUCTURE_TOOLS] },
     { spinning: false, value: CLOUD_PLATFORMS[0], displayItems: [...CLOUD_PLATFORMS] },
   ]);
-  const [rating, setRating] = useState(null);
+  const [rating, setRating] = useState<FunnyRating | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinCount, setSpinCount] = useState(0);
-  const [spinHistory, setSpinHistory] = useState([]);
+  const [spinHistory, setSpinHistory] = useState<SpinResult[]>([]);
 
   // Shuffle function
-  const shuffleArray = (array) => {
+  const shuffleArray = <T,>(array: T[]): T[] => {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -232,7 +239,7 @@ export default function CICDStackGenerator() {
   };
 
   // Get rating based on combo
-  const getRating = (combo) => {
+  const getRating = (combo: string[]): FunnyRating => {
     // Find ratings that match keywords
     const matchingRatings = FUNNY_RATINGS.filter((rating) => {
       if (rating.keywords.length === 0) return true; // Catch-all ratings
@@ -246,7 +253,7 @@ export default function CICDStackGenerator() {
         : FUNNY_RATINGS.filter((r) => r.keywords.length === 0);
 
     // Weighted random selection
-    const weightedRatings = [];
+    const weightedRatings: FunnyRating[] = [];
     ratingsToChooseFrom.forEach((rating) => {
       for (let i = 0; i < rating.weight; i++) {
         weightedRatings.push(rating);
@@ -291,7 +298,7 @@ export default function CICDStackGenerator() {
   };
 
   // Stop a specific reel
-  const stopReel = (index) => {
+  const stopReel = (index: number) => {
     const sourceArray =
       index === 0 ? CI_CD_TOOLS : index === 1 ? INFRASTRUCTURE_TOOLS : CLOUD_PLATFORMS;
 

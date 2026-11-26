@@ -1,5 +1,4 @@
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
+import { SITE_URL } from '@/lib/site';
 
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 

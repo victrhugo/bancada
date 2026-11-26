@@ -75,7 +75,7 @@
     "@radix-ui/react-tooltip": "1.2.8",
     "@radix-ui/react-visually-hidden": "^1.2.4",
     "autoprefixer": "^10.5.0",
-    "axios": "^1.19.0",
+    "axios": "^1.21.1",
     "canvas-confetti": "^1.9.4",
     "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
@@ -88,7 +88,7 @@
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.11.1",
     "input-otp": "1.4.2",
-    "js-yaml": "^4.3.0",
+    "js-yaml": "^4.3.2",
     "lottie-web": "^5.13.0",
     "lucide-react": "^1.21.0",
     "marked": "^18.0.5",
@@ -99,10 +99,8 @@
     "openai": "^6.44.0",
     "react": "^19.2.7",
     "react-confetti": "^6.4.0",
-    "react-day-picker": "9.14.0",
     "react-dom": "^19.2.5",
     "react-hook-form": "^7.75.0",
-    "react-resizable-panels": "^4.11.2",
     "recharts": "3.8.1",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
@@ -111,7 +109,7 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "zod": "^4.3.6"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1",
@@ -130,11 +128,25 @@
     "fast-glob": "^3.3.3",
     "postcss": "^8.5.26",
     "prettier": "^3.8.3",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.2.4",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
-    "vite": "7.3.5",
+    "vite": "7.3.7",
     "vitest": "^4.1.10"
+  },
+  "pnpm": {
+    "overrides": {
+      "brace-expansion@1": "^1.1.20",
+      "brace-expansion@2": "^2.1.6",
+      "brace-expansion@5": "^5.0.11",
+      "browserslist": "^4.28.7",
+      "fast-uri": "^3.1.7",
+      "follow-redirects": "^1.16.2",
+      "js-yaml@3": "^3.15.2",
+      "serialize-javascript": "^7.0.3",
+      "source-map-js": "^1.2.2",
+      "undici@7": "^7.30.1"
+    }
   }
 }

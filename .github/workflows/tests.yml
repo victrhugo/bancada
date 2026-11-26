@@ -28,9 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
-      # Keep the existing type backlog visible while it is paid down incrementally.
-      - name: Report TypeScript baseline
-        continue-on-error: true
+      # The type backlog is paid down; keep it at zero.
+      - name: Typecheck
         run: pnpm typecheck
 
       # Keep the existing lint backlog visible while it is paid down incrementally.

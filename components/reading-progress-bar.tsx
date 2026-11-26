@@ -31,7 +31,7 @@ export function ReadingProgressBar() {
 
       // Calculate progress based on article content ending at the metadata section
       const scrollTop = window.scrollY;
-      const articleElement = document.querySelector('article.prose');
+      const articleElement = document.querySelector<HTMLElement>('article.prose');
       const articleTop = articleElement?.offsetTop || 0;
       const articleEndTop = articleEndElement.offsetTop;
       const articleEndBottom = articleEndTop + articleEndElement.offsetHeight;

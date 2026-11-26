@@ -1,6 +1,7 @@
 'use client';
 
 import { ExternalLink } from 'lucide-react';
+import { SITE_URL } from '@/lib/site';
 
 interface EmbedBadgeProps {
   gameSlug: string;
@@ -12,7 +13,7 @@ interface EmbedBadgeProps {
  * This badge cannot be removed and provides a backlink to Bancada.
  */
 export function EmbedBadge({ gameSlug, gameTitle }: EmbedBadgeProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app';
+  const siteUrl = SITE_URL;
   const gameUrl = `${siteUrl}/games/${gameSlug}`;
 
   return (

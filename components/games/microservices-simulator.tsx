@@ -118,7 +118,7 @@ export default function MicroservicesSimulator() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [showAdvancedServices, setShowAdvancedServices] = useState(false);
 
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const lastCallTimeRef = useRef<number>(0);
   const lastMetricsUpdateRef = useRef<number>(0);
   const servicesRef = useRef<Service[]>([]);

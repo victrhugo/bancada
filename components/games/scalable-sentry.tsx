@@ -133,6 +133,96 @@ const COLORS = {
   frozen: '#0ea5e9',
 };
 
+type ServerTypeKey = keyof typeof SERVER_TYPES;
+type TrafficTypeKey = keyof typeof TRAFFIC_TYPES;
+type TargetingMode = keyof typeof TARGETING_MODES;
+
+interface GameServer {
+  id: number;
+  type: ServerTypeKey;
+  x: number;
+  y: number;
+  level: number;
+  range: number;
+  power: number;
+  load: number;
+  status: string;
+  rebootTimer: number;
+  targeting: TargetingMode;
+  isTemporary: boolean;
+  lifetime?: number;
+}
+
+interface GamePacket {
+  id: string;
+  x: number;
+  y: number;
+  hp: number;
+  maxHp: number;
+  baseSpeed: number;
+  speed: number;
+  type: TrafficTypeKey;
+  radius: number;
+  color: string;
+  score: number;
+  status: string;
+  slowed: boolean;
+  slowTimer: number;
+}
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  color: string;
+  type: string;
+  size: number;
+}
+
+interface FloatingText {
+  id: number;
+  x: number;
+  y: number;
+  text: string;
+  color: string;
+  size: number;
+  vy: number;
+  life: number;
+  startLife: number;
+}
+
+interface Shockwave {
+  id: number;
+  x: number;
+  y: number;
+  color: string;
+  maxRadius: number;
+  radius: number;
+  life: number;
+}
+
+interface GameState {
+  servers: GameServer[];
+  packets: GamePacket[];
+  particles: Particle[];
+  floatingTexts: FloatingText[];
+  shockwaves: Shockwave[];
+  lastTime: number;
+  trafficIntensity: number;
+  trafficOffset: number;
+  mouse: { x: number; y: number; isDown: boolean; draggingId: number | null };
+  freezeTimer: number;
+  chaosTimer: number;
+  waveTimer: number;
+  bossSpawned: boolean;
+  packetsProcessedSinceLastFrame: number;
+  screenShake: number;
+  criticalHitChance: number;
+}
+
 export default function ScalableSentry() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -147,15 +237,15 @@ export default function ScalableSentry() {
     requestsDropped: 0,
     wave: 1,
   });
-  const [selection, setSelection] = useState(null);
+  const [selection, setSelection] = useState<number | null>(null);
   const [dragType, setDragType] = useState('api');
   const [freezeActive, setFreezeActive] = useState(false);
   const [chaosActive, setChaosActive] = useState(false);
   const [autoscalerCooldown, setAutoscalerCooldown] = useState(0);
 
-  const canvasRef = useRef(null);
-  const requestRef = useRef(null);
-  const stateRef = useRef({
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const requestRef = useRef<number | null>(null);
+  const stateRef = useRef<GameState>({
     servers: [],
     packets: [],
     particles: [],
@@ -174,7 +264,13 @@ export default function ScalableSentry() {
     criticalHitChance: 0.15,
   });
 
-  const spawnPacket = (gameWidth, gameHeight, intensity, offset, forceType = null) => {
+  const spawnPacket = (
+    gameWidth: number,
+    gameHeight: number,
+    intensity: number,
+    offset: number,
+    forceType: TrafficTypeKey | null = null
+  ): GamePacket => {
     const centerY = gameHeight / 2;
     const spread = gameHeight * 0.8;
     const noise = (Math.random() - 0.5) * spread;
@@ -182,7 +278,7 @@ export default function ScalableSentry() {
     let y = centerY + waveBias + noise;
     y = Math.max(40, Math.min(gameHeight - 40, y));
 
-    let typeKey = 'http';
+    let typeKey: TrafficTypeKey = 'http';
 
     if (forceType) {
       typeKey = forceType;
@@ -215,7 +311,7 @@ export default function ScalableSentry() {
     };
   };
 
-  const createParticle = (x, y, color, type = 'spark') => {
+  const createParticle = (x: number, y: number, color: string, type = 'spark'): Particle => {
     const speed = type === 'explosion' ? 6 : 4;
     const size = 2 + Math.random() * 2;
     return {
@@ -226,14 +322,20 @@ export default function ScalableSentry() {
     };
   };
 
-  const createFloatingText = (x, y, text, color = '#fff', size = 16) => ({
+  const createFloatingText = (
+    x: number,
+    y: number,
+    text: string,
+    color = '#fff',
+    size = 16
+  ): FloatingText => ({
     id: Math.random(), x, y, text, color, size,
     vy: -1.5,
     life: 1.0,
     startLife: 1.0
   });
 
-  const createShockwave = (x, y, color = '#fff', maxRadius = 40) => ({
+  const createShockwave = (x: number, y: number, color = '#fff', maxRadius = 40): Shockwave => ({
     id: Math.random(), x, y, color, maxRadius,
     radius: 5,
     life: 1.0
@@ -243,9 +345,9 @@ export default function ScalableSentry() {
     stateRef.current.screenShake = intensity;
   };
 
-  const addTempServer = (x, y) => {
+  const addTempServer = (x: number, y: number) => {
       const tempType = SERVER_TYPES.api;
-      const tempServer = {
+      const tempServer: GameServer = {
             id: Date.now() * 100,
             type: 'api',
             x, y,
@@ -283,13 +385,14 @@ export default function ScalableSentry() {
     }
   };
 
-  const update = useCallback((time) => {
+  const update = useCallback((time: number) => {
     const state = stateRef.current;
     const canvas = canvasRef.current;
 
     if (gameState !== 'playing' || !canvas) return;
 
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     const deltaTime = time - state.lastTime;
     state.lastTime = time;
     state.packetsProcessedSinceLastFrame = 0;
@@ -425,7 +528,7 @@ export default function ScalableSentry() {
       const sType = SERVER_TYPES[server.type];
 
       if (server.isTemporary) {
-          server.lifetime--;
+          server.lifetime = (server.lifetime ?? 0) - 1;
           if (server.lifetime <= 0) {
               state.servers.splice(i, 1);
               continue;
@@ -491,7 +594,7 @@ export default function ScalableSentry() {
                   let damage = server.power * throttleFactor;
 
                   let heatMultiplier = 1;
-                  if (TRAFFIC_TYPES[target.type]?.tls) {
+                  if ('tls' in TRAFFIC_TYPES[target.type]) {
                       heatMultiplier = 1.5;
                       damage *= 0.75;
                   }
@@ -584,7 +687,7 @@ export default function ScalableSentry() {
       ctx.translate(server.x, server.y);
 
       if (server.isTemporary) {
-          const lifetimePct = server.lifetime / CONFIG.autoscalerLifetime;
+          const lifetimePct = (server.lifetime ?? 0) / CONFIG.autoscalerLifetime;
           ctx.beginPath();
           ctx.arc(0, 0, 30, -Math.PI/2, (-Math.PI/2) + (Math.PI * 2 * lifetimePct));
           ctx.strokeStyle = '#f97316';
@@ -892,8 +995,10 @@ export default function ScalableSentry() {
 
   useEffect(() => {
     if (gameState === 'playing') requestRef.current = requestAnimationFrame(() => update(performance.now()));
-    else cancelAnimationFrame(requestRef.current);
-    return () => cancelAnimationFrame(requestRef.current);
+    else if (requestRef.current !== null) cancelAnimationFrame(requestRef.current);
+    return () => {
+      if (requestRef.current !== null) cancelAnimationFrame(requestRef.current);
+    };
   }, [gameState, update]);
 
   // Handle theme hydration
@@ -940,12 +1045,14 @@ export default function ScalableSentry() {
     return () => clearInterval(interval);
   }, [gameState]);
 
-  const getMousePos = (e) => {
-    const rect = canvasRef.current.getBoundingClientRect();
+  const getMousePos = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (gameState !== 'playing') return;
     const { x, y } = getMousePos(e);
     const state = stateRef.current;
@@ -968,7 +1075,7 @@ export default function ScalableSentry() {
     }
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (gameState !== 'playing') return;
     const { x, y } = getMousePos(e);
     stateRef.current.mouse.x = x;
@@ -980,13 +1087,16 @@ export default function ScalableSentry() {
     }
   };
 
-  const handleDropNewServer = (e) => {
+  const handleDropNewServer = (e: React.DragEvent<HTMLCanvasElement>) => {
     e.preventDefault();
-    const typeKey = e.dataTransfer.getData('type');
+    const typeKey = e.dataTransfer.getData('type') as ServerTypeKey;
     const typeConfig = SERVER_TYPES[typeKey];
+    if (!typeConfig) return;
     if (stats.money < typeConfig.cost) return;
 
-    const rect = canvasRef.current.getBoundingClientRect();
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -1078,7 +1188,7 @@ export default function ScalableSentry() {
       const server = stateRef.current.servers.find(s => s.id === selection);
       if (!server) return;
 
-      const modes = Object.keys(TARGETING_MODES);
+      const modes = Object.keys(TARGETING_MODES) as TargetingMode[];
       const currentIndex = modes.indexOf(server.targeting);
       const nextIndex = (currentIndex + 1) % modes.length;
       server.targeting = modes[nextIndex];
@@ -1370,7 +1480,7 @@ export default function ScalableSentry() {
                               isDark ? "text-white" : "text-gray-900"
                             )}>
                                 {stateRef.current.servers.find(s=>s.id===selection)?.isTemporary && <span className='text-orange-400'>(TEMP) </span>}
-                                v{stateRef.current.servers.find(s=>s.id===selection)?.level} {SERVER_TYPES[stateRef.current.servers.find(s=>s.id===selection)?.type]?.name}
+                                v{stateRef.current.servers.find(s=>s.id===selection)?.level} {SERVER_TYPES[stateRef.current.servers.find(s=>s.id===selection)?.type ?? 'api'].name}
                             </div>
                         </div>
                     </div>

@@ -38,7 +38,7 @@
   <text x="95" y="200" font-family="monospace" font-size="32" fill="#f8fafc">&gt;_</text>
 
   <!-- Exercise label -->
-  <text x="160" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" fill="#60a5fa">HANDS-ON EXERCISE</text>
+  <text x="160" y="188" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" fill="#60a5fa">EXERCÍCIO PRÁTICO</text>
 
   <!-- Title (adjust y values for multi-line titles) -->
   <text x="80" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="bold" fill="#f8fafc">{{TITLE}}</text>

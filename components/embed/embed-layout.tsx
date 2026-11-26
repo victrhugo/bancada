@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { EmbedBadge } from './embed-badge';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Suspense } from 'react';
+import { SITE_URL } from '@/lib/site';
 
 interface EmbedLayoutProps {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ function EmbedLayoutInner({ children, gameSlug, gameTitle }: EmbedLayoutProps) {
         <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
           <h1 className="text-sm font-semibold truncate">{gameTitle}</h1>
           <a
-            href={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://bancada.app'}/games/${gameSlug}`}
+            href={`${SITE_URL}/games/${gameSlug}`}
             target="_blank"
             rel="noopener"
             className="text-xs text-muted-foreground hover:text-primary transition-colors"

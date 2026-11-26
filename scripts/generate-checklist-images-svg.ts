@@ -48,9 +48,15 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 // Difficulty colors
 const DIFFICULTY_COLORS: Record<string, string> = {
-  Beginner: '#10b981',
-  Intermediate: '#f59e0b',
-  Advanced: '#ef4444',
+  beginner: '#10b981',
+  intermediate: '#f59e0b',
+  advanced: '#ef4444',
+};
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner: 'INICIANTE',
+  intermediate: 'INTERMEDIÁRIO',
+  advanced: 'AVANÇADO',
 };
 
 function generateChecklistSVG(
@@ -60,7 +66,9 @@ function generateChecklistSVG(
   itemCount: number
 ): string {
   const safeCategory = escapeXml(category.toUpperCase());
-  const safeDifficulty = escapeXml(difficulty.toUpperCase());
+  const safeDifficulty = escapeXml(
+    DIFFICULTY_LABELS[difficulty.toLowerCase()] ?? difficulty.toUpperCase()
+  );
 
   // Word wrap for long titles
   const words = title.split(' ');
@@ -106,7 +114,7 @@ function generateChecklistSVG(
     .join('\n');
 
   const categoryColor = CATEGORY_COLORS[category] || COLORS.primary;
-  const difficultyColor = DIFFICULTY_COLORS[difficulty] || COLORS.accent;
+  const difficultyColor = DIFFICULTY_COLORS[difficulty.toLowerCase()] || COLORS.accent;
   const categoryWidth = 120 + safeCategory.length * 11;
   const difficultyWidth = 120 + safeDifficulty.length * 10;
 
@@ -144,7 +152,7 @@ function generateChecklistSVG(
   
   <!-- Item count badge -->
   <rect x="${IMAGE_WIDTH - 180}" y="70" width="100" height="44" rx="22" fill="${COLORS.primary}" opacity="0.7"/>
-  <text x="${IMAGE_WIDTH - 130}" y="100" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="${COLORS.text}" text-anchor="middle">${itemCount} Items</text>
+  <text x="${IMAGE_WIDTH - 130}" y="100" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="${COLORS.text}" text-anchor="middle">${itemCount} itens</text>
   
   <!-- Checklist icon -->
   <g opacity="0.15">
@@ -163,7 +171,7 @@ function generateChecklistSVG(
   
   <!-- Bottom branding -->
   <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="${COLORS.accent}">Bancada</text>
-  <text x="80" y="${IMAGE_HEIGHT - 35}" font-family="Arial, sans-serif" font-size="20" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Interactive Checklists</text>
+  <text x="80" y="${IMAGE_HEIGHT - 35}" font-family="Arial, sans-serif" font-size="20" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Checklists Interativos</text>
 </svg>`;
 }
 
@@ -190,11 +198,11 @@ function generateListingPageSVG(): string {
   <text x="110" y="113" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="${COLORS.text}">CHECKLISTS</text>
   
   <!-- Main title -->
-  <text x="80" y="230" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">DevOps &amp; Security</text>
-  <text x="80" y="300" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">Checklists</text>
+  <text x="80" y="230" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">Checklists de DevOps</text>
+  <text x="80" y="300" font-family="Arial, sans-serif" font-size="62" font-weight="bold" fill="${COLORS.text}">e Segurança</text>
   
   <!-- Subtitle -->
-  <text x="80" y="360" font-family="Arial, sans-serif" font-size="26" font-weight="500" fill="${COLORS.accent}">Track your progress. Ensure nothing is missed.</text>
+  <text x="80" y="360" font-family="Arial, sans-serif" font-size="26" font-weight="500" fill="${COLORS.accent}">Acompanhe seu progresso. Nada fica para trás.</text>
   
   <!-- Checklist icons -->
   <g opacity="0.12">
@@ -205,7 +213,7 @@ function generateListingPageSVG(): string {
   
   <!-- Bottom branding -->
   <text x="80" y="${IMAGE_HEIGHT - 70}" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="${COLORS.accent}">Bancada</text>
-  <text x="80" y="${IMAGE_HEIGHT - 30}" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Interactive DevOps Resources</text>
+  <text x="80" y="${IMAGE_HEIGHT - 30}" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="${COLORS.accent}" opacity="0.7">Recursos práticos de DevOps e IA</text>
 </svg>`;
 }
 

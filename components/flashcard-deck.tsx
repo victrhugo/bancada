@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 interface FlashCardDeckProps {
-  cards: FlashCard[]
+  cards: FlashCardType[]
   title: string
   theme?: {
     primaryColor: string
@@ -23,7 +23,7 @@ export function FlashCardDeck({ cards, title, theme }: FlashCardDeckProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [knownCards, setKnownCards] = useState<Set<string>>(new Set())
   const [unknownCards, setUnknownCards] = useState<Set<string>>(new Set())
-  const [shuffledCards, setShuffledCards] = useState<FlashCard[]>(cards)
+  const [shuffledCards, setShuffledCards] = useState<FlashCardType[]>(cards)
   const [showOnlyUnknown, setShowOnlyUnknown] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
   const [viewMode, setViewMode] = useState<'deck' | 'list'>('deck')
@@ -103,9 +103,9 @@ const handleMarkUnknown = useCallback(() => {
 
   // Group cards by status for list view
   const cardsByStatus = useMemo(() => {
-    const known: FlashCard[] = []
-    const needReview: FlashCard[] = []
-    const notReviewed: FlashCard[] = []
+    const known: FlashCardType[] = []
+    const needReview: FlashCardType[] = []
+    const notReviewed: FlashCardType[] = []
 
     shuffledCards.forEach(card => {
       if (knownCards.has(card.id)) {
@@ -351,7 +351,7 @@ const handleMarkUnknown = useCallback(() => {
                       <p className="font-medium mb-1">{card.front}</p>
                       <p className="text-sm text-muted-foreground">{card.back}</p>
                       <div className="flex gap-2 mt-2">
-                        {card.tags.map(tag => (
+                        {card.tags.map((tag: string) => (
                           <Badge key={tag} variant="secondary" className="text-xs">
                             {tag}
                           </Badge>
@@ -383,7 +383,7 @@ const handleMarkUnknown = useCallback(() => {
                       <p className="font-medium mb-1">{card.front}</p>
                       <p className="text-sm text-muted-foreground">{card.back}</p>
                       <div className="flex gap-2 mt-2">
-                        {card.tags.map(tag => (
+                        {card.tags.map((tag: string) => (
                           <Badge key={tag} variant="secondary" className="text-xs">
                             {tag}
                           </Badge>
@@ -414,7 +414,7 @@ const handleMarkUnknown = useCallback(() => {
                     <div className="flex-1">
                       <p className="font-medium mb-1">{card.front}</p>
                       <div className="flex gap-2 mt-2">
-                        {card.tags.map(tag => (
+                        {card.tags.map((tag: string) => (
                           <Badge key={tag} variant="secondary" className="text-xs">
                             {tag}
                           </Badge>
@@ -496,7 +496,6 @@ const handleMarkUnknown = useCallback(() => {
       <div className="mb-8">
       <FlashCard
         card={currentCard}
-        theme={theme}
         isFlipped={isFlipped}
         onFlip={handleFlip}
         onNext={handleNext}
