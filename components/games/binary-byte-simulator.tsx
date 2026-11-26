@@ -90,12 +90,12 @@ const CHALLENGES: Record<Mode, Challenge[]> = {
     {
       prompt: 'Forme uma máscara /24',
       target: '11111111111111111111111100000000',
-      note: '255.255.255.0. Três octetos de rede e um de host, então 254 endereços utilizáveis. A subnet mais comum que você vai encontrar.',
+      note: '255.255.255.0. Três octetos de rede e um de host, então 254 endereços utilizáveis. A sub-rede mais comum que você vai encontrar.',
     },
     {
       prompt: 'Forme uma máscara /26',
       target: '11111111111111111111111111000000',
-      note: '255.255.255.192. Pegar emprestados dois bits de host divide uma /24 em quatro subnets de 62 endereços utilizáveis cada.',
+      note: '255.255.255.192. Pegar emprestados dois bits de host divide uma /24 em quatro sub-redes de 62 endereços utilizáveis cada.',
     },
     {
       prompt: 'Forme uma máscara /30',
@@ -355,7 +355,7 @@ export default function BinaryByteSimulator() {
       <h2 className="bs-h">Vire os bits, veja o valor</h2>
       <p className="bs-sub">
         Oito blocos, cada um é um bit. Clique em um para virar, ou aperte <kbd className="bs-kbd">Espaço</kbd>{' '}
-        com o bloco em foco. Os mesmos blocos viram um byte, um conjunto de permissões de arquivo e uma máscara de subnet.
+        com o bloco em foco. Os mesmos blocos viram um byte, um conjunto de permissões de arquivo e uma máscara de sub-rede.
       </p>
 
       <div className="bs-modes" role="group" aria-label="Simulator mode">
@@ -363,7 +363,7 @@ export default function BinaryByteSimulator() {
           [
             ['byte', 'Byte', '8 bits'],
             ['perms', 'Permissões', 'chmod'],
-            ['subnet', 'Máscara de subnet', 'CIDR'],
+            ['subnet', 'Máscara de sub-rede', 'CIDR'],
           ] as Array<[Mode, string, string]>
         ).map(([m, label, hint]) => (
           <button
@@ -457,7 +457,7 @@ export default function BinaryByteSimulator() {
           <>
             <div className="bs-big">
               <span className="bs-bigval bs-small">{octets.join('.')}</span>
-              <span className="bs-biglabel">máscara de subnet</span>
+              <span className="bs-biglabel">máscara de sub-rede</span>
             </div>
             <div className="bs-side">
               <div className={`bs-chip bs-static${maskValid ? '' : ' bs-bad'}`}>

@@ -118,15 +118,15 @@ function generateTrafficSteps(scenario: TrafficScenario): TrafficStep[] {
         {
           id: 3,
           title: 'Consulta à route table',
-          location: 'Subnet pública',
-          explanation: 'A route table pública direciona o tráfego da subnet pública para o lugar certo.',
+          location: 'Sub-rede pública',
+          explanation: 'A route table pública direciona o tráfego da sub-rede pública para o lugar certo.',
           highlight: ['public-route-table'],
         },
         {
           id: 4,
           title: 'Chega à EC2',
-          location: 'Subnet pública',
-          explanation: 'O tráfego chega à instância EC2 na subnet pública. Os security groups filtram se ele é permitido.',
+          location: 'Sub-rede pública',
+          explanation: 'O tráfego chega à instância EC2 na sub-rede pública. Os security groups filtram se ele é permitido.',
           highlight: ['public-ec2', 'public-subnet'],
         },
       ];
@@ -135,22 +135,22 @@ function generateTrafficSteps(scenario: TrafficScenario): TrafficStep[] {
         {
           id: 1,
           title: 'Requisição da EC2 privada',
-          location: 'Subnet privada',
+          location: 'Sub-rede privada',
           explanation: 'Sua instância EC2 privada (por exemplo, um banco de dados) precisa baixar atualizações da internet.',
           highlight: ['private-ec2', 'private-subnet'],
         },
         {
           id: 2,
           title: 'Consulta à route table',
-          location: 'Subnet privada',
+          location: 'Sub-rede privada',
           explanation: 'A route table privada tem a regra 0.0.0.0/0 → NAT Gateway. Ela manda todo o tráfego para a internet ao NAT.',
           highlight: ['private-route-table'],
         },
         {
           id: 3,
           title: 'Tradução no NAT Gateway',
-          location: 'Subnet pública',
-          explanation: 'O NAT Gateway troca o IP privado pelo próprio IP público, escondendo a EC2 privada. Ele fica na subnet pública.',
+          location: 'Sub-rede pública',
+          explanation: 'O NAT Gateway troca o IP privado pelo próprio IP público, escondendo a EC2 privada. Ele fica na sub-rede pública.',
           highlight: ['nat-gateway', 'public-subnet'],
         },
         {
@@ -173,28 +173,28 @@ function generateTrafficSteps(scenario: TrafficScenario): TrafficStep[] {
         {
           id: 1,
           title: 'Requisição do servidor web',
-          location: 'Subnet pública',
-          explanation: 'Seu servidor web na subnet pública precisa consultar o banco de dados na subnet privada.',
+          location: 'Sub-rede pública',
+          explanation: 'Seu servidor web na sub-rede pública precisa consultar o banco de dados na sub-rede privada.',
           highlight: ['public-ec2', 'public-subnet'],
         },
         {
           id: 2,
           title: 'Roteamento interno da VPC',
           location: 'VPC',
-          explanation: 'O tráfego dentro da VPC (10.0.0.0/16) fica local. A route table sabe chegar direto nas outras subnets.',
+          explanation: 'O tráfego dentro da VPC (10.0.0.0/16) fica local. A route table sabe chegar direto nas outras sub-redes.',
           highlight: ['public-route-table'],
         },
         {
           id: 3,
           title: 'Chega à EC2 privada',
-          location: 'Subnet privada',
+          location: 'Sub-rede privada',
           explanation: 'A requisição chega ao banco de dados privado. Tráfego interno da VPC não precisa de NAT nem de IGW!',
           highlight: ['private-ec2', 'private-subnet'],
         },
         {
           id: 4,
           title: 'A resposta é enviada de volta',
-          location: 'Subnet privada',
+          location: 'Sub-rede privada',
           explanation: 'O banco de dados responde direto ao servidor web pela rede interna da VPC.',
           highlight: ['private-ec2', 'public-ec2'],
         },
@@ -221,7 +221,7 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   {
     type: 'nat-gateway',
     name: 'NAT Gateway',
-    description: 'Permite que recursos privados acessem a internet sem ficarem expostos. Precisa estar numa subnet pública.',
+    description: 'Permite que recursos privados acessem a internet sem ficarem expostos. Precisa estar numa sub-rede pública.',
     icon: Shield,
     color: 'text-orange-500',
     bgColor: 'bg-orange-500/10',
@@ -230,8 +230,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'public-subnet',
-    name: 'Subnet pública',
-    description: 'Uma subnet com rota para o Internet Gateway. Os recursos aqui podem ter IP público.',
+    name: 'Sub-rede pública',
+    description: 'Uma sub-rede com rota para o Internet Gateway. Os recursos aqui podem ter IP público.',
     icon: Cloud,
     color: 'text-green-500',
     bgColor: 'bg-green-500/10',
@@ -240,8 +240,8 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   },
   {
     type: 'private-subnet',
-    name: 'Subnet privada',
-    description: 'Uma subnet sem acesso direto à internet. Os recursos ficam protegidos de exposição pública.',
+    name: 'Sub-rede privada',
+    description: 'Uma sub-rede sem acesso direto à internet. Os recursos ficam protegidos de exposição pública.',
     icon: Cloud,
     color: 'text-red-500',
     bgColor: 'bg-red-500/10',
@@ -250,7 +250,7 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   {
     type: 'public-ec2',
     name: 'Instância EC2 pública',
-    description: 'Uma instância de computação numa subnet pública. Pode ser acessada direto da internet.',
+    description: 'Uma instância de computação numa sub-rede pública. Pode ser acessada direto da internet.',
     icon: Server,
     color: 'text-green-600',
     bgColor: 'bg-green-600/10',
@@ -260,7 +260,7 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   {
     type: 'private-ec2',
     name: 'Instância EC2 privada',
-    description: 'Uma instância de computação numa subnet privada. Não pode ser acessada direto da internet.',
+    description: 'Uma instância de computação numa sub-rede privada. Não pode ser acessada direto da internet.',
     icon: Server,
     color: 'text-red-600',
     bgColor: 'bg-red-600/10',
@@ -270,7 +270,7 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   {
     type: 'public-route-table',
     name: 'Route table pública',
-    description: 'Roteia o tráfego das subnets públicas para o Internet Gateway (0.0.0.0/0 -> IGW).',
+    description: 'Roteia o tráfego das sub-redes públicas para o Internet Gateway (0.0.0.0/0 -> IGW).',
     icon: Network,
     color: 'text-indigo-500',
     bgColor: 'bg-indigo-500/10',
@@ -280,7 +280,7 @@ const AVAILABLE_COMPONENTS: VpcComponentDef[] = [
   {
     type: 'private-route-table',
     name: 'Route table privada',
-    description: 'Roteia o tráfego das subnets privadas para o NAT Gateway (0.0.0.0/0 -> NAT).',
+    description: 'Roteia o tráfego das sub-redes privadas para o NAT Gateway (0.0.0.0/0 -> NAT).',
     icon: Network,
     color: 'text-amber-500',
     bgColor: 'bg-amber-500/10',
@@ -321,7 +321,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   if (activeComponents.has('igw') && !activeComponents.has('public-subnet')) {
     results.push({
       type: 'warning',
-      message: 'O Internet Gateway não serve para nada sem uma subnet pública.',
+      message: 'O Internet Gateway não serve para nada sem uma sub-rede pública.',
       component: 'igw',
     });
   }
@@ -329,7 +329,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   if (activeComponents.has('nat-gateway') && !activeComponents.has('private-subnet')) {
     results.push({
       type: 'warning',
-      message: 'O NAT Gateway não serve para nada sem uma subnet privada.',
+      message: 'O NAT Gateway não serve para nada sem uma sub-rede privada.',
       component: 'nat-gateway',
     });
   }
@@ -349,7 +349,7 @@ function validateConfiguration(activeComponents: Set<ComponentType>): Validation
   if (activeComponents.has('public-subnet') && !activeComponents.has('public-route-table')) {
     results.push({
       type: 'info',
-      message: 'Considere adicionar uma route table pública para rotear direito o tráfego da subnet pública.',
+      message: 'Considere adicionar uma route table pública para rotear direito o tráfego da sub-rede pública.',
       component: 'public-subnet',
     });
   }
@@ -988,7 +988,7 @@ export default function AwsVpcSimulator() {
                           isHighlighted('public-subnet') && 'ring-2 ring-yellow-400 ring-offset-1 ring-offset-background'
                         )}
                       >
-                        <div className="mb-2 text-center text-[10px] font-medium text-green-700 dark:text-green-400">Subnet pública</div>
+                        <div className="mb-2 text-center text-[10px] font-medium text-green-700 dark:text-green-400">Sub-rede pública</div>
                         <div className="flex flex-wrap justify-center gap-2">
                           {activeComponents.has('public-route-table') && (
                             <div className={cn(
@@ -1031,7 +1031,7 @@ export default function AwsVpcSimulator() {
                           isHighlighted('private-subnet') && 'ring-2 ring-yellow-400 ring-offset-1 ring-offset-background'
                         )}
                       >
-                        <div className="mb-2 text-center text-[10px] font-medium text-red-700 dark:text-red-400">Subnet privada</div>
+                        <div className="mb-2 text-center text-[10px] font-medium text-red-700 dark:text-red-400">Sub-rede privada</div>
                         <div className="flex flex-wrap justify-center gap-2">
                           {activeComponents.has('private-route-table') && (
                             <div className={cn(
@@ -1057,7 +1057,7 @@ export default function AwsVpcSimulator() {
 
                     {!activeComponents.has('public-subnet') && !activeComponents.has('private-subnet') && (
                       <div className="col-span-full py-4 text-center text-xs text-muted-foreground">
-                        Adicione subnets para ver a arquitetura
+                        Adicione sub-redes para ver a arquitetura
                       </div>
                     )}
                   </div>
@@ -1151,11 +1151,11 @@ export default function AwsVpcSimulator() {
           <h3 className="mb-2 text-sm font-semibold text-foreground">Conceitos-chave</h3>
           <ul className="space-y-1 text-xs text-muted-foreground">
             <li>
-              <strong className="text-green-400">Subnet pública</strong>: tem rota para o Internet Gateway; os recursos podem
+              <strong className="text-green-400">Sub-rede pública</strong>: tem rota para o Internet Gateway; os recursos podem
               ter IP público
             </li>
             <li>
-              <strong className="text-red-400">Subnet privada</strong>: sem rota direta para a internet; os recursos ficam
+              <strong className="text-red-400">Sub-rede privada</strong>: sem rota direta para a internet; os recursos ficam
               protegidos
             </li>
             <li>
