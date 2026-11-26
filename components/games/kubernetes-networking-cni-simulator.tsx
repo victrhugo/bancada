@@ -231,7 +231,7 @@ const SCENARIOS: Scenario[] = [
     title: 'EndpointSlice e DNS headless',
     subtitle: 'Como os Services encontram os Pods',
     lesson:
-      'Services do not send traffic to Pods by magic. Selectors create EndpointSlices, and dataplanes watch those slices to program real backends.',
+      'Services não mandam tráfego para os Pods por mágica. Os selectors criam EndpointSlices, e os dataplanes observam esses slices para programar os backends reais.',
     icon: Layers,
     steps: [
       {

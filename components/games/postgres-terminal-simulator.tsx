@@ -642,7 +642,7 @@ export default function PostgresTerminalSimulator() {
       // CREATE INDEX
       if (lower.startsWith('create index')) {
         if (!lower.includes('big_events')) {
-          return { output: 'ERROR:  this lab only indexes big_events(user_id)', type: 'error' };
+          return { output: 'ERROR:  este laboratório só cria índice em big_events(user_id)', type: 'error' };
         }
         if (pgState.indexCreated) {
           return { output: 'ERROR:  relation "idx_big_events_user" already exists', type: 'error' };
@@ -672,7 +672,7 @@ export default function PostgresTerminalSimulator() {
       }
 
       if (lower.startsWith('select')) {
-        return { output: 'ERROR:  this lab supports SELECT count(*) FROM orders; and SELECT * FROM customers;', type: 'error' };
+        return { output: 'ERROR:  este laboratório aceita SELECT count(*) FROM orders; e SELECT * FROM customers;', type: 'error' };
       }
 
       const firstToken = input.split(/\s+/)[0] || '';

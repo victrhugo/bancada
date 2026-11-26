@@ -873,7 +873,7 @@ Server:
           const target = filtered[0];
           const command = filtered.slice(1).join(' ');
           const container = target ? findContainer(target) : null;
-          if (!target || !command) return 'docker exec requires a container and command.';
+          if (!target || !command) return 'docker exec precisa de um container e de um comando.';
           if (!container) return `Error response from daemon: No such container: ${target}`;
           if (container.status !== 'running') {
             return `Error response from daemon: Container ${container.name} is not running`;
