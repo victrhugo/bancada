@@ -82,236 +82,236 @@ const CTE_QUERY =
 const LESSONS: Lesson[] = [
   {
     id: 'select',
-    title: 'SELECT basics',
-    description: 'Read rows and pick the columns you want',
+    title: 'Básico do SELECT',
+    description: 'Leia linhas e escolha as colunas que você quer',
     icon: <Table className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Return every column and row from the customers table.',
+        instruction: 'Retorne todas as colunas e linhas da tabela customers.',
         hint: 'Use "SELECT * FROM customers;".',
         expectedCommand: 'SELECT * FROM customers;',
         explanation:
-          'SELECT * reads all columns. The asterisk is a shortcut for listing every column in the table.',
+          'O SELECT * lê todas as colunas. O asterisco é um atalho para listar todas as colunas da tabela.',
       },
       {
-        instruction: 'Now return only the name and country columns from customers.',
+        instruction: 'Agora retorne só as colunas name e country de customers.',
         hint: 'Use "SELECT name, country FROM customers;".',
         expectedCommand: 'SELECT name, country FROM customers;',
         explanation:
-          'Projecting just the columns you need keeps result sets small and makes intent obvious.',
+          'Escolher só as colunas necessárias deixa o resultado menor e a intenção mais clara.',
       },
     ],
   },
   {
     id: 'where',
-    title: 'Filtering with WHERE',
-    description: 'Keep only the rows that match a condition',
+    title: 'Filtrando com WHERE',
+    description: 'Mantenha só as linhas que atendem a uma condição',
     icon: <Filter className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'List the name and country of customers based in the USA.',
+        instruction: 'Liste o name e o country dos clientes dos EUA (USA).',
         hint: "Use \"SELECT name, country FROM customers WHERE country = 'USA';\".",
         expectedCommand: "SELECT name, country FROM customers WHERE country = 'USA';",
         explanation:
-          "WHERE filters rows before they are returned. String literals go in single quotes and are matched exactly.",
+          'O WHERE filtra as linhas antes de elas voltarem. Strings ficam entre aspas simples e são comparadas exatamente.',
       },
       {
-        instruction: 'Show the name and price of products that cost less than 50.',
+        instruction: 'Mostre o name e o price dos produtos que custam menos de 50.',
         hint: 'Use "SELECT name, price FROM products WHERE price < 50;".',
         expectedCommand: 'SELECT name, price FROM products WHERE price < 50;',
         explanation:
-          'Numeric literals are written bare (no quotes). Comparison operators like <, >, and <> work as you would expect.',
+          'Literais numéricos são escritos sem aspas. Operadores de comparação como <, > e <> funcionam como você espera.',
       },
     ],
   },
   {
     id: 'order-limit',
-    title: 'Sorting and limiting',
-    description: 'Order results and cap how many rows come back',
+    title: 'Ordenando e limitando',
+    description: 'Ordene os resultados e limite quantas linhas voltam',
     icon: <ArrowUpDown className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Show the five most expensive products with their price.',
+        instruction: 'Mostre os cinco produtos mais caros com o preço.',
         hint: 'Use "SELECT name, price FROM products ORDER BY price DESC LIMIT 5;".',
         expectedCommand: 'SELECT name, price FROM products ORDER BY price DESC LIMIT 5;',
         explanation:
-          'ORDER BY sorts the result; DESC sorts high to low. LIMIT caps the number of rows returned.',
+          'O ORDER BY ordena o resultado; DESC ordena do maior para o menor. O LIMIT limita o número de linhas retornadas.',
       },
     ],
   },
   {
     id: 'distinct',
-    title: 'DISTINCT values',
-    description: 'Collapse duplicates to see unique values',
+    title: 'Valores distintos',
+    description: 'Junte os duplicados para ver valores únicos',
     icon: <Layers className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'List each product category exactly once.',
+        instruction: 'Liste cada categoria de produto uma única vez.',
         hint: 'Use "SELECT DISTINCT category FROM products;".',
         expectedCommand: 'SELECT DISTINCT category FROM products;',
         explanation:
-          'DISTINCT removes duplicate rows from the output, which is handy for finding the set of values in a column.',
+          'O DISTINCT tira as linhas duplicadas da saída, o que ajuda a descobrir o conjunto de valores de uma coluna.',
       },
     ],
   },
   {
     id: 'count',
-    title: 'Counting rows',
-    description: 'Use an aggregate to summarise a table',
+    title: 'Contando linhas',
+    description: 'Use uma agregação para resumir uma tabela',
     icon: <Sigma className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Count how many orders exist and label the column order_count.',
+        instruction: 'Conte quantos pedidos existem e chame a coluna de order_count.',
         hint: 'Use "SELECT count(*) AS order_count FROM orders;".',
         expectedCommand: 'SELECT count(*) AS order_count FROM orders;',
         explanation:
-          'count(*) counts rows. AS gives the result column a readable name instead of the default "count".',
+          'O count(*) conta linhas. O AS dá à coluna do resultado um nome legível em vez do padrão "count".',
       },
     ],
   },
   {
     id: 'group-by',
     title: 'GROUP BY',
-    description: 'Aggregate per group instead of the whole table',
+    description: 'Agregue por grupo em vez da tabela inteira',
     icon: <Group className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Count the orders in each status, most common first.',
+        instruction: 'Conte os pedidos por status, do mais comum para o menos comum.',
         hint: 'Use "SELECT status, count(*) AS orders FROM orders GROUP BY status ORDER BY orders DESC;".',
         expectedCommand:
           'SELECT status, count(*) AS orders FROM orders GROUP BY status ORDER BY orders DESC;',
         explanation:
-          'GROUP BY buckets rows by a column so aggregates run per bucket. You can ORDER BY the aggregate alias.',
+          'O GROUP BY agrupa as linhas por uma coluna para as agregações rodarem por grupo. Dá para fazer ORDER BY pelo alias da agregação.',
       },
     ],
   },
   {
     id: 'having',
-    title: 'HAVING and averages',
-    description: 'Filter groups and round aggregate values',
+    title: 'HAVING e médias',
+    description: 'Filtre grupos e arredonde valores agregados',
     icon: <Percent className="h-5 w-5" />,
     commands: [
       {
         instruction:
-          'For categories with more than two products, show the count and average price (2 decimals), highest average first.',
+          'Para as categorias com mais de dois produtos, mostre a contagem e o preço médio (2 casas decimais), da maior média para a menor.',
         hint: 'Use "SELECT category, count(*) AS n, round(avg(price), 2) AS avg_price FROM products GROUP BY category HAVING count(*) > 2 ORDER BY avg_price DESC;".',
         expectedCommand:
           'SELECT category, count(*) AS n, round(avg(price), 2) AS avg_price FROM products GROUP BY category HAVING count(*) > 2 ORDER BY avg_price DESC;',
         explanation:
-          'HAVING filters groups after aggregation (WHERE filters rows before). round(avg(price), 2) keeps money readable.',
+          'O HAVING filtra grupos depois da agregação (o WHERE filtra linhas antes). round(avg(price), 2) deixa os valores em dinheiro legíveis.',
       },
     ],
   },
   {
     id: 'join',
-    title: 'Joining tables',
-    description: 'Combine orders with the customers who placed them',
+    title: 'Juntando tabelas',
+    description: 'Combine os pedidos com os clientes que os fizeram',
     icon: <Combine className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Show each shipped order with the customer name, ordered by order_id.',
-        hint: 'Join orders to customers on customer_id and filter on status.',
+        instruction: 'Mostre cada pedido enviado (shipped) com o nome do cliente, ordenado por order_id.',
+        hint: 'Faça JOIN de orders com customers por customer_id e filtre pelo status.',
         expectedCommand: JOIN_QUERY,
         explanation:
-          'A JOIN matches rows across tables using a key. Here orders.customer_id matches customers.customer_id.',
+          'O JOIN casa linhas de tabelas diferentes usando uma chave. Aqui, orders.customer_id casa com customers.customer_id.',
       },
     ],
   },
   {
     id: 'multi-join',
-    title: 'Revenue across joins',
-    description: 'Aggregate a value spread over four tables',
+    title: 'Receita com vários JOINs',
+    description: 'Agregue um valor espalhado por quatro tabelas',
     icon: <DollarSign className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Show total revenue per customer, highest first.',
-        hint: 'Join customers, orders, order_items, and products, then SUM quantity * price.',
+        instruction: 'Mostre a receita total por cliente, da maior para a menor.',
+        hint: 'Faça JOIN de customers, orders, order_items e products e depois SUM de quantity * price.',
         expectedCommand: REVENUE_QUERY,
         explanation:
-          'Real reports often span several joins. SUM(oi.quantity * p.price) totals line-item revenue grouped per customer.',
+          'Relatórios reais costumam envolver vários JOINs. SUM(oi.quantity * p.price) soma a receita dos itens agrupada por cliente.',
       },
     ],
   },
   {
     id: 'subquery-window',
-    title: 'Subqueries and window functions',
-    description: 'Compare against an aggregate and rank within groups',
+    title: 'Subqueries e window functions',
+    description: 'Compare com uma agregação e ranqueie dentro de grupos',
     icon: <BarChart3 className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'List products priced above the average product price, most expensive first.',
-        hint: 'Compare price to a subquery: (SELECT avg(price) FROM products).',
+        instruction: 'Liste os produtos com preço acima da média, do mais caro para o mais barato.',
+        hint: 'Compare o price com uma subquery: (SELECT avg(price) FROM products).',
         expectedCommand: SUBQUERY_QUERY,
         explanation:
-          'A subquery runs first and feeds a single value into the outer query, letting you compare each row to the average.',
+          'A subquery roda primeiro e passa um único valor para a query de fora, permitindo comparar cada linha com a média.',
       },
       {
-        instruction: 'Rank products by price within each category.',
+        instruction: 'Ranqueie os produtos por preço dentro de cada categoria.',
         hint: 'Use rank() OVER (PARTITION BY category ORDER BY price DESC).',
         expectedCommand: WINDOW_QUERY,
         explanation:
-          'Window functions compute across a set of rows without collapsing them. PARTITION BY restarts the rank per category.',
+          'Window functions calculam sobre um conjunto de linhas sem juntá-las. O PARTITION BY reinicia o ranking a cada categoria.',
       },
     ],
   },
   {
     id: 'left-join',
     title: 'LEFT JOIN',
-    description: 'Keep every left row, even without a match',
+    description: 'Mantenha todas as linhas da esquerda, mesmo sem correspondência',
     icon: <GitMerge className="h-5 w-5" />,
     commands: [
       {
         instruction:
-          'List every customer with their pending order id and status, ordered by name. Customers without a pending order should still appear.',
-        hint: "LEFT JOIN orders and put the status filter in the ON clause: ON o.customer_id = c.customer_id AND o.status = 'pending'.",
+          'Liste todos os clientes com o id e o status do pedido pendente (pending), ordenados por nome. Clientes sem pedido pendente também devem aparecer.',
+        hint: "Faça LEFT JOIN com orders e coloque o filtro de status na cláusula ON: ON o.customer_id = c.customer_id AND o.status = 'pending'.",
         expectedCommand: LEFT_JOIN_QUERY,
         explanation:
-          "A LEFT JOIN keeps every row from the left table; unmatched right-side columns come back NULL. Filtering on o.status in the ON clause (not WHERE) is what preserves the customers who have no pending order.",
+          'O LEFT JOIN mantém todas as linhas da tabela da esquerda; as colunas da direita sem correspondência voltam NULL. É filtrar o.status no ON (e não no WHERE) que preserva os clientes sem pedido pendente.',
       },
     ],
   },
   {
     id: 'dml',
     title: 'INSERT, UPDATE, DELETE',
-    description: 'Write data and read the command tags',
+    description: 'Grave dados e leia os command tags',
     icon: <Pencil className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Insert a new customer: id 9, Ivy Chen, USA, signed up 2025-08-01.',
+        instruction: 'Insira um novo cliente: id 9, Ivy Chen, USA, cadastrado em 2025-08-01.',
         hint: "Use \"INSERT INTO customers VALUES (9, 'Ivy Chen', 'USA', '2025-08-01');\".",
         expectedCommand: "INSERT INTO customers VALUES (9, 'Ivy Chen', 'USA', '2025-08-01');",
         explanation:
-          'INSERT adds rows. Postgres reports "INSERT 0 1" (the 0 is a legacy OID, the 1 is the row count). This demo does not persist the change, so the dataset stays fixed for the other lessons.',
+          'O INSERT adiciona linhas. O Postgres responde "INSERT 0 1" (o 0 é um OID legado, o 1 é o número de linhas). Esta demo não salva a mudança, então os dados continuam iguais para as outras lições.',
       },
       {
-        instruction: 'Raise the price of product 1 to 54.99.',
+        instruction: 'Aumente o preço do produto 1 para 54.99.',
         hint: 'Use "UPDATE products SET price = 54.99 WHERE product_id = 1;".',
         expectedCommand: 'UPDATE products SET price = 54.99 WHERE product_id = 1;',
         explanation:
-          'UPDATE changes rows that match the WHERE clause and reports how many it touched ("UPDATE 1" here). The demo does not persist the change.',
+          'O UPDATE altera as linhas que atendem ao WHERE e informa quantas mudou ("UPDATE 1" aqui). A demo não salva a mudança.',
       },
       {
-        instruction: 'Delete every cancelled order.',
+        instruction: 'Apague todos os pedidos cancelados (cancelled).',
         hint: "Use \"DELETE FROM orders WHERE status = 'cancelled';\".",
         expectedCommand: "DELETE FROM orders WHERE status = 'cancelled';",
         explanation:
-          'DELETE removes matching rows and reports the count ("DELETE 2" — two orders are cancelled). Again, nothing is persisted here so the lessons stay reproducible.',
+          'O DELETE remove as linhas que batem e informa a contagem ("DELETE 2": dois pedidos estão cancelados). De novo, nada é salvo aqui, para as lições continuarem reproduzíveis.',
       },
     ],
   },
   {
     id: 'cte',
-    title: 'Common table expressions',
-    description: 'Name a subquery with WITH and reuse it',
+    title: 'Common table expressions (CTEs)',
+    description: 'Dê nome a uma subquery com WITH e reaproveite',
     icon: <Braces className="h-5 w-5" />,
     commands: [
       {
         instruction:
-          'Using a WITH clause named customer_spend, list the customers whose total spend is above the average, highest first.',
-        hint: 'Define customer_spend as the per-customer revenue query, then SELECT from it and compare total to (SELECT avg(total) FROM customer_spend).',
+          'Usando uma cláusula WITH chamada customer_spend, liste os clientes cujo gasto total está acima da média, do maior para o menor.',
+        hint: 'Defina customer_spend como a query de receita por cliente, depois faça SELECT nela e compare o total com (SELECT avg(total) FROM customer_spend).',
         expectedCommand: CTE_QUERY,
         explanation:
-          'A WITH clause (common table expression) names a subquery so you can reference it by name. Here customer_spend is used twice: once in the main query and once inside the AVG subquery.',
+          'A cláusula WITH (common table expression) dá nome a uma subquery para você usá-la pelo nome. Aqui, customer_spend é usada duas vezes: uma na query principal e outra dentro da subquery do AVG.',
       },
     ],
   },
@@ -319,13 +319,13 @@ const LESSONS: Lesson[] = [
 
 const TOTAL_ROWS = TABLES.reduce((sum, table) => sum + table.rowCount, 0);
 
-const HELP_TEXT = `Available commands:
-  SELECT ... FROM ...      run a query (single-table queries run live)
-  \\dt                      list the tables and their row counts
-  help                     show this message
-  clear                    clear the terminal
+const HELP_TEXT = `Comandos disponíveis:
+  SELECT ... FROM ...      roda uma query (queries de uma tabela rodam ao vivo)
+  \\dt                      lista as tabelas e quantas linhas cada uma tem
+  help                     mostra esta mensagem
+  clear                    limpa o terminal
 
-Try:
+Experimente:
   SELECT * FROM customers;
   SELECT name, price FROM products ORDER BY price DESC LIMIT 5;
   SELECT status, count(*) AS orders FROM orders GROUP BY status;`;
@@ -403,44 +403,44 @@ interface Challenge {
 const CHALLENGES: Challenge[] = [
   {
     id: 'uk-customers',
-    question: 'List the names of every customer in the UK, alphabetically.',
+    question: 'Liste os nomes de todos os clientes do Reino Unido (UK), em ordem alfabética.',
     solution: "SELECT name FROM customers WHERE country = 'UK' ORDER BY name",
   },
   {
     id: 'top-3-expensive',
-    question: 'Show the 3 most expensive products (name and price), most expensive first.',
+    question: 'Mostre os 3 produtos mais caros (name e price), do mais caro para o mais barato.',
     solution: 'SELECT name, price FROM products ORDER BY price DESC LIMIT 3',
   },
   {
     id: 'delivered-count',
-    question: "How many orders have the status 'delivered'?",
+    question: "Quantos pedidos têm o status 'delivered'?",
     solution: "SELECT count(*) FROM orders WHERE status = 'delivered'",
   },
   {
     id: 'category-stats',
     question:
-      'For each product category, show the count of products and the average price rounded to 2 decimals — highest average first.',
+      'Para cada categoria de produto, mostre a quantidade de produtos e o preço médio arredondado para 2 casas, da maior média para a menor.',
     solution:
       'SELECT category, count(*) AS n, round(avg(price),2) AS avg_price FROM products GROUP BY category ORDER BY avg_price DESC',
   },
   {
     id: 'cheap-products',
-    question: 'Which products cost less than $20? Show name and price, cheapest first.',
+    question: 'Quais produtos custam menos de $20? Mostre name e price, do mais barato para o mais caro.',
     solution: 'SELECT name, price FROM products WHERE price < 20 ORDER BY price',
   },
   {
     id: 'products-per-category',
-    question: 'How many products are in each category? Most products first.',
+    question: 'Quantos produtos há em cada categoria? Da maior quantidade para a menor.',
     solution: 'SELECT category, count(*) AS n FROM products GROUP BY category ORDER BY n DESC',
   },
   {
     id: 'cheapest-product',
-    question: 'Name the single cheapest product and its price.',
+    question: 'Diga qual é o produto mais barato e o preço dele.',
     solution: 'SELECT name, price FROM products ORDER BY price LIMIT 1',
   },
   {
     id: 'early-signups',
-    question: 'Which customers signed up before March 2025? Names, earliest first.',
+    question: 'Quais clientes se cadastraram antes de março de 2025? Nomes, do mais antigo para o mais recente.',
     solution: "SELECT name FROM customers WHERE signup_date < '2025-03-01' ORDER BY signup_date",
   },
 ];
@@ -458,7 +458,7 @@ function gradeChallenge(
     lines.push({ type: 'error', content: `ERROR:  ${userResult.error}`, timestamp: now() });
     lines.push({
       type: 'error',
-      content: "Not quite — that query didn't run. Fix the error and try again.",
+      content: 'Quase: essa query não rodou. Corrija o erro e tente de novo.',
       timestamp: now(),
     });
     return { lines, solved: false };
@@ -467,7 +467,7 @@ function gradeChallenge(
     lines.push({ type: 'output', content: userResult.command, timestamp: now() });
     lines.push({
       type: 'error',
-      content: 'Not quite — a challenge expects a SELECT query that returns rows.',
+      content: 'Quase: o desafio espera uma query SELECT que retorne linhas.',
       timestamp: now(),
     });
     return { lines, solved: false };
@@ -479,7 +479,7 @@ function gradeChallenge(
   if (resultsMatch(userResult, reference)) {
     lines.push({
       type: 'success',
-      content: 'Correct! Your result matches the reference solution.',
+      content: 'Correto! Seu resultado bate com a solução de referência.',
       timestamp: now(),
     });
     return { lines, solved: true };
@@ -488,7 +488,7 @@ function gradeChallenge(
   const expectedRows = 'rows' in reference ? reference.rows.length : 0;
   lines.push({
     type: 'error',
-    content: `Not quite — your result doesn't match. Expected ${expectedRows} row${expectedRows === 1 ? '' : 's'}.`,
+    content: `Quase: seu resultado não bate. Eram esperadas ${expectedRows} linha${expectedRows === 1 ? '' : 's'}.`,
     timestamp: now(),
   });
   return { lines, solved: false };
@@ -641,15 +641,15 @@ export default function SqlTerminalSimulator() {
               <Database className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// sql playground</p>
-              <h2 className="text-2xl font-bold md:text-3xl">SQL Terminal Simulator</h2>
+              <p className="font-mono text-xs text-muted-foreground">// playground de SQL</p>
+              <h2 className="text-2xl font-bold md:text-3xl">Simulador de terminal SQL</h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Practice SQL against a small e-commerce schema in a safe browser terminal. Single-table
-            queries run live; the guided join, subquery, window, and CTE lessons return real Postgres
-            output. Learn SELECT, WHERE, ORDER BY, DISTINCT, aggregates, GROUP BY, HAVING, JOINs,
-            LEFT JOIN, INSERT/UPDATE/DELETE, subqueries, window functions, and CTEs.
+            Pratique SQL num schema pequeno de e-commerce, num terminal seguro no navegador. Queries de uma
+            tabela rodam ao vivo; as lições guiadas de JOIN, subquery, window e CTE devolvem saída real do
+            Postgres. Aprenda SELECT, WHERE, ORDER BY, DISTINCT, agregações, GROUP BY, HAVING, JOINs,
+            LEFT JOIN, INSERT/UPDATE/DELETE, subqueries, window functions e CTEs.
           </p>
           <div className="mt-4 inline-flex rounded-md border bg-background p-1">
             <button
@@ -663,7 +663,7 @@ export default function SqlTerminalSimulator() {
               )}
             >
               <BookOpen className="h-4 w-4" />
-              Lessons
+              Lições
             </button>
             <button
               type="button"
@@ -676,7 +676,7 @@ export default function SqlTerminalSimulator() {
               )}
             >
               <Target className="h-4 w-4" />
-              Challenges
+              Desafio
             </button>
           </div>
         </div>
@@ -685,7 +685,7 @@ export default function SqlTerminalSimulator() {
           <CardContent className="space-y-3 p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">
-                {mode === 'lessons' ? 'Progress' : 'Challenges solved'}
+                {mode === 'lessons' ? 'Progresso' : 'Desafios resolvidos'}
               </span>
               <span className="text-sm text-muted-foreground">
                 {mode === 'lessons'
@@ -697,12 +697,12 @@ export default function SqlTerminalSimulator() {
               value={mode === 'lessons' ? progressPercentage : (solvedCount / CHALLENGES.length) * 100}
             />
             <div className="grid grid-cols-3 gap-2 text-center">
-              <Metric label="Tables" value={TABLES.length} />
-              <Metric label="Rows" value={TOTAL_ROWS} />
+              <Metric label="Tabelas" value={TABLES.length} />
+              <Metric label="Linhas" value={TOTAL_ROWS} />
               {mode === 'lessons' ? (
-                <Metric label="Lessons" value={LESSONS.length} />
+                <Metric label="Lições" value={LESSONS.length} />
               ) : (
-                <Metric label="Challenges" value={CHALLENGES.length} />
+                <Metric label="Desafios" value={CHALLENGES.length} />
               )}
             </div>
           </CardContent>
@@ -717,7 +717,7 @@ export default function SqlTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <BookOpen className="h-5 w-5" />
-                Lessons
+                Lições
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -762,7 +762,7 @@ export default function SqlTerminalSimulator() {
 
           <Button size="sm" variant="outline" onClick={resetLab} className="w-full">
             <RotateCcw className="mr-1 h-4 w-4" />
-            Reset lab
+            Reiniciar laboratório
           </Button>
         </div>
 
@@ -773,10 +773,10 @@ export default function SqlTerminalSimulator() {
                 <div>
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Badge variant="secondary">
-                      Lesson {currentLessonIndex + 1} / {LESSONS.length}
+                      Lição {currentLessonIndex + 1} / {LESSONS.length}
                     </Badge>
                     <Badge>
-                      Step {currentCommandIndex + 1} / {currentLesson.commands.length}
+                      Passo {currentCommandIndex + 1} / {currentLesson.commands.length}
                     </Badge>
                   </div>
                   <p className="text-sm font-medium sm:text-base">{currentCommand?.instruction}</p>
@@ -789,11 +789,11 @@ export default function SqlTerminalSimulator() {
                 <div className="flex shrink-0 gap-2">
                   <Button size="sm" variant="outline" onClick={() => setShowHint((value) => !value)}>
                     <Lightbulb className="mr-1 h-4 w-4" />
-                    Hint
+                    Dica
                   </Button>
                   <Button size="sm" onClick={runCurrentCommand}>
                     <Play className="mr-1 h-4 w-4" />
-                    Run
+                    Executar
                   </Button>
                 </div>
               </div>
@@ -824,9 +824,9 @@ export default function SqlTerminalSimulator() {
               >
                 {terminalHistory.length === 0 && (
                   <div className="mb-4 text-emerald-400">
-                    <p>Welcome to the SQL terminal playground (Postgres-style).</p>
+                    <p>Boas-vindas ao playground de terminal SQL (estilo Postgres).</p>
                     <p className="mt-2 text-muted-foreground">
-                      Type &quot;help&quot;, run &quot;\dt&quot; to see the tables, or follow the current task above.
+                      Digite &quot;help&quot;, rode &quot;\dt&quot; para ver as tabelas ou siga a tarefa atual acima.
                     </p>
                   </div>
                 )}
@@ -876,7 +876,7 @@ export default function SqlTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Target className="h-5 w-5" />
-                Challenges
+                Desafios
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -907,7 +907,7 @@ export default function SqlTerminalSimulator() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-semibold text-muted-foreground">
-                          Challenge {index + 1}
+                          Desafio {index + 1}
                         </p>
                         <p className="mt-0.5 text-sm">{challenge.question}</p>
                       </div>
@@ -920,7 +920,7 @@ export default function SqlTerminalSimulator() {
 
           <Button size="sm" variant="outline" onClick={resetChallenges} className="w-full">
             <RotateCcw className="mr-1 h-4 w-4" />
-            Reset challenges
+            Reiniciar desafios
           </Button>
         </div>
 
@@ -931,12 +931,12 @@ export default function SqlTerminalSimulator() {
                 <div>
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Badge variant="secondary">
-                      Challenge {activeChallenge + 1} / {CHALLENGES.length}
+                      Desafio {activeChallenge + 1} / {CHALLENGES.length}
                     </Badge>
                     {solvedChallenges.has(activeChallenge) && (
                       <Badge className="gap-1 bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/15">
                         <CheckCircle className="h-3.5 w-3.5" />
-                        Solved
+                        Resolvido
                       </Badge>
                     )}
                   </div>
@@ -944,13 +944,13 @@ export default function SqlTerminalSimulator() {
                     {CHALLENGES[activeChallenge].question}
                   </p>
                   <p className="mt-1.5 text-xs text-muted-foreground">
-                    Write your own SQL in the terminal below and press Enter. Your result is graded
-                    against the expected rows, ignoring column names.
+                    Escreva seu próprio SQL no terminal abaixo e aperte Enter. O resultado é comparado
+                    com as linhas esperadas, ignorando os nomes das colunas.
                   </p>
                   {revealed.has(activeChallenge) && (
                     <div className="mt-2 rounded-md border border-primary/30 bg-primary/10 p-2">
                       <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                        Reference solution
+                        Solução de referência
                       </p>
                       <code className="block whitespace-pre-wrap break-words font-mono text-xs text-foreground">
                         {CHALLENGES[activeChallenge].solution};
@@ -961,7 +961,7 @@ export default function SqlTerminalSimulator() {
                 <div className="flex shrink-0 gap-2">
                   <Button size="sm" variant="outline" onClick={revealSolution}>
                     <Lightbulb className="mr-1 h-4 w-4" />
-                    Show solution
+                    Mostrar solução
                   </Button>
                 </div>
               </div>
@@ -992,10 +992,10 @@ export default function SqlTerminalSimulator() {
               >
                 {challengeHistory.length === 0 && (
                   <div className="mb-4 text-emerald-400">
-                    <p>Challenge mode — write the SQL yourself.</p>
+                    <p>Modo desafio: escreva o SQL você mesmo.</p>
                     <p className="mt-2 text-muted-foreground">
-                      Type a query to answer the current challenge, run &quot;\dt&quot; to see the
-                      tables, or &quot;help&quot; for commands.
+                      Digite uma query para responder ao desafio atual, rode &quot;\dt&quot; para ver as
+                      tabelas ou &quot;help&quot; para ver os comandos.
                     </p>
                   </div>
                 )}
@@ -1079,18 +1079,18 @@ export default function SqlTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Terminal className="h-5 w-5" />
-                Cheat sheet
+                Cola rápida
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0 text-xs text-muted-foreground">
-              <p><code className="text-foreground">SELECT</code> columns to read</p>
-              <p><code className="text-foreground">WHERE</code> filters rows</p>
-              <p><code className="text-foreground">GROUP BY</code> + aggregates summarise</p>
-              <p><code className="text-foreground">HAVING</code> filters groups</p>
-              <p><code className="text-foreground">ORDER BY</code> / <code className="text-foreground">LIMIT</code> sort and cap</p>
-              <p><code className="text-foreground">JOIN</code> / <code className="text-foreground">LEFT JOIN</code> combine tables</p>
-              <p><code className="text-foreground">INSERT</code> / <code className="text-foreground">UPDATE</code> / <code className="text-foreground">DELETE</code> change data</p>
-              <p><code className="text-foreground">WITH</code> names a subquery (CTE)</p>
+              <p><code className="text-foreground">SELECT</code> colunas a ler</p>
+              <p><code className="text-foreground">WHERE</code> filtra linhas</p>
+              <p><code className="text-foreground">GROUP BY</code> + agregações resumem</p>
+              <p><code className="text-foreground">HAVING</code> filtra grupos</p>
+              <p><code className="text-foreground">ORDER BY</code> / <code className="text-foreground">LIMIT</code> ordenam e limitam</p>
+              <p><code className="text-foreground">JOIN</code> / <code className="text-foreground">LEFT JOIN</code> combinam tabelas</p>
+              <p><code className="text-foreground">INSERT</code> / <code className="text-foreground">UPDATE</code> / <code className="text-foreground">DELETE</code> alteram dados</p>
+              <p><code className="text-foreground">WITH</code> dá nome a uma subquery (CTE)</p>
             </CardContent>
           </Card>
         </div>
@@ -1102,16 +1102,16 @@ export default function SqlTerminalSimulator() {
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">Lab complete</p>
+                <p className="font-semibold">Laboratório concluído</p>
                 <p className="text-sm text-muted-foreground">
-                  You practiced the core SQL workflow from SELECT and WHERE all the way to LEFT JOINs,
-                  data changes, subqueries, window functions, and CTEs. Switch to Challenges to write
-                  queries from scratch.
+                  Você praticou o fluxo essencial de SQL, do SELECT e WHERE até LEFT JOINs,
+                  alteração de dados, subqueries, window functions e CTEs. Vá para o modo Desafio para escrever
+                  queries do zero.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetLab}>
-              Start over
+              Começar de novo
             </Button>
           </CardContent>
         </Card>
@@ -1123,15 +1123,15 @@ export default function SqlTerminalSimulator() {
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">All challenges solved</p>
+                <p className="font-semibold">Todos os desafios resolvidos</p>
                 <p className="text-sm text-muted-foreground">
-                  Nice work — you wrote every query yourself. Reset to practice again, or head back to
-                  the lessons.
+                  Mandou bem: você escreveu todas as queries sozinho. Reinicie para praticar de novo ou volte
+                  para as lições.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetChallenges}>
-              Reset challenges
+              Reiniciar desafios
             </Button>
           </CardContent>
         </Card>
