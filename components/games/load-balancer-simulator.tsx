@@ -36,36 +36,36 @@ const OFFLINE_COLOR = { bg: 'bg-gray-400', hex: '#9ca3af', dimHex: '#d1d5db' };
 const ALGORITHMS: Record<AlgorithmType, { name: string; description: string }> = {
   'round-robin': {
     name: 'Round Robin',
-    description: 'Sends requests to each server in order: 1 → 2 → 3 → 1 → 2 → 3...',
+    description: 'Envia as requisições para cada servidor em ordem: 1 → 2 → 3 → 1 → 2 → 3...',
   },
   'least-connections': {
     name: 'Least Connections',
-    description: 'Always sends to the server handling the fewest requests right now',
+    description: 'Sempre envia para o servidor que está atendendo menos requisições no momento',
   },
   'ip-hash': {
     name: 'IP Hash',
-    description: 'Same user always goes to the same server (sticky sessions)',
+    description: 'O mesmo usuário sempre vai para o mesmo servidor (sticky sessions)',
   },
   random: {
-    name: 'Random',
-    description: 'Randomly picks a server for each request',
+    name: 'Aleatório',
+    description: 'Escolhe um servidor ao acaso para cada requisição',
   },
 };
 
 // Traffic rate presets (ms between requests)
 const TRAFFIC_RATES = [
-  { label: 'Slow', value: 1200 },
+  { label: 'Lento', value: 1200 },
   { label: 'Normal', value: 600 },
-  { label: 'Fast', value: 300 },
-  { label: 'Burst', value: 150 },
+  { label: 'Rápido', value: 300 },
+  { label: 'Rajada', value: 150 },
 ];
 
 // Server failure rate presets (% chance of crash after accepting request)
 const FAILURE_RATES = [
-  { label: 'None', value: 0 },
-  { label: 'Low (5%)', value: 0.05 },
-  { label: 'Medium (15%)', value: 0.15 },
-  { label: 'High (30%)', value: 0.3 },
+  { label: 'Nenhuma', value: 0 },
+  { label: 'Baixa (5%)', value: 0.05 },
+  { label: 'Média (15%)', value: 0.15 },
+  { label: 'Alta (30%)', value: 0.3 },
 ];
 
 const MAX_RETRY_ATTEMPTS = 3;
@@ -77,9 +77,9 @@ export default function LoadBalancerSimulator() {
   const [failureRate, setFailureRate] = useState(0);
   const [enableRetry, setEnableRetry] = useState(true);
   const [servers, setServers] = useState<ServerState[]>([
-    { id: 1, name: 'Server 1', requests: 0, active: 0, healthy: true },
-    { id: 2, name: 'Server 2', requests: 0, active: 0, healthy: true },
-    { id: 3, name: 'Server 3', requests: 0, active: 0, healthy: true },
+    { id: 1, name: 'Servidor 1', requests: 0, active: 0, healthy: true },
+    { id: 2, name: 'Servidor 2', requests: 0, active: 0, healthy: true },
+    { id: 3, name: 'Servidor 3', requests: 0, active: 0, healthy: true },
   ]);
   const [packets, setPackets] = useState<RequestPacket[]>([]);
   const [roundRobinIndex, setRoundRobinIndex] = useState(0);
@@ -256,9 +256,9 @@ export default function LoadBalancerSimulator() {
   const reset = () => {
     setIsRunning(false);
     setServers([
-      { id: 1, name: 'Server 1', requests: 0, active: 0, healthy: true },
-      { id: 2, name: 'Server 2', requests: 0, active: 0, healthy: true },
-      { id: 3, name: 'Server 3', requests: 0, active: 0, healthy: true },
+      { id: 1, name: 'Servidor 1', requests: 0, active: 0, healthy: true },
+      { id: 2, name: 'Servidor 2', requests: 0, active: 0, healthy: true },
+      { id: 3, name: 'Servidor 3', requests: 0, active: 0, healthy: true },
     ]);
     setPackets([]);
     setRoundRobinIndex(0);
@@ -318,7 +318,7 @@ export default function LoadBalancerSimulator() {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center justify-between">
-            <span>Load Balancer Simulator</span>
+            <span>Simulador de Load Balancer</span>
             <div className="flex flex-col items-end text-xs font-normal text-muted-foreground">
               <span>{totalRequests} successful</span>
               {(crashedRequests > 0 || failedRequests > 0 || retriedRequests > 0) && (
@@ -341,11 +341,11 @@ export default function LoadBalancerSimulator() {
                 size="sm"
               >
                 {isRunning ? <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
-                {isRunning ? 'Stop' : 'Start'}
+                {isRunning ? 'Parar' : 'Iniciar'}
               </Button>
               <Button onClick={reset} variant="outline" size="sm">
                 <RotateCcw className="h-4 w-4 mr-1" />
-                Reset
+                Reiniciar
               </Button>
             </div>
 
@@ -380,7 +380,7 @@ export default function LoadBalancerSimulator() {
 
           {/* Failure Rate Controls */}
           <div className="flex flex-wrap gap-2 items-center justify-between">
-            <div className="text-sm font-medium">Server Failure Simulation:</div>
+            <div className="text-sm font-medium">Simulação de falha de servidor:</div>
             <div className="flex gap-1">
               {FAILURE_RATES.map((rate) => (
                 <Button
@@ -401,7 +401,7 @@ export default function LoadBalancerSimulator() {
                 size="sm"
                 className="text-xs"
               >
-                Retry: {enableRetry ? 'On' : 'Off'}
+                Retry: {enableRetry ? 'Ligado' : 'Desligado'}
               </Button>
             )}
           </div>
@@ -411,7 +411,7 @@ export default function LoadBalancerSimulator() {
             <span className="font-medium">{ALGORITHMS[algorithm].name}:</span>{' '}
             {ALGORITHMS[algorithm].description}
             <span className="block mt-1 text-xs opacity-75">
-              💡 Click servers to toggle offline • {failureRate > 0 ? `Simulating ${(failureRate * 100).toFixed(0)}% crash rate after accepting requests` : 'No crash simulation'}
+              💡 Clique nos servidores para tirá-los do ar • {failureRate > 0 ? `Simulando ${(failureRate * 100).toFixed(0)}% de chance de queda depois de aceitar a requisição` : 'Sem simulação de queda'}
             </span>
           </div>
 
@@ -457,7 +457,7 @@ export default function LoadBalancerSimulator() {
               <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center shadow-lg mx-auto border-4 border-white dark:border-slate-700">
                 <Users className="h-10 w-10 text-white" />
               </div>
-              <div className="mt-2 text-sm font-semibold">Users</div>
+              <div className="mt-2 text-sm font-semibold">Usuários</div>
             </div>
 
             {/* Load Balancer (Center) */}
@@ -476,7 +476,7 @@ export default function LoadBalancerSimulator() {
                   className="absolute text-center cursor-pointer group"
                   style={{ top: `${serverYPositions[idx]}%`, transform: 'translateY(-50%)', left: 0, right: 0 }}
                   onClick={() => toggleServerHealth(server.id)}
-                  title={`Click to ${server.healthy ? 'take offline' : 'bring online'}`}
+                  title={`Clique para ${server.healthy ? 'tirar do ar' : 'colocar no ar'}`}
                 >
                   <div
                     className={`w-20 h-20 rounded-xl flex items-center justify-center shadow-lg mx-auto border-4 transition-all
@@ -596,7 +596,7 @@ export default function LoadBalancerSimulator() {
                 >
                   {server.requests}
                 </div>
-                <div className="text-xs text-muted-foreground">requests handled</div>
+                <div className="text-xs text-muted-foreground">requisições atendidas</div>
               </div>
             ))}
           </div>
@@ -604,7 +604,7 @@ export default function LoadBalancerSimulator() {
           {/* Keyboard shortcuts hint */}
           <div className="hidden sm:flex items-center justify-center gap-2 text-xs opacity-70 pt-2">
             <Keyboard className="h-3 w-3" />
-            <span>Space start/stop · 1-4 algorithm · R reset</span>
+            <span>Espaço iniciar/parar · 1-4 algoritmo · R reiniciar</span>
           </div>
         </CardContent>
       </Card>

@@ -49,30 +49,30 @@ const EVICTION_POLICIES: Record<
   lru: {
     name: 'LRU',
     description: 'Least Recently Used',
-    shortDesc: 'Least Recent',
-    how: 'Removes the item accessed longest ago',
+    shortDesc: 'Menos recente',
+    how: 'Remove o item acessado há mais tempo',
   },
   fifo: {
     name: 'FIFO',
     description: 'First In, First Out',
-    shortDesc: 'First In, Out',
-    how: 'Removes the oldest item (like a queue)',
+    shortDesc: 'Primeiro a entrar',
+    how: 'Remove o item mais antigo (como uma fila)',
   },
   lfu: {
     name: 'LFU',
     description: 'Least Frequently Used',
-    shortDesc: 'Least Frequent',
-    how: 'Removes the least accessed item',
+    shortDesc: 'Menos frequente',
+    how: 'Remove o item menos acessado',
   },
 };
 
 const DATA_ITEMS = [
-  { key: 'A', label: 'User Profile', shortLabel: 'User', color: 'bg-blue-500' },
-  { key: 'B', label: 'Product List', shortLabel: 'Products', color: 'bg-green-500' },
-  { key: 'C', label: 'Settings', shortLabel: 'Settings', color: 'bg-purple-500' },
-  { key: 'D', label: 'Dashboard', shortLabel: 'Dash', color: 'bg-orange-500' },
-  { key: 'E', label: 'Messages', shortLabel: 'Msgs', color: 'bg-pink-500' },
-  { key: 'F', label: 'Analytics', shortLabel: 'Stats', color: 'bg-cyan-500' },
+  { key: 'A', label: 'Perfil do usuário', shortLabel: 'Perfil', color: 'bg-blue-500' },
+  { key: 'B', label: 'Lista de produtos', shortLabel: 'Produtos', color: 'bg-green-500' },
+  { key: 'C', label: 'Configurações', shortLabel: 'Config.', color: 'bg-purple-500' },
+  { key: 'D', label: 'Painel', shortLabel: 'Painel', color: 'bg-orange-500' },
+  { key: 'E', label: 'Mensagens', shortLabel: 'Msgs', color: 'bg-pink-500' },
+  { key: 'F', label: 'Analytics', shortLabel: 'Métricas', color: 'bg-cyan-500' },
 ];
 
 const CACHE_SIZE = 4;
@@ -177,10 +177,10 @@ export default function CachingSimulator() {
 
       if (isHit) {
         setRequestSteps([
-          { step: 1, label: 'Check cache for data', shortLabel: 'Check cache', status: 'active' },
+          { step: 1, label: 'Procurar o dado no cache', shortLabel: 'Ver cache', status: 'active' },
           {
             step: 2,
-            label: 'Return from cache',
+            label: 'Retornar do cache',
             shortLabel: 'Return',
             status: 'pending',
             time: cacheLatency,
@@ -189,10 +189,10 @@ export default function CachingSimulator() {
 
         setTimeout(() => {
           setRequestSteps([
-            { step: 1, label: 'Check cache for data', shortLabel: 'Found!', status: 'done' },
+            { step: 1, label: 'Procurar o dado no cache', shortLabel: 'Achou!', status: 'done' },
             {
               step: 2,
-              label: 'Found! Return from cache',
+              label: 'Achou! Retornar do cache',
               shortLabel: 'Return',
               status: 'active',
               time: cacheLatency,
@@ -223,30 +223,30 @@ export default function CachingSimulator() {
         }, 800);
       } else {
         setRequestSteps([
-          { step: 1, label: 'Check cache', shortLabel: 'Check', status: 'active' },
+          { step: 1, label: 'Ver o cache', shortLabel: 'Ver', status: 'active' },
           {
             step: 2,
-            label: 'Fetch from database',
-            shortLabel: 'Fetch DB',
+            label: 'Buscar no banco de dados',
+            shortLabel: 'Buscar no BD',
             status: 'pending',
             time: dbLatency,
           },
-          { step: 3, label: 'Store in cache', shortLabel: 'Store', status: 'pending' },
-          { step: 4, label: 'Return data', shortLabel: 'Return', status: 'pending' },
+          { step: 3, label: 'Guardar no cache', shortLabel: 'Guardar', status: 'pending' },
+          { step: 4, label: 'Retornar o dado', shortLabel: 'Retornar', status: 'pending' },
         ]);
 
         setTimeout(() => {
           setRequestSteps([
-            { step: 1, label: 'Not found', shortLabel: 'Miss', status: 'done' },
+            { step: 1, label: 'Não encontrado', shortLabel: 'Miss', status: 'done' },
             {
               step: 2,
-              label: 'Fetching from database...',
+              label: 'Buscando no banco de dados...',
               shortLabel: 'Fetching...',
               status: 'active',
               time: dbLatency,
             },
-            { step: 3, label: 'Store in cache', shortLabel: 'Store', status: 'pending' },
-            { step: 4, label: 'Return data', shortLabel: 'Return', status: 'pending' },
+            { step: 3, label: 'Guardar no cache', shortLabel: 'Guardar', status: 'pending' },
+            { step: 4, label: 'Retornar o dado', shortLabel: 'Retornar', status: 'pending' },
           ]);
           setAnimation((prev) => prev && { ...prev, phase: 'miss-fetching' });
         }, 300);
@@ -256,34 +256,34 @@ export default function CachingSimulator() {
           if (itemToEvict) {
             setEvictingKey(itemToEvict.key);
             setRequestSteps([
-              { step: 1, label: 'Not found', shortLabel: 'Miss', status: 'done' },
+              { step: 1, label: 'Não encontrado', shortLabel: 'Miss', status: 'done' },
               {
                 step: 2,
-                label: 'Fetched from database',
-                shortLabel: 'Fetched',
+                label: 'Buscado no banco de dados',
+                shortLabel: 'Buscado',
                 status: 'done',
                 time: dbLatency,
               },
               {
                 step: 3,
-                label: `Evicting "${itemToEvict.key}"`,
-                shortLabel: `Evict ${itemToEvict.key}`,
+                label: `Removendo "${itemToEvict.key}"`,
+                shortLabel: `Remover ${itemToEvict.key}`,
                 status: 'active',
               },
-              { step: 4, label: 'Return data', shortLabel: 'Return', status: 'pending' },
+              { step: 4, label: 'Retornar o dado', shortLabel: 'Retornar', status: 'pending' },
             ]);
           } else {
             setRequestSteps([
-              { step: 1, label: 'Not found', shortLabel: 'Miss', status: 'done' },
+              { step: 1, label: 'Não encontrado', shortLabel: 'Miss', status: 'done' },
               {
                 step: 2,
-                label: 'Fetched from database',
-                shortLabel: 'Fetched',
+                label: 'Buscado no banco de dados',
+                shortLabel: 'Buscado',
                 status: 'done',
                 time: dbLatency,
               },
-              { step: 3, label: 'Storing in cache...', shortLabel: 'Storing', status: 'active' },
-              { step: 4, label: 'Return data', shortLabel: 'Return', status: 'pending' },
+              { step: 3, label: 'Guardando no cache...', shortLabel: 'Guardando', status: 'active' },
+              { step: 4, label: 'Retornar o dado', shortLabel: 'Retornar', status: 'pending' },
             ]);
           }
           setAnimation((prev) => prev && { ...prev, phase: 'storing' });
@@ -353,7 +353,7 @@ export default function CachingSimulator() {
         <CardHeader className="pb-2 sm:pb-3">
           <CardTitle className="text-base sm:text-lg flex items-center gap-2">
             <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
-            Eviction Policy
+            Política de remoção
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -394,10 +394,10 @@ export default function CachingSimulator() {
       <Card>
         <CardHeader className="pb-2 sm:pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base sm:text-lg">Cache Simulator</CardTitle>
+            <CardTitle className="text-base sm:text-lg">Simulador de Cache</CardTitle>
             <Button variant="outline" size="sm" onClick={reset} disabled={!!animation}>
               <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-              <span className="text-xs sm:text-sm">Reset</span>
+              <span className="text-xs sm:text-sm">Reiniciar</span>
             </Button>
           </div>
         </CardHeader>
@@ -405,7 +405,7 @@ export default function CachingSimulator() {
           {/* Request Buttons */}
           <div>
             <div className="text-xs sm:text-sm font-medium mb-2 text-muted-foreground">
-              Tap to request data:
+              Toque para pedir um dado:
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
               {DATA_ITEMS.map((item) => (
@@ -455,7 +455,7 @@ export default function CachingSimulator() {
                 <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
                   <Zap className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xs text-muted-foreground">Your App</span>
+                <span className="text-xs text-muted-foreground">Sua aplicação</span>
               </div>
 
               <ArrowDown className="h-4 w-4 text-muted-foreground" />
@@ -499,7 +499,7 @@ export default function CachingSimulator() {
                   <Database className="h-5 w-5 text-white" />
                 </div>
                 <div className="text-left">
-                  <span className="text-xs text-muted-foreground block">Database</span>
+                  <span className="text-xs text-muted-foreground block">Banco de dados</span>
                   <span className="text-[10px] text-red-500 font-medium">(50-200ms)</span>
                 </div>
               </div>
@@ -531,7 +531,7 @@ export default function CachingSimulator() {
                 <div className="w-12 h-12 bg-slate-600 rounded-lg flex items-center justify-center">
                   <Database className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-xs mt-1 text-muted-foreground">Database</span>
+                <span className="text-xs mt-1 text-muted-foreground">Banco de dados</span>
                 <span className="text-xs text-red-500 font-medium">50-200ms</span>
               </div>
 
@@ -573,7 +573,7 @@ export default function CachingSimulator() {
                 <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-xs mt-1 text-muted-foreground">Your App</span>
+                <span className="text-xs mt-1 text-muted-foreground">Sua aplicação</span>
               </div>
 
               {/* Desktop Animated Request */}
@@ -619,14 +619,14 @@ export default function CachingSimulator() {
                 <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500" />
                 <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500" />
               </div>
-              <span>Request Log</span>
+              <span>Log de requisições</span>
             </div>
 
             {requestSteps.length === 0 ? (
               <div className="text-slate-500 text-xs sm:text-sm">
                 <span className="text-green-400">$</span>{' '}
-                <span className="hidden sm:inline">Click a data item to see how caching works...</span>
-                <span className="sm:hidden">Tap an item above...</span>
+                <span className="hidden sm:inline">Clique em um item para ver como o cache funciona...</span>
+                <span className="sm:hidden">Toque em um item acima...</span>
               </div>
             ) : (
               <div className="space-y-1 sm:space-y-2">
@@ -684,7 +684,7 @@ export default function CachingSimulator() {
                         <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5" />
                         <span className="font-bold">HIT!</span>
                         <span className="text-green-300 text-[10px] sm:text-xs">
-                          {lastResult.time}ms <span className="hidden sm:inline">(~20x faster!)</span>
+                          {lastResult.time}ms <span className="hidden sm:inline">(~20x mais rápido!)</span>
                         </span>
                       </>
                     ) : (
@@ -694,7 +694,7 @@ export default function CachingSimulator() {
                         <span className="text-amber-300 text-[10px] sm:text-xs">
                           {lastResult.time}ms{' '}
                           <span className="hidden sm:inline">
-                            ("{lastResult.key}" now cached)
+                            ("{lastResult.key}" agora está no cache)
                           </span>
                         </span>
                       </>
@@ -735,22 +735,22 @@ export default function CachingSimulator() {
                 <div className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {hitRate}%
                 </div>
-                <div className="text-[10px] sm:text-xs text-muted-foreground">Hit Rate</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Hit rate</div>
               </div>
               <div className="text-center p-2 sm:p-3 bg-purple-500/10 rounded-lg">
                 <div className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">
                   {stats.totalTime}<span className="text-sm">ms</span>
                 </div>
-                <div className="text-[10px] sm:text-xs text-muted-foreground">Total Time</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Tempo total</div>
               </div>
             </div>
             {stats.hits + stats.misses > 0 && (
               <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-muted/50 rounded-lg">
-                <div className="text-xs sm:text-sm font-medium mb-2">Time Saved</div>
+                <div className="text-xs sm:text-sm font-medium mb-2">Tempo economizado</div>
                 <div className="space-y-1 sm:space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] sm:text-xs text-muted-foreground w-16 sm:w-24">
-                      With cache:
+                      Com cache:
                     </span>
                     <div className="flex-1 bg-muted rounded-full h-3 sm:h-4 overflow-hidden">
                       <motion.div
@@ -767,7 +767,7 @@ export default function CachingSimulator() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] sm:text-xs text-muted-foreground w-16 sm:w-24">
-                      Without:
+                      Sem cache:
                     </span>
                     <div className="flex-1 bg-muted rounded-full h-3 sm:h-4 overflow-hidden">
                       <div className="h-full bg-red-500 w-full" />
@@ -796,7 +796,7 @@ export default function CachingSimulator() {
           <CardContent>
             {cache.length === 0 ? (
               <p className="text-muted-foreground text-xs sm:text-sm text-center py-4">
-                Cache is empty
+                Cache vazio
               </p>
             ) : (
               <div className="space-y-1 sm:space-y-2">
@@ -822,7 +822,7 @@ export default function CachingSimulator() {
                       </div>
                       <div className="text-[10px] sm:text-xs text-muted-foreground">
                         <span className="hidden sm:inline">
-                          Accessed: {item.accessCount}x | Last: #{item.lastAccess} | Added: #
+                          Acessos: {item.accessCount}x | Último: #{item.lastAccess} | Inserido: #
                           {item.insertTime}
                         </span>
                         <span className="sm:hidden">
@@ -841,35 +841,35 @@ export default function CachingSimulator() {
       {/* Educational Section */}
       <Card>
         <CardHeader className="pb-2 sm:pb-3">
-          <CardTitle className="text-base sm:text-lg">Why Use Caching?</CardTitle>
+          <CardTitle className="text-base sm:text-lg">Por que usar cache?</CardTitle>
         </CardHeader>
         <CardContent className="text-xs sm:text-sm text-muted-foreground space-y-2 sm:space-y-3">
           <div className="grid grid-cols-2 gap-2 sm:gap-4">
             <div className="p-2 sm:p-3 bg-red-500/10 rounded-lg border border-red-500/20">
               <div className="font-medium text-red-600 dark:text-red-400 mb-1 text-xs sm:text-sm">
-                Without Cache
+                Sem cache
               </div>
               <p className="text-[10px] sm:text-sm">
                 <span className="hidden sm:inline">
-                  Every request goes to the database (50-200ms). Slow!
+                  Toda requisição vai ao banco de dados (50-200ms). Lento!
                 </span>
-                <span className="sm:hidden">Every request = slow DB call</span>
+                <span className="sm:hidden">Toda requisição = chamada lenta ao BD</span>
               </p>
             </div>
             <div className="p-2 sm:p-3 bg-green-500/10 rounded-lg border border-green-500/20">
               <div className="font-medium text-green-600 dark:text-green-400 mb-1 text-xs sm:text-sm">
-                With Cache
+                Com cache
               </div>
               <p className="text-[10px] sm:text-sm">
                 <span className="hidden sm:inline">
-                  Repeated requests return instantly (1-10ms). 20x faster!
+                  Requisições repetidas voltam na hora (1-10ms). 20x mais rápido!
                 </span>
-                <span className="sm:hidden">Repeat requests = instant!</span>
+                <span className="sm:hidden">Requisições repetidas = instantâneo!</span>
               </p>
             </div>
           </div>
           <p className="text-[10px] sm:text-sm">
-            The eviction policy decides what to remove when cache is full.
+            A política de remoção decide o que tirar quando o cache está cheio.
           </p>
         </CardContent>
       </Card>

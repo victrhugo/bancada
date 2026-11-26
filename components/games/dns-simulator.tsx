@@ -91,11 +91,11 @@ const DNS_DATABASE: Record<string, Record<RecordType, DnsRecord>> = {
 };
 
 const RECORD_TYPES: { type: RecordType; label: string; description: string }[] = [
-  { type: 'A', label: 'A', description: 'IPv4 Address' },
-  { type: 'AAAA', label: 'AAAA', description: 'IPv6 Address' },
-  { type: 'CNAME', label: 'CNAME', description: 'Alias' },
-  { type: 'MX', label: 'MX', description: 'Mail Server' },
-  { type: 'TXT', label: 'TXT', description: 'Text Record' },
+  { type: 'A', label: 'A', description: 'Endereço IPv4' },
+  { type: 'AAAA', label: 'AAAA', description: 'Endereço IPv6' },
+  { type: 'CNAME', label: 'CNAME', description: 'Apelido' },
+  { type: 'MX', label: 'MX', description: 'Servidor de e-mail' },
+  { type: 'TXT', label: 'TXT', description: 'Registro de texto' },
   { type: 'NS', label: 'NS', description: 'Nameserver' },
 ];
 
@@ -106,40 +106,40 @@ const LOCATIONS_INFO: Record<
   { name: string; icon: React.ElementType; color: string; description: string }
 > = {
   browser: {
-    name: 'Browser',
+    name: 'Navegador',
     icon: Globe,
     color: 'text-blue-500',
-    description: 'Your web browser checks its internal DNS cache first',
+    description: 'Seu navegador verifica primeiro o próprio cache de DNS',
   },
   os: {
-    name: 'OS Cache',
+    name: 'Cache do SO',
     icon: HardDrive,
     color: 'text-purple-500',
-    description: 'Operating system maintains a local DNS cache',
+    description: 'O sistema operacional mantém um cache de DNS local',
   },
   resolver: {
     name: 'DNS Resolver',
     icon: Wifi,
     color: 'text-indigo-500',
-    description: 'Your ISP or DNS provider (like 8.8.8.8)',
+    description: 'Seu provedor de internet ou de DNS (como 8.8.8.8)',
   },
   root: {
-    name: 'Root Server',
+    name: 'Servidor raiz',
     icon: Server,
     color: 'text-slate-500',
-    description: 'One of 13 root server clusters worldwide',
+    description: 'Um dos 13 grupos de servidores raiz do mundo',
   },
   tld: {
-    name: 'TLD Server',
+    name: 'Servidor de TLD',
     icon: Server,
     color: 'text-cyan-500',
-    description: 'Manages .com, .org, .net domains',
+    description: 'Gerencia os domínios .com, .org e .net',
   },
   authoritative: {
-    name: 'Auth Server',
+    name: 'Servidor autoritativo',
     icon: Database,
     color: 'text-green-500',
-    description: 'Has the actual DNS record for this domain',
+    description: 'Guarda o registro DNS de fato deste domínio',
   },
 };
 
@@ -164,12 +164,12 @@ function generateSteps(
   const browserHit = browserEntry && browserEntry.expiresAt > now;
   steps.push({
     id: stepId++,
-    title: 'Check Browser Cache',
-    shortTitle: 'Browser',
+    title: 'Verificar o cache do navegador',
+    shortTitle: 'Navegador',
     location: 'browser',
     explanation: browserHit
-      ? `Found ${domain} in browser cache! This is the fastest lookup because the data is already in your browser's memory.`
-      : `${domain} not found in browser cache. The browser stores recent DNS lookups to avoid repeated queries.`,
+      ? `${domain} encontrado no cache do navegador! Esta é a consulta mais rápida, porque o dado já está na memória do navegador.`
+      : `${domain} não está no cache do navegador. O navegador guarda consultas DNS recentes para evitar repetições.`,
     isCacheCheck: true,
     cacheHit: browserHit,
     latency: 1,
@@ -181,12 +181,12 @@ function generateSteps(
   const osHit = osEntry && osEntry.expiresAt > now;
   steps.push({
     id: stepId++,
-    title: 'Check OS Cache',
-    shortTitle: 'OS',
+    title: 'Verificar o cache do SO',
+    shortTitle: 'SO',
     location: 'os',
     explanation: osHit
-      ? `Found in OS cache! Your operating system caches DNS to speed up all applications.`
-      : `Not in OS cache either. Now we need to ask an external DNS resolver.`,
+      ? `Encontrado no cache do SO! O sistema operacional guarda DNS em cache para acelerar todos os aplicativos.`
+      : `Também não está no cache do SO. Agora é preciso perguntar a um resolver DNS externo.`,
     isCacheCheck: true,
     cacheHit: osHit,
     latency: 2,
@@ -198,12 +198,12 @@ function generateSteps(
   const resolverHit = resolverEntry && resolverEntry.expiresAt > now;
   steps.push({
     id: stepId++,
-    title: 'Query DNS Resolver',
+    title: 'Consultar o resolver DNS',
     shortTitle: 'Resolver',
     location: 'resolver',
     explanation: resolverHit
-      ? `The DNS resolver (like Google's 8.8.8.8) had it cached. This saved us a full lookup!`
-      : `Resolver doesn't have it cached. Now it will traverse the DNS hierarchy for us.`,
+      ? `O resolver DNS (como o 8.8.8.8 do Google) tinha a resposta em cache. Isso poupou uma consulta completa!`
+      : `O resolver não tem a resposta em cache. Agora ele vai percorrer a hierarquia do DNS por nós.`,
     isCacheCheck: true,
     cacheHit: resolverHit,
     latency: 15,
@@ -214,10 +214,10 @@ function generateSteps(
   const tld = domain.split('.').pop() || 'com';
   steps.push({
     id: stepId++,
-    title: 'Ask Root DNS Server',
-    shortTitle: 'Root',
+    title: 'Perguntar ao servidor DNS raiz',
+    shortTitle: 'Raiz',
     location: 'root',
-    explanation: `The resolver asks one of 13 root server clusters: "Who handles .${tld} domains?" Root servers are the top of the DNS hierarchy.`,
+    explanation: `O resolver pergunta a um dos 13 grupos de servidores raiz: "Quem cuida dos domínios .${tld}?" Os servidores raiz são o topo da hierarquia do DNS.`,
     isCacheCheck: false,
     latency: 30,
   });
@@ -225,10 +225,10 @@ function generateSteps(
   // Step 5: TLD server
   steps.push({
     id: stepId++,
-    title: `Query .${tld} TLD Server`,
+    title: `Consultar o servidor de TLD .${tld}`,
     shortTitle: 'TLD',
     location: 'tld',
-    explanation: `The TLD server for .${tld} responds: "${domain} is managed by these nameservers." TLD servers know which servers are authoritative for each domain.`,
+    explanation: `O servidor de TLD do .${tld} responde: "${domain} é gerenciado por estes nameservers." Os servidores de TLD sabem quais servidores são autoritativos para cada domínio.`,
     isCacheCheck: false,
     latency: 25,
   });
@@ -237,12 +237,12 @@ function generateSteps(
   const record = DNS_DATABASE[domain]?.[recordType];
   steps.push({
     id: stepId++,
-    title: 'Query Authoritative Server',
+    title: 'Consultar o servidor autoritativo',
     shortTitle: 'Auth',
     location: 'authoritative',
     explanation: record
-      ? `Found it! The authoritative server has the actual ${recordType} record: ${record.value}`
-      : `The authoritative server doesn't have a ${recordType} record for ${domain}.`,
+      ? `Encontrado! O servidor autoritativo tem o registro ${recordType} de fato: ${record.value}`
+      : `O servidor autoritativo não tem um registro ${recordType} para ${domain}.`,
     isCacheCheck: false,
     latency: 20,
   });
@@ -397,12 +397,12 @@ export default function DnsSimulator() {
         <CardHeader className="pb-2 sm:pb-3">
           <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <Globe className="h-5 w-5 text-blue-500" />
-            DNS Resolution Simulator
+            Simulador de Resolução DNS
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-xs text-muted-foreground sm:text-sm">
-            Watch step-by-step how your browser resolves domain names to IP addresses
+            Veja, passo a passo, como o navegador transforma nomes de domínio em endereços IP
           </p>
         </CardContent>
       </Card>
@@ -411,7 +411,7 @@ export default function DnsSimulator() {
       <div className="grid gap-4 sm:grid-cols-2">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm sm:text-base">Domain</CardTitle>
+            <CardTitle className="text-sm sm:text-base">Domínio</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-1.5">
@@ -433,7 +433,7 @@ export default function DnsSimulator() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm sm:text-base">Record Type</CardTitle>
+            <CardTitle className="text-sm sm:text-base">Tipo de registro</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-1.5">
@@ -464,7 +464,7 @@ export default function DnsSimulator() {
             {!isRunning && !isComplete && (
               <Button onClick={runLookup} className="flex-1 sm:flex-none">
                 <Play className="mr-2 h-4 w-4" />
-                Start Lookup
+                Iniciar consulta
               </Button>
             )}
 
@@ -475,7 +475,7 @@ export default function DnsSimulator() {
                   className="flex-1 sm:flex-none"
                 >
                   <ChevronRight className="mr-2 h-4 w-4" />
-                  Next Step
+                  Próximo passo
                 </Button>
                 <Button
                   variant="outline"
@@ -491,7 +491,7 @@ export default function DnsSimulator() {
             {isComplete && (
               <Button onClick={runLookup} variant="outline" className="flex-1 sm:flex-none">
                 <Play className="mr-2 h-4 w-4" />
-                Run Again
+                Rodar de novo
               </Button>
             )}
 
@@ -509,10 +509,10 @@ export default function DnsSimulator() {
             <div className="ml-auto hidden items-center gap-1.5 text-xs text-muted-foreground lg:flex">
               <Keyboard className="h-3 w-3" />
               <span>
-                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">Space</kbd> start,{' '}
-                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">→</kbd> next,{' '}
-                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">←</kbd> back,{' '}
-                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">R</kbd> reset
+                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">Espaço</kbd> iniciar,{' '}
+                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">→</kbd> avançar,{' '}
+                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">←</kbd> voltar,{' '}
+                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">R</kbd> reiniciar
               </span>
             </div>
           </div>
@@ -529,7 +529,7 @@ export default function DnsSimulator() {
               </span>
               {isComplete && (
                 <span className="flex items-center gap-1 text-green-600">
-                  <CheckCircle className="h-3 w-3" /> Complete
+                  <CheckCircle className="h-3 w-3" /> Concluído
                 </span>
               )}
             </div>
@@ -548,7 +548,7 @@ export default function DnsSimulator() {
         <CardHeader className="p-3 pb-2 sm:p-6 sm:pb-2">
           <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
             <Server className="h-4 w-4 text-cyan-500" />
-            DNS Resolution Path
+            Caminho da resolução DNS
           </CardTitle>
         </CardHeader>
         <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
@@ -650,7 +650,7 @@ export default function DnsSimulator() {
               <CardContent className="pt-4">
                 <div className="text-center">
                   <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
-                  <h3 className="mt-2 text-xl font-bold">DNS Lookup Complete!</h3>
+                  <h3 className="mt-2 text-xl font-bold">Consulta DNS concluída!</h3>
                   <p className="mt-1 text-muted-foreground">
                     {record ? (
                       <>
@@ -660,12 +660,12 @@ export default function DnsSimulator() {
                         </code>
                       </>
                     ) : (
-                      'No record found'
+                      'Nenhum registro encontrado'
                     )}
                   </p>
                   <div className="mt-4 flex justify-center gap-4 text-sm">
                     <span>
-                      Total time:{' '}
+                      Tempo total:{' '}
                       <strong>{steps.reduce((sum, s) => sum + s.latency, 0)}ms</strong>
                     </span>
                     {record && (
@@ -676,7 +676,7 @@ export default function DnsSimulator() {
                   </div>
                   <Button onClick={handleReset} variant="outline" className="mt-4">
                     <RotateCcw className="mr-2 h-4 w-4" />
-                    New Lookup
+                    Nova consulta
                   </Button>
                 </div>
               </CardContent>
@@ -691,26 +691,26 @@ export default function DnsSimulator() {
           <CardHeader className="pb-2">
             <CardTitle className="flex flex-wrap items-center gap-2 text-sm sm:text-base">
               <Database className="h-4 w-4 text-purple-500" />
-              DNS Caches
+              Caches de DNS
               <span className="hidden text-xs font-normal text-muted-foreground sm:inline">
-                (run the same query again to see a cache hit!)
+                (rode a mesma consulta de novo para ver um cache hit!)
               </span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="mb-2 text-xs text-muted-foreground sm:hidden">
-              Run the same query again to see a cache hit!
+              Rode a mesma consulta de novo para ver um cache hit!
             </p>
             <div className="grid grid-cols-3 gap-2 text-xs sm:text-sm">
               {[
-                { name: 'Browser', cache: browserCache, color: 'blue' },
-                { name: 'OS', cache: osCache, color: 'purple' },
+                { name: 'Navegador', cache: browserCache, color: 'blue' },
+                { name: 'SO', cache: osCache, color: 'purple' },
                 { name: 'Resolver', cache: resolverCache, color: 'indigo' },
               ].map(({ name, cache }) => (
                 <div key={name} className="rounded-lg border bg-muted/30 p-1.5 sm:p-2">
                   <div className="mb-1 text-[10px] font-medium sm:text-xs">{name}</div>
                   {cache.size === 0 ? (
-                    <span className="text-[10px] text-muted-foreground sm:text-xs">Empty</span>
+                    <span className="text-[10px] text-muted-foreground sm:text-xs">Vazio</span>
                   ) : (
                     Array.from(cache.entries()).map(([key, entry]) => (
                       <div key={key} className="truncate text-[10px] text-muted-foreground sm:text-xs">
@@ -732,15 +732,15 @@ export default function DnsSimulator() {
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-lg font-bold sm:text-2xl">{stats.queries}</div>
-                <div className="text-xs text-muted-foreground">Queries</div>
+                <div className="text-xs text-muted-foreground">Consultas</div>
               </div>
               <div>
                 <div className="text-lg font-bold text-green-500 sm:text-2xl">{stats.cacheHits}</div>
-                <div className="text-xs text-muted-foreground">Cache Hits</div>
+                <div className="text-xs text-muted-foreground">Cache hits</div>
               </div>
               <div>
                 <div className="text-lg font-bold sm:text-2xl">{stats.totalTime}ms</div>
-                <div className="text-xs text-muted-foreground">Total Time</div>
+                <div className="text-xs text-muted-foreground">Tempo total</div>
               </div>
             </div>
           </CardContent>
@@ -750,19 +750,19 @@ export default function DnsSimulator() {
       {/* Educational Footer */}
       <Card>
         <CardContent className="p-3 sm:pt-4">
-          <h3 className="mb-2 text-sm font-semibold sm:mb-3 sm:text-base">💡 Key Takeaways</h3>
+          <h3 className="mb-2 text-sm font-semibold sm:mb-3 sm:text-base">💡 Principais lições</h3>
           <ul className="space-y-1.5 text-xs text-muted-foreground sm:space-y-2 sm:text-sm">
             <li>
-              <strong className="text-foreground">DNS is hierarchical:</strong> Your query travels
-              through multiple levels (browser → OS → resolver → root → TLD → authoritative).
+              <strong className="text-foreground">O DNS é hierárquico:</strong> sua consulta passa
+              por vários níveis (navegador → SO → resolver → raiz → TLD → autoritativo).
             </li>
             <li>
-              <strong className="text-foreground">Caching speeds things up:</strong> Each level can
-              cache results. A cache hit avoids the full lookup chain.
+              <strong className="text-foreground">O cache acelera tudo:</strong> cada nível pode
+              guardar resultados. Um cache hit evita a cadeia completa de consultas.
             </li>
             <li>
-              <strong className="text-foreground">TTL controls freshness:</strong> Records expire
-              after their TTL. Lower TTL = fresher data, but more lookups.
+              <strong className="text-foreground">O TTL controla a atualização:</strong> os registros
+              expiram depois do TTL. TTL menor = dados mais atuais, porém mais consultas.
             </li>
           </ul>
         </CardContent>
