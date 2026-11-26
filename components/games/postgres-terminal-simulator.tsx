@@ -404,160 +404,160 @@ function commandMatches(cmd: string, expected: string | string[]): boolean {
 const LESSONS: Lesson[] = [
   {
     id: 'explore',
-    title: 'Explore the database',
-    description: 'List tables and inspect a table with psql meta-commands',
+    title: 'Explore o banco de dados',
+    description: 'Liste as tabelas e inspecione uma tabela com os meta-comandos do psql',
     icon: <Table2 className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'List every table in the current database.',
-        hint: 'Use the psql meta-command "\\dt".',
+        instruction: 'Liste todas as tabelas do banco atual.',
+        hint: 'Use o meta-comando do psql "\\dt".',
         expectedCommand: '\\dt',
         explanation:
-          '\\dt lists relations of type table. Meta-commands start with a backslash and are handled by psql itself, not sent to the server as SQL.',
+          'O \\dt lista as relações do tipo tabela. Meta-comandos começam com barra invertida e são tratados pelo próprio psql, sem ir ao servidor como SQL.',
       },
       {
-        instruction: 'Describe the customers table to see its columns and indexes.',
+        instruction: 'Descreva a tabela customers para ver as colunas e os índices.',
         hint: 'Use "\\d customers".',
         expectedCommand: '\\d customers',
         explanation:
-          '\\d NAME shows columns, types, nullability, defaults, and indexes. The customers_pkey line is the primary-key index Postgres created automatically.',
+          'O \\d NOME mostra colunas, tipos, se aceita nulo, valores padrão e índices. A linha customers_pkey é o índice da primary key que o Postgres criou automaticamente.',
       },
     ],
   },
   {
     id: 'query',
-    title: 'Run a query',
-    description: 'Count rows and read a small result set',
+    title: 'Rode uma query',
+    description: 'Conte linhas e leia um resultado pequeno',
     icon: <Terminal className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Count how many rows are in the orders table.',
-        hint: 'Run "SELECT count(*) FROM orders;" (SQL statements end with a semicolon).',
+        instruction: 'Conte quantas linhas há na tabela orders.',
+        hint: 'Rode "SELECT count(*) FROM orders;" (comandos SQL terminam com ponto e vírgula).',
         expectedCommand: 'SELECT count(*) FROM orders;',
         explanation:
-          'count(*) returns the number of rows. Unlike meta-commands, this is real SQL sent to the server, and psql renders the result in its aligned format.',
+          'O count(*) devolve o número de linhas. Diferente dos meta-comandos, isso é SQL de verdade enviado ao servidor, e o psql mostra o resultado no formato alinhado.',
       },
     ],
   },
   {
     id: 'indexes',
-    title: 'List the indexes',
-    description: 'See which indexes exist before you add one',
+    title: 'Liste os índices',
+    description: 'Veja quais índices existem antes de criar um',
     icon: <KeyRound className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'List all indexes in the database.',
+        instruction: 'Liste todos os índices do banco.',
         hint: 'Use "\\di".',
         expectedCommand: '\\di',
         explanation:
-          'Right now every index is a *_pkey created for a primary key. There is no index on big_events.user_id yet, which is exactly why the next query is slow.',
+          'Por enquanto, todo índice é um *_pkey criado para uma primary key. Ainda não há índice em big_events.user_id, e é exatamente por isso que a próxima query é lenta.',
       },
     ],
   },
   {
     id: 'explain-seq',
-    title: 'EXPLAIN a filter',
-    description: 'Watch Postgres pick a sequential scan',
+    title: 'EXPLAIN de um filtro',
+    description: 'Veja o Postgres escolher um sequential scan',
     icon: <Search className="h-5 w-5" />,
     commands: [
       {
         instruction:
-          'Ask the planner how it would run a filter on big_events (200,000 rows) with no useful index.',
+          'Pergunte ao planner como ele rodaria um filtro em big_events (200.000 linhas) sem nenhum índice útil.',
         hint: 'Run "EXPLAIN SELECT * FROM big_events WHERE user_id = 42;".',
         expectedCommand: 'EXPLAIN SELECT * FROM big_events WHERE user_id = 42;',
         explanation:
-          'With no index on user_id, the planner chooses a Seq Scan: it reads all 200,000 rows and filters. Note the estimated total cost of 3971.00.',
+          'Sem índice em user_id, o planner escolhe um Seq Scan: lê as 200.000 linhas e filtra. Repare no custo total estimado de 3971.00.',
       },
     ],
   },
   {
     id: 'create-index',
-    title: 'Create an index',
-    description: 'Add a B-tree index on the filtered column',
+    title: 'Crie um índice',
+    description: 'Adicione um índice B-tree na coluna filtrada',
     icon: <PlusCircle className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Create a B-tree index on big_events.user_id.',
+        instruction: 'Crie um índice B-tree em big_events.user_id.',
         hint: 'Run "CREATE INDEX idx_big_events_user ON big_events(user_id);".',
         expectedCommand: [
           'CREATE INDEX idx_big_events_user ON big_events(user_id);',
           'CREATE INDEX idx_big_events_user ON big_events (user_id);',
         ],
         explanation:
-          'CREATE INDEX builds a B-tree keyed on user_id. The server replies "CREATE INDEX". The planner can now look rows up instead of scanning the whole table.',
+          'O CREATE INDEX monta uma B-tree com chave em user_id. O servidor responde "CREATE INDEX". Agora o planner consegue buscar as linhas em vez de varrer a tabela inteira.',
       },
     ],
   },
   {
     id: 'explain-index',
-    title: 'EXPLAIN again',
-    description: 'Compare the plan once the index exists',
+    title: 'EXPLAIN de novo',
+    description: 'Compare o plano agora que o índice existe',
     icon: <Gauge className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Run the exact same EXPLAIN again now that the index exists.',
+        instruction: 'Rode exatamente o mesmo EXPLAIN de novo, agora com o índice.',
         hint: 'Run "EXPLAIN SELECT * FROM big_events WHERE user_id = 42;" once more.',
         expectedCommand: 'EXPLAIN SELECT * FROM big_events WHERE user_id = 42;',
         explanation:
-          'Same query, different plan: a Bitmap Index Scan feeds a Bitmap Heap Scan. Estimated cost drops from 3971.00 to 145.32, roughly a 27x improvement.',
+          'Mesma query, plano diferente: um Bitmap Index Scan alimenta um Bitmap Heap Scan. O custo estimado cai de 3971.00 para 145.32, uma melhora de cerca de 27x.',
       },
     ],
   },
   {
     id: 'explain-analyze',
     title: 'EXPLAIN ANALYZE',
-    description: 'Actually run the query and read real row counts',
+    description: 'Rode a query de verdade e leia a contagem real de linhas',
     icon: <Timer className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Use EXPLAIN ANALYZE to run the query and see estimated vs. actual work.',
+        instruction: 'Use EXPLAIN ANALYZE para rodar a query e comparar o trabalho estimado com o real.',
         hint: 'Run "EXPLAIN ANALYZE SELECT count(*) FROM big_events WHERE user_id = 42;".',
         expectedCommand: 'EXPLAIN ANALYZE SELECT count(*) FROM big_events WHERE user_id = 42;',
         explanation:
-          'EXPLAIN ANALYZE executes the query and reports actual rows. With the index, the scan touches ~50 rows instead of removing 199,950 with a filter.',
+          'O EXPLAIN ANALYZE executa a query e informa as linhas reais. Com o índice, o scan toca ~50 linhas em vez de descartar 199.950 com um filtro.',
       },
     ],
   },
   {
     id: 'transactions',
-    title: 'Transactions',
-    description: 'BEGIN, DELETE, and safely ROLLBACK',
+    title: 'Transações',
+    description: 'BEGIN, DELETE e ROLLBACK com segurança',
     icon: <History className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Open a transaction so you can undo changes.',
-        hint: 'Run "BEGIN;". Notice the prompt changes to shop=*#.',
+        instruction: 'Abra uma transação para poder desfazer as mudanças.',
+        hint: 'Rode "BEGIN;". Repare que o prompt muda para shop=*#.',
         expectedCommand: 'BEGIN;',
         explanation:
-          'BEGIN starts a transaction block. The prompt changes to shop=*# to show you are inside an open transaction that is not yet committed.',
+          'O BEGIN inicia um bloco de transação. O prompt muda para shop=*# para mostrar que você está numa transação aberta, ainda sem commit.',
       },
       {
-        instruction: 'Delete the cancelled orders inside the transaction.',
+        instruction: 'Apague os pedidos cancelados dentro da transação.',
         hint: "Run \"DELETE FROM orders WHERE status = 'cancelled';\".",
         expectedCommand: "DELETE FROM orders WHERE status = 'cancelled';",
         explanation:
-          'DELETE removes matching rows and reports "DELETE 2". Because you are in a transaction, this change is not permanent until you COMMIT.',
+          'O DELETE remove as linhas que batem e responde "DELETE 2". Como você está numa transação, a mudança só fica permanente depois do COMMIT.',
       },
       {
-        instruction: 'Confirm the row count dropped inside the transaction.',
-        hint: 'Run "SELECT count(*) FROM orders;" again.',
+        instruction: 'Confirme que a contagem de linhas caiu dentro da transação.',
+        hint: 'Rode "SELECT count(*) FROM orders;" de novo.',
         expectedCommand: 'SELECT count(*) FROM orders;',
         explanation:
-          'Inside the transaction the count is now 10. Your session sees its own uncommitted changes, but other sessions still see 12.',
+          'Dentro da transação, a contagem agora é 10. Sua sessão vê as próprias mudanças sem commit, mas as outras sessões ainda veem 12.',
       },
       {
-        instruction: 'Undo everything with a rollback.',
+        instruction: 'Desfaça tudo com um rollback.',
         hint: 'Run "ROLLBACK;".',
         expectedCommand: 'ROLLBACK;',
         explanation:
-          'ROLLBACK discards every change made in the transaction and ends it. The prompt returns to shop=#. COMMIT instead would have kept the delete.',
+          'O ROLLBACK descarta todas as mudanças da transação e a encerra. O prompt volta a shop=#. Um COMMIT, ao contrário, teria mantido o delete.',
       },
       {
-        instruction: 'Verify the rollback restored the deleted rows.',
-        hint: 'Run "SELECT count(*) FROM orders;" one last time.',
+        instruction: 'Confira que o rollback trouxe de volta as linhas apagadas.',
+        hint: 'Rode "SELECT count(*) FROM orders;" uma última vez.',
         expectedCommand: 'SELECT count(*) FROM orders;',
         explanation:
-          'The count is back to 12. ROLLBACK is your safety net: wrap risky changes in a transaction and you can always undo before committing.',
+          'A contagem voltou a 12. O ROLLBACK é sua rede de segurança: coloque mudanças arriscadas numa transação e você sempre pode desfazer antes do commit.',
       },
     ],
   },
@@ -608,7 +608,7 @@ export default function PostgresTerminalSimulator() {
         }
         if (metaKey === '\\?') return { output: HELP_BACKSLASH };
         if (metaKey === '\\q') {
-          return { output: 'This is a browser lab, so there is nothing to quit. Use "Reset lab" to start over.' };
+          return { output: 'Este é um laboratório no navegador, então não há o que encerrar. Use "Reiniciar laboratório" para começar de novo.' };
         }
         return { output: `invalid command ${base}. Try \\? for help.`, type: 'error' };
       }
@@ -631,7 +631,7 @@ export default function PostgresTerminalSimulator() {
       if (lower.startsWith('explain')) {
         const referencesBigEvents = lower.includes('big_events') && lower.includes('user_id');
         if (!referencesBigEvents) {
-          return { output: 'ERROR:  relation referenced in this lab is only big_events; try the EXPLAIN in the lesson.', type: 'error' };
+          return { output: 'ERROR:  neste laboratório, a única relação disponível é big_events; tente o EXPLAIN da lição.', type: 'error' };
         }
         if (lower.startsWith('explain analyze')) {
           return { output: pgState.indexCreated ? EXPLAIN_ANALYZE_BITMAP : EXPLAIN_ANALYZE_SEQ };
@@ -752,14 +752,14 @@ export default function PostgresTerminalSimulator() {
               <Database className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// psql lab</p>
-              <h2 className="text-2xl font-bold md:text-3xl">PostgreSQL Terminal Simulator</h2>
+              <p className="font-mono text-xs text-muted-foreground">// laboratório de psql</p>
+              <h2 className="text-2xl font-bold md:text-3xl">Simulador de terminal PostgreSQL</h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Practice the psql tool and Postgres engine in a safe browser lab. Explore with
-            meta-commands, read real EXPLAIN plans, add an index and watch a sequential scan become a
-            bitmap index scan, then wrap changes in a transaction and roll them back.
+            Pratique o psql e o engine do Postgres num laboratório seguro no navegador. Explore com
+            meta-comandos, leia planos reais de EXPLAIN, crie um índice e veja um sequential scan virar um
+            bitmap index scan; depois, coloque mudanças numa transação e desfaça com rollback.
           </p>
         </div>
 
@@ -773,9 +773,9 @@ export default function PostgresTerminalSimulator() {
             </div>
             <Progress value={progressPercentage} />
             <div className="grid grid-cols-3 gap-2 text-center">
-              <Metric label="Tables" value={TABLES.length} />
-              <Metric label="Indexes" value={indexNames.length} />
-              <Metric label="Orders" value={pgState.ordersCount} />
+              <Metric label="Tabelas" value={TABLES.length} />
+              <Metric label="Índices" value={indexNames.length} />
+              <Metric label="Pedidos" value={pgState.ordersCount} />
             </div>
           </CardContent>
         </Card>
@@ -787,7 +787,7 @@ export default function PostgresTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <BookOpen className="h-5 w-5" />
-                Lessons
+                Lições
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -832,7 +832,7 @@ export default function PostgresTerminalSimulator() {
 
           <Button size="sm" variant="outline" onClick={resetLab} className="w-full">
             <RotateCcw className="mr-1 h-4 w-4" />
-            Reset lab
+            Reiniciar laboratório
           </Button>
         </div>
 
@@ -843,10 +843,10 @@ export default function PostgresTerminalSimulator() {
                 <div>
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Badge variant="secondary">
-                      Lesson {currentLessonIndex + 1} / {LESSONS.length}
+                      Lição {currentLessonIndex + 1} / {LESSONS.length}
                     </Badge>
                     <Badge>
-                      Step {currentCommandIndex + 1} / {currentLesson.commands.length}
+                      Passo {currentCommandIndex + 1} / {currentLesson.commands.length}
                     </Badge>
                   </div>
                   <p className="text-sm font-medium sm:text-base">{currentCommand?.instruction}</p>
@@ -859,11 +859,11 @@ export default function PostgresTerminalSimulator() {
                 <div className="flex shrink-0 gap-2">
                   <Button size="sm" variant="outline" onClick={() => setShowHint((value) => !value)}>
                     <Lightbulb className="mr-1 h-4 w-4" />
-                    Hint
+                    Dica
                   </Button>
                   <Button size="sm" onClick={runCurrentCommand}>
                     <Play className="mr-1 h-4 w-4" />
-                    Run
+                    Executar
                   </Button>
                 </div>
               </div>
@@ -897,9 +897,9 @@ export default function PostgresTerminalSimulator() {
               >
                 {terminalHistory.length === 0 && (
                   <div className="mb-4 whitespace-pre-wrap text-emerald-400">
-                    <p>Connected to database &quot;shop&quot; as user &quot;neondb_owner&quot;.</p>
+                    <p>Conectado ao banco &quot;shop&quot; como o usuário &quot;neondb_owner&quot;.</p>
                     <p className="mt-2 text-muted-foreground">
-                      Type &quot;\?&quot; for meta-command help, or follow the current task above.
+                      Digite &quot;\?&quot; para ver a ajuda dos meta-comandos ou siga a tarefa atual acima.
                     </p>
                   </div>
                 )}
@@ -944,20 +944,20 @@ export default function PostgresTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Database className="h-5 w-5" />
-                Connection
+                Conexão
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">database</span>
+                <span className="text-muted-foreground">banco</span>
                 <span className="font-mono">{CONNECTION.database}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">user</span>
+                <span className="text-muted-foreground">usuário</span>
                 <span className="font-mono">{CONNECTION.user}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">transaction</span>
+                <span className="text-muted-foreground">transação</span>
                 <Badge variant={pgState.inTransaction ? 'default' : 'secondary'} className="font-mono text-[11px]">
                   {pgState.inTransaction ? 'IN TRANSACTION' : 'idle'}
                 </Badge>
@@ -969,7 +969,7 @@ export default function PostgresTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Table2 className="h-5 w-5" />
-                Tables
+                Tabelas
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -994,7 +994,7 @@ export default function PostgresTerminalSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <ListTree className="h-5 w-5" />
-                Indexes
+                Índices
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -1025,15 +1025,15 @@ export default function PostgresTerminalSimulator() {
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">Lab complete</p>
+                <p className="font-semibold">Laboratório concluído</p>
                 <p className="text-sm text-muted-foreground">
-                  You explored with psql meta-commands, read real EXPLAIN plans, added an index, and
-                  used a transaction you could roll back.
+                  Você explorou com meta-comandos do psql, leu planos reais de EXPLAIN, criou um índice e
+                  usou uma transação que dava para desfazer.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetLab}>
-              Start over
+              Começar de novo
             </Button>
           </CardContent>
         </Card>
