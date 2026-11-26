@@ -76,6 +76,14 @@ const PAGES: SearchItem[] = [
     icon: '🤖',
   },
   {
+    id: 'page-tutor',
+    type: 'page',
+    title: 'Tutor com IA',
+    description: 'Pergunte sobre DevOps, cloud e IA e receba respostas com RAG, citando o conteúdo da Bancada',
+    url: '/tutor',
+    icon: '💬',
+  },
+  {
     id: 'page-checklists',
     type: 'page',
     title: 'Checklists',
