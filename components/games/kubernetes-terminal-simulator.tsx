@@ -143,126 +143,126 @@ spec:
 const LESSONS: Lesson[] = [
   {
     id: 'cluster',
-    title: 'Cluster Basics',
-    description: 'Inspect the current context, API server, and nodes',
+    title: 'Básico do cluster',
+    description: 'Inspecione o contexto atual, o API server e os nodes',
     icon: <Cloud className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Start by checking the kubectl client and cluster version.',
+        instruction: 'Comece verificando as versões do kubectl e do cluster.',
         hint: 'Use "kubectl version --short".',
         expectedCommand: ['kubectl version --short', 'kubectl version'],
         explanation:
-          'kubectl talks to the Kubernetes API server. Version checks confirm the client can reach the cluster.',
+          'O kubectl conversa com o API server do Kubernetes. Checar a versão confirma que o cliente alcança o cluster.',
       },
       {
-        instruction: 'Show the active kubeconfig context.',
+        instruction: 'Mostre o contexto ativo do kubeconfig.',
         hint: 'Use "kubectl config current-context".',
         expectedCommand: 'kubectl config current-context',
         explanation:
-          'Your context decides which cluster and namespace kubectl targets. Always check it before touching production.',
+          'O contexto define qual cluster e qual namespace o kubectl usa. Sempre confira antes de mexer em produção.',
       },
       {
-        instruction: 'Show the cluster control plane endpoints.',
+        instruction: 'Mostre os endpoints do control plane do cluster.',
         hint: 'Use "kubectl cluster-info".',
         expectedCommand: 'kubectl cluster-info',
         explanation:
-          'cluster-info is a quick API reachability check and shows where the control plane services live.',
+          'O cluster-info é um teste rápido de acesso à API e mostra onde ficam os serviços do control plane.',
       },
       {
-        instruction: 'List all worker and control-plane nodes.',
+        instruction: 'Liste todos os nodes, workers e control plane.',
         hint: 'Use "kubectl get nodes".',
         expectedCommand: 'kubectl get nodes',
         explanation:
-          'Nodes are the machines that run Pods. Node readiness is the first signal for cluster capacity.',
+          'Nodes são as máquinas que rodam os Pods. O readiness dos nodes é o primeiro sinal da capacidade do cluster.',
       },
     ],
   },
   {
     id: 'workloads',
-    title: 'Pods & Deployments',
-    description: 'Create a Deployment and inspect the Pods it manages',
+    title: 'Pods e Deployments',
+    description: 'Crie um Deployment e inspecione os Pods que ele gerencia',
     icon: <Boxes className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Read the sample Deployment manifest.',
+        instruction: 'Leia o manifesto de Deployment de exemplo.',
         hint: 'Use "cat deployment.yaml".',
         expectedCommand: 'cat deployment.yaml',
         explanation:
-          'A Deployment describes desired state: replica count, labels, Pod template, and rollout strategy.',
+          'Um Deployment descreve o estado desejado: número de réplicas, labels, template do Pod e estratégia de rollout.',
       },
       {
-        instruction: 'Create a web Deployment from the command line.',
+        instruction: 'Crie um Deployment web pela linha de comando.',
         hint: 'Use "kubectl create deployment web --image=nginx:1.27".',
         expectedCommand: [
           'kubectl create deployment web --image=nginx:1.27',
           'kubectl create deployment web --image nginx:1.27',
         ],
         explanation:
-          'The Deployment controller creates a ReplicaSet, and the ReplicaSet creates Pods until desired state is met.',
+          'O controller do Deployment cria um ReplicaSet, e o ReplicaSet cria Pods até chegar ao estado desejado.',
       },
       {
-        instruction: 'List Deployments in the default namespace.',
+        instruction: 'Liste os Deployments do namespace default.',
         hint: 'Use "kubectl get deployments".',
         expectedCommand: ['kubectl get deployments', 'kubectl get deploy'],
         explanation:
-          'Deployments show desired replicas, available replicas, and whether a rollout has completed.',
+          'Os Deployments mostram as réplicas desejadas, as disponíveis e se o rollout terminou.',
       },
       {
-        instruction: 'List the Pods created by the Deployment.',
+        instruction: 'Liste os Pods criados pelo Deployment.',
         hint: 'Use "kubectl get pods".',
         expectedCommand: ['kubectl get pods', 'kubectl get po'],
         explanation:
-          'Pods are the smallest schedulable unit. Deployments own ReplicaSets, and ReplicaSets own Pods.',
+          'Pods são a menor unidade que pode ser agendada. Deployments são donos de ReplicaSets, e ReplicaSets são donos de Pods.',
       },
     ],
   },
   {
     id: 'services',
-    title: 'Services & Networking',
-    description: 'Expose Pods with a stable virtual IP and selector',
+    title: 'Services e rede',
+    description: 'Exponha Pods com um IP virtual estável e um selector',
     icon: <Network className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Read the sample Service manifest.',
+        instruction: 'Leia o manifesto de Service de exemplo.',
         hint: 'Use "cat service.yaml".',
         expectedCommand: 'cat service.yaml',
         explanation:
-          'Services select Pods by labels and provide a stable endpoint even when Pods are replaced.',
+          'Services selecionam Pods por labels e oferecem um endpoint estável mesmo quando os Pods são trocados.',
       },
       {
-        instruction: 'Expose the web Deployment on port 80.',
+        instruction: 'Exponha o Deployment web na porta 80.',
         hint: 'Use "kubectl expose deployment web --port=80 --target-port=80".',
         expectedCommand: [
           'kubectl expose deployment web --port=80 --target-port=80',
           'kubectl expose deployment web --port 80 --target-port 80',
         ],
         explanation:
-          'A ClusterIP Service gives the Deployment a stable internal DNS name and virtual IP.',
+          'Um Service ClusterIP dá ao Deployment um nome DNS interno e um IP virtual estáveis.',
       },
       {
-        instruction: 'List Services in the namespace.',
+        instruction: 'Liste os Services do namespace.',
         hint: 'Use "kubectl get svc".',
         expectedCommand: ['kubectl get svc', 'kubectl get services'],
         explanation:
-          'Services are the normal way other workloads find your Pods without knowing Pod IPs.',
+          'Services são o jeito normal de outros workloads acharem seus Pods sem conhecer os IPs deles.',
       },
       {
-        instruction: 'Describe the web Service and inspect its selector.',
+        instruction: 'Descreva o Service web e inspecione o selector dele.',
         hint: 'Use "kubectl describe svc web".',
         expectedCommand: ['kubectl describe svc web', 'kubectl describe service web'],
         explanation:
-          'describe shows selectors, ports, endpoints, and events. It is one of the fastest networking debug commands.',
+          'O describe mostra selectors, portas, endpoints e eventos. É um dos comandos mais rápidos para depurar rede.',
       },
     ],
   },
   {
     id: 'rollouts',
-    title: 'Scaling & Rollouts',
-    description: 'Scale replicas and perform a rolling image update',
+    title: 'Escala e rollouts',
+    description: 'Escale réplicas e faça uma atualização gradual de imagem',
     icon: <Play className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Scale the web Deployment to four replicas.',
+        instruction: 'Escale o Deployment web para quatro réplicas.',
         hint: 'Use "kubectl scale deployment web --replicas=4".',
         expectedCommand: [
           'kubectl scale deployment web --replicas=4',
@@ -271,103 +271,103 @@ const LESSONS: Lesson[] = [
           'kubectl scale deployment/web --replicas 4',
         ],
         explanation:
-          'Scaling changes desired state. The Deployment controller creates or removes Pods until reality matches.',
+          'Escalar muda o estado desejado. O controller do Deployment cria ou remove Pods até a realidade bater.',
       },
       {
-        instruction: 'Watch the rollout status for the Deployment.',
+        instruction: 'Acompanhe o status do rollout do Deployment.',
         hint: 'Use "kubectl rollout status deployment/web".',
         expectedCommand: 'kubectl rollout status deployment/web',
         explanation:
-          'rollout status blocks until the Deployment has the expected number of available Pods.',
+          'O rollout status fica esperando até o Deployment ter o número esperado de Pods disponíveis.',
       },
       {
-        instruction: 'Update the nginx container image to a newer tag.',
+        instruction: 'Atualize a imagem do container nginx para uma tag mais nova.',
         hint: 'Use "kubectl set image deployment/web nginx=nginx:1.28".',
         expectedCommand: 'kubectl set image deployment/web nginx=nginx:1.28',
         explanation:
-          'Changing the Pod template starts a new rollout. Kubernetes replaces Pods gradually with the new image.',
+          'Mudar o template do Pod inicia um novo rollout. O Kubernetes troca os Pods aos poucos pela imagem nova.',
       },
       {
-        instruction: 'Show the Deployment rollout history.',
+        instruction: 'Mostre o histórico de rollouts do Deployment.',
         hint: 'Use "kubectl rollout history deployment/web".',
         expectedCommand: 'kubectl rollout history deployment/web',
         explanation:
-          'Rollout history helps you see revisions and gives you a rollback target when a release fails.',
+          'O histórico de rollouts mostra as revisões e dá um alvo de rollback quando um release falha.',
       },
     ],
   },
   {
     id: 'debugging',
-    title: 'Debugging Workloads',
-    description: 'Use logs, describe, exec, and events to inspect behavior',
+    title: 'Depurando workloads',
+    description: 'Use logs, describe, exec e eventos para inspecionar o comportamento',
     icon: <Terminal className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Read logs from the web Deployment.',
+        instruction: 'Leia os logs do Deployment web.',
         hint: 'Use "kubectl logs deployment/web".',
         expectedCommand: 'kubectl logs deployment/web',
         explanation:
-          'Deployment logs pick a Pod behind the Deployment. For exact debugging, use a specific Pod name.',
+          'Os logs do Deployment escolhem um Pod por trás dele. Para depurar com precisão, use o nome de um Pod específico.',
       },
       {
-        instruction: 'Describe a web Pod to see scheduling and readiness details.',
+        instruction: 'Descreva um Pod web para ver detalhes de agendamento e readiness.',
         hint: 'Use "kubectl describe pod web".',
         expectedCommand: 'kubectl describe pod web',
         explanation:
-          'describe pod shows containers, readiness, restarts, volumes, node placement, and recent events.',
+          'O describe pod mostra containers, readiness, restarts, volumes, em qual node está e os eventos recentes.',
       },
       {
-        instruction: 'Run a command inside the web Deployment.',
+        instruction: 'Rode um comando dentro do Deployment web.',
         hint: 'Use "kubectl exec deployment/web -- printenv".',
         expectedCommand: 'kubectl exec deployment/web -- printenv',
         explanation:
-          'exec starts a process inside an existing container. Use it sparingly in production and prefer logs/metrics first.',
+          'O exec inicia um processo dentro de um container existente. Use com moderação em produção e prefira logs e métricas antes.',
       },
       {
-        instruction: 'List recent namespace events.',
+        instruction: 'Liste os eventos recentes do namespace.',
         hint: 'Use "kubectl get events".',
         expectedCommand: 'kubectl get events',
         explanation:
-          'Events show scheduling, image pulls, scaling, and warnings. They are often the missing context during incidents.',
+          'Os eventos mostram agendamento, download de imagens, escala e alertas. Muitas vezes são o contexto que falta durante um incidente.',
       },
     ],
   },
   {
     id: 'config-cleanup',
-    title: 'Config & Cleanup',
-    description: 'Create config data and safely remove objects',
+    title: 'Configuração e limpeza',
+    description: 'Crie dados de configuração e remova objetos com segurança',
     icon: <FileText className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Create a ConfigMap for application settings.',
+        instruction: 'Crie um ConfigMap para as configurações da aplicação.',
         hint: 'Use "kubectl create configmap app-config --from-literal=LOG_LEVEL=debug".',
         expectedCommand: [
           'kubectl create configmap app-config --from-literal=LOG_LEVEL=debug',
           'kubectl create configmap app-config --from-literal LOG_LEVEL=debug',
         ],
         explanation:
-          'ConfigMaps keep non-secret configuration outside container images so you can change behavior without rebuilding.',
+          'ConfigMaps guardam configurações não sigilosas fora das imagens, para você mudar o comportamento sem gerar a imagem de novo.',
       },
       {
-        instruction: 'List ConfigMaps.',
+        instruction: 'Liste os ConfigMaps.',
         hint: 'Use "kubectl get configmaps".',
         expectedCommand: ['kubectl get configmaps', 'kubectl get cm'],
         explanation:
-          'ConfigMaps are namespace-scoped API objects. Pods can consume them as env vars or mounted files.',
+          'ConfigMaps são objetos da API com escopo de namespace. Os Pods podem usá-los como variáveis de ambiente ou arquivos montados.',
       },
       {
-        instruction: 'Delete the web Service.',
+        instruction: 'Apague o Service web.',
         hint: 'Use "kubectl delete svc web".',
         expectedCommand: ['kubectl delete svc web', 'kubectl delete service web'],
         explanation:
-          'Deleting a Service removes its stable network endpoint, but it does not delete the Pods it selected.',
+          'Apagar um Service remove o endpoint de rede estável dele, mas não apaga os Pods que ele selecionava.',
       },
       {
-        instruction: 'Delete the web Deployment and its managed Pods.',
+        instruction: 'Apague o Deployment web e os Pods que ele gerencia.',
         hint: 'Use "kubectl delete deployment web".',
         expectedCommand: ['kubectl delete deployment web', 'kubectl delete deploy web'],
         explanation:
-          'Deleting a Deployment removes the desired state. Its ReplicaSet and Pods are cleaned up by owner references.',
+          'Apagar um Deployment remove o estado desejado. O ReplicaSet e os Pods dele são limpos pelas owner references.',
       },
     ],
   },
@@ -1061,7 +1061,7 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
       }
 
       if (command === 'help') {
-        output = `Available commands:
+        output = `Comandos disponíveis:
   kubectl version --short
   kubectl config current-context
   kubectl cluster-info
@@ -1165,20 +1165,20 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
               <Boxes className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// kubectl lab</p>
-              <h2 className="text-2xl font-bold md:text-3xl">Kubernetes Terminal Simulator</h2>
+              <p className="font-mono text-xs text-muted-foreground">// laboratório de kubectl</p>
+              <h2 className="text-2xl font-bold md:text-3xl">Simulador de terminal Kubernetes</h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Practice Kubernetes commands in a safe browser lab. Learn contexts, nodes, Pods,
-            Deployments, Services, rollouts, logs, exec, events, ConfigMaps, and cleanup workflows.
+            Pratique comandos do Kubernetes num laboratório seguro no navegador. Aprenda contextos, nodes, Pods,
+            Deployments, Services, rollouts, logs, exec, eventos, ConfigMaps e fluxos de limpeza.
           </p>
         </div>
 
         <Card>
           <CardContent className="space-y-3 p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Progress</span>
+              <span className="text-sm font-medium">Progresso</span>
               <span className="text-sm text-muted-foreground">
                 {completedCount}/{totalCommands}
               </span>
@@ -1199,7 +1199,7 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <BookOpenIcon />
-                Lessons
+                Lições
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -1244,7 +1244,7 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
 
           <Button size="sm" variant="outline" onClick={resetLab} className="w-full">
             <RotateCcw className="mr-1 h-4 w-4" />
-            Reset lab
+            Reiniciar laboratório
           </Button>
         </div>
 
@@ -1255,10 +1255,10 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
                 <div>
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Badge variant="secondary">
-                      Lesson {currentLessonIndex + 1} / {LESSONS.length}
+                      Lição {currentLessonIndex + 1} / {LESSONS.length}
                     </Badge>
                     <Badge>
-                      Step {currentCommandIndex + 1} / {currentLesson.commands.length}
+                      Passo {currentCommandIndex + 1} / {currentLesson.commands.length}
                     </Badge>
                   </div>
                   <p className="text-sm font-medium sm:text-base">{currentCommand?.instruction}</p>
@@ -1271,11 +1271,11 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
                 <div className="flex shrink-0 gap-2">
                   <Button size="sm" variant="outline" onClick={() => setShowHint((value) => !value)}>
                     <Lightbulb className="mr-1 h-4 w-4" />
-                    Hint
+                    Dica
                   </Button>
                   <Button size="sm" onClick={runCurrentCommand}>
                     <Play className="mr-1 h-4 w-4" />
-                    Run
+                    Executar
                   </Button>
                 </div>
               </div>
@@ -1306,9 +1306,9 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
               >
                 {terminalHistory.length === 0 && (
                   <div className="mb-4 text-emerald-400">
-                    <p>Welcome to the Kubernetes terminal lab.</p>
+                    <p>Boas-vindas ao laboratório de terminal Kubernetes.</p>
                     <p className="mt-2 text-muted-foreground">
-                      Type "help", run "ls", or follow the current task above.
+                      Digite "help", rode "ls" ou siga a tarefa atual acima.
                     </p>
                   </div>
                 )}
@@ -1399,7 +1399,7 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
                 </div>
               ) : (
                 <p className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-                  No application Deployment yet.
+                  Nenhum Deployment de aplicação ainda.
                 </p>
               )}
 
@@ -1421,7 +1421,7 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Globe className="h-5 w-5" />
-                Networking
+                Rede
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -1435,7 +1435,7 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
                 </div>
               ) : (
                 <p className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-                  Expose a Deployment to create a stable Service endpoint.
+                  Exponha um Deployment para criar um endpoint estável de Service.
                 </p>
               )}
             </CardContent>
@@ -1445,7 +1445,7 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <CircleDot className="h-5 w-5" />
-                Recent Events
+                Eventos recentes
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -1471,14 +1471,14 @@ NGINX_VERSION=${pod.image.replace('nginx:', '')}`;
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">Lab complete</p>
+                <p className="font-semibold">Laboratório concluído</p>
                 <p className="text-sm text-muted-foreground">
-                  You practiced the core kubectl workflow from cluster inspection to cleanup.
+                  Você praticou o fluxo essencial do kubectl, da inspeção do cluster até a limpeza.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetLab}>
-              Start over
+              Começar de novo
             </Button>
           </CardContent>
         </Card>
