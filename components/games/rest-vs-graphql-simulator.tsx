@@ -59,11 +59,11 @@ interface ScenarioData {
 
 const SCENARIOS: Record<Scenario, ScenarioData> = {
   'user-profile': {
-    name: 'Simple Fetch',
-    description: 'Get basic user profile information',
+    name: 'Busca simples',
+    description: 'Buscar os dados básicos do perfil do usuário',
     rest: {
       requests: [
-        { method: 'GET', endpoint: '/api/users/123', description: 'Fetch user' },
+        { method: 'GET', endpoint: '/api/users/123', description: 'Buscar o usuário' },
       ],
       totalPayloadSize: 2048,
       overfetchedFields: ['created_at', 'updated_at', 'last_login', 'settings', 'preferences'],
@@ -75,16 +75,16 @@ const SCENARIOS: Record<Scenario, ScenarioData> = {
     },
   },
   'user-with-posts': {
-    name: 'Nested Data',
-    description: 'Get user profile with their posts',
+    name: 'Dados aninhados',
+    description: 'Buscar o perfil do usuário com os posts dele',
     rest: {
       requests: [
-        { method: 'GET', endpoint: '/api/users/123', description: 'Fetch user' },
-        { method: 'GET', endpoint: '/api/users/123/posts?limit=5', description: 'Fetch posts' },
+        { method: 'GET', endpoint: '/api/users/123', description: 'Buscar o usuário' },
+        { method: 'GET', endpoint: '/api/users/123/posts?limit=5', description: 'Buscar os posts' },
       ],
       totalPayloadSize: 8192,
       overfetchedFields: ['user.settings', 'post.metadata', 'post.raw_content'],
-      problem: 'Requires 2 sequential requests (waterfall)',
+      problem: 'Exige 2 requisições em sequência (cascata)',
     },
     graphql: {
       query: `query {\n  user(id: "123") {\n    name\n    email\n    posts(limit: 5) {\n      id\n      title\n      excerpt\n    }\n  }\n}`,
@@ -93,21 +93,21 @@ const SCENARIOS: Record<Scenario, ScenarioData> = {
     },
   },
   'user-posts-comments': {
-    name: 'Related Data',
-    description: 'Get user with posts and comments (N+1 problem)',
+    name: 'Dados relacionados',
+    description: 'Buscar o usuário com posts e comentários (problema N+1)',
     rest: {
       requests: [
-        { method: 'GET', endpoint: '/api/users/123', description: 'Fetch user' },
-        { method: 'GET', endpoint: '/api/users/123/posts?limit=5', description: 'Fetch posts' },
-        { method: 'GET', endpoint: '/api/posts/1/comments?limit=3', description: 'Comments for post 1' },
-        { method: 'GET', endpoint: '/api/posts/2/comments?limit=3', description: 'Comments for post 2' },
-        { method: 'GET', endpoint: '/api/posts/3/comments?limit=3', description: 'Comments for post 3' },
-        { method: 'GET', endpoint: '/api/posts/4/comments?limit=3', description: 'Comments for post 4' },
-        { method: 'GET', endpoint: '/api/posts/5/comments?limit=3', description: 'Comments for post 5' },
+        { method: 'GET', endpoint: '/api/users/123', description: 'Buscar o usuário' },
+        { method: 'GET', endpoint: '/api/users/123/posts?limit=5', description: 'Buscar os posts' },
+        { method: 'GET', endpoint: '/api/posts/1/comments?limit=3', description: 'Comentários do post 1' },
+        { method: 'GET', endpoint: '/api/posts/2/comments?limit=3', description: 'Comentários do post 2' },
+        { method: 'GET', endpoint: '/api/posts/3/comments?limit=3', description: 'Comentários do post 3' },
+        { method: 'GET', endpoint: '/api/posts/4/comments?limit=3', description: 'Comentários do post 4' },
+        { method: 'GET', endpoint: '/api/posts/5/comments?limit=3', description: 'Comentários do post 5' },
       ],
       totalPayloadSize: 24576,
       overfetchedFields: ['user.*', 'post.*', 'comment.internal_id'],
-      problem: 'N+1 problem: 1 + 1 + N requests',
+      problem: 'Problema N+1: 1 + 1 + N requisições',
     },
     graphql: {
       query: `query {\n  user(id: "123") {\n    name\n    posts(limit: 5) {\n      title\n      comments(limit: 3) {\n        text\n        author { name }\n      }\n    }\n  }\n}`,
@@ -116,17 +116,17 @@ const SCENARIOS: Record<Scenario, ScenarioData> = {
     },
   },
   'multiple-resources': {
-    name: 'Multiple Resources',
-    description: 'Fetch users, posts, and tags in one view',
+    name: 'Vários recursos',
+    description: 'Buscar usuários, posts e tags numa única tela',
     rest: {
       requests: [
-        { method: 'GET', endpoint: '/api/users?limit=10', description: 'Fetch users' },
-        { method: 'GET', endpoint: '/api/posts?limit=10', description: 'Fetch posts' },
-        { method: 'GET', endpoint: '/api/tags', description: 'Fetch tags' },
+        { method: 'GET', endpoint: '/api/users?limit=10', description: 'Buscar os usuários' },
+        { method: 'GET', endpoint: '/api/posts?limit=10', description: 'Buscar os posts' },
+        { method: 'GET', endpoint: '/api/tags', description: 'Buscar as tags' },
       ],
       totalPayloadSize: 32768,
       overfetchedFields: ['users.password_hash', 'posts.raw_html', 'tags.metadata'],
-      problem: '3 parallel requests needed',
+      problem: 'São necessárias 3 requisições em paralelo',
     },
     graphql: {
       query: `query DashboardData {\n  users(limit: 10) {\n    id\n    name\n    avatar\n  }\n  recentPosts: posts(limit: 10) {\n    id\n    title\n    author { name }\n  }\n  tags {\n    id\n    name\n    count\n  }\n}`,
@@ -247,17 +247,17 @@ export default function RestVsGraphqlSimulator() {
             <div>
               <CardTitle className="text-2xl">REST API vs GraphQL</CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                Compare data fetching approaches side-by-side
+                Compare as abordagens de busca de dados lado a lado
               </p>
             </div>
             <div className="flex gap-2">
               <Button onClick={runSimulation} disabled={isRunning} size="sm">
                 <Play className="w-4 h-4 mr-2" />
-                Run Comparison
+                Rodar comparação
               </Button>
               <Button onClick={reset} variant="outline" size="sm">
                 <RotateCcw className="w-4 h-4 mr-2" />
-                Reset
+                Reiniciar
               </Button>
             </div>
           </div>
@@ -277,13 +277,13 @@ export default function RestVsGraphqlSimulator() {
             ))}
           </div>
           <p className="text-sm text-muted-foreground mt-3">
-            <strong>Scenario:</strong> {currentScenario.description}
+            <strong>Cenário:</strong> {currentScenario.description}
           </p>
 
           {/* Inline Metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t">
             <div className="p-3 rounded-lg bg-muted/30 text-center">
-              <div className="text-xs text-muted-foreground mb-1">HTTP Requests</div>
+              <div className="text-xs text-muted-foreground mb-1">Requisições HTTP</div>
               <div className="flex items-center justify-center gap-2">
                 <div>
                   <div className="text-xl font-bold text-orange-500">
@@ -315,7 +315,7 @@ export default function RestVsGraphqlSimulator() {
             </div>
 
             <div className="p-3 rounded-lg bg-muted/30 text-center">
-              <div className="text-xs text-muted-foreground mb-1">Time</div>
+              <div className="text-xs text-muted-foreground mb-1">Tempo</div>
               <div className="flex items-center justify-center gap-2">
                 <div>
                   <div className="text-xl font-bold text-orange-500">
@@ -334,9 +334,9 @@ export default function RestVsGraphqlSimulator() {
             </div>
 
             <div className="p-3 rounded-lg bg-green-500/10 text-center border border-green-500/20">
-              <div className="text-xs text-muted-foreground mb-1">Bandwidth Saved</div>
+              <div className="text-xs text-muted-foreground mb-1">Banda economizada</div>
               <div className="text-2xl font-bold text-green-500">{savings}%</div>
-              <div className="text-[10px] text-green-600 dark:text-green-400 mt-1">less data downloaded<br/>compared to REST</div>
+              <div className="text-[10px] text-green-600 dark:text-green-400 mt-1">menos dados baixados<br/>em relação ao REST</div>
             </div>
           </div>
 
@@ -346,7 +346,7 @@ export default function RestVsGraphqlSimulator() {
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mt-3 transition-colors"
           >
             <Info className="w-3 h-3" />
-            {showExplanation ? 'Hide' : 'How are these numbers calculated?'}
+            {showExplanation ? 'Esconder' : 'Como esses números são calculados?'}
           </button>
 
           {showExplanation && (
@@ -356,12 +356,12 @@ export default function RestVsGraphqlSimulator() {
               exit={{ opacity: 0, height: 0 }}
               className="mt-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 text-xs text-muted-foreground"
             >
-              <strong className="text-blue-600 dark:text-blue-400">Timing:</strong> Each HTTP request takes ~100ms
-              (DNS + TCP/TLS handshake + server processing). REST makes sequential requests, so 5 requests = 500ms.
-              GraphQL bundles everything into 1 request + 15ms parsing = 115ms.
+              <strong className="text-blue-600 dark:text-blue-400">Tempo:</strong> cada requisição HTTP leva cerca de 100 ms
+              (DNS + handshake TCP/TLS + processamento no servidor). O REST faz requisições em sequência, então 5 requisições = 500 ms.
+              O GraphQL junta tudo em 1 requisição + 15 ms de parsing = 115 ms.
               <br />
-              <strong className="text-blue-600 dark:text-blue-400 mt-1 inline-block">Payload:</strong> REST returns full objects with all fields.
-              GraphQL returns only the fields you request, reducing bandwidth 2-8x.
+              <strong className="text-blue-600 dark:text-blue-400 mt-1 inline-block">Payload:</strong> o REST devolve objetos completos, com todos os campos.
+              O GraphQL devolve só os campos que você pede, reduzindo a banda de 2 a 8 vezes.
             </motion.div>
           )}
         </CardContent>
@@ -426,7 +426,7 @@ export default function RestVsGraphqlSimulator() {
             )}
 
             <div className="space-y-1">
-              <span className="text-xs font-medium text-muted-foreground">Over-fetched fields:</span>
+              <span className="text-xs font-medium text-muted-foreground">Campos buscados à toa (over-fetching):</span>
               <div className="flex flex-wrap gap-1">
                 {currentScenario.rest.overfetchedFields.map((field) => (
                   <span
@@ -470,7 +470,7 @@ export default function RestVsGraphqlSimulator() {
                 <div className="w-3 h-3 rounded-full bg-pink-500" />
                 GraphQL
               </CardTitle>
-              <span className="text-xs text-muted-foreground">1 request</span>
+              <span className="text-xs text-muted-foreground">1 requisição</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -499,12 +499,12 @@ export default function RestVsGraphqlSimulator() {
             <div className="flex items-start gap-2 p-3 rounded-md bg-green-500/10 border border-green-500/30">
               <Zap className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
               <span className="text-xs text-green-600 dark:text-green-400">
-                Single request fetches exactly what you need
+                Uma única requisição busca exatamente o que você precisa
               </span>
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs font-medium text-muted-foreground">Requested fields (exact):</span>
+              <span className="text-xs font-medium text-muted-foreground">Campos pedidos (exatos):</span>
               <div className="flex flex-wrap gap-1">
                 {currentScenario.graphql.exactFields.map((field) => (
                   <span
@@ -541,7 +541,7 @@ export default function RestVsGraphqlSimulator() {
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <Database className="w-5 h-5 text-blue-500" />
-            Understanding the Comparison
+            Entendendo a comparação
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -549,33 +549,33 @@ export default function RestVsGraphqlSimulator() {
             <div className="p-3 rounded-lg bg-muted/30 border">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-orange-500" />
-                <span className="font-medium text-sm">Network Round-Trip</span>
+                <span className="font-medium text-sm">Ida e volta na rede</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Each HTTP request takes ~{NETWORK_CONSTANTS.ROUND_TRIP_MS}ms for DNS lookup,
-                TCP/TLS handshake, and server processing.
+                Cada requisição HTTP leva ~{NETWORK_CONSTANTS.ROUND_TRIP_MS}ms entre consulta DNS,
+                handshake TCP/TLS e processamento no servidor.
               </p>
             </div>
 
             <div className="p-3 rounded-lg bg-muted/30 border">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-4 h-4 text-orange-500" />
-                <span className="font-medium text-sm">REST Waterfall</span>
+                <span className="font-medium text-sm">Cascata do REST</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                REST requires <strong>sequential</strong> requests. For nested data, request 2
-                can&apos;t start until request 1 finishes.
+                O REST exige requisições <strong>em sequência</strong>. Com dados aninhados, a requisição 2
+                só começa quando a 1 termina.
               </p>
             </div>
 
             <div className="p-3 rounded-lg bg-muted/30 border">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-4 h-4 text-pink-500" />
-                <span className="font-medium text-sm">GraphQL Batching</span>
+                <span className="font-medium text-sm">Agrupamento no GraphQL</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                GraphQL bundles everything into <strong>one request</strong>. The server resolves
-                all data in a single round-trip.
+                O GraphQL junta tudo em <strong>uma requisição</strong>. O servidor resolve
+                todos os dados em uma única ida e volta.
               </p>
             </div>
           </div>
@@ -594,26 +594,26 @@ export default function RestVsGraphqlSimulator() {
           <CardContent className="space-y-4">
             <div>
               <h4 className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">
-                ✅ Advantages
+                ✅ Vantagens
               </h4>
               <ul className="text-xs space-y-1 text-muted-foreground">
-                <li>• Simple and well-understood</li>
-                <li>• Great HTTP caching with standard headers</li>
-                <li>• Easy to debug with browser tools</li>
-                <li>• Stateless architecture</li>
-                <li>• Works well for simple CRUD operations</li>
+                <li>• Simples e bem conhecido</li>
+                <li>• Ótimo cache HTTP com headers padrão</li>
+                <li>• Fácil de depurar com as ferramentas do navegador</li>
+                <li>• Arquitetura stateless</li>
+                <li>• Funciona bem para CRUDs simples</li>
               </ul>
             </div>
             <div>
               <h4 className="text-sm font-semibold text-red-600 dark:text-red-400 mb-2">
-                ❌ Disadvantages
+                ❌ Desvantagens
               </h4>
               <ul className="text-xs space-y-1 text-muted-foreground">
-                <li>• Over-fetching: Getting more data than needed</li>
-                <li>• Under-fetching: Multiple requests for related data</li>
-                <li>• N+1 problem with nested resources</li>
-                <li>• Versioning challenges (v1, v2, etc.)</li>
-                <li>• No built-in type system</li>
+                <li>• Over-fetching: traz mais dados do que precisa</li>
+                <li>• Under-fetching: várias requisições para dados relacionados</li>
+                <li>• Problema N+1 com recursos aninhados</li>
+                <li>• Desafios de versionamento (v1, v2 etc.)</li>
+                <li>• Sem sistema de tipos nativo</li>
               </ul>
             </div>
           </CardContent>
@@ -629,26 +629,26 @@ export default function RestVsGraphqlSimulator() {
           <CardContent className="space-y-4">
             <div>
               <h4 className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">
-                ✅ Advantages
+                ✅ Vantagens
               </h4>
               <ul className="text-xs space-y-1 text-muted-foreground">
-                <li>• Fetch exactly what you need, nothing more</li>
-                <li>• Single request for complex nested data</li>
-                <li>• Strong type system with schema</li>
-                <li>• Self-documenting via introspection</li>
-                <li>• No versioning needed - evolve schema</li>
+                <li>• Busca exatamente o que você precisa, nada mais</li>
+                <li>• Uma única requisição para dados aninhados complexos</li>
+                <li>• Sistema de tipos forte, com schema</li>
+                <li>• Autodocumentado via introspection</li>
+                <li>• Dispensa versionamento: o schema evolui</li>
               </ul>
             </div>
             <div>
               <h4 className="text-sm font-semibold text-red-600 dark:text-red-400 mb-2">
-                ❌ Disadvantages
+                ❌ Desvantagens
               </h4>
               <ul className="text-xs space-y-1 text-muted-foreground">
-                <li>• Caching is more complex</li>
-                <li>• Query complexity attacks possible</li>
-                <li>• Steeper learning curve</li>
-                <li>• All requests are POST (harder to cache)</li>
-                <li>• Overkill for simple APIs</li>
+                <li>• Cache é mais complexo</li>
+                <li>• Sujeito a ataques por queries complexas</li>
+                <li>• Curva de aprendizado mais íngreme</li>
+                <li>• Todas as requisições são POST (mais difícil de cachear)</li>
+                <li>• Exagero para APIs simples</li>
               </ul>
             </div>
           </CardContent>
@@ -658,32 +658,32 @@ export default function RestVsGraphqlSimulator() {
       {/* When to Use Each */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">💡 When to Use Each</CardTitle>
+          <CardTitle className="text-lg">💡 Quando usar cada um</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-4 rounded-lg bg-orange-500/5 border border-orange-500/20">
               <h4 className="font-semibold text-orange-600 dark:text-orange-400 mb-2">
-                Use REST when:
+                Use REST quando:
               </h4>
               <ul className="text-sm space-y-1 text-muted-foreground">
-                <li>• Building simple CRUD APIs</li>
-                <li>• Caching is critical (CDN, browser)</li>
-                <li>• Team is familiar with REST</li>
-                <li>• Public APIs with many consumers</li>
-                <li>• File uploads/downloads</li>
+                <li>• For construir APIs CRUD simples</li>
+                <li>• Cache for crítico (CDN, navegador)</li>
+                <li>• O time já conhece REST</li>
+                <li>• For uma API pública com muitos consumidores</li>
+                <li>• Houver upload/download de arquivos</li>
               </ul>
             </div>
             <div className="p-4 rounded-lg bg-pink-500/5 border border-pink-500/20">
               <h4 className="font-semibold text-pink-600 dark:text-pink-400 mb-2">
-                Use GraphQL when:
+                Use GraphQL quando:
               </h4>
               <ul className="text-sm space-y-1 text-muted-foreground">
-                <li>• Mobile apps need bandwidth efficiency</li>
-                <li>• Complex UIs with nested data</li>
-                <li>• Rapidly evolving frontend requirements</li>
-                <li>• Multiple clients with different needs</li>
-                <li>• Real-time subscriptions needed</li>
+                <li>• Apps mobile precisarem economizar banda</li>
+                <li>• Houver interfaces complexas com dados aninhados</li>
+                <li>• Os requisitos do frontend mudarem rápido</li>
+                <li>• Houver vários clientes com necessidades diferentes</li>
+                <li>• Precisar de subscriptions em tempo real</li>
               </ul>
             </div>
           </div>
