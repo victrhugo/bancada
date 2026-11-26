@@ -133,7 +133,7 @@ const createInitialFileSystem = (): FileSystemNode => ({
             '.hidden_secret': {
               type: 'file',
               name: '.hidden_secret',
-              content: 'You found the hidden file! Great job exploring.',
+              content: 'Você achou o arquivo oculto! Mandou bem na exploração.',
               permissions: '-rw-------',
               owner: 'user',
               size: 47,
@@ -226,241 +226,241 @@ const createInitialFileSystem = (): FileSystemNode => ({
 const LESSONS: Lesson[] = [
   {
     id: 'navigation',
-    title: 'Navigation Basics',
-    description: 'Learn to navigate the file system',
+    title: 'Navegação básica',
+    description: 'Aprenda a navegar pelo sistema de arquivos',
     icon: <FolderOpen className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'First, let\'s see where we are. Print the current working directory.',
-        hint: 'Use the "pwd" command (print working directory)',
+        instruction: 'Primeiro, vamos ver onde estamos. Mostre o diretório de trabalho atual.',
+        hint: 'Use o comando "pwd" (print working directory)',
         expectedCommand: 'pwd',
-        explanation: 'The pwd command shows your current location in the file system. Think of it as "Where am I?"',
+        explanation: 'O pwd mostra onde você está no sistema de arquivos. Pense nele como "onde eu estou?"',
       },
       {
-        instruction: 'Now list the contents of the current directory.',
-        hint: 'Use the "ls" command (list)',
+        instruction: 'Agora liste o conteúdo do diretório atual.',
+        hint: 'Use o comando "ls" (list)',
         expectedCommand: 'ls',
-        explanation: 'The ls command lists files and directories. It\'s one of the most frequently used commands.',
+        explanation: 'O ls lista arquivos e diretórios. É um dos comandos mais usados.',
       },
       {
-        instruction: 'Let\'s see more details. List with long format to see permissions and sizes.',
-        hint: 'Add the -l flag to ls',
+        instruction: 'Vamos ver mais detalhes. Liste no formato longo para ver permissões e tamanhos.',
+        hint: 'Adicione a flag -l ao ls',
         expectedCommand: ['ls -l', 'ls -la', 'ls -al'],
-        explanation: 'The -l flag shows detailed information including permissions, owner, size, and modification date.',
+        explanation: 'A flag -l mostra informações detalhadas, como permissões, dono, tamanho e data de modificação.',
       },
       {
-        instruction: 'Some files are hidden (start with a dot). Show all files including hidden ones.',
-        hint: 'Add the -a flag to ls',
+        instruction: 'Alguns arquivos são ocultos (começam com ponto). Mostre todos, incluindo os ocultos.',
+        hint: 'Adicione a flag -a ao ls',
         expectedCommand: ['ls -a', 'ls -la', 'ls -al', 'ls -all'],
-        explanation: 'Hidden files in Linux start with a dot (.). The -a flag reveals them. Common examples: .bashrc, .gitignore',
+        explanation: 'No Linux, arquivos ocultos começam com ponto (.). A flag -a mostra todos eles. Exemplos comuns: .bashrc, .gitignore',
       },
       {
-        instruction: 'Navigate into the documents directory.',
-        hint: 'Use "cd" followed by the directory name',
+        instruction: 'Entre no diretório documents.',
+        hint: 'Use "cd" seguido do nome do diretório',
         expectedCommand: ['cd documents', 'cd documents/', 'cd ./documents', 'cd ./documents/'],
-        explanation: 'The cd command changes your current directory. You can use relative paths (from current location) or absolute paths (from /).',
+        explanation: 'O cd muda o diretório atual. Você pode usar caminhos relativos (a partir de onde está) ou absolutos (a partir de /).',
       },
       {
-        instruction: 'Go back to the parent directory.',
-        hint: 'Use "cd .." to go up one level',
+        instruction: 'Volte para o diretório pai.',
+        hint: 'Use "cd .." para subir um nível',
         expectedCommand: 'cd ..',
-        explanation: '".." represents the parent directory, while "." represents the current directory. These are universal in Linux.',
+        explanation: '".." representa o diretório pai, e "." representa o diretório atual. Isso vale em todo o Linux.',
       },
     ],
   },
   {
     id: 'files',
-    title: 'File Operations',
-    description: 'Create, read, and manage files',
+    title: 'Operações com arquivos',
+    description: 'Crie, leia e gerencie arquivos',
     icon: <FileText className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Read the contents of the readme.txt file in the documents folder.',
-        hint: 'Use "cat documents/readme.txt" to display the file contents',
+        instruction: 'Leia o conteúdo do arquivo readme.txt na pasta documents.',
+        hint: 'Use "cat documents/readme.txt" para mostrar o conteúdo do arquivo',
         expectedCommand: ['cat documents/readme.txt', 'cat ./documents/readme.txt'],
-        explanation: 'The cat command concatenates and displays file contents. Great for viewing small files.',
+        explanation: 'O cat concatena e mostra o conteúdo de arquivos. Ótimo para ver arquivos pequenos.',
       },
       {
-        instruction: 'Create a new empty file called "myfile.txt".',
-        hint: 'Use "touch myfile.txt" to create an empty file',
+        instruction: 'Crie um arquivo vazio chamado "myfile.txt".',
+        hint: 'Use "touch myfile.txt" para criar um arquivo vazio',
         expectedCommand: 'touch myfile.txt',
-        explanation: 'The touch command creates empty files or updates timestamps. Often used to create placeholder files.',
+        explanation: 'O touch cria arquivos vazios ou atualiza o timestamp. Muito usado para criar arquivos de exemplo.',
       },
       {
-        instruction: 'Create a new directory called "backup".',
-        hint: 'Use "mkdir backup" to create a new directory',
+        instruction: 'Crie um diretório chamado "backup".',
+        hint: 'Use "mkdir backup" para criar um diretório',
         expectedCommand: 'mkdir backup',
-        explanation: 'mkdir creates new directories. Add -p to create parent directories if they don\'t exist.',
+        explanation: 'O mkdir cria diretórios. Adicione -p para criar também os diretórios pais que ainda não existem.',
       },
       {
-        instruction: 'Copy myfile.txt to the backup directory.',
-        hint: 'Use "cp myfile.txt backup/" - cp copies files from source to destination',
+        instruction: 'Copie o myfile.txt para o diretório backup.',
+        hint: 'Use "cp myfile.txt backup/": o cp copia arquivos da origem para o destino',
         expectedCommand: ['cp myfile.txt backup/', 'cp myfile.txt backup', 'cp myfile.txt ./backup/', 'cp myfile.txt ./backup'],
-        explanation: 'The cp command copies files. Use -r to copy directories recursively.',
+        explanation: 'O cp copia arquivos. Use -r para copiar diretórios de forma recursiva.',
       },
       {
-        instruction: 'Move the original myfile.txt to the documents folder.',
-        hint: 'Use "mv myfile.txt documents/" - mv moves (or renames) files',
+        instruction: 'Mova o myfile.txt original para a pasta documents.',
+        hint: 'Use "mv myfile.txt documents/": o mv move (ou renomeia) arquivos',
         expectedCommand: ['mv myfile.txt documents/', 'mv myfile.txt documents', 'mv myfile.txt ./documents/', 'mv myfile.txt ./documents'],
-        explanation: 'The mv command moves files or renames them. mv file.txt newname.txt renames the file.',
+        explanation: 'O mv move ou renomeia arquivos. mv file.txt newname.txt renomeia o arquivo.',
       },
       {
-        instruction: 'Remove the backup directory and its contents.',
-        hint: 'Use "rm -r backup" - the -r flag removes directories recursively',
+        instruction: 'Apague o diretório backup e o conteúdo dele.',
+        hint: 'Use "rm -r backup": a flag -r apaga diretórios de forma recursiva',
         expectedCommand: ['rm -r backup', 'rm -rf backup', 'rm -r backup/', 'rm -rf backup/'],
-        explanation: 'rm removes files. Use -r for directories, -f to force without prompts. Be careful - there\'s no recycle bin!',
+        explanation: 'O rm apaga arquivos. Use -r para diretórios e -f para forçar sem confirmação. Cuidado: não existe lixeira!',
       },
     ],
   },
   {
     id: 'viewing',
-    title: 'Viewing & Searching',
-    description: 'View file contents and search for text',
+    title: 'Visualização e busca',
+    description: 'Veja o conteúdo de arquivos e busque textos',
     icon: <BookOpen className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Display the first 5 lines of /etc/passwd.',
-        hint: 'Use "head -n 5 /etc/passwd" (head shows the beginning of files)',
+        instruction: 'Mostre as 5 primeiras linhas de /etc/passwd.',
+        hint: 'Use "head -n 5 /etc/passwd" (o head mostra o começo dos arquivos)',
         expectedCommand: ['head -n 5 /etc/passwd', 'head -5 /etc/passwd', 'head -n5 /etc/passwd'],
-        explanation: 'head displays the beginning of files. Default is 10 lines, -n specifies how many.',
+        explanation: 'O head mostra o começo dos arquivos. O padrão são 10 linhas; o -n define quantas.',
       },
       {
-        instruction: 'Display the last 5 lines of /var/log/syslog.',
-        hint: 'Use "tail -n 5 /var/log/syslog" (tail shows the end of files)',
+        instruction: 'Mostre as 5 últimas linhas de /var/log/syslog.',
+        hint: 'Use "tail -n 5 /var/log/syslog" (o tail mostra o fim dos arquivos)',
         expectedCommand: ['tail -n 5 /var/log/syslog', 'tail -5 /var/log/syslog', 'tail -n5 /var/log/syslog'],
-        explanation: 'tail displays the end of files. Use "tail -f" to follow a file as it grows (great for logs).',
+        explanation: 'O tail mostra o fim dos arquivos. Use "tail -f" para acompanhar o arquivo enquanto ele cresce (ótimo para logs).',
       },
       {
-        instruction: 'Search for the word "Linux" in documents/readme.txt.',
-        hint: 'Use "grep Linux documents/readme.txt" (grep searches for text in files)',
+        instruction: 'Procure a palavra "Linux" em documents/readme.txt.',
+        hint: 'Use "grep Linux documents/readme.txt" (o grep busca textos em arquivos)',
         expectedCommand: ['grep Linux documents/readme.txt', 'grep "Linux" documents/readme.txt'],
-        explanation: 'grep searches for text patterns in files. It\'s incredibly powerful with regular expressions.',
+        explanation: 'O grep busca padrões de texto em arquivos. Com expressões regulares, ele fica muito poderoso.',
       },
       {
-        instruction: 'Count the number of lines in projects/app.py.',
-        hint: 'Use "wc -l projects/app.py" (wc = word count, -l = lines)',
+        instruction: 'Conte o número de linhas de projects/app.py.',
+        hint: 'Use "wc -l projects/app.py" (wc = word count, -l = linhas)',
         expectedCommand: ['wc -l projects/app.py', 'wc --lines projects/app.py'],
-        explanation: 'wc counts lines (-l), words (-w), and characters (-c). Useful for file statistics.',
+        explanation: 'O wc conta linhas (-l), palavras (-w) e caracteres (-c). Útil para estatísticas de arquivos.',
       },
       {
-        instruction: 'Find all .txt files in the current directory and subdirectories.',
-        hint: 'Use "find . -name \"*.txt\"" (find searches for files, . = current dir, -name = filename pattern)',
+        instruction: 'Encontre todos os arquivos .txt no diretório atual e nos subdiretórios.',
+        hint: 'Use "find . -name \"*.txt\"" (o find busca arquivos, . = diretório atual, -name = padrão do nome)',
         expectedCommand: ['find . -name "*.txt"', 'find . -name *.txt', 'find . -name "*.txt" -type f'],
-        explanation: 'find searches for files by name, type, size, time, and more. Extremely versatile.',
+        explanation: 'O find busca arquivos por nome, tipo, tamanho, data e mais. É extremamente versátil.',
       },
     ],
   },
   {
     id: 'permissions',
-    title: 'Permissions & Ownership',
-    description: 'Understand and modify file permissions',
+    title: 'Permissões e dono',
+    description: 'Entenda e altere permissões de arquivos',
     icon: <Lock className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Check the permissions of the projects/app.py file.',
-        hint: 'Use "ls -l projects/app.py" to see file details including permissions',
+        instruction: 'Veja as permissões do arquivo projects/app.py.',
+        hint: 'Use "ls -l projects/app.py" para ver os detalhes do arquivo, incluindo as permissões',
         expectedCommand: ['ls -l projects/app.py', 'ls -la projects/app.py'],
-        explanation: 'Permissions show as rwxrwxrwx: r=read, w=write, x=execute for owner/group/others.',
+        explanation: 'As permissões aparecem como rwxrwxrwx: r=leitura, w=escrita, x=execução, para dono/grupo/outros.',
       },
       {
-        instruction: 'Make the projects/config.json file readable and writable by everyone.',
-        hint: 'Use "chmod 666 projects/config.json" (6=rw for user, 6=rw for group, 6=rw for others)',
+        instruction: 'Deixe o arquivo projects/config.json com leitura e escrita para todo mundo.',
+        hint: 'Use "chmod 666 projects/config.json" (6=rw para o dono, 6=rw para o grupo, 6=rw para os outros)',
         expectedCommand: ['chmod 666 projects/config.json', 'chmod a+rw projects/config.json', 'chmod ugo+rw projects/config.json'],
-        explanation: 'chmod changes permissions. 666 = rw-rw-rw-. Numeric: 4=read, 2=write, 1=execute.',
+        explanation: 'O chmod muda permissões. 666 = rw-rw-rw-. Na forma numérica: 4=leitura, 2=escrita, 1=execução.',
       },
       {
-        instruction: 'Remove write permission for others from projects/config.json.',
-        hint: 'Use "chmod o-w projects/config.json" (o=others, -w=remove write)',
+        instruction: 'Tire a permissão de escrita dos outros em projects/config.json.',
+        hint: 'Use "chmod o-w projects/config.json" (o=outros, -w=remove a escrita)',
         expectedCommand: ['chmod o-w projects/config.json', 'chmod 664 projects/config.json'],
-        explanation: 'Use + to add permissions, - to remove. u=user, g=group, o=others, a=all.',
+        explanation: 'Use + para adicionar permissões e - para remover. u=dono, g=grupo, o=outros, a=todos.',
       },
       {
-        instruction: 'Check who owns the /etc/hostname file.',
-        hint: 'Use "ls -l /etc/hostname" - the 3rd column shows the owner',
+        instruction: 'Veja quem é o dono do arquivo /etc/hostname.',
+        hint: 'Use "ls -l /etc/hostname": a 3ª coluna mostra o dono',
         expectedCommand: ['ls -l /etc/hostname', 'ls -la /etc/hostname'],
-        explanation: 'The owner column shows the user who owns the file. Group ownership is in the next column.',
+        explanation: 'A coluna de dono mostra o usuário dono do arquivo. O grupo aparece na coluna seguinte.',
       },
     ],
   },
   {
     id: 'system',
-    title: 'System Information',
-    description: 'Explore system resources and processes',
+    title: 'Informações do sistema',
+    description: 'Explore os recursos e processos do sistema',
     icon: <Cpu className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Display the current username.',
-        hint: 'Simply type "whoami" to see who you are logged in as',
+        instruction: 'Mostre o nome do usuário atual.',
+        hint: 'Digite "whoami" para ver com qual usuário você está logado',
         expectedCommand: 'whoami',
-        explanation: 'whoami displays the current logged-in user. Useful in scripts to check user context.',
+        explanation: 'O whoami mostra o usuário logado. Útil em scripts para conferir o contexto do usuário.',
       },
       {
-        instruction: 'Show the system hostname.',
-        hint: 'Simply type "hostname" to see the system name',
+        instruction: 'Mostre o hostname do sistema.',
+        hint: 'Digite "hostname" para ver o nome do sistema',
         expectedCommand: 'hostname',
-        explanation: 'hostname shows the system\'s network name. Can also read /etc/hostname.',
+        explanation: 'O hostname mostra o nome do sistema na rede. Também dá para ler /etc/hostname.',
       },
       {
-        instruction: 'Display disk usage in human-readable format.',
-        hint: 'Use "df -h" (df = disk free, -h = human readable like 1G, 500M)',
+        instruction: 'Mostre o uso do disco em formato legível.',
+        hint: 'Use "df -h" (df = disk free, -h = legível, como 1G, 500M)',
         expectedCommand: ['df -h', 'df -H', 'df --human-readable'],
-        explanation: 'df shows disk space usage. -h makes sizes human-readable (KB, MB, GB).',
+        explanation: 'O df mostra o uso do espaço em disco. O -h deixa os tamanhos legíveis (KB, MB, GB).',
       },
       {
-        instruction: 'Show memory usage statistics.',
-        hint: 'Use "free -h" (free shows RAM usage, -h = human readable)',
+        instruction: 'Mostre as estatísticas de uso de memória.',
+        hint: 'Use "free -h" (o free mostra o uso de RAM, -h = legível)',
         expectedCommand: ['free -h', 'free -m', 'free --human'],
-        explanation: 'free displays memory usage including swap. -h for human-readable sizes.',
+        explanation: 'O free mostra o uso de memória, incluindo swap. Use -h para tamanhos legíveis.',
       },
       {
-        instruction: 'Display all environment variables.',
-        hint: 'Type "env" or "printenv" to list all environment variables',
+        instruction: 'Mostre todas as variáveis de ambiente.',
+        hint: 'Digite "env" ou "printenv" para listar todas as variáveis de ambiente',
         expectedCommand: ['env', 'printenv'],
-        explanation: 'Environment variables configure shell behavior. Common ones: PATH, HOME, USER.',
+        explanation: 'Variáveis de ambiente configuram o comportamento do shell. As mais comuns: PATH, HOME, USER.',
       },
       {
-        instruction: 'Print the value of the PATH environment variable.',
-        hint: 'Use "echo $PATH" - the $ prefix accesses variable values',
+        instruction: 'Mostre o valor da variável de ambiente PATH.',
+        hint: 'Use "echo $PATH": o prefixo $ acessa o valor da variável',
         expectedCommand: ['echo $PATH', 'echo "$PATH"', 'printenv PATH'],
-        explanation: 'PATH tells the shell where to find executable programs. Directories are separated by colons.',
+        explanation: 'O PATH diz ao shell onde procurar programas executáveis. Os diretórios são separados por dois-pontos.',
       },
     ],
   },
   {
     id: 'pipes',
-    title: 'Pipes & Redirection',
-    description: 'Connect commands and redirect output',
+    title: 'Pipes e redirecionamento',
+    description: 'Conecte comandos e redirecione a saída',
     icon: <Network className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'List all files and pipe to grep to find only .txt files.',
-        hint: 'Use "ls | grep .txt" - the | (pipe) sends ls output to grep',
+        instruction: 'Liste todos os arquivos e use um pipe para o grep achar só os .txt.',
+        hint: 'Use "ls | grep .txt": o | (pipe) manda a saída do ls para o grep',
         expectedCommand: ['ls -la | grep .txt', 'ls -la | grep txt', 'ls -l | grep .txt', 'ls | grep .txt', 'ls | grep txt'],
-        explanation: 'The pipe (|) sends output from one command as input to another. Powerful for chaining commands.',
+        explanation: 'O pipe (|) manda a saída de um comando como entrada de outro. Muito útil para encadear comandos.',
       },
       {
-        instruction: 'Count the number of files in the current directory using ls and wc.',
-        hint: 'Use "ls | wc -l" - pipe ls output to wc (word count) with -l (lines)',
+        instruction: 'Conte quantos arquivos há no diretório atual usando ls e wc.',
+        hint: 'Use "ls | wc -l": mande a saída do ls para o wc (word count) com -l (linhas)',
         expectedCommand: ['ls | wc -l', 'ls -1 | wc -l'],
-        explanation: 'Combining commands with pipes creates powerful one-liners for data processing.',
+        explanation: 'Combinar comandos com pipes cria one-liners poderosos para processar dados.',
       },
       {
-        instruction: 'Write "Hello, Linux!" to a new file called hello.txt using echo.',
-        hint: 'Use "echo \"Hello, Linux!\" > hello.txt" - the > redirects output to a file',
+        instruction: 'Escreva "Hello, Linux!" num arquivo novo chamado hello.txt usando echo.',
+        hint: 'Use "echo \"Hello, Linux!\" > hello.txt": o > redireciona a saída para um arquivo',
         expectedCommand: ['echo "Hello, Linux!" > hello.txt', 'echo Hello, Linux! > hello.txt', "echo 'Hello, Linux!' > hello.txt"],
-        explanation: '> redirects output to a file (overwrites). >> appends instead of overwriting.',
+        explanation: 'O > redireciona a saída para um arquivo (sobrescreve). O >> adiciona ao fim em vez de sobrescrever.',
       },
       {
-        instruction: 'Append "Welcome!" to the hello.txt file.',
-        hint: 'Use "echo \"Welcome!\" >> hello.txt" - the >> appends without overwriting',
+        instruction: 'Adicione "Welcome!" ao fim do arquivo hello.txt.',
+        hint: 'Use "echo \"Welcome!\" >> hello.txt": o >> adiciona ao fim sem sobrescrever',
         expectedCommand: ['echo "Welcome!" >> hello.txt', 'echo Welcome! >> hello.txt', "echo 'Welcome!' >> hello.txt"],
-        explanation: '>> appends to a file without erasing existing content. Essential for logging.',
+        explanation: 'O >> adiciona ao arquivo sem apagar o que já existe. Essencial para logs.',
       },
       {
-        instruction: 'Display the contents of hello.txt and count the words.',
-        hint: 'Use "cat hello.txt | wc -w" or simply "wc -w hello.txt"',
+        instruction: 'Mostre o conteúdo de hello.txt e conte as palavras.',
+        hint: 'Use "cat hello.txt | wc -w" ou simplesmente "wc -w hello.txt"',
         expectedCommand: ['cat hello.txt | wc -w', 'wc -w hello.txt', 'wc -w < hello.txt'],
-        explanation: 'You can pipe cat output or use < for input redirection. Both achieve similar results.',
+        explanation: 'Você pode mandar a saída do cat por pipe ou usar < para redirecionar a entrada. Os dois dão resultado parecido.',
       },
     ],
   },
@@ -1006,29 +1006,29 @@ Swap:       2097152           0     2097152`;
       }
 
       case 'help':
-        return `Available commands:
-  pwd     - Print working directory
-  ls      - List directory contents
-  cd      - Change directory
-  cat     - Display file contents
-  touch   - Create empty file
-  mkdir   - Create directory
-  cp      - Copy files
-  mv      - Move/rename files
-  rm      - Remove files
-  head    - Display first lines
-  tail    - Display last lines
-  grep    - Search for patterns
-  wc      - Word/line count
-  find    - Find files
-  chmod   - Change permissions
-  whoami  - Display current user
-  hostname - Display hostname
-  df      - Disk free space
-  free    - Memory usage
-  env     - Environment variables
-  echo    - Print text
-  clear   - Clear terminal`;
+        return `Comandos disponíveis:
+  pwd     - Mostra o diretório atual
+  ls      - Lista o conteúdo do diretório
+  cd      - Muda de diretório
+  cat     - Mostra o conteúdo de arquivos
+  touch   - Cria um arquivo vazio
+  mkdir   - Cria um diretório
+  cp      - Copia arquivos
+  mv      - Move/renomeia arquivos
+  rm      - Apaga arquivos
+  head    - Mostra as primeiras linhas
+  tail    - Mostra as últimas linhas
+  grep    - Busca padrões
+  wc      - Conta palavras/linhas
+  find    - Encontra arquivos
+  chmod   - Muda permissões
+  whoami  - Mostra o usuário atual
+  hostname - Mostra o hostname
+  df      - Espaço livre em disco
+  free    - Uso de memória
+  env     - Variáveis de ambiente
+  echo    - Imprime texto
+  clear   - Limpa o terminal`;
 
       default:
         return `${command}: command not found`;
@@ -1269,11 +1269,11 @@ Swap:       2097152           0     2097152`;
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-3 mb-4">
           <Terminal className="h-10 w-10 text-green-500" />
-          <h2 className="text-3xl md:text-4xl font-bold">Learn Linux</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">Aprenda Linux</h2>
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Master essential Linux commands through interactive lessons.
-          Type commands in the terminal and watch them execute in real-time.
+          Domine os comandos essenciais do Linux com lições interativas.
+          Digite os comandos no terminal e veja eles rodarem em tempo real.
         </p>
       </div>
 
@@ -1283,16 +1283,16 @@ Swap:       2097152           0     2097152`;
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Trophy className="h-5 w-5 text-yellow-500" />
-              <span className="font-medium">Progress</span>
+              <span className="font-medium">Progresso</span>
             </div>
             <span className="text-sm text-muted-foreground">
-              {completedCount}/{totalCommands} commands completed
+              {completedCount}/{totalCommands} comandos concluídos
             </span>
           </div>
           <Progress value={progressPercentage} className="h-3" />
           {progressPercentage === 100 && (
             <p className="mt-2 text-center text-green-600 font-medium">
-              🎉 Congratulations! You've completed all lessons!
+              🎉 Parabéns! Você concluiu todas as lições!
             </p>
           )}
         </CardContent>
@@ -1304,7 +1304,7 @@ Swap:       2097152           0     2097152`;
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BookOpen className="h-5 w-5" />
-              Lessons
+              Lições
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -1351,7 +1351,7 @@ Swap:       2097152           0     2097152`;
               className="w-full mt-4"
             >
               <RotateCcw className="h-4 w-4 mr-2" />
-              Reset All Progress
+              Zerar todo o progresso
             </Button>
           </CardContent>
         </Card>
@@ -1365,10 +1365,10 @@ Swap:       2097152           0     2097152`;
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg flex items-center gap-2">
                     <ChevronRight className="h-5 w-5 text-primary" />
-                    Current Task
+                    Tarefa atual
                   </CardTitle>
                   <Badge>
-                    Step {currentCommandIndex + 1}/{currentLesson.commands.length}
+                    Passo {currentCommandIndex + 1}/{currentLesson.commands.length}
                   </Badge>
                 </div>
               </CardHeader>
@@ -1382,7 +1382,7 @@ Swap:       2097152           0     2097152`;
                     className="text-muted-foreground"
                   >
                     <Lightbulb className="h-4 w-4 mr-1" />
-                    {showHint ? 'Hide Hint' : 'Show Hint'}
+                    {showHint ? 'Esconder dica' : 'Mostrar dica'}
                   </Button>
                 </div>
                 {showHint && (
@@ -1419,9 +1419,9 @@ Swap:       2097152           0     2097152`;
                 {/* Welcome message */}
                 {terminalHistory.length === 0 && (
                   <div className="text-green-400 mb-4">
-                    <p>Welcome to the Linux Terminal Tutorial!</p>
+                    <p>Boas-vindas ao tutorial do terminal Linux!</p>
                     <p className="text-gray-500 mt-2">
-                      Type "help" for available commands. Follow the instructions on the left.
+                      Digite "help" para ver os comandos disponíveis. Siga as instruções à esquerda.
                     </p>
                   </div>
                 )}
@@ -1469,33 +1469,33 @@ Swap:       2097152           0     2097152`;
           {/* Quick Reference */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Quick Reference</CardTitle>
+              <CardTitle className="text-lg">Referência rápida</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
                 <div className="p-2 rounded bg-muted">
                   <code className="text-primary">pwd</code>
-                  <p className="text-muted-foreground text-xs mt-1">Print directory</p>
+                  <p className="text-muted-foreground text-xs mt-1">Mostra o diretório</p>
                 </div>
                 <div className="p-2 rounded bg-muted">
                   <code className="text-primary">ls</code>
-                  <p className="text-muted-foreground text-xs mt-1">List files</p>
+                  <p className="text-muted-foreground text-xs mt-1">Lista arquivos</p>
                 </div>
                 <div className="p-2 rounded bg-muted">
                   <code className="text-primary">cd [dir]</code>
-                  <p className="text-muted-foreground text-xs mt-1">Change directory</p>
+                  <p className="text-muted-foreground text-xs mt-1">Muda de diretório</p>
                 </div>
                 <div className="p-2 rounded bg-muted">
                   <code className="text-primary">cat [file]</code>
-                  <p className="text-muted-foreground text-xs mt-1">View file</p>
+                  <p className="text-muted-foreground text-xs mt-1">Mostra um arquivo</p>
                 </div>
                 <div className="p-2 rounded bg-muted">
                   <code className="text-primary">grep [text] [file]</code>
-                  <p className="text-muted-foreground text-xs mt-1">Search text</p>
+                  <p className="text-muted-foreground text-xs mt-1">Busca texto</p>
                 </div>
                 <div className="p-2 rounded bg-muted">
                   <code className="text-primary">help</code>
-                  <p className="text-muted-foreground text-xs mt-1">All commands</p>
+                  <p className="text-muted-foreground text-xs mt-1">Todos os comandos</p>
                 </div>
               </div>
             </CardContent>
