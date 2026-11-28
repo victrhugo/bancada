@@ -8,111 +8,113 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const seoLearningPoints = [
-  'How binary works: each bit is a place value, and the number is the lit places added up',
-  'Why a byte holds 0 to 255, and why colour channels and IPv4 octets stop at 255 too',
-  'How a carry ripples along the bits when you count upward',
-  'How chmod numbers work: why 755 and 644 mean what they mean, and how they map to rwxr-xr-x',
-  'Why an SSH private key needs 600, and why 777 is almost never the right answer',
-  'How a subnet mask is built from bits, why it must be a solid run of 1s, and where /24 and /26 come from',
-  'Why shifting bits left doubles a number until the top bit falls off the end',
+  'Como o binário funciona: cada bit é uma posição com um valor, e o número é a soma das posições acesas',
+  'Por que um byte vai de 0 a 255, e por que canais de cor e octetos de IPv4 também param em 255',
+  'Como o "vai um" percorre os bits quando você conta para cima',
+  'Como os números do chmod funcionam: o que 755 e 644 significam e como viram rwxr-xr-x',
+  'Por que uma chave privada SSH precisa de 600, e por que 777 quase nunca é a resposta certa',
+  'Como uma máscara de sub-rede é feita de bits, por que ela precisa ser uma sequência contínua de 1s e de onde vêm /24 e /26',
+  'Por que deslocar os bits para a esquerda dobra o número até o bit mais alto cair para fora',
 ];
 
 function BinaryEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this binary simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador binário</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>What a bit and a byte actually are, by flipping them yourself</li>
-            <li>How to read any binary number without doing arithmetic in your head</li>
-            <li>Where chmod numbers come from, and how to build one from scratch</li>
-            <li>How a subnet mask is really just a run of 1s, and what the slash number counts</li>
-            <li>Why counting in binary makes a carry travel along the bits</li>
-            <li>What a bit shift does to a value, and why it is used as fast multiply and divide</li>
+            <li>O que bit e byte realmente são, virando os bits você mesmo</li>
+            <li>Como ler qualquer número binário sem fazer contas de cabeça</li>
+            <li>De onde vêm os números do chmod e como montar um do zero</li>
+            <li>Por que uma máscara de sub-rede é só uma sequência de 1s, e o que o número depois da barra conta</li>
+            <li>Por que contar em binário faz o "vai um" percorrer os bits</li>
+            <li>O que um deslocamento de bits faz com um valor, e por que ele é usado como multiplicação e divisão rápidas</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">The three modes</h4>
+          <h4 className="mb-3 text-sm font-semibold">Os três modos</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Byte:</strong> eight bits, with the decimal, hex and
-              the sum of place values updating as you flip
+              <strong className="text-foreground">Byte:</strong> oito bits, com o decimal, o hexadecimal
+              e a soma das posições atualizando enquanto você vira os bits
             </li>
             <li>
-              <strong className="text-foreground">Permissions:</strong> nine bits as owner, group and
-              other, showing the octal, the <code>ls -l</code> string, and the chmod command
+              <strong className="text-foreground">Permissões:</strong> nove bits para dono, grupo e
+              outros, mostrando o octal, a string do <code>ls -l</code> e o comando chmod
             </li>
             <li>
-              <strong className="text-foreground">Subnet mask:</strong> thirty-two bits in four
-              octets, showing the dotted mask, the prefix length and the usable host count
+              <strong className="text-foreground">Máscara de sub-rede:</strong> trinta e dois bits em
+              quatro octetos, mostrando a máscara com pontos, o tamanho do prefixo e quantos hosts são
+              utilizáveis
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Start with Count up</h4>
+        <h4 className="mb-2 text-sm font-semibold">Comece pelo botão Contar</h4>
         <p className="text-sm text-muted-foreground">
-          The single most useful thing on the page is the <strong>Count up</strong> button. A tile can
-          only ever show 0 or 1, so when a tile that is already 1 has to grow, it flips back to 0 and
-          pushes a carry to its neighbour. Watch that carry travel from the right hand side, and every
-          later idea in binary gets easier: why 8 is written as a single lit bit, why 7 fills every bit
-          below it, and why adding 1 to 255 wraps a byte back to 0.
+          A coisa mais útil da página é o botão <strong>Contar</strong>. Um bloco só mostra 0 ou 1;
+          quando um bloco que já está em 1 precisa crescer, ele volta para 0 e passa o &quot;vai um&quot;
+          para o vizinho. Observe esse &quot;vai um&quot; andar a partir da direita e todo o resto do
+          binário fica mais fácil: por que 8 é um único bit aceso, por que 7 acende todos os bits abaixo
+          dele e por que somar 1 a 255 faz o byte voltar a 0.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Why permissions are three groups of three</h4>
+        <h4 className="mb-2 text-sm font-semibold">Por que as permissões são três grupos de três</h4>
         <p className="text-sm text-muted-foreground">
-          A permission set is nine bits: read, write and execute, for the owner, the group, then
-          everyone else. Three bits hold a value from 0 to 7, which is exactly one octal digit, and
-          that is the whole reason chmod numbers are written in octal rather than decimal. Build 755
-          in the simulator and the pattern stops being something to memorise: the owner has all three
-          bits lit, and the other two groups have read and execute but not write.
+          Um conjunto de permissões tem nove bits: leitura, escrita e execução, para o dono, para o
+          grupo e para todos os outros. Três bits guardam um valor de 0 a 7, que é exatamente um dígito
+          octal, e é só por isso que os números do chmod são escritos em octal e não em decimal. Monte
+          755 no simulador e o padrão deixa de ser algo para decorar: o dono tem os três bits acesos, e
+          os outros dois grupos têm leitura e execução, mas não escrita.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Why a subnet mask cannot have gaps</h4>
+        <h4 className="mb-2 text-sm font-semibold">Por que uma máscara de sub-rede não pode ter buracos</h4>
         <p className="text-sm text-muted-foreground">
-          A mask splits an address into a network part and a host part, and the split has to happen at
-          one point, so the 1s must run solidly from the left. Try flipping a bit in the middle of the
-          run: the simulator will tell you the mask is invalid, which is the same thing your router
-          would say. That rule is why a mask can be written as a single number, <code>/24</code>,
-          instead of a pattern, and why borrowing one more bit halves the address space each time.
+          Uma máscara divide o endereço em uma parte de rede e uma parte de host, e essa divisão
+          acontece em um único ponto, então os 1s precisam vir seguidos a partir da esquerda. Tente
+          virar um bit no meio da sequência: o simulador vai dizer que a máscara é inválida, como o seu
+          roteador diria. É por essa regra que uma máscara pode ser escrita como um único número,{' '}
+          <code>/24</code>, em vez de um padrão, e por que pegar mais um bit emprestado divide o
+          espaço de endereços pela metade a cada vez.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Where this comes from</h4>
+        <h4 className="mb-2 text-sm font-semibold">De onde vem essa ideia</h4>
         <p className="text-sm text-muted-foreground">
-          Computing museums keep hand-built wooden versions of this: eight tiles on a rail, each
-          flipped by hand, sitting next to the valve machines they explain. They work because binary
-          stops feeling abstract the moment it is a physical thing you can move with your thumb. This
-          is that device, with the parts an engineer actually meets bolted on.
+          Museus de computação guardam versões de madeira feitas à mão deste simulador: oito blocos em
+          um trilho, virados com os dedos, ao lado das máquinas a válvula que eles explicam. Funcionam
+          porque o binário deixa de ser abstrato no momento em que vira algo físico que você move com o
+          polegar. Este é o mesmo aparelho, com as partes que um engenheiro encontra no dia a dia.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Keep going</h4>
+        <h4 className="mb-2 text-sm font-semibold">Continue</h4>
         <p className="text-sm text-muted-foreground">
-          Once the bits make sense, the{' '}
+          Depois que os bits fizerem sentido, o{' '}
           <a
             href="/games/linux-terminal"
             className="font-medium text-primary underline underline-offset-2"
           >
-            Linux terminal simulator
+            simulador de terminal Linux
           </a>{' '}
-          puts chmod to work on a real file tree, and the{' '}
+          coloca o chmod para funcionar em uma árvore de arquivos real, e o{' '}
           <a
             href="/games/aws-vpc-simulator"
             className="font-medium text-primary underline underline-offset-2"
           >
-            AWS VPC simulator
+            simulador de AWS VPC
           </a>{' '}
-          uses subnet masks to carve up a network.
+          usa máscaras de sub-rede para dividir uma rede.
         </p>
       </div>
     </>
@@ -123,11 +125,11 @@ export default function BinaryByteSimulatorPage() {
   return (
     <SimulatorShell
       slug="binary-byte-simulator"
-      fallbackTitle="Binary Byte Simulator"
-      fallbackDescription="Flip eight bits by hand and watch the value change. The same tiles become a byte, a set of chmod permissions, and a subnet mask, so binary stops being abstract and starts being the thing you already use."
+      fallbackTitle="Simulador de Bits e Bytes"
+      fallbackDescription="Vire oito bits com as mãos e veja o valor mudar. Os mesmos blocos viram um byte, um conjunto de permissões do chmod e uma máscara de sub-rede, e o binário deixa de ser abstrato."
       educational={<BinaryEducational />}
       seoLearningPoints={seoLearningPoints}
-      shareText="Flip the bits and watch the number change. An interactive binary simulator that also explains chmod permissions and subnet masks."
+      shareText="Vire os bits e veja o número mudar. Um simulador binário interativo que também explica permissões do chmod e máscaras de sub-rede."
     >
       <BinaryByteSimulator />
     </SimulatorShell>

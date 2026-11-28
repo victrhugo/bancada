@@ -10,17 +10,17 @@ export async function generateMetadata(): Promise<Metadata> {
 function InfraTarotEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">The art of infrastructure divination</h3>
+      <h3 className="mb-4 text-xl font-semibold">A arte de adivinhar o futuro da infraestrutura</h3>
       <p className="mb-3 text-sm text-muted-foreground">
-        While we can&apos;t actually predict your infrastructure future through mystical cards,
-        this game highlights real DevOps challenges in a fun way. Each card represents genuine
-        scenarios that infrastructure teams face, from outages and budget constraints to scaling
-        challenges and security concerns.
+        Não dá para prever o futuro da sua infraestrutura com cartas místicas, mas este jogo mostra
+        desafios reais de DevOps de um jeito divertido. Cada carta representa um cenário que times de
+        infraestrutura enfrentam de verdade, de quedas e limites de orçamento a desafios de escala e
+        preocupações com segurança.
       </p>
       <p className="text-sm text-muted-foreground">
-        The best &quot;fortune telling&quot; for your infrastructure comes from proper monitoring,
-        automated testing, infrastructure as code, and following DevOps best practices. But
-        sometimes, a little humor helps us cope with the chaos of distributed systems.
+        A melhor &quot;previsão&quot; para a sua infraestrutura vem de um bom monitoramento, testes
+        automatizados, infraestrutura como código e boas práticas de DevOps. Mas, às vezes, um pouco
+        de humor ajuda a lidar com o caos dos sistemas distribuídos.
       </p>
     </>
   );
@@ -32,9 +32,9 @@ export default function InfraTarotPage() {
       slug="infra-tarot"
       educational={<InfraTarotEducational />}
       seoLearningPoints={[
-        'Learn about common infrastructure failure modes',
-        'Understand DevOps best practices through metaphors',
-        'Explore incident response scenarios',
+        'Conhecer modos comuns de falha em infraestrutura',
+        'Entender boas práticas de DevOps por meio de metáforas',
+        'Explorar cenários de resposta a incidentes',
       ]}
     >
       <InfraTarot />

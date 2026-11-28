@@ -48,35 +48,35 @@ const UPTIME_RECOVERY_RATE = 0.3; // per second when no active incidents (increa
 const INCIDENT_TYPES = [
   {
     id: 'high-load',
-    name: 'High Traffic Load',
+    name: 'Pico de tráfego',
     icon: Activity,
     color: 'from-orange-500 to-red-600',
     textColor: 'text-orange-600 dark:text-orange-400',
     action: 'add-nodes',
-    actionName: 'Add Nodes',
-    description: 'Traffic spike detected!',
+    actionName: 'Adicionar nodes',
+    description: 'Pico de tráfego detectado!',
     severity: 'high',
   },
   {
     id: 'disk-full',
-    name: 'Disk Space Critical',
+    name: 'Disco quase cheio',
     icon: HardDrive,
     color: 'from-yellow-500 to-orange-600',
     textColor: 'text-yellow-600 dark:text-yellow-400',
     action: 'rotate-logs',
-    actionName: 'Rotate Logs',
-    description: 'Disk at 95% capacity!',
+    actionName: 'Rotacionar logs',
+    description: 'Disco com 95% de uso!',
     severity: 'medium',
   },
   {
     id: 'primary-down',
-    name: 'Primary Node Down',
+    name: 'Node primário fora do ar',
     icon: CloudOff,
     color: 'from-red-500 to-pink-600',
     textColor: 'text-red-600 dark:text-red-400',
     action: 'failover',
-    actionName: 'Fail Over',
-    description: 'Primary instance unresponsive!',
+    actionName: 'Fazer failover',
+    description: 'A instância primária não responde!',
     severity: 'critical',
   },
   {
@@ -86,86 +86,86 @@ const INCIDENT_TYPES = [
     color: 'from-purple-500 to-pink-600',
     textColor: 'text-purple-600 dark:text-purple-400',
     action: 'restart-pods',
-    actionName: 'Restart Pods',
-    description: 'Container restart loop!',
+    actionName: 'Reiniciar pods',
+    description: 'Container em loop de reinício!',
     severity: 'high',
   },
   {
     id: 'db-slow',
-    name: 'Database Slow Query',
+    name: 'Consulta lenta no banco',
     icon: Database,
     color: 'from-blue-500 to-purple-600',
     textColor: 'text-blue-600 dark:text-blue-400',
     action: 'scale-db',
-    actionName: 'Scale DB',
-    description: 'Query execution > 10s!',
+    actionName: 'Escalar o banco',
+    description: 'Consulta levando mais de 10s!',
     severity: 'medium',
   },
   {
     id: 'ddos',
-    name: 'DDoS Attack',
+    name: 'Ataque DDoS',
     icon: Shield,
     color: 'from-red-600 to-orange-600',
     textColor: 'text-red-600 dark:text-red-400',
     action: 'enable-waf',
-    actionName: 'Enable WAF',
-    description: 'Malicious traffic detected!',
+    actionName: 'Ativar WAF',
+    description: 'Tráfego malicioso detectado!',
     severity: 'critical',
   },
   {
     id: 'memory-leak',
-    name: 'Memory Leak',
+    name: 'Vazamento de memória',
     icon: Cpu,
     color: 'from-pink-500 to-red-600',
     textColor: 'text-pink-600 dark:text-pink-400',
     action: 'restart-pods',
-    actionName: 'Restart Pods',
-    description: 'Memory usage at 98%!',
+    actionName: 'Reiniciar pods',
+    description: 'Uso de memória em 98%!',
     severity: 'high',
   },
   {
     id: 'network-partition',
-    name: 'Network Partition',
+    name: 'Partição de rede',
     icon: Network,
     color: 'from-indigo-500 to-purple-600',
     textColor: 'text-indigo-600 dark:text-indigo-400',
     action: 'failover',
-    actionName: 'Fail Over',
-    description: 'Cross-region failure!',
+    actionName: 'Fazer failover',
+    description: 'Falha entre regiões!',
     severity: 'critical',
   },
   {
     id: 'webhook-flood',
-    name: 'Webhook Flood',
+    name: 'Enxurrada de webhooks',
     icon: Webhook,
     color: 'from-cyan-500 to-blue-600',
     textColor: 'text-cyan-600 dark:text-cyan-400',
     action: 'enable-waf',
-    actionName: 'Enable WAF',
-    description: 'Webhook spam detected!',
+    actionName: 'Ativar WAF',
+    description: 'Spam de webhooks detectado!',
     severity: 'medium',
   },
   {
     id: 'bug-critical',
-    name: 'Critical Bug',
+    name: 'Bug crítico',
     icon: Bug,
     color: 'from-red-500 to-rose-600',
     textColor: 'text-red-600 dark:text-red-400',
     action: 'rollback',
     actionName: 'Rollback',
-    description: 'Production error spike!',
+    description: 'Pico de erros em produção!',
     severity: 'critical',
   },
 ];
 
 // Action buttons configuration
 const ACTIONS = [
-  { id: 'add-nodes', name: 'Add Nodes', icon: Server, color: 'bg-green-600 hover:bg-green-700' },
-  { id: 'rotate-logs', name: 'Rotate Logs', icon: FileText, color: 'bg-yellow-600 hover:bg-yellow-700' },
-  { id: 'failover', name: 'Fail Over', icon: GitBranch, color: 'bg-red-600 hover:bg-red-700' },
-  { id: 'restart-pods', name: 'Restart Pods', icon: RefreshCw, color: 'bg-purple-600 hover:bg-purple-700' },
-  { id: 'scale-db', name: 'Scale DB', icon: Database, color: 'bg-blue-600 hover:bg-blue-700' },
-  { id: 'enable-waf', name: 'Enable WAF', icon: Shield, color: 'bg-orange-600 hover:bg-orange-700' },
+  { id: 'add-nodes', name: 'Adicionar nodes', icon: Server, color: 'bg-green-600 hover:bg-green-700' },
+  { id: 'rotate-logs', name: 'Rotacionar logs', icon: FileText, color: 'bg-yellow-600 hover:bg-yellow-700' },
+  { id: 'failover', name: 'Fazer failover', icon: GitBranch, color: 'bg-red-600 hover:bg-red-700' },
+  { id: 'restart-pods', name: 'Reiniciar pods', icon: RefreshCw, color: 'bg-purple-600 hover:bg-purple-700' },
+  { id: 'scale-db', name: 'Escalar o banco', icon: Database, color: 'bg-blue-600 hover:bg-blue-700' },
+  { id: 'enable-waf', name: 'Ativar WAF', icon: Shield, color: 'bg-orange-600 hover:bg-orange-700' },
   { id: 'rollback', name: 'Rollback', icon: RotateCcw, color: 'bg-pink-600 hover:bg-pink-700' },
 ];
 
@@ -426,7 +426,7 @@ export default function UptimeDefender() {
             Uptime Defender
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Defend your infrastructure's uptime against incoming incidents!
+            Defenda o uptime da sua infraestrutura contra os incidentes que chegam!
           </p>
 
           <Card className="p-8 mb-8 max-w-2xl mx-auto">
@@ -434,7 +434,7 @@ export default function UptimeDefender() {
               <div>
                 <h2 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
                   <Zap className="w-6 h-6 text-yellow-500" />
-                  How to Play
+                  Como jogar
                 </h2>
                 <div className="text-left space-y-3">
                   <p className="flex items-start gap-2">
@@ -443,19 +443,19 @@ export default function UptimeDefender() {
                   </p>
                   <p className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
-                    <span>Click the correct action button to resolve each incident</span>
+                    <span>Clique no botão de ação certo para resolver cada incidente</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
-                    <span>Resolve incidents quickly for bonus points and combo multipliers</span>
+                    <span>Resolva rápido para ganhar pontos extras e multiplicadores de combo</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <AlertTriangle className="w-5 h-5 text-orange-500 mt-0.5 shrink-0" />
-                    <span>Missing incidents or wrong actions will drain your uptime</span>
+                    <span>Incidentes perdidos ou ações erradas derrubam o seu uptime</span>
                   </p>
                   <p className="flex items-start gap-2">
                     <Heart className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
-                    <span>Keep your uptime above 0% and survive for 60 seconds!</span>
+                    <span>Mantenha o uptime acima de 0% e sobreviva por 60 segundos!</span>
                   </p>
                 </div>
               </div>
@@ -489,7 +489,7 @@ export default function UptimeDefender() {
             className="bg-linear-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-xl px-8 py-6 h-auto"
           >
             <Play className="w-6 h-6 mr-2" />
-           Start Game
+           Iniciar jogo
          </Button>
 
        </motion.div>
@@ -518,7 +518,7 @@ export default function UptimeDefender() {
           className="text-center"
         >
           <h2 className="text-5xl font-bold mb-4">
-            {uptime > 0 ? '🎉 Mission Complete!' : '💥 System Down!'}
+            {uptime > 0 ? '🎉 Missão cumprida!' : '💥 Sistema fora do ar!'}
           </h2>
 
           {isNewHighScore && (
@@ -529,7 +529,7 @@ export default function UptimeDefender() {
             >
               <p className="text-2xl font-bold text-yellow-500 flex items-center justify-center gap-2">
                 <Award className="w-8 h-8" />
-                New High Score!
+                Novo recorde!
               </p>
             </motion.div>
           )}
@@ -538,34 +538,34 @@ export default function UptimeDefender() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
               <div>
                 <p className="text-4xl font-bold text-green-500">{score.toLocaleString()}</p>
-                <p className="text-sm text-muted-foreground">Score</p>
+                <p className="text-sm text-muted-foreground">Pontuação</p>
               </div>
               <div>
                 <p className={`text-4xl font-bold ${getUptimeColor()}`}>{uptime.toFixed(2)}%</p>
-                <p className="text-sm text-muted-foreground">Final Uptime</p>
+                <p className="text-sm text-muted-foreground">Uptime final</p>
               </div>
               <div>
                 <p className="text-4xl font-bold text-blue-500">{resolvedIncidents}</p>
-                <p className="text-sm text-muted-foreground">Resolved</p>
+                <p className="text-sm text-muted-foreground">Resolvidos</p>
               </div>
               <div>
                 <p className="text-4xl font-bold text-red-500">{missedIncidents}</p>
-                <p className="text-sm text-muted-foreground">Missed</p>
+                <p className="text-sm text-muted-foreground">Perdidos</p>
               </div>
             </div>
 
             <div className="space-y-3 pt-6 border-t">
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Success Rate:</span>
+                <span className="text-muted-foreground">Taxa de sucesso:</span>
                 <span className="font-semibold text-lg">{successRate.toFixed(1)}%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Total Incidents:</span>
+                <span className="text-muted-foreground">Total de incidentes:</span>
                 <span className="font-semibold text-lg">{totalIncidents}</span>
               </div>
               {highScore > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">High Score:</span>
+                  <span className="text-muted-foreground">Recorde:</span>
                   <span className="font-semibold text-lg text-yellow-500">{highScore.toLocaleString()}</span>
                 </div>
               )}
@@ -579,7 +579,7 @@ export default function UptimeDefender() {
               className="bg-linear-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
             >
               <Play className="w-5 h-5 mr-2" />
-             Play Again
+             Jogar de novo
            </Button>
          </div>
        </motion.div>
@@ -616,7 +616,7 @@ export default function UptimeDefender() {
           <Card className="p-3 md:p-4">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-5 h-5 text-green-500" />
-              <span className="text-sm font-medium">Score</span>
+              <span className="text-sm font-medium">Pontuação</span>
             </div>
             <p className="text-3xl md:text-4xl font-bold text-green-500">
               {score.toLocaleString()}
@@ -627,7 +627,7 @@ export default function UptimeDefender() {
           <Card className="p-3 md:p-4">
             <div className="flex items-center gap-2 mb-2">
               <Clock className="w-5 h-5 text-blue-500" />
-              <span className="text-sm font-medium">Time</span>
+              <span className="text-sm font-medium">Tempo</span>
             </div>
             <p className="text-3xl md:text-4xl font-bold text-blue-500">
               {Math.ceil(timeLeft)}s
@@ -731,7 +731,7 @@ export default function UptimeDefender() {
                             transition={{ repeat: Infinity, duration: 1 }}
                             className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
                           >
-                            CRITICAL
+                            CRÍTICO
                           </motion.div>
                         </div>
                       )}
@@ -745,7 +745,7 @@ export default function UptimeDefender() {
         {activeIncidents.size === 0 && (
           <div className="absolute inset-0 flex items-center justify-center">
             <p className="text-muted-foreground text-lg">
-              {gameState === 'paused' ? '⏸️ Game Paused' : '✅ All clear! No active incidents'}
+              {gameState === 'paused' ? '⏸️ Jogo pausado' : '✅ Tudo certo! Nenhum incidente ativo'}
             </p>
           </div>
         )}
@@ -755,7 +755,7 @@ export default function UptimeDefender() {
       <Card className="p-4 md:p-6">
         <h2 className="text-xl md:text-2xl font-bold mb-4 flex items-center gap-2">
           <Zap className="w-6 h-6 text-yellow-500" />
-          Actions
+          Ações
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 md:gap-3">
           {ACTIONS.map(action => {

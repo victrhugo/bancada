@@ -53,7 +53,7 @@ export function HeadingWithAnchor({
           'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
           copied && 'text-green-600 dark:text-green-400'
         )}
-        aria-label="Copy link to section"
+        aria-label="Copiar link da seção"
       >
         <AnimatePresence mode="wait">
           {copied ? (

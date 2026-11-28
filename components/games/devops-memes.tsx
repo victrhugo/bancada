@@ -23,132 +23,132 @@ import { cn } from '@/lib/utils';
 // DevOps Engineer memes database with categories - 120+ memes!
 const DEVOPS_MEMES = {
   infrastructure: [
-    "You've debugged DNS more than you've hugged your family.",
-    "You consider 'Everything is on fire' a normal Tuesday.",
-    "You've ever said 'Have you tried turning the entire datacenter off and on again?'",
-    "Your biggest fear isn't death, it's a single point of failure.",
-    "You've named infrastructure components after Game of Thrones characters and lived to regret it.",
-    "You've used Infrastructure as Code to provision your home network.",
-    "Your definition of 'serverless' includes 'someone else's servers'.",
-    'You know more about Linux file permissions than your own emotions.',
-    "You've named your Wi-Fi network after your favorite load balancer.",
-    "You've explained network latency using pizza delivery analogies.",
-    'You know what a 503 error means but not what SOS stands for.',
-    "You've ever described a server as 'having personality issues'.",
-    "Your home router has better monitoring than some companies' production systems.",
-    'You can tell if a server is having a bad day just by looking at its metrics.',
-    "You've named your pet after your favorite cloud provider.",
-    'You know more about subnet masks than your own neighborhood.',
-    "You've ever called a server 'she' and meant it affectionately.",
-    "Your dating profile lists 'high availability' as a key requirement.",
-    "You've explained why the internet is down using OSI layer analogies.",
-    "You treat load balancers like they're members of your family.",
-    "You've had longer relationships with servers than with people.",
-    'You know the IP addresses of your favorite websites by heart.',
-    "You've given servers pet names based on their quirks.",
-    'You can predict server failures better than the weather.',
+    "Você já depurou mais DNS do que abraçou a sua família.",
+    "Para você, “está tudo pegando fogo” é só mais uma terça-feira.",
+    "Você já perguntou “já tentou desligar e ligar o datacenter inteiro?”",
+    "Seu maior medo não é a morte, é um single point of failure.",
+    "Você já batizou componentes da infra com nomes de personagens de série e se arrependeu.",
+    "Você já usou Infrastructure as Code para provisionar a rede de casa.",
+    "Sua definição de “serverless” inclui “os servidores de outra pessoa”.",
+    'Você entende mais de permissões de arquivo no Linux do que das próprias emoções.',
+    "O nome do seu Wi-Fi é o do seu load balancer favorito.",
+    "Você já explicou latência de rede comparando com entrega de pizza.",
+    'Você sabe o que é um erro 503, mas não sabe o que significa SOS.',
+    "Você já disse que um servidor “tem problemas de personalidade”.",
+    "O roteador da sua casa tem monitoramento melhor que a produção de muita empresa.",
+    'Você sabe quando um servidor está num dia ruim só de olhar as métricas.',
+    "Seu pet tem o nome do seu provedor de nuvem favorito.",
+    'Você conhece mais máscaras de sub-rede do que o próprio bairro.',
+    "Você já chamou um servidor de “ela”, com todo o carinho.",
+    "Seu perfil de namoro lista “alta disponibilidade” como requisito.",
+    "Você já explicou por que a internet caiu usando as camadas do modelo OSI.",
+    "Você trata load balancers como se fossem da família.",
+    "Seus relacionamentos com servidores duraram mais que com pessoas.",
+    'Você sabe de cor o IP dos seus sites favoritos.',
+    "Você dá apelidos para os servidores de acordo com as manias deles.",
+    'Você prevê falha de servidor melhor do que a previsão do tempo.',
   ],
   automation: [
-    "You've automated your coffee machine but still manually deploy to production.",
-    "Your idea of 'manual testing' involves at least three different CI/CD pipelines.",
-    "You've written more YAML than actual code this year.",
-    'You automate everything except remembering to automate everything.',
-    'Your deployment pipeline has more stages than a rocket launch.',
-    "You've ever said 'It works in my pipeline' as if that's reassuring.",
-    'Your CI/CD pipeline takes longer to run than the actual development time.',
-    "You've named your build servers and talk to them when they're slow.",
-    'You measure your worth by the number of green checkmarks in your pipeline.',
-    "You've automated your lunch order but still manually restart services.",
-    'Your Ansible playbooks have more roles than a Shakespeare play.',
-    "You've written a script to write scripts that write other scripts.",
-    'You automate your standup updates but forget to automate your actual work.',
-    'Your Jenkins has more plugins than your browser has extensions.',
-    "You've created a pipeline to deploy pipelines that deploy other pipelines.",
-    'You know more about cron syntax than your own birthday.',
-    "You've automated saying 'hello world' in 15 different ways.",
-    'Your GitHub Actions workflow file is longer than most novels.',
-    "You've made a bot to remind you to check on your other bots.",
-    'You automated your vacation out-of-office message but forgot to take the vacation.',
-    "You've automated your morning routine but still forget to eat breakfast.",
-    'Your shell aliases are more complex than some programming languages.',
-    "You've written a script to generate excuses for why the build is broken.",
-    'You automate code formatting but manually organize your desk.',
+    "Você automatizou a cafeteira, mas ainda faz deploy em produção na mão.",
+    "Sua ideia de “teste manual” envolve pelo menos três pipelines de CI/CD.",
+    "Este ano você escreveu mais YAML do que código de verdade.",
+    'Você automatiza tudo, menos lembrar de automatizar tudo.',
+    'Seu pipeline de deploy tem mais estágios que um lançamento de foguete.',
+    "Você já disse “funciona no meu pipeline” como se isso tranquilizasse alguém.",
+    'Seu pipeline de CI/CD demora mais para rodar do que o tempo de desenvolvimento.',
+    "Você deu nome aos servidores de build e conversa com eles quando estão lentos.",
+    'Você mede seu valor pela quantidade de checks verdes no pipeline.',
+    "Você automatizou o pedido do almoço, mas ainda reinicia serviços na mão.",
+    'Seus playbooks de Ansible têm mais roles que uma peça de Shakespeare.',
+    "Você já escreveu um script que escreve scripts que escrevem outros scripts.",
+    'Você automatiza o update da daily, mas esquece de automatizar o trabalho em si.',
+    'Seu Jenkins tem mais plugins que o seu navegador tem extensões.',
+    "Você criou um pipeline que faz deploy de pipelines que fazem deploy de outros pipelines.",
+    'Você lembra melhor da sintaxe do cron do que do próprio aniversário.',
+    "Você já automatizou um “hello world” de 15 jeitos diferentes.",
+    'Seu workflow do GitHub Actions é maior que muito romance.',
+    "Você criou um bot para te lembrar de checar os outros bots.",
+    'Você automatizou a resposta de férias, mas esqueceu de tirar as férias.',
+    "Você automatizou a rotina da manhã, mas ainda esquece de tomar café.",
+    'Seus aliases de shell são mais complexos que algumas linguagens de programação.',
+    "Você escreveu um script que gera desculpas para o build quebrado.",
+    'Você automatiza a formatação do código, mas organiza a mesa na mão.',
   ],
   monitoring: [
-    'Your vacation photos are all screenshots of monitoring dashboards showing 99.99% uptime.',
-    'You know exactly which emoji represents each service status in Slack.',
-    "Your car's check engine light doesn't worry you because there are no alerts in PagerDuty.",
-    'You have opinions about monitoring tools that are stronger than your political views.',
-    'Your first instinct when something breaks is to check the logs, even for your coffee machine.',
-    "You've ever debugged a problem by reading tea leaves (and by tea leaves, we mean logs).",
-    'You can tell the health of your entire infrastructure by the color of your phone notifications.',
-    "You've named your child's stuffed animals after monitoring metrics.",
-    'You know what normal CPU usage looks like better than your own vital signs.',
-    "You've ever been woken up by an alert about a service you forgot existed.",
-    'Your phone has more monitoring apps than social media apps.',
-    "You judge restaurants by their uptime (how often they're actually open).",
-    "You've set up monitoring for your home appliances.",
-    'You know the difference between a spike and an anomaly in your sleep patterns.',
-    "You've created dashboards for tracking your personal productivity.",
-    'Your heart rate monitor is just another data source to you.',
-    "You've ever troubleshot a family argument using root cause analysis.",
-    'You monitor your Wi-Fi performance more closely than your bank account.',
-    "You've set up alerts for when your plants need watering.",
-    'You can read Grafana charts faster than restaurant menus.',
+    'Suas fotos de férias são prints de dashboards mostrando 99,99% de uptime.',
+    'Você sabe exatamente qual emoji representa cada status de serviço no Slack.',
+    "A luz de injeção do carro não te preocupa, porque não chegou alerta no PagerDuty.",
+    'Suas opiniões sobre ferramentas de monitoramento são mais fortes que as políticas.',
+    'Quando algo quebra, seu primeiro instinto é olhar os logs, até da cafeteira.',
+    "Você já depurou um problema lendo folhas de chá (e por folhas de chá, entenda logs).",
+    'Você sabe a saúde da infra inteira pela cor das notificações do celular.',
+    "Os bichos de pelúcia do seu filho têm nomes de métricas de monitoramento.",
+    'Você sabe o que é uso normal de CPU melhor que os seus sinais vitais.',
+    "Você já acordou com um alerta de um serviço que nem lembrava que existia.",
+    'Seu celular tem mais apps de monitoramento do que de redes sociais.',
+    "Você avalia restaurantes pelo uptime (quantas vezes estão abertos de verdade).",
+    "Você configurou monitoramento para os eletrodomésticos.",
+    'Você sabe a diferença entre um pico e uma anomalia no seu padrão de sono.',
+    "Você criou dashboards para acompanhar a própria produtividade.",
+    'Para você, o monitor de batimentos é só mais uma fonte de dados.',
+    "Você já resolveu briga de família com análise de causa raiz.",
+    'Você acompanha a performance do Wi-Fi mais de perto que a conta bancária.',
+    "Você configurou alertas para quando as plantas precisam de água.",
+    'Você lê gráfico do Grafana mais rápido que cardápio de restaurante.',
   ],
   development: [
-    "You've ever said 'It works on my machine' and meant your production cluster.",
-    "You consider 'legacy code' anything written more than 3 months ago.",
-    'You dream in YAML and wake up screaming about indentation.',
-    "You've had heated arguments about the proper way to structure a monorepo.",
-    "You've ever wished you could `git blame` real-life problems.",
-    "You have strong feelings about whether tabs or spaces are better (and you're right).",
-    "You consider 'works locally' to be a mythical concept like unicorns.",
-    "You've written more Dockerfile lines than poetry lines in your lifetime.",
-    "Your browser has more tabs open than a restaurant on New Year's Eve.",
-    'You know the HTTP status codes better than your anniversary date.',
-    "You've ever said 'That's a feature, not a bug' about infrastructure drift.",
-    'Your code reviews are more thorough than your medical checkups.',
-    "You've named variables after your feelings (mostly 'frustrated' and 'confused').",
-    "You've commented your code better than you've commented on social media.",
-    'You understand merge conflicts better than relationship conflicts.',
-    "You've used Stack Overflow more than any other website this year.",
-    'Your git history tells a better story than your diary.',
-    "You've written TODO comments that are older than some junior developers.",
-    "You debug production issues faster than you debug why your code doesn't work locally.",
-    "You've named branches after your current mood.",
-    'You know more keyboard shortcuts than your phone contacts.',
-    "You've refactored code more times than you've rearranged your furniture.",
+    "Você já disse “na minha máquina funciona” falando do cluster de produção.",
+    "Para você, “código legado” é qualquer coisa escrita há mais de 3 meses.",
+    'Você sonha em YAML e acorda gritando por causa da indentação.',
+    "Você já teve discussões acaloradas sobre o jeito certo de organizar um monorepo.",
+    "Você já quis dar `git blame` nos problemas da vida real.",
+    "Você tem opinião forte sobre tabs ou espaços (e você está certo).",
+    "Para você, “funciona local” é um conceito mítico, tipo unicórnio.",
+    "Você já escreveu mais linhas de Dockerfile do que de poesia na vida.",
+    "Seu navegador tem mais abas abertas que comanda de bar no Réveillon.",
+    'Você sabe os status codes HTTP melhor que a data do aniversário de namoro.',
+    "Você já disse “não é bug, é feature” sobre drift de infraestrutura.",
+    'Seus code reviews são mais detalhados que seus check-ups médicos.',
+    "Você já nomeou variáveis com seus sentimentos (geralmente “frustrado” e “confuso”).",
+    "Você comenta melhor o código do que os posts nas redes sociais.",
+    'Você entende conflito de merge melhor que conflito de relacionamento.',
+    "Este ano você usou o Stack Overflow mais do que qualquer outro site.",
+    'Seu histórico do git conta uma história melhor que o seu diário.',
+    "Você tem comentários TODO mais velhos que alguns devs júnior.",
+    "Você depura problema em produção mais rápido do que descobre por que o código não roda local.",
+    "Você dá nome às branches de acordo com o humor do dia.",
+    'Você sabe mais atalhos de teclado do que contatos no celular.',
+    "Você já refatorou código mais vezes do que mudou os móveis de lugar.",
   ],
   culture: [
-    'You have more SSH keys than house keys.',
-    'Your browser bookmarks are 90% documentation and 10% Stack Overflow.',
-    "You've named your pets after Kubernetes pods.",
-    "You've ever explained microservices to your grandmother using kitchen analogies.",
-    'Your personal todo list is managed in Jira.',
-    "You've ever been in a meeting where someone suggested solving a people problem with Kubernetes.",
-    'Your idea of a romantic evening is pairing on a deployment script.',
-    'Your favorite bedtime story is the AWS pricing calculator.',
-    "You've ever described your job as 'professional fire extinguisher'.",
-    'Your idea of extreme sports is a production deployment on a Friday afternoon.',
-    "You've ever said 'It's not a bug, it's a race condition' with a straight face.",
-    "Your browser bookmarks folder 'DevOps Tools' has more entries than your contacts list.",
-    "You know what 'works on my cluster' means and it's not funny anymore.",
-    "You've used 'blame' more in git than in real life arguments.",
-    'Your idea of a vacation is a weekend without any production incidents.',
-    "You've ever explained Kubernetes to someone using IKEA furniture assembly analogies.",
-    'Your coffee mug has more stickers from tech conferences than your laptop.',
-    'You measure time in deployment cycles rather than hours.',
-    "You've named your Wi-Fi network something only other DevOps engineers would understand.",
-    "You know more about your servers' uptime than your own sleep schedule.",
-    "You've used technical debt as an excuse for personal debt.",
-    'Your idea of small talk is discussing the latest security vulnerabilities.',
-    "You've explained scaling to non-tech people using restaurant analogies.",
-    'You know more DevOps engineers than people in your neighborhood.',
-    "You've used 'that's not in scope' in personal conversations.",
-    'Your emergency contacts include your monitoring service.',
-    "You've celebrated a successful deployment more than personal achievements.",
-    'You know the difference between a hotfix and a feature in relationships.',
+    'Você tem mais chaves SSH do que chaves de casa.',
+    'Seus favoritos do navegador são 90% documentação e 10% Stack Overflow.',
+    "Seus pets têm nome de pods do Kubernetes.",
+    "Você já explicou microsserviços para a sua avó usando a cozinha como exemplo.",
+    'Sua lista pessoal de tarefas fica no Jira.',
+    "Você já esteve numa reunião em que alguém sugeriu resolver um problema de pessoas com Kubernetes.",
+    'Sua ideia de noite romântica é fazer pair programming num script de deploy.',
+    'Sua história de ninar favorita é a calculadora de preços da AWS.',
+    "Você já descreveu seu trabalho como “extintor de incêndio profissional”.",
+    'Para você, esporte radical é deploy em produção na sexta à tarde.',
+    "Você já disse “não é bug, é race condition” com a maior cara séria.",
+    "Sua pasta de favoritos “Ferramentas DevOps” tem mais itens que a sua lista de contatos.",
+    "Você sabe o que significa “funciona no meu cluster”, e isso já não tem graça.",
+    "Você usou mais “blame” no git do que em discussões da vida real.",
+    'Sua ideia de férias é um fim de semana sem incidente em produção.',
+    "Você já explicou Kubernetes comparando com montar móvel de caixa.",
+    'Sua caneca tem mais adesivos de eventos de tecnologia que o seu notebook.',
+    'Você mede o tempo em ciclos de deploy, não em horas.',
+    "O nome do seu Wi-Fi só faz sentido para outros profissionais de DevOps.",
+    "Você sabe mais do uptime dos servidores do que do seu horário de sono.",
+    "Você já usou dívida técnica como desculpa para dívida pessoal.",
+    'Seu papo de elevador é sobre as últimas vulnerabilidades de segurança.',
+    "Você já explicou escalabilidade para quem não é de TI usando restaurante como exemplo.",
+    'Você conhece mais gente de DevOps do que vizinhos.',
+    "Você já usou “isso está fora do escopo” numa conversa pessoal.",
+    'Seus contatos de emergência incluem o serviço de monitoramento.',
+    "Você já comemorou mais um deploy bem-sucedido do que conquistas pessoais.",
+    'Você sabe a diferença entre hotfix e feature nos relacionamentos.',
   ],
 };
 
@@ -157,27 +157,27 @@ const ALL_MEMES = Object.values(DEVOPS_MEMES).flat();
 
 // Meme categories for filtering
 const MEME_CATEGORIES = [
-  { id: 'all', label: 'All Memes', emoji: '🎯', count: ALL_MEMES.length },
+  { id: 'all', label: 'Todos os memes', emoji: '🎯', count: ALL_MEMES.length },
   {
     id: 'infrastructure',
-    label: 'Infrastructure',
+    label: 'Infraestrutura',
     emoji: '🏗️',
     count: DEVOPS_MEMES.infrastructure.length,
   },
-  { id: 'automation', label: 'Automation', emoji: '🤖', count: DEVOPS_MEMES.automation.length },
-  { id: 'monitoring', label: 'Monitoring', emoji: '📊', count: DEVOPS_MEMES.monitoring.length },
-  { id: 'development', label: 'Development', emoji: '💻', count: DEVOPS_MEMES.development.length },
-  { id: 'culture', label: 'Culture', emoji: '🎭', count: DEVOPS_MEMES.culture.length },
+  { id: 'automation', label: 'Automação', emoji: '🤖', count: DEVOPS_MEMES.automation.length },
+  { id: 'monitoring', label: 'Monitoramento', emoji: '📊', count: DEVOPS_MEMES.monitoring.length },
+  { id: 'development', label: 'Desenvolvimento', emoji: '💻', count: DEVOPS_MEMES.development.length },
+  { id: 'culture', label: 'Cultura', emoji: '🎭', count: DEVOPS_MEMES.culture.length },
 ];
 
 // Simple reactions without counters
 const REACTIONS = [
   { emoji: '😂', label: 'LOL!', shortcut: '1' },
-  { emoji: '💯', label: 'This!', shortcut: '2' },
-  { emoji: '🔥', label: 'Fire!', shortcut: '3' },
-  { emoji: '😭', label: 'Too Real!', shortcut: '4' },
-  { emoji: '🎯', label: 'Accurate!', shortcut: '5' },
-  { emoji: '⚡', label: 'Relatable!', shortcut: '6' },
+  { emoji: '💯', label: 'Isso!', shortcut: '2' },
+  { emoji: '🔥', label: 'Brabo!', shortcut: '3' },
+  { emoji: '😭', label: 'Real demais!', shortcut: '4' },
+  { emoji: '🎯', label: 'Na mosca!', shortcut: '5' },
+  { emoji: '⚡', label: 'Me identifiquei!', shortcut: '6' },
 ];
 
 export default function DevOpsMemes() {
@@ -250,7 +250,7 @@ export default function DevOpsMemes() {
   };
 
   const copyToClipboard = async () => {
-    const text = `You might be a DevOps engineer if...\n\n${currentMeme}\n\n#DevOps #Memes #TechHumor`;
+    const text = `Talvez você seja de DevOps se...\n\n${currentMeme}\n\n#DevOps #Memes #HumorTech`;
 
     try {
       await navigator.clipboard.writeText(text);
@@ -271,7 +271,7 @@ export default function DevOpsMemes() {
 
   const shareOnSocial = (platform: string) => {
     const text = encodeURIComponent(
-      `You might be a DevOps engineer if... ${currentMeme} #DevOps #Memes`
+      `Talvez você seja de DevOps se... ${currentMeme} #DevOps #Memes`
     );
     const url = encodeURIComponent(window.location.href);
 
@@ -326,7 +326,7 @@ export default function DevOpsMemes() {
     ctx.font = 'bold 32px Arial';
     ctx.textAlign = 'center';
 
-    const title = 'You might be a DevOps engineer if...';
+    const title = 'Talvez você seja de DevOps se...';
     ctx.fillText(title, canvas.width / 2, 150);
 
     ctx.font = '24px Arial';
@@ -409,8 +409,8 @@ export default function DevOpsMemes() {
           </h2>
 
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Auto-generating hilarious (and painfully accurate) DevOps memes. Each click brings a new
-            dose of reality! Perfect for sharing your DevOps struggles with the world. 🔥
+            Memes de DevOps hilários (e dolorosamente verdadeiros) gerados na hora. Cada clique traz uma nova
+            dose de realidade! Perfeito para compartilhar os perrengues de DevOps com o mundo. 🔥
           </p>
         </motion.div>
 
@@ -473,7 +473,7 @@ export default function DevOpsMemes() {
             </motion.div>
 
             <CardTitle className="text-2xl md:text-3xl font-bold mb-2 text-primary">
-              You might be a DevOps engineer if...
+              Talvez você seja de DevOps se...
             </CardTitle>
           </CardHeader>
 
@@ -521,7 +521,7 @@ export default function DevOpsMemes() {
                         ? 'border-primary bg-primary/10 text-primary scale-110 shadow-lg shadow-primary/20'
                         : 'border-muted-foreground/20 hover:border-primary/50 hover:bg-primary/5 hover:shadow-primary/10'
                     )}
-                    title={`Press ${reaction.shortcut} or click`}
+                    title={`Aperte ${reaction.shortcut} ou clique`}
                     type="button"
                   >
                     <motion.span
@@ -571,8 +571,8 @@ export default function DevOpsMemes() {
                       <RefreshCcw className="h-5 w-5 mr-2" />
                     </motion.div>
                   )}
-                  New Meme
-                  <span className="ml-2 text-xs opacity-75">(Space)</span>
+                  Novo meme
+                  <span className="ml-2 text-xs opacity-75">(Espaço)</span>
                 </Button>
               </motion.div>
 
@@ -605,7 +605,7 @@ export default function DevOpsMemes() {
                   >
                     <Copy className="h-5 w-5 mr-2" />
                   </motion.div>
-                  {copySuccess ? 'Copied!' : 'Copy Text'}
+                  {copySuccess ? 'Copiado!' : 'Copiar texto'}
                 </Button>
               </motion.div>
 
@@ -630,7 +630,7 @@ export default function DevOpsMemes() {
                   <motion.div whileHover={{ y: -1 }} transition={{ duration: 0.2 }}>
                     <Download className="h-5 w-5 mr-2" />
                   </motion.div>
-                  Download
+                  Baixar
                 </Button>
               </motion.div>
             </div>
@@ -638,7 +638,7 @@ export default function DevOpsMemes() {
             {/* Share Buttons */}
             <div className="border-t border-muted-foreground/10 pt-6">
               <div className="text-center mb-4">
-                <p className="text-sm text-muted-foreground">Share this meme:</p>
+                <p className="text-sm text-muted-foreground">Compartilhe este meme:</p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-3">
@@ -678,7 +678,7 @@ export default function DevOpsMemes() {
             {memeHistory.length > 0 && (
               <div className="border-t border-muted-foreground/10 pt-6">
                 <div className="text-center mb-4">
-                  <p className="text-sm text-muted-foreground">Recently Generated:</p>
+                  <p className="text-sm text-muted-foreground">Gerados recentemente:</p>
                 </div>
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                   {memeHistory.map((meme, index) => (
@@ -715,22 +715,22 @@ export default function DevOpsMemes() {
             <div className="text-center space-y-4">
               <h3 className="text-lg font-semibold flex items-center justify-center gap-2">
                 <Sparkles className="h-5 w-5 text-orange-500" />
-                Quick Tips
+                Dicas rápidas
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
                 <div className="space-y-2">
                   <p>
-                    <kbd className="px-2 py-1 bg-muted rounded text-xs">Space</kbd> or{' '}
-                    <kbd className="px-2 py-1 bg-muted rounded text-xs">Enter</kbd> - Generate new
+                    <kbd className="px-2 py-1 bg-muted rounded text-xs">Espaço</kbd> ou{' '}
+                    <kbd className="px-2 py-1 bg-muted rounded text-xs">Enter</kbd> - Gerar novo
                     meme
                   </p>
                   <p>
-                    <kbd className="px-2 py-1 bg-muted rounded text-xs">1-6</kbd> - Quick reactions
+                    <kbd className="px-2 py-1 bg-muted rounded text-xs">1-6</kbd> - Reações rápidas
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <p>🎯 Over 120+ unique DevOps memes</p>
-                  <p>📱 Perfect for sharing on social media</p>
+                  <p>🎯 Mais de 120 memes de DevOps</p>
+                  <p>📱 Perfeito para compartilhar nas redes sociais</p>
                 </div>
               </div>
             </div>
@@ -747,7 +747,7 @@ export default function DevOpsMemes() {
         <Card className="bg-linear-to-br from-muted/30 to-muted/10 border border-muted-foreground/10">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              About This Meme Generator
+              Sobre este gerador de memes
             </CardTitle>
           </CardHeader>
 
@@ -756,33 +756,33 @@ export default function DevOpsMemes() {
               <div>
                 <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                   <Lightbulb className="h-5 w-5 text-orange-500" />
-                  Why This Exists
+                  Por que isso existe
                 </h3>
                 <p className="text-muted-foreground">
-                  Every DevOps engineer has those moments of "this is painfully accurate" when
-                  reading about the struggles of our profession. This generator celebrates the
-                  shared experiences, inside jokes, and daily realities that unite our community.
+                  Todo mundo que trabalha com DevOps tem aquele momento de “isso é verdade demais” ao
+                  ler sobre os perrengues da profissão. Este gerador celebra as experiências em comum,
+                  as piadas internas e a rotina que unem a nossa comunidade.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                   <Coffee className="h-5 w-5 text-orange-500" />
-                  Perfect For
+                  Perfeito para
                 </h3>
                 <ul className="text-muted-foreground space-y-2">
-                  <li>• Breaking the ice in team meetings</li>
-                  <li>• Social media content for DevOps professionals</li>
-                  <li>• Conference presentations and talks</li>
-                  <li>• Sharing the pain (and joy) of DevOps life</li>
+                  <li>• Quebrar o gelo nas reuniões do time</li>
+                  <li>• Conteúdo de redes sociais para profissionais de DevOps</li>
+                  <li>• Apresentações e palestras</li>
+                  <li>• Compartilhar a dor (e a alegria) da vida em DevOps</li>
                 </ul>
               </div>
             </div>
 
             <div className="text-center p-6 bg-linear-to-r from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 rounded-lg border border-orange-200/50 dark:border-orange-700/50">
               <p className="text-sm text-muted-foreground">
-                <strong>💡 Pro Tip:</strong> Use keyboard shortcuts for lightning-fast meme
-                generation! Press Space for new memes, or numbers 1-6 for quick reactions.
+                <strong>💡 Dica:</strong> use os atalhos de teclado para gerar memes num piscar de olhos! Aperte
+                Espaço para um novo meme ou os números de 1 a 6 para reações rápidas.
               </p>
             </div>
           </CardContent>

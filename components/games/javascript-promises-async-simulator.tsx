@@ -68,9 +68,9 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
   {
     id: 'microtasks',
-    title: 'Microtasks beat timers',
-    subtitle: 'Why Promise callbacks run before setTimeout(..., 0)',
-    concept: 'The event loop drains the microtask queue before it takes the next task.',
+    title: 'Microtasks passam na frente dos timers',
+    subtitle: 'Por que callbacks de Promise rodam antes de setTimeout(..., 0)',
+    concept: 'O event loop esvazia a fila de microtasks antes de pegar a próxima task.',
     code: [
       "console.log('Start');",
       '',
@@ -83,16 +83,16 @@ const SCENARIOS: Scenario[] = [
       "console.log('End');",
     ],
     prediction: {
-      question: 'What gets printed first after Start?',
+      question: 'O que é impresso primeiro depois de Start?',
       options: ['Timeout', 'Promise', 'End'],
       answer: 'End',
       explanation:
-        'Synchronous code keeps running until the call stack is empty. The promise callback waits in the microtask queue, and the timer waits in the task queue.',
+        'O código síncrono continua rodando até a call stack ficar vazia. O callback da promise espera na fila de microtasks, e o timer espera na fila de tasks.',
     },
     steps: [
       {
-        title: 'Start in global execution',
-        explanation: 'The script begins on the call stack. Nothing async has been scheduled yet.',
+        title: 'Começa na execução global',
+        explanation: 'O script começa na call stack. Nada assíncrono foi agendado ainda.',
         activeLine: 1,
         callStack: ['global script', "console.log('Start')"],
         webApis: [],
@@ -103,9 +103,9 @@ const SCENARIOS: Scenario[] = [
         focus: 'stack',
       },
       {
-        title: 'Timer callback leaves JavaScript',
+        title: 'O callback do timer sai do JavaScript',
         explanation:
-          'setTimeout is handled by the browser or runtime. Its callback cannot run until the current script finishes and a task turn is available.',
+          'O setTimeout é tratado pelo navegador ou pelo runtime. O callback só pode rodar quando o script atual terminar e houver uma vez livre na fila de tasks.',
         activeLine: 3,
         callStack: ['global script', 'setTimeout(...)'],
         webApis: ['timer: 0ms'],
@@ -116,9 +116,9 @@ const SCENARIOS: Scenario[] = [
         focus: 'webapi',
       },
       {
-        title: 'Promise resolves immediately',
+        title: 'A Promise resolve na hora',
         explanation:
-          'Promise.resolve creates a fulfilled promise, but the then handler is not called inline. It is queued as a microtask.',
+          'O Promise.resolve cria uma promise já fulfilled, mas o handler do then não é chamado na hora. Ele entra na fila como microtask.',
         activeLine: 5,
         callStack: ['global script', 'Promise.resolve(...).then(...)'],
         webApis: [],
@@ -129,9 +129,9 @@ const SCENARIOS: Scenario[] = [
         focus: 'promise',
       },
       {
-        title: 'Synchronous code finishes first',
+        title: 'O código síncrono termina primeiro',
         explanation:
-          'The last console.log still runs before queued callbacks because the global script has not finished yet.',
+          'O último console.log ainda roda antes dos callbacks enfileirados, porque o script global não terminou.',
         activeLine: 9,
         callStack: ['global script', "console.log('End')"],
         webApis: [],
@@ -142,9 +142,9 @@ const SCENARIOS: Scenario[] = [
         focus: 'console',
       },
       {
-        title: 'Microtask queue drains',
+        title: 'A fila de microtasks é esvaziada',
         explanation:
-          'Once the call stack is empty, the event loop runs every queued microtask before it touches the task queue.',
+          'Quando a call stack fica vazia, o event loop roda todas as microtasks enfileiradas antes de mexer na fila de tasks.',
         activeLine: 6,
         callStack: ["then callback", "console.log('Promise')"],
         webApis: [],
@@ -155,9 +155,9 @@ const SCENARIOS: Scenario[] = [
         focus: 'microtask',
       },
       {
-        title: 'Timer finally gets a turn',
+        title: 'Finalmente chega a vez do timer',
         explanation:
-          'Only after the stack and microtask queue are empty does the event loop run the next task.',
+          'Só depois que a stack e a fila de microtasks estão vazias o event loop roda a próxima task.',
         activeLine: 3,
         callStack: ['timer callback', "console.log('Timeout')"],
         webApis: [],
@@ -171,9 +171,9 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'async-await',
-    title: 'Await suspends the function',
-    subtitle: 'The rest of an async function resumes as a microtask',
-    concept: 'await pauses the async function and lets outer synchronous code continue.',
+    title: 'O await suspende a função',
+    subtitle: 'O resto de uma função async continua como microtask',
+    concept: 'O await pausa a função async e deixa o código síncrono de fora continuar.',
     code: [
       'async function run() {',
       "  console.log('Inside');",
@@ -186,16 +186,16 @@ const SCENARIOS: Scenario[] = [
       "console.log('After');",
     ],
     prediction: {
-      question: 'When does Data print?',
-      options: ['Before After', 'Between Inside and After', 'After the outer script finishes'],
-      answer: 'After the outer script finishes',
+      question: 'Quando Data é impresso?',
+      options: ['Antes de After', 'Entre Inside e After', 'Depois que o script de fora termina'],
+      answer: 'Depois que o script de fora termina',
       explanation:
-        'The async function runs until await. Its continuation is queued as a microtask after the awaited promise is fulfilled.',
+        'A função async roda até o await. A continuação entra na fila como microtask depois que a promise aguardada é fulfilled.',
     },
     steps: [
       {
-        title: 'Outer script starts',
-        explanation: 'The global script logs Before before invoking the async function.',
+        title: 'O script de fora começa',
+        explanation: 'O script global loga Before antes de chamar a função async.',
         activeLine: 7,
         callStack: ['global script', "console.log('Before')"],
         webApis: [],
@@ -206,8 +206,8 @@ const SCENARIOS: Scenario[] = [
         focus: 'console',
       },
       {
-        title: 'Async function runs synchronously at first',
-        explanation: 'Calling an async function executes its body immediately until it reaches await.',
+        title: 'No começo, a função async roda de forma síncrona',
+        explanation: 'Chamar uma função async executa o corpo dela na hora, até chegar ao await.',
         activeLine: 2,
         callStack: ['global script', 'run()', "console.log('Inside')"],
         webApis: [],
@@ -218,9 +218,9 @@ const SCENARIOS: Scenario[] = [
         focus: 'stack',
       },
       {
-        title: 'Await pauses run()',
+        title: 'O await pausa run()',
         explanation:
-          'The awaited promise is fulfilled, but the remaining function body is moved into the microtask queue.',
+          'A promise aguardada é fulfilled, mas o resto do corpo da função vai para a fila de microtasks.',
         activeLine: 3,
         callStack: ['global script', 'run()', "await Promise.resolve('Data')"],
         webApis: [],
@@ -231,9 +231,9 @@ const SCENARIOS: Scenario[] = [
         focus: 'microtask',
       },
       {
-        title: 'Outer script keeps going',
+        title: 'O script de fora continua',
         explanation:
-          'The async function is suspended, so the caller continues and logs After before the await continuation runs.',
+          'A função async está suspensa, então quem chamou continua e loga After antes de a continuação do await rodar.',
         activeLine: 9,
         callStack: ['global script', "console.log('After')"],
         webApis: [],
@@ -244,8 +244,8 @@ const SCENARIOS: Scenario[] = [
         focus: 'console',
       },
       {
-        title: 'Async continuation resumes',
-        explanation: 'The microtask restores run() where it paused and assigns the resolved value.',
+        title: 'A continuação async é retomada',
+        explanation: 'A microtask retoma run() de onde parou e atribui o valor resolvido.',
         activeLine: 4,
         callStack: ['run() continuation', "console.log('Data')"],
         webApis: [],
@@ -259,9 +259,9 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'rejection',
-    title: 'Rejections jump to catch',
-    subtitle: 'then is skipped, catch handles the error, finally still runs',
-    concept: 'A rejected promise bypasses fulfillment handlers until a rejection handler catches it.',
+    title: 'Rejeições pulam para o catch',
+    subtitle: 'o then é pulado, o catch trata o erro e o finally ainda roda',
+    concept: 'Uma promise rejeitada pula os handlers de sucesso até um handler de rejeição capturá-la.',
     code: [
       "Promise.reject('Network failed')",
       "  .then(value => console.log('then', value))",
@@ -271,16 +271,16 @@ const SCENARIOS: Scenario[] = [
       "console.log('Request started');",
     ],
     prediction: {
-      question: 'Which handler runs first?',
+      question: 'Qual handler roda primeiro?',
       options: ['then', 'catch', 'finally'],
       answer: 'catch',
       explanation:
-        'The promise is already rejected, so the fulfillment handler is skipped and the rejection handler is queued as a microtask.',
+        'A promise já está rejeitada, então o handler de sucesso é pulado e o handler de rejeição entra na fila como microtask.',
     },
     steps: [
       {
-        title: 'Rejected promise is created',
-        explanation: 'Promise.reject returns a rejected promise with the provided reason.',
+        title: 'A promise rejeitada é criada',
+        explanation: 'O Promise.reject devolve uma promise rejeitada com o motivo informado.',
         activeLine: 1,
         callStack: ['global script', "Promise.reject('Network failed')"],
         webApis: [],
@@ -291,8 +291,8 @@ const SCENARIOS: Scenario[] = [
         focus: 'promise',
       },
       {
-        title: 'Synchronous log still runs',
-        explanation: 'Handlers are queued. The current script continues and logs Request started.',
+        title: 'O log síncrono ainda roda',
+        explanation: 'Os handlers vão para a fila. O script atual continua e loga Request started.',
         activeLine: 6,
         callStack: ['global script', "console.log('Request started')"],
         webApis: [],
@@ -303,8 +303,8 @@ const SCENARIOS: Scenario[] = [
         focus: 'console',
       },
       {
-        title: 'catch handles the rejection',
-        explanation: 'The skipped then handler does not run. catch receives the rejection reason.',
+        title: 'O catch trata a rejeição',
+        explanation: 'O handler do then pulado não roda. O catch recebe o motivo da rejeição.',
         activeLine: 3,
         callStack: ['catch callback', "console.log('catch', error)"],
         webApis: [],
@@ -315,8 +315,8 @@ const SCENARIOS: Scenario[] = [
         focus: 'microtask',
       },
       {
-        title: 'finally runs for cleanup',
-        explanation: 'finally runs after settlement whether the chain resolved or rejected.',
+        title: 'O finally roda para fazer a limpeza',
+        explanation: 'O finally roda depois que a cadeia termina, tenha ela resolvido ou rejeitado.',
         activeLine: 4,
         callStack: ['finally callback', "console.log('cleanup')"],
         webApis: [],
@@ -330,9 +330,9 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'promise-all',
-    title: 'Promise combinators',
-    subtitle: 'Promise.all waits for every input or rejects on the first failure',
-    concept: 'Combinators create a new promise that tracks several promises at once.',
+    title: 'Combinadores de Promise',
+    subtitle: 'O Promise.all espera todas as entradas ou rejeita na primeira falha',
+    concept: 'Combinadores criam uma nova promise que acompanha várias promises ao mesmo tempo.',
     code: [
       'const user = fetchUser();',
       'const repos = fetchRepos();',
@@ -343,16 +343,16 @@ const SCENARIOS: Scenario[] = [
       '  .catch(showError);',
     ],
     prediction: {
-      question: 'When does Promise.all fulfill?',
-      options: ['After the first promise fulfills', 'After every promise fulfills', 'Immediately'],
-      answer: 'After every promise fulfills',
+      question: 'Quando o Promise.all é fulfilled?',
+      options: ['Depois que a primeira promise é fulfilled', 'Depois que todas as promises são fulfilled', 'Immediately'],
+      answer: 'Depois que todas as promises são fulfilled',
       explanation:
-        'Promise.all preserves order and fulfills only when all inputs fulfill. One rejection rejects the combined promise.',
+        'O Promise.all preserva a ordem e só é fulfilled quando todas as entradas são. Uma única rejeição rejeita a promise combinada.',
     },
     steps: [
       {
-        title: 'Three async jobs start',
-        explanation: 'Each fetch returns a pending promise while the runtime waits on I/O.',
+        title: 'Três jobs assíncronos começam',
+        explanation: 'Cada fetch devolve uma promise pending enquanto o runtime espera o I/O.',
         activeLine: 1,
         callStack: ['global script', 'fetchUser()', 'fetchRepos()', 'fetchBilling()'],
         webApis: ['network: user', 'network: repos', 'network: billing'],
@@ -363,33 +363,33 @@ const SCENARIOS: Scenario[] = [
         focus: 'webapi',
       },
       {
-        title: 'First promise resolves',
-        explanation: 'Promise.all stores the user result, but it cannot fulfill yet because other inputs are pending.',
+        title: 'A primeira promise resolve',
+        explanation: 'O Promise.all guarda o resultado de user, mas ainda não pode ser fulfilled porque outras entradas estão pending.',
         activeLine: 5,
         callStack: [],
         webApis: ['network: repos', 'network: billing'],
-        microtasks: ['record user result'],
+        microtasks: ['guarda o resultado de user'],
         taskQueue: [],
         console: [],
-        promise: { label: 'Promise.all', status: 'pending', value: '1 of 3 complete' },
+        promise: { label: 'Promise.all', status: 'pending', value: '1 de 3 concluídas' },
         focus: 'promise',
       },
       {
-        title: 'Second promise resolves',
-        explanation: 'The combined promise is still pending. Promise.all waits for every slot.',
+        title: 'A segunda promise resolve',
+        explanation: 'A promise combinada continua pending. O Promise.all espera todas as posições.',
         activeLine: 5,
         callStack: [],
         webApis: ['network: billing'],
-        microtasks: ['record repos result'],
+        microtasks: ['guarda o resultado de repos'],
         taskQueue: [],
         console: [],
-        promise: { label: 'Promise.all', status: 'pending', value: '2 of 3 complete' },
+        promise: { label: 'Promise.all', status: 'pending', value: '2 de 3 concluídas' },
         focus: 'promise',
       },
       {
-        title: 'All inputs are fulfilled',
+        title: 'Todas as entradas estão fulfilled',
         explanation:
-          'When the final promise fulfills, Promise.all queues the then callback with the ordered result array.',
+          'Quando a última promise é fulfilled, o Promise.all enfileira o callback do then com o array de resultados em ordem.',
         activeLine: 6,
         callStack: [],
         webApis: [],
@@ -400,8 +400,8 @@ const SCENARIOS: Scenario[] = [
         focus: 'microtask',
       },
       {
-        title: 'Dashboard renders',
-        explanation: 'The then callback runs as a microtask and receives all three values together.',
+        title: 'O dashboard é renderizado',
+        explanation: 'O callback do then roda como microtask e recebe os três valores juntos.',
         activeLine: 6,
         callStack: ['then callback', 'renderDashboard()'],
         webApis: [],
@@ -428,12 +428,12 @@ const PHASES: Array<{
   label: string;
   description: string;
 }> = [
-  { id: 'stack', label: 'Stack', description: 'Normal code runs first.' },
-  { id: 'webapi', label: 'Runtime', description: 'Timers wait outside JS.' },
-  { id: 'promise', label: 'Promise', description: 'Promise state changes.' },
-  { id: 'microtask', label: 'Microtask', description: 'Promise callbacks run next.' },
-  { id: 'task', label: 'Task', description: 'Timers run after microtasks.' },
-  { id: 'console', label: 'Console', description: 'Logs appear in order.' },
+  { id: 'stack', label: 'Stack', description: 'O código normal roda primeiro.' },
+  { id: 'webapi', label: 'Runtime', description: 'Timers esperam fora do JS.' },
+  { id: 'promise', label: 'Promise', description: 'O estado da Promise muda.' },
+  { id: 'microtask', label: 'Microtask', description: 'Callbacks de Promise rodam em seguida.' },
+  { id: 'task', label: 'Task', description: 'Timers rodam depois das microtasks.' },
+  { id: 'console', label: 'Console', description: 'Os logs aparecem em ordem.' },
 ];
 
 function getScenario(id: ScenarioId) {
@@ -448,7 +448,7 @@ function statusTone(status: PromiseStatus): PanelTone {
 }
 
 function statusLabel(status: PromiseStatus) {
-  if (status === 'none') return 'not created';
+  if (status === 'none') return 'não criada';
   return status;
 }
 
@@ -516,14 +516,14 @@ export default function JavascriptPromisesAsyncSimulator() {
                 <Braces className="h-5 w-5" />
               </div>
               <div className="min-w-0">
-                <p className="font-mono text-xs text-muted-foreground">// event loop lab</p>
+                <p className="font-mono text-xs text-muted-foreground">// laboratório do event loop</p>
                 <CardTitle className="text-xl md:text-2xl">
-                  JavaScript Promises & Async/Await Simulator
+                  Simulador de Promises e async/await em JavaScript
                 </CardTitle>
               </div>
             </div>
             <Badge variant="secondary" className="shrink-0">
-              step {activeStepIndex + 1}/{scenario.steps.length}
+              passo {activeStepIndex + 1}/{scenario.steps.length}
             </Badge>
           </div>
         </CardHeader>
@@ -643,7 +643,7 @@ function WorkbenchToolbar({
             disabled={activeStepIndex === stepCount - 1 && !isPlaying}
           >
             {isPlaying ? <Pause className="mr-2 h-4 w-4" /> : <Play className="mr-2 h-4 w-4" />}
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? 'Pausar' : 'Reproduzir'}
           </Button>
           <Button
             type="button"
@@ -664,9 +664,9 @@ function WorkbenchToolbar({
               onChange={(event) => onSpeedChange(Number(event.target.value))}
               className="h-9 rounded-md border bg-background px-2 text-sm text-foreground"
             >
-              <option value={1500}>Slow</option>
+              <option value={1500}>Lento</option>
               <option value={1100}>Normal</option>
-              <option value={650}>Fast</option>
+              <option value={650}>Rápido</option>
             </select>
           </label>
         </div>
@@ -725,9 +725,9 @@ function EventLoopBoard({ step }: { step: StepState }) {
     <div className="space-y-3 rounded-md border bg-muted/10 p-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold">Runtime state</p>
+          <p className="text-sm font-semibold">Estado do runtime</p>
           <p className="text-xs text-muted-foreground">
-            Read the phase rail first, then inspect the boxes below for what changed.
+            Leia primeiro a trilha de fases e depois veja nas caixas abaixo o que mudou.
           </p>
         </div>
         <Badge variant="default" className="capitalize">
@@ -742,7 +742,7 @@ function EventLoopBoard({ step }: { step: StepState }) {
           title="Call Stack"
           icon={<Braces className="h-4 w-4" />}
           items={step.callStack}
-          empty="empty stack"
+          empty="stack vazia"
           tone="default"
           size="large"
         />
@@ -752,15 +752,15 @@ function EventLoopBoard({ step }: { step: StepState }) {
             title="Runtime APIs"
             icon={<Clock3 className="h-4 w-4" />}
             items={step.webApis}
-            empty="no external work"
+            empty="nenhum trabalho externo"
             tone="default"
             size="compact"
           />
           <RuntimePanel
-            title="Promise Inspector"
+            title="Inspetor de Promise"
             icon={<Workflow className="h-4 w-4" />}
             items={[`${step.promise.label}: ${statusLabel(step.promise.status)}`, `value: ${step.promise.value}`]}
-            empty="not created"
+            empty="não criada"
             tone={statusTone(step.promise.status)}
             size="compact"
           />
@@ -769,18 +769,18 @@ function EventLoopBoard({ step }: { step: StepState }) {
 
       <div className="grid gap-3 md:grid-cols-2">
         <RuntimePanel
-          title="Microtask Queue"
+          title="Fila de microtasks"
           icon={<Sparkles className="h-4 w-4" />}
           items={step.microtasks}
-          empty="no promise work queued"
+          empty="nenhum trabalho de promise na fila"
           tone="default"
           size="compact"
         />
         <RuntimePanel
-          title="Task Queue"
+          title="Fila de tasks"
           icon={<Timer className="h-4 w-4" />}
           items={step.taskQueue}
-          empty="no timer or event tasks"
+          empty="nenhuma task de timer ou evento"
           tone="default"
           size="compact"
         />
@@ -804,7 +804,7 @@ function PhaseRail({ focus }: { focus: StepFocus }) {
   return (
     <div className="rounded-md border bg-background/70 p-2">
       <div className="mb-2 rounded-md border border-primary/30 bg-primary/5 px-3 py-2 text-xs">
-        <span className="font-semibold text-primary">You are here:</span>{' '}
+        <span className="font-semibold text-primary">Você está aqui:</span>{' '}
         <span className="font-medium">{currentPhase.label}</span>
         <span className="text-muted-foreground"> - {currentPhase.description}</span>
       </div>
@@ -911,7 +911,7 @@ function ConsolePanel({ items }: { items: string[] }) {
           ))
         ) : (
           <div className="rounded-md border border-dashed bg-muted/20 px-3 py-2 text-xs text-muted-foreground">
-            nothing logged yet
+            nada logado ainda
           </div>
         )}
       </div>
@@ -924,13 +924,13 @@ function MentalModelPanel({ scenarioId }: { scenarioId: ScenarioId }) {
     <div className="rounded-md border bg-muted/10 p-3">
       <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
         <Timer className="h-4 w-4" />
-        Mental model
+        Modelo mental
       </div>
       <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2 xl:grid-cols-1">
-        <ModelRule number="1" text="Run stack first." />
-        <ModelRule number="2" text="Drain microtasks before tasks." />
-        <ModelRule number="3" text="Timers and I/O wait as tasks." />
-        <ModelRule number="4" text="await resumes as a microtask." active={scenarioId === 'async-await'} />
+        <ModelRule number="1" text="Primeiro roda a stack." />
+        <ModelRule number="2" text="Esvazia as microtasks antes das tasks." />
+        <ModelRule number="3" text="Timers e I/O esperam como tasks." />
+        <ModelRule number="4" text="O await é retomado como microtask." active={scenarioId === 'async-await'} />
       </div>
     </div>
   );
@@ -952,7 +952,7 @@ function PredictionCard({
       <div className="mb-3">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <CheckCircle2 className="h-5 w-5" />
-          Predict It
+          Faça sua previsão
         </div>
       </div>
       <div className="space-y-3">
@@ -991,7 +991,7 @@ function PredictionCard({
               isCorrect ? 'border-emerald-500/30 bg-emerald-500/10' : 'border-amber-500/30 bg-amber-500/10'
             )}
           >
-            <p className="font-medium">{isCorrect ? 'Correct' : `Not quite. Answer: ${prediction.answer}`}</p>
+            <p className="font-medium">{isCorrect ? 'Correto' : `Quase. Resposta: ${prediction.answer}`}</p>
             <p className="mt-1 text-muted-foreground">{prediction.explanation}</p>
           </div>
         )}

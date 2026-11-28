@@ -12,10 +12,10 @@ export default function UptimeDefenderPage() {
     <SimulatorShell
       slug="uptime-defender"
       seoLearningPoints={[
-        'Practice incident response workflows',
-        'Prioritize and triage production issues',
-        'Learn about SLAs, SLOs, and error budgets',
-        'Handle cascading failures',
+        'Praticar fluxos de resposta a incidentes',
+        'Priorizar e fazer a triagem de problemas em produção',
+        'Aprender sobre SLAs, SLOs e error budgets',
+        'Lidar com falhas em cascata',
       ]}
     >
       <UptimeDefender />

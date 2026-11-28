@@ -57,95 +57,95 @@ const TLS_12_STEPS: HandshakeStep[] = [
   {
     phase: 'client-hello',
     title: 'ClientHello',
-    description: 'Client initiates the handshake',
+    description: 'O cliente inicia o handshake',
     direction: 'client-to-server',
     details: [
       'TLS version: 1.2',
-      'Random bytes (32 bytes)',
+      'Bytes aleatórios (32 bytes)',
       'Session ID',
-      'Cipher suites supported',
-      'Compression methods',
+      'Cipher suites suportadas',
+      'Métodos de compressão',
     ],
   },
   {
     phase: 'server-hello',
     title: 'ServerHello',
-    description: 'Server responds with chosen parameters',
+    description: 'O servidor responde com os parâmetros escolhidos',
     direction: 'server-to-client',
     details: [
       'TLS version: 1.2',
-      'Random bytes (32 bytes)',
+      'Bytes aleatórios (32 bytes)',
       'Session ID',
-      'Selected cipher suite',
-      'Selected compression',
+      'Cipher suite escolhida',
+      'Compressão escolhida',
     ],
   },
   {
     phase: 'certificate',
     title: 'Certificate',
-    description: 'Server sends its certificate chain',
+    description: 'O servidor envia sua cadeia de certificados',
     direction: 'server-to-client',
-    details: ['Server certificate', 'Intermediate CA certificate', 'Certificate chain validation'],
+    details: ['Certificado do servidor', 'Certificado da CA intermediária', 'Validação da cadeia de certificados'],
   },
   {
     phase: 'server-key-exchange',
     title: 'ServerKeyExchange',
-    description: 'Server sends key exchange parameters',
+    description: 'O servidor envia os parâmetros de troca de chaves',
     direction: 'server-to-client',
-    details: ['Diffie-Hellman parameters', 'ECDHE curve parameters', 'Server signature'],
+    details: ['Parâmetros Diffie-Hellman', 'Parâmetros da curva ECDHE', 'Assinatura do servidor'],
     tls12Only: true,
   },
   {
     phase: 'certificate-verify',
     title: 'ServerHelloDone',
-    description: 'Server signals end of hello messages',
+    description: 'O servidor sinaliza o fim das mensagens de hello',
     direction: 'server-to-client',
-    details: ['Indicates server is done with hello phase'],
+    details: ['Indica que o servidor terminou a fase de hello'],
     tls12Only: true,
   },
   {
     phase: 'client-key-exchange',
     title: 'ClientKeyExchange',
-    description: 'Client sends its key exchange data',
+    description: 'O cliente envia seus dados de troca de chaves',
     direction: 'client-to-server',
     details: [
-      'Pre-master secret (encrypted)',
-      'Client DH public value',
-      'Both sides can now compute master secret',
+      'Pre-master secret (criptografado)',
+      'Valor público DH do cliente',
+      'Agora os dois lados conseguem calcular o master secret',
     ],
   },
   {
     phase: 'change-cipher-spec',
     title: 'ChangeCipherSpec',
-    description: 'Both sides switch to encrypted communication',
+    description: 'Os dois lados passam a se comunicar com criptografia',
     direction: 'both',
     details: [
-      'Client sends ChangeCipherSpec',
-      'Server sends ChangeCipherSpec',
-      'All following messages encrypted',
+      'O cliente envia ChangeCipherSpec',
+      'O servidor envia ChangeCipherSpec',
+      'Todas as mensagens seguintes são criptografadas',
     ],
     tls12Only: true,
   },
   {
     phase: 'finished',
     title: 'Finished',
-    description: 'Handshake verification',
+    description: 'Verificação do handshake',
     direction: 'both',
     details: [
-      'Client Finished (encrypted)',
-      'Server Finished (encrypted)',
-      'Verify handshake integrity',
+      'Finished do cliente (criptografado)',
+      'Finished do servidor (criptografado)',
+      'Verifica a integridade do handshake',
     ],
   },
   {
     phase: 'secure',
-    title: 'Secure Connection',
-    description: 'Encrypted tunnel established',
+    title: 'Conexão segura',
+    description: 'Túnel criptografado estabelecido',
     direction: 'none',
     details: [
-      'All application data encrypted',
-      'Session keys derived',
-      'Ready for secure communication',
+      'Todos os dados da aplicação criptografados',
+      'Chaves de sessão derivadas',
+      'Pronto para comunicação segura',
     ],
   },
 ];
@@ -154,40 +154,40 @@ const TLS_13_STEPS: HandshakeStep[] = [
   {
     phase: 'client-hello',
     title: 'ClientHello',
-    description: 'Client initiates with key share',
+    description: 'O cliente inicia já enviando o key share',
     direction: 'client-to-server',
     details: [
       'TLS version: 1.3',
-      'Random bytes (32 bytes)',
-      'Cipher suites (AEAD only)',
-      'Key share extension (ECDHE)',
-      'Supported versions extension',
+      'Bytes aleatórios (32 bytes)',
+      'Cipher suites (somente AEAD)',
+      'Extensão key share (ECDHE)',
+      'Extensão supported versions',
     ],
     tls13Only: true,
   },
   {
     phase: 'server-hello',
     title: 'ServerHello',
-    description: 'Server responds with key share',
+    description: 'O servidor responde com o key share',
     direction: 'server-to-client',
     details: [
       'TLS version: 1.3',
-      'Random bytes',
-      'Selected cipher suite',
-      'Key share (server public key)',
-      '→ Handshake keys derived here',
+      'Bytes aleatórios',
+      'Cipher suite escolhida',
+      'Key share (chave pública do servidor)',
+      '→ As chaves do handshake são derivadas aqui',
     ],
     tls13Only: true,
   },
   {
     phase: 'certificate',
     title: 'EncryptedExtensions + Certificate',
-    description: 'Server sends encrypted certificate',
+    description: 'O servidor envia o certificado já criptografado',
     direction: 'server-to-client',
     details: [
-      '🔒 Now encrypted!',
-      'Server certificate',
-      'Certificate chain',
+      '🔒 Agora criptografado!',
+      'Certificado do servidor',
+      'Cadeia de certificados',
       'CertificateVerify (signature)',
     ],
     tls13Only: true,
@@ -195,24 +195,24 @@ const TLS_13_STEPS: HandshakeStep[] = [
   {
     phase: 'finished',
     title: 'Finished',
-    description: 'Handshake complete',
+    description: 'Handshake concluído',
     direction: 'both',
     details: [
-      'Server Finished (encrypted)',
-      'Client Finished (encrypted)',
-      'Application keys derived',
+      'Finished do servidor (criptografado)',
+      'Finished do cliente (criptografado)',
+      'Chaves da aplicação derivadas',
     ],
     tls13Only: true,
   },
   {
     phase: 'secure',
-    title: 'Secure Connection (1-RTT)',
-    description: 'Encrypted tunnel established faster',
+    title: 'Conexão segura (1-RTT)',
+    description: 'Túnel criptografado estabelecido mais rápido',
     direction: 'none',
     details: [
-      '✨ Only 1 round-trip needed!',
-      'All application data encrypted',
-      '0-RTT resumption possible',
+      '✨ Só 1 ida e volta!',
+      'Todos os dados da aplicação criptografados',
+      'Retomada 0-RTT possível',
     ],
     tls13Only: true,
   },
@@ -222,34 +222,34 @@ const FAILURE_SCENARIOS: Record<
   FailureScenario,
   { title: string; description: string; failsAt: HandshakePhase }
 > = {
-  none: { title: 'Normal', description: 'Successful handshake', failsAt: 'secure' },
+  none: { title: 'Normal', description: 'Handshake bem-sucedido', failsAt: 'secure' },
   'expired-cert': {
-    title: 'Expired Certificate',
-    description: 'Server certificate has expired',
+    title: 'Certificado expirado',
+    description: 'O certificado do servidor expirou',
     failsAt: 'certificate',
   },
   'wrong-hostname': {
-    title: 'Hostname Mismatch',
-    description: "Certificate CN/SAN doesn't match domain",
+    title: 'Hostname não confere',
+    description: 'O CN/SAN do certificado não corresponde ao domínio',
     failsAt: 'certificate',
   },
   'weak-cipher': {
-    title: 'Weak Cipher',
-    description: 'No common secure cipher suites',
+    title: 'Cifra fraca',
+    description: 'Nenhuma cipher suite segura em comum',
     failsAt: 'server-hello',
   },
   'untrusted-ca': {
-    title: 'Untrusted CA',
-    description: 'Certificate not signed by trusted CA',
+    title: 'CA não confiável',
+    description: 'Certificado não assinado por uma CA confiável',
     failsAt: 'certificate',
   },
 };
 
 const CERTIFICATE_CHAIN = [
-  { name: 'Root CA', issuer: 'Self-signed', color: 'text-amber-500', icon: Shield },
+  { name: 'Root CA', issuer: 'Autoassinado', color: 'text-amber-500', icon: Shield },
   { name: 'Intermediate CA', issuer: 'Root CA', color: 'text-blue-500', icon: ShieldCheck },
   {
-    name: 'Server Certificate',
+    name: 'Certificado do servidor',
     issuer: 'Intermediate CA',
     color: 'text-emerald-500',
     icon: FileCheck,
@@ -352,17 +352,17 @@ export default function SslTlsHandshakeSimulator() {
               <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" />
               <div>
                 <h3 className="font-semibold text-blue-900 dark:text-blue-100">
-                  How to use this simulator
+                  Como usar este simulador
                 </h3>
                 <p className="mt-1 text-sm text-blue-800 dark:text-blue-200">
-                  Watch how your browser establishes a secure HTTPS connection. Use the{' '}
-                  <strong>Play</strong> button for auto-advance, or <strong>Next/Prev</strong> to
-                  step through manually. Each step shows what data is exchanged between client and
-                  server.
+                  Veja como o navegador estabelece uma conexão HTTPS segura. Use o botão{' '}
+                  <strong>Reproduzir</strong> para avançar sozinho, ou <strong>Próximo/Anterior</strong>{' '}
+                  para ir passo a passo. Cada passo mostra quais dados são trocados entre cliente e
+                  servidor.
                 </p>
                 <p className="mt-2 text-xs text-blue-600 dark:text-blue-400">
-                  💡 Tip: Try different TLS versions and failure scenarios to see how the handshake
-                  changes.
+                  💡 Dica: experimente versões diferentes do TLS e cenários de falha para ver como o
+                  handshake muda.
                 </p>
               </div>
             </div>
@@ -377,17 +377,17 @@ export default function SslTlsHandshakeSimulator() {
             SSL/TLS Handshake
           </h2>
           <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
-            Visualize how secure connections are established
+            Veja como conexões seguras são estabelecidas
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="gap-1 text-xs">
             <Keyboard className="h-3 w-3" />
-            <span className="hidden sm:inline">Space/Arrows/R</span>
+            <span className="hidden sm:inline">Espaço/Setas/R</span>
           </Badge>
           <Button variant="outline" size="sm" onClick={reset}>
             <RotateCcw className="mr-2 h-4 w-4" />
-            Reset
+            Reiniciar
           </Button>
         </div>
       </div>
@@ -397,7 +397,7 @@ export default function SslTlsHandshakeSimulator() {
         <Card className="border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm text-slate-700 dark:text-slate-300">
-              TLS Version
+              Versão do TLS
             </CardTitle>
           </CardHeader>
           <CardContent className="flex gap-2">
@@ -413,7 +413,7 @@ export default function SslTlsHandshakeSimulator() {
                 className="flex-1"
               >
                 TLS {v}
-                {v === '1.3' && <Badge className="ml-1 bg-emerald-500 text-[10px]">Faster</Badge>}
+                {v === '1.3' && <Badge className="ml-1 bg-emerald-500 text-[10px]">Mais rápido</Badge>}
               </Button>
             ))}
           </CardContent>
@@ -421,7 +421,7 @@ export default function SslTlsHandshakeSimulator() {
 
         <Card className="border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800/50">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-slate-700 dark:text-slate-300">Scenario</CardTitle>
+            <CardTitle className="text-sm text-slate-700 dark:text-slate-300">Cenário</CardTitle>
           </CardHeader>
           <CardContent>
             <select
@@ -432,11 +432,11 @@ export default function SslTlsHandshakeSimulator() {
               }}
               className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200"
             >
-              <option value="none">✅ Successful Handshake</option>
-              <option value="expired-cert">❌ Expired Certificate</option>
-              <option value="wrong-hostname">❌ Hostname Mismatch</option>
-              <option value="weak-cipher">❌ Weak Cipher Suite</option>
-              <option value="untrusted-ca">❌ Untrusted CA</option>
+              <option value="none">✅ Handshake bem-sucedido</option>
+              <option value="expired-cert">❌ Certificado expirado</option>
+              <option value="wrong-hostname">❌ Hostname não confere</option>
+              <option value="weak-cipher">❌ Cipher suite fraca</option>
+              <option value="untrusted-ca">❌ CA não confiável</option>
             </select>
           </CardContent>
         </Card>
@@ -467,7 +467,7 @@ export default function SslTlsHandshakeSimulator() {
                 />
               </div>
               <span className="mt-2 text-xs font-medium text-slate-600 dark:text-slate-400">
-                Client
+                Cliente
               </span>
             </div>
 
@@ -571,7 +571,7 @@ export default function SslTlsHandshakeSimulator() {
                 />
               </div>
               <span className="mt-2 text-xs font-medium text-slate-600 dark:text-slate-400">
-                Server
+                Servidor
               </span>
             </div>
           </div>
@@ -628,9 +628,9 @@ export default function SslTlsHandshakeSimulator() {
                     )}
                   >
                     {currentStep.direction === 'client-to-server'
-                      ? 'Client → Server'
+                      ? 'Cliente → Servidor'
                       : currentStep.direction === 'server-to-client'
-                        ? 'Server → Client'
+                        ? 'Servidor → Cliente'
                         : 'Both'}
                   </Badge>
                 )}
@@ -656,7 +656,7 @@ export default function SslTlsHandshakeSimulator() {
                 <div className="mt-3 rounded bg-red-100 p-2 dark:bg-red-900/30">
                   <p className="text-xs text-red-700 dark:text-red-300">
                     <AlertTriangle className="mr-1 inline h-3 w-3" />
-                    Connection aborted. The browser will show a security warning.
+                    Conexão abortada. O navegador vai mostrar um alerta de segurança.
                   </p>
                 </div>
               )}
@@ -723,7 +723,7 @@ export default function SslTlsHandshakeSimulator() {
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Shield className="h-4 w-4 text-amber-500" />
-                  Certificate Chain (Chain of Trust)
+                  Cadeia de certificados (cadeia de confiança)
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -762,7 +762,7 @@ export default function SslTlsHandshakeSimulator() {
                   ))}
                 </div>
                 <p className="mt-3 text-center text-xs text-slate-500 dark:text-slate-400">
-                  The browser verifies each certificate up to a trusted Root CA
+                  O navegador verifica cada certificado até chegar a uma CA raiz confiável
                 </p>
               </CardContent>
             </Card>
@@ -783,24 +783,24 @@ export default function SslTlsHandshakeSimulator() {
             <div className="rounded-lg border border-slate-300 bg-white p-3 dark:border-slate-600 dark:bg-slate-700/50">
               <h4 className="mb-2 font-medium text-slate-900 dark:text-slate-100">TLS 1.2</h4>
               <ul className="space-y-1 text-xs text-slate-600 dark:text-slate-400">
-                <li>• 2 round-trips (2-RTT) to establish</li>
-                <li>• Supports older cipher suites</li>
-                <li>• RSA key exchange still allowed</li>
-                <li>• Separate ChangeCipherSpec message</li>
-                <li>• Widely supported (legacy systems)</li>
+                <li>• 2 idas e voltas (2-RTT) para estabelecer</li>
+                <li>• Aceita cipher suites mais antigas</li>
+                <li>• Ainda permite troca de chaves RSA</li>
+                <li>• Mensagem ChangeCipherSpec separada</li>
+                <li>• Amplo suporte (sistemas legados)</li>
               </ul>
             </div>
             <div className="rounded-lg border border-emerald-500/50 bg-emerald-500/10 p-3">
               <h4 className="mb-2 flex items-center gap-2 font-medium text-slate-900 dark:text-slate-100">
                 TLS 1.3
-                <Badge className="bg-emerald-500 text-[10px]">Recommended</Badge>
+                <Badge className="bg-emerald-500 text-[10px]">Recomendado</Badge>
               </h4>
               <ul className="space-y-1 text-xs text-slate-600 dark:text-slate-400">
-                <li>• 1 round-trip (1-RTT) - 50% faster!</li>
-                <li>• Only AEAD ciphers (more secure)</li>
-                <li>• Perfect Forward Secrecy required</li>
-                <li>• Encrypted earlier in handshake</li>
-                <li>• 0-RTT resumption possible</li>
+                <li>• 1 ida e volta (1-RTT): 50% mais rápido!</li>
+                <li>• Só cifras AEAD (mais seguro)</li>
+                <li>• Perfect Forward Secrecy obrigatório</li>
+                <li>• Criptografa mais cedo no handshake</li>
+                <li>• Retomada 0-RTT possível</li>
               </ul>
             </div>
           </div>
@@ -812,35 +812,35 @@ export default function SslTlsHandshakeSimulator() {
         <CardContent className="p-4">
           <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-slate-100">
             <Key className="h-4 w-4 text-amber-500" />
-            Key Concepts
+            Conceitos-chave
           </h3>
           <div className="grid gap-4 text-sm sm:grid-cols-2">
             <div>
               <h4 className="mb-1 font-medium text-blue-500">Cipher Suite</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                A combination of algorithms: key exchange (ECDHE), authentication (RSA/ECDSA),
-                encryption (AES-GCM), and hashing (SHA256).
+                Uma combinação de algoritmos: troca de chaves (ECDHE), autenticação (RSA/ECDSA),
+                criptografia (AES-GCM) e hash (SHA256).
               </p>
             </div>
             <div>
               <h4 className="mb-1 font-medium text-purple-500">Perfect Forward Secrecy</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                Even if the server&apos;s private key is compromised, past sessions remain secure
-                because each session uses unique ephemeral keys.
+                Mesmo que a chave privada do servidor seja comprometida, as sessões passadas continuam
+                seguras, porque cada sessão usa chaves efêmeras únicas.
               </p>
             </div>
             <div>
-              <h4 className="mb-1 font-medium text-emerald-500">Certificate Authority (CA)</h4>
+              <h4 className="mb-1 font-medium text-emerald-500">Autoridade certificadora (CA)</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                A trusted organization that issues digital certificates. Browsers have a list of
-                trusted root CAs built-in.
+                Uma organização confiável que emite certificados digitais. Os navegadores já vêm com uma
+                lista de CAs raiz confiáveis.
               </p>
             </div>
             <div>
-              <h4 className="mb-1 font-medium text-amber-500">AEAD (Authenticated Encryption)</h4>
+              <h4 className="mb-1 font-medium text-amber-500">AEAD (criptografia autenticada)</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                Combines encryption and authentication in one step (e.g., AES-GCM). Required in TLS
-                1.3 for better security.
+                Combina criptografia e autenticação em um único passo (por exemplo, AES-GCM).
+                Obrigatória no TLS 1.3, para mais segurança.
               </p>
             </div>
           </div>

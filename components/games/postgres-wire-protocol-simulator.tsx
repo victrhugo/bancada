@@ -61,46 +61,46 @@ interface ScenarioConfig {
 
 const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
   startup: {
-    title: 'Startup and authentication',
-    subtitle: 'SSL negotiation, startup parameters, SCRAM challenge, session settings, ready state.',
+    title: 'Inicialização e autenticação',
+    subtitle: 'Negociação de SSL, parâmetros de inicialização, desafio SCRAM, configurações da sessão e estado pronto.',
     icon: KeyRound,
     query: 'psql "postgres://app@db.prod:5432/app"',
     steps: [
       {
         id: 'ssl-request',
         code: 'SSLRequest',
-        label: 'Ask for TLS',
+        label: 'Pede TLS',
         from: 'client',
         tone: 'startup',
         bytes: 8,
         rtt: 0.5,
         payload: 'Int32 length=8, Int32 code=80877103',
-        fields: ['length: 8', 'magic: 0x04D2162F', 'no type byte'],
-        note: 'The client can ask whether the server accepts SSL before sending startup parameters.',
+        fields: ['length: 8', 'magic: 0x04D2162F', 'sem byte de tipo'],
+        note: 'O cliente pode perguntar se o servidor aceita SSL antes de enviar os parâmetros de inicialização.',
       },
       {
         id: 'ssl-ok',
         code: 'S',
-        label: 'TLS accepted',
+        label: 'TLS aceito',
         from: 'server',
         tone: 'auth',
         bytes: 1,
         rtt: 0.5,
-        payload: 'Single byte response: S',
-        fields: ['S: continue with TLS', 'N: cleartext only'],
-        note: 'After S, the TLS handshake happens outside the PostgreSQL message stream.',
+        payload: 'Resposta de um único byte: S',
+        fields: ['S: segue com TLS', 'N: só texto puro'],
+        note: 'Depois do S, o handshake TLS acontece fora do fluxo de mensagens do PostgreSQL.',
       },
       {
         id: 'startup',
         code: 'StartupMessage',
-        label: 'Send startup parameters',
+        label: 'Envia os parâmetros de inicialização',
         from: 'client',
         tone: 'startup',
         bytes: 92,
         rtt: 1,
         payload: 'protocol=3.0 user=app database=app application_name=wire_lab',
-        fields: ['length', 'protocol version', 'user', 'database', 'options'],
-        note: 'StartupMessage has a length and protocol version, but no leading message type byte.',
+        fields: ['length', 'versão do protocolo', 'user', 'database', 'options'],
+        note: 'A StartupMessage tem tamanho e versão do protocolo, mas não começa com byte de tipo.',
       },
       {
         id: 'auth-sasl',
@@ -110,9 +110,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'auth',
         bytes: 33,
         rtt: 1.5,
-        payload: 'SCRAM-SHA-256 offered',
+        payload: 'SCRAM-SHA-256 oferecido',
         fields: ['type: R', 'length', 'auth code: 10', 'mechanisms'],
-        note: 'Modern PostgreSQL commonly uses SCRAM-SHA-256 for password authentication.',
+        note: 'O PostgreSQL moderno costuma usar SCRAM-SHA-256 para autenticação por senha.',
       },
       {
         id: 'sasl-initial',
@@ -122,9 +122,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'auth',
         bytes: 86,
         rtt: 2,
-        payload: 'client-first-message with nonce',
-        fields: ['type: p', 'mechanism', 'initial response length', 'client nonce'],
-        note: 'The client proves knowledge of the password without sending the password itself.',
+        payload: 'client-first-message com nonce',
+        fields: ['type: p', 'mechanism', 'tamanho da resposta inicial', 'nonce do cliente'],
+        note: 'O cliente prova que conhece a senha sem enviar a senha.',
       },
       {
         id: 'sasl-continue',
@@ -134,9 +134,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'auth',
         bytes: 96,
         rtt: 2.5,
-        payload: 'server nonce, salt, iteration count',
-        fields: ['auth code: 11', 'salt', 'iterations', 'server nonce'],
-        note: 'The server challenge binds both nonces and the stored verifier.',
+        payload: 'nonce do servidor, salt, número de iterações',
+        fields: ['auth code: 11', 'salt', 'iterations', 'nonce do servidor'],
+        note: 'O desafio do servidor amarra os dois nonces e o verificador armazenado.',
       },
       {
         id: 'sasl-final',
@@ -146,9 +146,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'auth',
         bytes: 112,
         rtt: 3,
-        payload: 'client proof',
-        fields: ['client-final-message', 'channel binding flag', 'proof'],
-        note: 'The client sends a proof derived from the password, salt, and nonce exchange.',
+        payload: 'prova do cliente',
+        fields: ['client-final-message', 'flag de channel binding', 'proof'],
+        note: 'O cliente envia uma prova derivada da senha, do salt e da troca de nonces.',
       },
       {
         id: 'auth-ok',
@@ -160,7 +160,7 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         rtt: 3.5,
         payload: 'auth code 0',
         fields: ['type: R', 'length: 8', 'auth code: 0'],
-        note: 'Authentication is complete; the backend can now announce session state.',
+        note: 'A autenticação terminou; agora o backend pode anunciar o estado da sessão.',
       },
       {
         id: 'parameter-status',
@@ -172,7 +172,7 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         rtt: 3.5,
         payload: 'server_version, TimeZone, client_encoding',
         fields: ['server_version', 'server_encoding', 'DateStyle', 'integer_datetimes'],
-        note: 'Drivers cache these settings because they affect parsing and display behavior.',
+        note: 'Os drivers guardam essas configurações em cache porque elas afetam como os dados são interpretados e exibidos.',
       },
       {
         id: 'ready-startup',
@@ -182,15 +182,15 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'ready',
         bytes: 6,
         rtt: 4,
-        payload: 'transaction status: idle',
+        payload: 'status da transação: idle',
         fields: ['type: Z', 'length: 5', 'status: I'],
-        note: 'ReadyForQuery tells the client it can safely send the next command.',
+        note: 'O ReadyForQuery avisa ao cliente que ele já pode enviar o próximo comando com segurança.',
       },
     ],
   },
   simple: {
-    title: 'Simple query protocol',
-    subtitle: 'One Query message in, a row stream and completion status out.',
+    title: 'Protocolo de query simples',
+    subtitle: 'Entra uma mensagem Query, sai um fluxo de linhas e o status de conclusão.',
     icon: Terminal,
     query: 'SELECT id, email, plan FROM users WHERE active = true LIMIT 3;',
     steps: [
@@ -202,9 +202,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'query',
         bytes: 74,
         rtt: 0.5,
-        payload: 'SQL string terminated by zero byte',
-        fields: ['type: Q', 'length', 'UTF-8 query string', 'zero terminator'],
-        note: 'The simple protocol sends the full SQL text in a single Query message.',
+        payload: 'String SQL terminada por byte zero',
+        fields: ['type: Q', 'length', 'string da query em UTF-8', 'terminador zero'],
+        note: 'O protocolo simples envia o SQL inteiro em uma única mensagem Query.',
       },
       {
         id: 'row-desc',
@@ -214,21 +214,21 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'data',
         bytes: 168,
         rtt: 1,
-        payload: '3 columns: id, email, plan',
-        fields: ['field count', 'name', 'type OID', 'type size', 'format code'],
-        note: 'RowDescription tells the driver how to decode every DataRow field.',
+        payload: '3 colunas: id, email, plan',
+        fields: ['número de campos', 'name', 'OID do tipo', 'tamanho do tipo', 'código de formato'],
+        note: 'O RowDescription diz ao driver como decodificar cada campo do DataRow.',
       },
       {
         id: 'data-row',
         code: 'D',
-        label: 'DataRow stream',
+        label: 'Fluxo de DataRow',
         from: 'server',
         tone: 'data',
         bytes: 240,
         rtt: 1.25,
-        payload: 'Rows flow one message at a time',
-        fields: ['column count', 'value length', 'value bytes', '-1 for NULL'],
-        note: 'Every returned row is a separate DataRow message.',
+        payload: 'As linhas chegam uma mensagem por vez',
+        fields: ['column count', 'tamanho do valor', 'bytes do valor', '-1 para NULL'],
+        note: 'Cada linha retornada é uma mensagem DataRow separada.',
       },
       {
         id: 'command-complete',
@@ -240,7 +240,7 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         rtt: 1.5,
         payload: 'SELECT 3',
         fields: ['type: C', 'length', 'command tag'],
-        note: 'The command tag includes the statement kind and row count when applicable.',
+        note: 'O command tag traz o tipo do comando e, quando faz sentido, o número de linhas.',
       },
       {
         id: 'ready-simple',
@@ -250,15 +250,15 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'ready',
         bytes: 6,
         rtt: 1.5,
-        payload: 'transaction status: idle',
-        fields: ['I: idle', 'T: in transaction', 'E: failed transaction'],
-        note: 'Drivers wait for ReadyForQuery before considering the exchange complete.',
+        payload: 'status da transação: idle',
+        fields: ['I: idle', 'T: em transação', 'E: transação com falha'],
+        note: 'Os drivers esperam o ReadyForQuery antes de considerar a troca concluída.',
       },
     ],
   },
   extended: {
-    title: 'Extended query protocol',
-    subtitle: 'Parse, Bind, Describe, Execute, Sync for prepared and parameterized queries.',
+    title: 'Protocolo de query estendido',
+    subtitle: 'Parse, Bind, Describe, Execute e Sync para queries preparadas e parametrizadas.',
     icon: Braces,
     query: 'SELECT * FROM orders WHERE customer_id = $1 AND created_at > $2;',
     steps: [
@@ -270,9 +270,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'query',
         bytes: 112,
         rtt: 0.25,
-        payload: 'statement name, SQL, parameter type OIDs',
-        fields: ['statement name', 'query string', 'parameter type count', 'type OIDs'],
-        note: 'Parse creates a prepared statement on the backend.',
+        payload: 'nome do statement, SQL, OIDs dos tipos dos parâmetros',
+        fields: ['nome do statement', 'string da query', 'número de tipos de parâmetro', 'OIDs dos tipos'],
+        note: 'O Parse cria um prepared statement no backend.',
       },
       {
         id: 'bind',
@@ -282,9 +282,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'query',
         bytes: 96,
         rtt: 0.3,
-        payload: 'portal name and parameter values',
-        fields: ['portal name', 'statement name', 'format codes', 'parameter values'],
-        note: 'Bind supplies concrete values and creates a portal ready to execute.',
+        payload: 'nome do portal e valores dos parâmetros',
+        fields: ['nome do portal', 'nome do statement', 'códigos de formato', 'valores dos parâmetros'],
+        note: 'O Bind fornece valores concretos e cria um portal pronto para executar.',
       },
       {
         id: 'describe',
@@ -294,9 +294,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'query',
         bytes: 18,
         rtt: 0.35,
-        payload: 'describe portal result shape',
-        fields: ['target: portal', 'portal name'],
-        note: 'Describe asks for metadata before rows arrive.',
+        payload: 'descreve o formato do resultado do portal',
+        fields: ['alvo: portal', 'nome do portal'],
+        note: 'O Describe pede os metadados antes de as linhas chegarem.',
       },
       {
         id: 'execute',
@@ -306,9 +306,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'query',
         bytes: 16,
         rtt: 0.4,
-        payload: 'portal name, max rows=0',
-        fields: ['portal name', 'max rows'],
-        note: 'Execute starts reading from the bound portal.',
+        payload: 'nome do portal, max rows=0',
+        fields: ['nome do portal', 'max rows'],
+        note: 'O Execute começa a ler do portal vinculado.',
       },
       {
         id: 'sync',
@@ -318,9 +318,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'query',
         bytes: 5,
         rtt: 0.5,
-        payload: 'end extended-query cycle',
+        payload: 'fim do ciclo de query estendida',
         fields: ['type: S', 'length: 4'],
-        note: 'Sync asks the backend to finish the batch and return ReadyForQuery.',
+        note: 'O Sync pede ao backend que termine o lote e devolva o ReadyForQuery.',
       },
       {
         id: 'parse-complete',
@@ -330,9 +330,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'ready',
         bytes: 5,
         rtt: 1,
-        payload: 'parse succeeded',
+        payload: 'parse concluído',
         fields: ['type: 1', 'length: 4'],
-        note: 'The backend acknowledges each stage in order.',
+        note: 'O backend confirma cada etapa em ordem.',
       },
       {
         id: 'bind-complete',
@@ -342,9 +342,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'ready',
         bytes: 5,
         rtt: 1.05,
-        payload: 'bind succeeded',
+        payload: 'bind concluído',
         fields: ['type: 2', 'length: 4'],
-        note: 'The portal is ready to execute.',
+        note: 'O portal está pronto para executar.',
       },
       {
         id: 'row-desc-extended',
@@ -355,20 +355,20 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         bytes: 184,
         rtt: 1.15,
         payload: 'orders result columns',
-        fields: ['field metadata', 'table OID', 'attribute number', 'format code'],
-        note: 'Format codes can be text or binary per column.',
+        fields: ['metadados dos campos', 'OID da tabela', 'número do atributo', 'código de formato'],
+        note: 'Os códigos de formato podem ser texto ou binário, por coluna.',
       },
       {
         id: 'data-extended',
         code: 'D',
-        label: 'DataRow stream',
+        label: 'Fluxo de DataRow',
         from: 'server',
         tone: 'data',
         bytes: 420,
         rtt: 1.25,
-        payload: 'matching orders',
-        fields: ['row values', 'binary or text encoded', 'NULL as -1 length'],
-        note: 'Parameterized queries still return ordinary DataRow messages.',
+        payload: 'pedidos encontrados',
+        fields: ['row values', 'codificado em binário ou texto', 'NULL como tamanho -1'],
+        note: 'Queries parametrizadas continuam devolvendo mensagens DataRow comuns.',
       },
       {
         id: 'ready-extended',
@@ -379,28 +379,28 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         bytes: 6,
         rtt: 1.5,
         payload: 'idle',
-        fields: ['transaction status'],
-        note: 'The extended cycle is complete.',
+        fields: ['status da transação'],
+        note: 'O ciclo estendido terminou.',
       },
     ],
   },
   copy: {
-    title: 'COPY streaming',
-    subtitle: 'Bulk import/export uses CopyInResponse, CopyData chunks, and CopyDone.',
+    title: 'Streaming com COPY',
+    subtitle: 'Importação e exportação em massa usam CopyInResponse, pedaços de CopyData e CopyDone.',
     icon: Rows3,
     query: "COPY events FROM STDIN WITH (FORMAT csv);",
     steps: [
       {
         id: 'copy-query',
         code: 'Q',
-        label: 'COPY command',
+        label: 'Comando COPY',
         from: 'client',
         tone: 'query',
         bytes: 48,
         rtt: 0.5,
         payload: 'COPY events FROM STDIN',
         fields: ['type: Q', 'COPY SQL'],
-        note: 'COPY can be initiated through the query protocol.',
+        note: 'O COPY pode ser iniciado pelo protocolo de query.',
       },
       {
         id: 'copy-in',
@@ -410,21 +410,21 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'data',
         bytes: 18,
         rtt: 1,
-        payload: 'server is ready to receive stream',
-        fields: ['overall format', 'column count', 'per-column format codes'],
-        note: 'The server switches into COPY-in mode.',
+        payload: 'o servidor está pronto para receber o fluxo',
+        fields: ['formato geral', 'column count', 'códigos de formato por coluna'],
+        note: 'O servidor entra no modo COPY-in.',
       },
       {
         id: 'copy-data',
         code: 'd',
-        label: 'CopyData chunks',
+        label: 'Pedaços de CopyData',
         from: 'client',
         tone: 'data',
         bytes: 1024,
         rtt: 1.15,
-        payload: 'CSV bytes streamed in chunks',
-        fields: ['type: d', 'length', 'opaque chunk bytes'],
-        note: 'COPY data is an opaque byte stream to the protocol layer.',
+        payload: 'bytes de CSV enviados em pedaços',
+        fields: ['type: d', 'length', 'bytes opacos do pedaço'],
+        note: 'Para a camada de protocolo, os dados do COPY são um fluxo opaco de bytes.',
       },
       {
         id: 'copy-done',
@@ -434,9 +434,9 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         tone: 'ready',
         bytes: 5,
         rtt: 1.4,
-        payload: 'client finished sending rows',
+        payload: 'o cliente terminou de enviar as linhas',
         fields: ['type: c', 'length: 4'],
-        note: 'CopyDone ends the stream successfully. CopyFail aborts it.',
+        note: 'O CopyDone encerra o fluxo com sucesso. O CopyFail aborta.',
       },
       {
         id: 'copy-complete',
@@ -448,7 +448,7 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         rtt: 1.8,
         payload: 'COPY 25000',
         fields: ['command tag', 'row count'],
-        note: 'The command tag reports how many rows were copied.',
+        note: 'O command tag informa quantas linhas foram copiadas.',
       },
       {
         id: 'ready-copy',
@@ -459,8 +459,8 @@ const BASE_SCENARIOS: Record<Scenario, ScenarioConfig> = {
         bytes: 6,
         rtt: 1.9,
         payload: 'idle',
-        fields: ['transaction status'],
-        note: 'The connection returns to normal command mode.',
+        fields: ['status da transação'],
+        note: 'A conexão volta ao modo normal de comandos.',
       },
     ],
   },
@@ -478,27 +478,27 @@ const toneStyles: Record<MessageTone, string> = {
 const providers = [
   {
     name: 'DigitalOcean Managed PostgreSQL',
-    label: 'Managed',
+    label: 'Gerenciado',
     href: 'https://www.digitalocean.com/',
-    description: 'Managed Postgres with backups, standby nodes, VPC networking, and simple pricing.',
+    description: 'Postgres gerenciado com backups, nós standby, rede VPC e preço simples.',
   },
   {
     name: 'Neon',
     label: 'Serverless',
     href: 'https://neon.com',
-    description: 'Serverless Postgres with branching, autoscaling, and instant restore workflows.',
+    description: 'Postgres serverless com branching, autoscaling e restauração instantânea.',
   },
   {
     name: 'Supabase',
-    label: 'App platform',
+    label: 'Plataforma de apps',
     href: 'https://supabase.com/database',
-    description: 'Managed Postgres with auth, storage, realtime, edge functions, and dashboard tooling.',
+    description: 'Postgres gerenciado com auth, storage, realtime, edge functions e painel de gestão.',
   },
   {
     name: 'Crunchy Bridge',
-    label: 'Postgres experts',
+    label: 'Especialistas em Postgres',
     href: 'https://www.crunchydata.com/products/crunchy-bridge',
-    description: 'Fully managed Postgres backed by Crunchy Data support and multi-cloud deployment.',
+    description: 'Postgres totalmente gerenciado, com suporte da Crunchy Data e deploy multi-cloud.',
   },
 ];
 
@@ -510,7 +510,7 @@ function formatBytes(bytes: number) {
 function flowDirection(step: ProtocolStep) {
   if (step.from === 'client') return 'Client to server';
   if (step.from === 'server') return 'Server to client';
-  return 'Both directions';
+  return 'Nos dois sentidos';
 }
 
 function compactCode(code: string) {
@@ -537,8 +537,8 @@ function getScenarioSteps(scenario: Scenario, tlsEnabled: boolean, rowCount: num
         bytes: step.id === 'copy-data' ? Math.max(1024, rowCount * 58) : step.bytes * rowMultiplier,
         payload:
           step.id === 'copy-data'
-            ? `${rowCount.toLocaleString()} CSV rows streamed in chunks`
-            : `${rowCount.toLocaleString()} row${rowCount === 1 ? '' : 's'} returned`,
+            ? `${rowCount.toLocaleString()} linhas de CSV enviadas em pedaços`
+            : `${rowCount.toLocaleString()} linha${rowCount === 1 ? '' : 's'} retornada${rowCount === 1 ? '' : 's'}`,
       };
     }
     if (step.id.includes('command-complete') || step.id === 'copy-complete') {
@@ -559,9 +559,9 @@ function getScenarioSteps(scenario: Scenario, tlsEnabled: boolean, rowCount: num
       tone: 'error',
       bytes: 142,
       rtt: 1.2,
-      payload: 'SQLSTATE 42P01 relation does not exist',
+      payload: 'SQLSTATE 42P01: a relation não existe',
       fields: ['severity', 'SQLSTATE', 'message', 'detail', 'position'],
-      note: 'Errors are structured fields, then the server drains to ReadyForQuery after Sync or query completion.',
+      note: 'Erros vêm em campos estruturados; depois o servidor segue até o ReadyForQuery, após o Sync ou o fim da query.',
     };
     const readyStep: ProtocolStep = {
       id: 'ready-after-error',
@@ -571,9 +571,9 @@ function getScenarioSteps(scenario: Scenario, tlsEnabled: boolean, rowCount: num
       tone: 'ready',
       bytes: 6,
       rtt: 1.4,
-      payload: 'failed transaction or idle',
-      fields: ['I: idle', 'E: failed transaction'],
-      note: 'A driver should inspect transaction status before retrying.',
+      payload: 'transação com falha ou idle',
+      fields: ['I: idle', 'E: transação com falha'],
+      note: 'O driver deve checar o status da transação antes de tentar de novo.',
     };
     steps = [...steps.slice(0, Math.min(2, steps.length)), errorStep, readyStep];
   }
@@ -602,12 +602,12 @@ function MessageRail({
       >
         <div className="flex items-center gap-2">
           <Terminal className="h-4 w-4" />
-          Client
+          Cliente
         </div>
         <div className="text-center">Wire</div>
         <div className="flex items-center justify-end gap-2">
           <Server className="h-4 w-4" />
-          Server
+          Servidor
         </div>
       </div>
 
@@ -701,7 +701,7 @@ function MessageInspector({ step }: { step: ProtocolStep }) {
           <div>
             <CardTitle className="flex items-center gap-2 text-lg">
               <Binary className="h-5 w-5 text-primary" />
-              Message inspector
+              Inspetor de mensagens
             </CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">{flowDirection(step)}</p>
           </div>
@@ -722,7 +722,7 @@ function MessageInspector({ step }: { step: ProtocolStep }) {
         <div>
           <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
             <Code2 className="h-4 w-4 text-primary" />
-            Payload shape
+            Formato do payload
           </div>
           <div className="grid gap-2">
             {step.fields.map((field) => (
@@ -738,7 +738,7 @@ function MessageInspector({ step }: { step: ProtocolStep }) {
         </div>
 
         <div className="rounded-lg bg-zinc-950 p-3 text-slate-100">
-          <div className="mb-2 text-xs uppercase tracking-wide text-slate-400">Frame sketch</div>
+          <div className="mb-2 text-xs uppercase tracking-wide text-slate-400">Esboço do frame</div>
           <div
             className={cn(
               'grid grid-cols-[46px_68px_1fr] overflow-hidden rounded border',
@@ -894,45 +894,45 @@ export default function PostgresWireProtocolSimulator() {
           <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <Badge className="bg-emerald-500 text-emerald-950 hover:bg-emerald-500">PostgreSQL v3 protocol</Badge>
+                <Badge className="bg-emerald-500 text-emerald-950 hover:bg-emerald-500">Protocolo PostgreSQL v3</Badge>
                 <Badge variant="outline" className="border-slate-600 text-slate-300">
-                  frontend/backend messages
+                  mensagens frontend/backend
                 </Badge>
               </div>
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                Watch every byte between a Postgres client and server.
+                Veja cada byte trocado entre um cliente e um servidor Postgres.
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">
                 Step through connection startup, SCRAM authentication, simple queries,
-                prepared statements, row streaming, errors, and COPY. The lab shows what drivers
-                actually send over the wire.
+                prepared statements, streaming de linhas, erros e COPY. O laboratório mostra o que os drivers
+                realmente enviam pela rede.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <MetricCard
-                label="Round trips"
+                label="Idas e voltas"
                 value={metrics.roundTrips.toFixed(1)}
-                detail={pipelineEnabled && scenario === 'extended' ? 'pipelining enabled' : 'protocol turns'}
+                detail={pipelineEnabled && scenario === 'extended' ? 'pipelining ativado' : 'trocas de protocolo'}
                 icon={Network}
                 tone={metrics.roundTrips <= 2 ? 'good' : 'warn'}
               />
               <MetricCard
-                label="Wire bytes"
+                label="Bytes na rede"
                 value={formatBytes(metrics.payloadBytes)}
-                detail={`${metrics.clientTurns} client, ${metrics.serverTurns} server messages`}
+                detail={`${metrics.clientTurns} mensagens do cliente, ${metrics.serverTurns} do servidor`}
                 icon={Binary}
               />
               <MetricCard
-                label="Estimated latency"
+                label="Latência estimada"
                 value={`${metrics.totalMs} ms`}
-                detail={`${latency} ms network baseline`}
+                detail={`${latency} ms de latência base da rede`}
                 icon={Clock}
                 tone={metrics.totalMs < 160 ? 'good' : metrics.totalMs < 320 ? 'warn' : 'bad'}
               />
               <MetricCard
-                label="Decode work"
+                label="Custo de decodificação"
                 value={`${metrics.decodeCost} ms`}
-                detail={`${rowCount.toLocaleString()} rows modeled`}
+                detail={`${rowCount.toLocaleString()} linhas simuladas`}
                 icon={Gauge}
               />
             </div>
@@ -974,7 +974,7 @@ export default function PostgresWireProtocolSimulator() {
                       className="gap-2"
                     >
                       {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                      {isPlaying ? 'Pause' : 'Play'}
+                      {isPlaying ? 'Pausar' : 'Reproduzir'}
                     </Button>
                     <Button
                       type="button"
@@ -987,7 +987,7 @@ export default function PostgresWireProtocolSimulator() {
                       className="gap-2"
                     >
                       <TimerReset className="h-4 w-4" />
-                      Reset
+                      Reiniciar
                     </Button>
                   </div>
                 </div>
@@ -1026,7 +1026,7 @@ export default function PostgresWireProtocolSimulator() {
                   <span className="rounded bg-cyan-500/15 px-2 py-1 font-mono text-cyan-600 dark:text-cyan-300">
                     START
                   </span>
-                  Startup packets have no type byte.
+                  Pacotes de inicialização não têm byte de tipo.
                 </div>
                 <div className="flex items-center gap-2">
                   <span
@@ -1037,7 +1037,7 @@ export default function PostgresWireProtocolSimulator() {
                   >
                     D
                   </span>
-                  DataRow messages carry one row each.
+                  Cada mensagem DataRow carrega uma linha.
                 </div>
                 <div className="flex items-center gap-2">
                   <span
@@ -1048,7 +1048,7 @@ export default function PostgresWireProtocolSimulator() {
                   >
                     Z
                   </span>
-                  ReadyForQuery ends the exchange.
+                  O ReadyForQuery encerra a troca.
                 </div>
               </div>
             </div>
@@ -1063,12 +1063,12 @@ export default function PostgresWireProtocolSimulator() {
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center gap-2 text-lg">
               <Activity className="h-5 w-5 text-primary" />
-              Lab controls
+              Controles do laboratório
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
             <ControlSlider
-              label="Rows returned"
+              label="Linhas retornadas"
               value={rowCount}
               min={1}
               max={scenario === 'copy' ? 25000 : 250}
@@ -1076,7 +1076,7 @@ export default function PostgresWireProtocolSimulator() {
               onChange={setRowCount}
             />
             <ControlSlider
-              label="Network latency"
+              label="Latência de rede"
               value={latency}
               min={5}
               max={180}
@@ -1113,7 +1113,7 @@ export default function PostgresWireProtocolSimulator() {
                 disabled={scenario === 'startup'}
               >
                 <AlertTriangle className="h-4 w-4" />
-                Inject ErrorResponse
+                Injetar ErrorResponse
               </Button>
             </div>
           </CardContent>
@@ -1123,33 +1123,33 @@ export default function PostgresWireProtocolSimulator() {
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center gap-2 text-lg">
               <ShieldCheck className="h-5 w-5 text-primary" />
-              Driver mental model
+              Modelo mental do driver
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-3">
               <div className="rounded-lg border bg-muted/20 p-4">
                 <CheckCircle2 className="mb-3 h-5 w-5 text-emerald-500" />
-                <h4 className="mb-2 text-sm font-semibold">Always wait for Z</h4>
+                <h4 className="mb-2 text-sm font-semibold">Sempre espere o Z</h4>
                 <p className="text-sm text-muted-foreground">
-                  ReadyForQuery is the connection boundary. It tells a pooler whether the session is
-                  idle, inside a transaction, or stuck in a failed transaction.
+                  O ReadyForQuery é a fronteira da conexão. Ele diz ao pooler se a sessão está
+                  ociosa, dentro de uma transação ou presa em uma transação com falha.
                 </p>
               </div>
               <div className="rounded-lg border bg-muted/20 p-4">
                 <CheckCircle2 className="mb-3 h-5 w-5 text-emerald-500" />
-                <h4 className="mb-2 text-sm font-semibold">Rows are framed</h4>
+                <h4 className="mb-2 text-sm font-semibold">As linhas vêm em frames</h4>
                 <p className="text-sm text-muted-foreground">
-                  Each DataRow carries field lengths, so clients can decode NULLs, text values, and
-                  binary values without guessing delimiters.
+                  Cada DataRow traz o tamanho dos campos, então o cliente decodifica NULLs, textos e
+                  valores binários sem precisar adivinhar delimitadores.
                 </p>
               </div>
               <div className="rounded-lg border bg-muted/20 p-4">
                 <CheckCircle2 className="mb-3 h-5 w-5 text-emerald-500" />
-                <h4 className="mb-2 text-sm font-semibold">Prepared queries split work</h4>
+                <h4 className="mb-2 text-sm font-semibold">Queries preparadas dividem o trabalho</h4>
                 <p className="text-sm text-muted-foreground">
-                  Parse and Bind separate SQL shape from values, which helps reuse plans and keeps
-                  parameter values out of string concatenation.
+                  Parse e Bind separam a estrutura do SQL dos valores, o que ajuda a reaproveitar planos e
+                  mantém os parâmetros longe da concatenação de strings.
                 </p>
               </div>
             </div>
@@ -1161,11 +1161,11 @@ export default function PostgresWireProtocolSimulator() {
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Database className="h-5 w-5 text-primary" />
-            Try Postgres without running your own server
+            Experimente Postgres sem manter seu próprio servidor
           </CardTitle>
           <p className="text-sm text-muted-foreground">
-            These providers give you a real Postgres endpoint, so the same wire protocol shown above
-            is what your application driver speaks in production.
+            Estes provedores oferecem um endpoint Postgres de verdade, então o mesmo protocolo mostrado acima
+            é o que o driver da sua aplicação fala em produção.
           </p>
         </CardHeader>
         <CardContent>

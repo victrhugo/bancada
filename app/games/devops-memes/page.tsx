@@ -10,88 +10,87 @@ export async function generateMetadata(): Promise<Metadata> {
 function DevOpsMemesEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">Why DevOps memes matter</h3>
+      <h3 className="mb-4 text-xl font-semibold">Por que memes de DevOps importam</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Community building</h4>
+          <h4 className="mb-3 font-semibold text-sm">Senso de comunidade</h4>
           <p className="mb-3 text-sm text-muted-foreground">
-            Shared experiences create bonds. When we laugh about the same struggles, like DNS
-            issues, YAML formatting, or Friday afternoon deployments, we build a sense of community
-            and mutual understanding.
+            Experiências compartilhadas criam laços. Quando rimos das mesmas dores, como problemas de
+            DNS, indentação de YAML ou deploy na sexta à tarde, construímos comunidade e empatia.
           </p>
           <ul className="space-y-1 text-sm text-muted-foreground">
-            <li>Breaks down barriers between team members</li>
-            <li>Creates talking points for networking</li>
-            <li>Helps newcomers feel part of the community</li>
+            <li>Quebra barreiras entre as pessoas do time</li>
+            <li>Gera assunto para networking</li>
+            <li>Ajuda quem está chegando a se sentir parte da comunidade</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Stress relief</h4>
+          <h4 className="mb-3 font-semibold text-sm">Alívio do estresse</h4>
           <p className="mb-3 text-sm text-muted-foreground">
-            DevOps can be stressful. Laughing about our challenges helps us cope with the pressure
-            and reminds us that we&apos;re not alone in facing these difficulties.
+            DevOps pode ser estressante. Rir dos nossos desafios ajuda a lidar com a pressão e lembra
+            que ninguém enfrenta essas dificuldades sozinho.
           </p>
           <ul className="space-y-1 text-sm text-muted-foreground">
-            <li>Reduces burnout through humor</li>
-            <li>Provides perspective on daily challenges</li>
-            <li>Creates positive team dynamics</li>
+            <li>Reduz o burnout com humor</li>
+            <li>Dá perspectiva sobre os desafios do dia a dia</li>
+            <li>Cria uma dinâmica positiva no time</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Educational value</h4>
+          <h4 className="mb-3 font-semibold text-sm">Valor educativo</h4>
           <p className="mb-3 text-sm text-muted-foreground">
-            Each meme contains a kernel of truth about DevOps practices, tools, or culture. They
-            can spark discussions about best practices and shared learning.
+            Cada meme carrega um fundo de verdade sobre práticas, ferramentas ou cultura DevOps. Eles
+            podem puxar conversas sobre boas práticas e aprendizado compartilhado.
           </p>
           <ul className="space-y-1 text-sm text-muted-foreground">
-            <li>Highlights common antipatterns</li>
-            <li>Encourages reflection on practices</li>
-            <li>Makes complex concepts more memorable</li>
+            <li>Destaca antipadrões comuns</li>
+            <li>Estimula a reflexão sobre as práticas</li>
+            <li>Torna conceitos complexos mais fáceis de lembrar</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Content creation</h4>
+          <h4 className="mb-3 font-semibold text-sm">Criação de conteúdo</h4>
           <p className="mb-3 text-sm text-muted-foreground">
-            These memes are perfect for social media, presentations, and blog posts. They make
-            technical content more engaging and relatable.
+            Estes memes funcionam bem em redes sociais, apresentações e posts de blog. Eles deixam
+            conteúdo técnico mais envolvente e próximo.
           </p>
           <ul className="space-y-1 text-sm text-muted-foreground">
-            <li>Great for conference presentations</li>
-            <li>Increases social media engagement</li>
-            <li>Makes technical content accessible</li>
+            <li>Ótimos para palestras</li>
+            <li>Aumentam o engajamento nas redes</li>
+            <li>Deixam o conteúdo técnico mais acessível</li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">How to use these memes</h4>
+        <h4 className="mb-2 font-semibold text-sm">Como usar estes memes</h4>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <h5 className="mb-1 font-medium text-sm text-foreground">Team building</h5>
+            <h5 className="mb-1 font-medium text-sm text-foreground">Integração do time</h5>
             <p className="text-sm text-muted-foreground">
-              Share in team chat, use as meeting icebreakers, or include in retrospectives to
-              lighten the mood and encourage open discussion.
+              Compartilhe no chat do time, use para quebrar o gelo em reuniões ou nas retrospectivas
+              para deixar o clima mais leve e estimular uma conversa aberta.
             </p>
           </div>
           <div>
-            <h5 className="mb-1 font-medium text-sm text-foreground">Social media</h5>
+            <h5 className="mb-1 font-medium text-sm text-foreground">Redes sociais</h5>
             <p className="text-sm text-muted-foreground">
-              Perfect for LinkedIn posts, Twitter threads, or tech blog content. They&apos;re
-              highly shareable and relatable to the DevOps community.
+              Ótimos para posts no LinkedIn, threads ou blogs de tecnologia. São fáceis de
+              compartilhar e a comunidade DevOps se identifica.
             </p>
           </div>
           <div>
-            <h5 className="mb-1 font-medium text-sm text-foreground">Presentations</h5>
+            <h5 className="mb-1 font-medium text-sm text-foreground">Apresentações</h5>
             <p className="text-sm text-muted-foreground">
-              Use as conversation starters in conference talks, training sessions, or team
-              presentations to make technical content more engaging.
+              Use para abrir conversas em palestras, treinamentos ou apresentações do time e deixar o
+              conteúdo técnico mais envolvente.
             </p>
           </div>
           <div>
-            <h5 className="mb-1 font-medium text-sm text-foreground">Documentation</h5>
+            <h5 className="mb-1 font-medium text-sm text-foreground">Documentação</h5>
             <p className="text-sm text-muted-foreground">
-              Add humor to runbooks, incident response guides, or team wikis to make documentation
-              more memorable and enjoyable to read.
+              Coloque um pouco de humor em runbooks, guias de resposta a incidentes ou wikis do time
+              para tornar a leitura mais agradável e fácil de lembrar.
             </p>
           </div>
         </div>

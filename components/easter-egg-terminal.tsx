@@ -17,24 +17,24 @@ interface CommandResponse {
 const COMMANDS: Record<string, CommandResponse> = {
   help: {
     output: [
-      'Available commands:',
-      '  help              - Show this help message',
-      '  whoami            - Display current user',
-      '  ls                - List contents',
-      '  kubectl get pods  - Get running pods',
-      '  docker ps         - List containers',
-      '  terraform plan    - Show infrastructure plan',
-      '  git status        - Check repository status',
-      '  deploy            - 🚀 Deploy to production',
-      '  deploy production - 🚀 Deploy to production',
-      '  clear             - Clear terminal',
+      'Comandos disponíveis:',
+      '  help              - Mostra esta ajuda',
+      '  whoami            - Mostra o usuário atual',
+      '  ls                - Lista o conteúdo',
+      '  kubectl get pods  - Lista os pods em execução',
+      '  docker ps         - Lista os containers',
+      '  terraform plan    - Mostra o plano de infraestrutura',
+      '  git status        - Mostra o status do repositório',
+      '  deploy            - 🚀 Faz deploy em produção',
+      '  deploy production - 🚀 Faz deploy em produção',
+      '  clear             - Limpa o terminal',
       '',
-      '💡 Tip: Try typing "deploy" for a surprise!',
+      '💡 Dica: digite "deploy" e tenha uma surpresa!',
     ],
     type: 'info',
   },
   whoami: {
-    output: ['devops-ninja 🥷', '', 'You are a DevOps master!'],
+    output: ['devops-ninja 🥷', '', 'Você é um mestre do DevOps!'],
     type: 'success',
   },
   ls: {
@@ -93,32 +93,32 @@ const COMMANDS: Record<string, CommandResponse> = {
     type: 'success',
   },
   deploy: {
-    output: ['Initiating deployment to production...'],
+    output: ['Iniciando o deploy em produção...'],
     type: 'deploy',
   },
   'deploy production': {
-    output: ['Initiating deployment to production...'],
+    output: ['Iniciando o deploy em produção...'],
     type: 'deploy',
   },
   'rm -rf /': {
     output: [
-      '⚠️  WHOA THERE!',
+      '⚠️  OPA, CALMA LÁ!',
       '',
-      'Nice try, but this is a safe environment! 😅',
+      'Boa tentativa, mas este ambiente é seguro! 😅',
       '',
-      'In production, this would be... catastrophic.',
-      'Always double-check your commands!',
+      'Em produção, isso seria... catastrófico.',
+      'Sempre confira seus comandos duas vezes!',
     ],
     type: 'error',
   },
   'sudo rm -rf /': {
     output: [
-      '🚨 DANGER ZONE DETECTED 🚨',
+      '🚨 ZONA DE PERIGO DETECTADA 🚨',
       '',
       '[sudo] password for devops-ninja: _',
       '',
-      'Just kidding! This terminal is read-only.',
-      'But seriously, never run this in real life! 💀',
+      'Brincadeira! Este terminal é só de leitura.',
+      'Mas, sério, nunca rode isso na vida real! 💀',
     ],
     type: 'error',
   },
@@ -131,33 +131,33 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
   const logsContainerRef = useRef<HTMLDivElement>(null);
 
   const stages = [
-    { name: '📦 Building', duration: 2000, icon: '📦' },
-    { name: '🧪 Testing', duration: 2500, icon: '🧪' },
-    { name: '🐳 Dockerizing', duration: 2000, icon: '🐳' },
-    { name: '☸️  Deploying', duration: 2500, icon: '☸️' },
-    { name: '✅ Verification', duration: 1500, icon: '✅' },
+    { name: '📦 Build', duration: 2000, icon: '📦' },
+    { name: '🧪 Testes', duration: 2500, icon: '🧪' },
+    { name: '🐳 Docker', duration: 2000, icon: '🐳' },
+    { name: '☸️  Deploy', duration: 2500, icon: '☸️' },
+    { name: '✅ Verificação', duration: 1500, icon: '✅' },
   ];
 
   const stageMessages = [
     [
-      '→ Installing dependencies...',
-      '✓ Dependencies installed (342 packages)',
-      '→ Running build...',
-      '✓ Build completed successfully',
-      '→ Optimizing bundle...',
-      '✓ Bundle optimized: 234 KB → 187 KB',
+      '→ Instalando dependências...',
+      '✓ Dependências instaladas (342 pacotes)',
+      '→ Rodando o build...',
+      '✓ Build concluído com sucesso',
+      '→ Otimizando o bundle...',
+      '✓ Bundle otimizado: 234 KB → 187 KB',
     ],
     [
-      '→ Running unit tests...',
-      '✓ Unit tests passed (127/127)',
-      '→ Running integration tests...',
-      '✓ Integration tests passed (43/43)',
-      '→ Running E2E tests...',
-      '✓ E2E tests passed (18/18)',
-      '→ Code coverage: 94.3% 🎉',
+      '→ Rodando os testes unitários...',
+      '✓ Testes unitários passaram (127/127)',
+      '→ Rodando os testes de integração...',
+      '✓ Testes de integração passaram (43/43)',
+      '→ Rodando os testes E2E...',
+      '✓ Testes E2E passaram (18/18)',
+      '→ Cobertura de código: 94,3% 🎉',
     ],
     [
-      '→ Building Docker image...',
+      '→ Gerando a imagem Docker...',
       '✓ Step 1/8: FROM node:18-alpine',
       '✓ Step 2/8: WORKDIR /app',
       '✓ Step 3/8: COPY package*.json ./',
@@ -166,37 +166,37 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
       '✓ Step 6/8: RUN npm run build',
       '✓ Step 7/8: EXPOSE 3000',
       '✓ Step 8/8: CMD ["npm", "start"]',
-      '✓ Docker image built: bancada:latest',
-      '→ Pushing to registry...',
-      '✓ Pushed to registry',
+      '✓ Imagem Docker gerada: bancada:latest',
+      '→ Enviando para o registry...',
+      '✓ Enviada para o registry',
     ],
     [
-      '→ Connecting to Kubernetes cluster...',
-      '✓ Connected to production cluster',
-      '→ Applying deployment manifest...',
+      '→ Conectando ao cluster Kubernetes...',
+      '✓ Conectado ao cluster de produção',
+      '→ Aplicando o manifesto de deployment...',
       '✓ deployment.apps/bancada configured',
-      '→ Applying service manifest...',
+      '→ Aplicando o manifesto de service...',
       '✓ service/bancada configured',
-      '→ Scaling replicas...',
-      '✓ Scaled to 3 replicas',
-      '→ Waiting for rollout...',
-      '✓ Rollout completed successfully',
+      '→ Escalando as réplicas...',
+      '✓ Escalado para 3 réplicas',
+      '→ Aguardando o rollout...',
+      '✓ Rollout concluído com sucesso',
     ],
     [
-      '→ Running health checks...',
-      '✓ Health check passed: 200 OK',
-      '→ Verifying DNS...',
-      '✓ DNS resolution successful',
-      '→ Running smoke tests...',
-      '✓ All smoke tests passed',
-      '→ Checking metrics...',
-      '✓ CPU: 12%, Memory: 45%, Latency: 42ms',
+      '→ Rodando os health checks...',
+      '✓ Health check aprovado: 200 OK',
+      '→ Verificando o DNS...',
+      '✓ Resolução DNS funcionando',
+      '→ Rodando os smoke tests...',
+      '✓ Todos os smoke tests passaram',
+      '→ Conferindo as métricas...',
+      '✓ CPU: 12%, memória: 45%, latência: 42 ms',
       '',
-      '🎉 DEPLOYMENT SUCCESSFUL! 🎉',
+      '🎉 DEPLOY CONCLUÍDO! 🎉',
       '',
-      '🚀 Your application is now live!',
+      '🚀 Sua aplicação está no ar!',
       `📊 Dashboard: ${SITE_URL}`,
-      '📈 Metrics: All systems operational',
+      '📈 Métricas: todos os sistemas operando',
     ],
   ];
 
@@ -246,20 +246,20 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
                 aria-hidden="true"
               />
               <h2 id="deployment-title" className="text-lg sm:text-xl font-semibold text-slate-100">
-                Production Deployment Pipeline
+                Pipeline de deploy em produção
               </h2>
             </div>
             <button
               onClick={onComplete}
               className="text-slate-400 hover:text-slate-100 transition-colors p-2"
-              aria-label="Close deployment"
+              aria-label="Fechar deploy"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
           <p id="deployment-description" className="sr-only">
-            Automated deployment process running through build, test, dockerize, deploy, and
-            verification stages
+            Processo de deploy automatizado passando pelas etapas de build, testes, Docker, deploy e
+            verificação
           </p>
         </div>
 
@@ -335,8 +335,8 @@ const DeploymentAnimation = ({ onComplete }: { onComplete: () => void }) => {
           </div>
           <p className="text-center text-slate-400 text-xs mt-2 font-mono tabular-nums">
             {stage < stages.length
-              ? `stage ${stage + 1} / ${stages.length}`
-              : 'deployment complete'}
+              ? `etapa ${stage + 1} / ${stages.length}`
+              : 'deploy concluído'}
           </p>
         </div>
       </div>
@@ -353,7 +353,7 @@ const AchievementModal = ({ open, onClose }: { open: boolean; onClose: () => voi
             <span className="text-4xl" aria-hidden="true">
               🏆
             </span>
-            Achievement Unlocked!
+            Conquista desbloqueada!
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4" id="achievement-description">
@@ -361,18 +361,18 @@ const AchievementModal = ({ open, onClose }: { open: boolean; onClose: () => voi
             <div className="text-6xl mb-4" aria-hidden="true">
               🚀
             </div>
-            <h3 className="text-2xl font-bold mb-2">DevOps Master</h3>
-            <p className="text-muted-foreground mb-4">You successfully deployed to production!</p>
+            <h3 className="text-2xl font-bold mb-2">Mestre do DevOps</h3>
+            <p className="text-muted-foreground mb-4">Você fez deploy em produção com sucesso!</p>
             <Badge
               variant="secondary"
               className="text-sm px-3 py-1 font-mono bg-primary/10 border border-primary/20 text-primary"
             >
-              Easter Egg Found
+              Easter egg encontrado
             </Badge>
           </div>
           <div className="text-sm text-center text-muted-foreground">
-            <p>🎉 Congratulations on finding the secret terminal!</p>
-            <p className="mt-2">You&apos;re now part of an elite group of DevOps ninjas.</p>
+            <p>🎉 Parabéns por encontrar o terminal secreto!</p>
+            <p className="mt-2">Agora você faz parte de um grupo seleto de ninjas do DevOps.</p>
           </div>
         </div>
       </DialogContent>
@@ -388,11 +388,11 @@ export function EasterEggTerminal({ variant = 'icon' }: { variant?: 'icon' | 'te
       response: {
         output: [
           '╔═══════════════════════════════════════════════╗',
-          '║   Welcome to Bancada Terminal v1.0.0    ║',
+          '║   Bem-vindo ao Terminal Bancada v1.0.0  ║',
           '╚═══════════════════════════════════════════════╝',
           '',
-          'Type "help" to see available commands.',
-          'Type "deploy" to deploy to production 🚀',
+          'Digite "help" para ver os comandos disponíveis.',
+          'Digite "deploy" para fazer deploy em produção 🚀',
           '',
         ],
         type: 'info',
@@ -443,7 +443,7 @@ export function EasterEggTerminal({ variant = 'icon' }: { variant?: 'icon' | 'te
     const response =
       COMMANDS[trimmedCmd] ||
       ({
-        output: [`Command not found: ${cmd}`, 'Type "help" to see available commands.'],
+        output: [`Comando não encontrado: ${cmd}`, 'Digite "help" para ver os comandos disponíveis.'],
         type: 'error',
       } as CommandResponse);
 

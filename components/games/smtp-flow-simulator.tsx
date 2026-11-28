@@ -56,22 +56,22 @@ const actorMeta = {
     className: 'border-blue-500/30 bg-blue-500/10 text-blue-400',
   },
   smtp: {
-    label: 'SMTP relay',
+    label: 'Relay SMTP',
     icon: Server,
     className: 'border-primary/30 bg-primary/10 text-primary',
   },
   dns: {
-    label: 'DNS auth',
+    label: 'Autenticação DNS',
     icon: Globe,
     className: 'border-amber-500/30 bg-amber-500/10 text-amber-500',
   },
   mx: {
-    label: 'Recipient MX',
+    label: 'MX do destinatário',
     icon: Route,
     className: 'border-purple-500/30 bg-purple-500/10 text-purple-400',
   },
   mailbox: {
-    label: 'Mailbox',
+    label: 'Caixa de entrada',
     icon: Inbox,
     className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-500',
   },
@@ -80,116 +80,116 @@ const actorMeta = {
 const scenarios: Scenario[] = [
   {
     id: 'happy-path',
-    title: 'Successful transactional email',
+    title: 'E-mail transacional bem-sucedido',
     badge: '250 OK',
     description:
-      'A password reset email is submitted over port 587, authenticated, signed, relayed, and accepted by the recipient MX.',
+      'Um e-mail de redefinição de senha é enviado pela porta 587, autenticado, assinado, repassado pelo relay e aceito pelo MX do destinatário.',
     steps: [
       {
         id: 'connect',
-        title: 'Open submission connection',
+        title: 'Abrir a conexão de envio',
         actor: 'app',
         command: 'TCP connect smtp.example.net:587',
         response: '220 mail.exemplo.com ESMTP ready',
         detail:
-          'Apps usually submit mail to a provider over port 587. Port 25 is mostly for server-to-server relay.',
-        protocolNote: 'The server greeting starts every SMTP session.',
+          'Apps costumam enviar e-mail para o provedor pela porta 587. A porta 25 é usada principalmente no repasse entre servidores.',
+        protocolNote: 'Toda sessão SMTP começa com a saudação do servidor.',
         state: 'success',
         latencyMs: 42,
       },
       {
         id: 'ehlo',
-        title: 'Discover server extensions',
+        title: 'Descobrir as extensões do servidor',
         actor: 'smtp',
         command: 'EHLO app.exemplo.com',
         response: '250-STARTTLS 250-AUTH PLAIN LOGIN 250 SIZE 52428800',
         detail:
-          'EHLO asks the server what it supports: TLS upgrade, auth mechanisms, message size, and other extensions.',
-        protocolNote: 'Modern SMTP uses EHLO, not HELO, when extensions are needed.',
+          'O EHLO pergunta ao servidor o que ele suporta: upgrade para TLS, mecanismos de autenticação, tamanho de mensagem e outras extensões.',
+        protocolNote: 'O SMTP moderno usa EHLO, e não HELO, quando precisa de extensões.',
         state: 'success',
         latencyMs: 18,
       },
       {
         id: 'tls',
-        title: 'Upgrade to encrypted transport',
+        title: 'Passar para transporte criptografado',
         actor: 'smtp',
         command: 'STARTTLS',
         response: '220 Ready to start TLS',
         detail:
-          'STARTTLS upgrades the existing TCP connection so credentials and message content are encrypted in transit.',
-        protocolNote: 'Submission should require TLS before AUTH.',
+          'O STARTTLS faz o upgrade da conexão TCP existente, para que credenciais e conteúdo trafeguem criptografados.',
+        protocolNote: 'O envio deve exigir TLS antes do AUTH.',
         state: 'success',
         latencyMs: 61,
       },
       {
         id: 'auth',
-        title: 'Authenticate sender account',
+        title: 'Autenticar a conta remetente',
         actor: 'smtp',
         command: 'AUTH PLAIN ********',
         response: '235 2.7.0 Authentication successful',
         detail:
-          'The relay verifies API credentials or SMTP username/password before accepting mail for delivery.',
-        protocolNote: 'Authenticated submission prevents open relay abuse.',
+          'O relay confere as credenciais da API ou o usuário e senha SMTP antes de aceitar o e-mail para entrega.',
+        protocolNote: 'Envio autenticado evita o abuso de open relay.',
         state: 'success',
         latencyMs: 35,
       },
       {
         id: 'envelope',
-        title: 'Send SMTP envelope',
+        title: 'Enviar o envelope SMTP',
         actor: 'app',
         command: 'MAIL FROM:<bounce@exemplo.com> RCPT TO:<reader@example.org>',
         response: '250 sender ok / 250 recipient ok',
         detail:
-          'The envelope controls bounce handling and recipient routing. It can differ from the visible From header.',
-        protocolNote: 'MAIL FROM and RCPT TO are commands, not message headers.',
+          'O envelope controla o tratamento de bounces e o roteamento para o destinatário. Ele pode ser diferente do header From visível.',
+        protocolNote: 'MAIL FROM e RCPT TO são comandos, não headers da mensagem.',
         state: 'success',
         latencyMs: 44,
       },
       {
         id: 'data',
-        title: 'Stream message headers and body',
+        title: 'Enviar os headers e o corpo da mensagem',
         actor: 'app',
         command: 'DATA',
         response: '354 End data with <CRLF>.<CRLF>',
         detail:
-          'Headers such as From, To, Subject, Date, Message-ID, and MIME boundaries are sent with the body.',
-        protocolNote: 'A single dot on a line ends DATA.',
+          'Headers como From, To, Subject, Date, Message-ID e os limites MIME vão junto com o corpo.',
+        protocolNote: 'Um ponto sozinho numa linha encerra o DATA.',
         state: 'success',
         latencyMs: 73,
       },
       {
         id: 'auth-checks',
-        title: 'Sign and check sender identity',
+        title: 'Assinar e verificar a identidade do remetente',
         actor: 'dns',
-        command: 'SPF pass, DKIM signed, DMARC aligned',
+        command: 'SPF aprovado, DKIM assinado, DMARC alinhado',
         response: 'Authentication-Results: pass',
         detail:
-          'SPF checks allowed sending IPs, DKIM proves the message was signed, and DMARC ties identity alignment together.',
-        protocolNote: 'Good deliverability depends on DNS records as much as SMTP commands.',
+          'O SPF confere os IPs autorizados a enviar, o DKIM prova que a mensagem foi assinada e o DMARC amarra o alinhamento de identidade.',
+        protocolNote: 'Boa entregabilidade depende tanto dos registros DNS quanto dos comandos SMTP.',
         state: 'success',
         latencyMs: 126,
       },
       {
         id: 'mx',
-        title: 'Relay to recipient mail exchanger',
+        title: 'Repassar ao servidor de e-mail do destinatário',
         actor: 'mx',
         command: 'MX lookup example.org -> mx1.example.org',
         response: '250 2.0.0 queued as 91FD2A822',
         detail:
-          'The relay looks up the recipient domain MX records and transfers the message to the destination server.',
-        protocolNote: 'A 250 after DATA means the next server accepted responsibility.',
+          'O relay consulta os registros MX do domínio do destinatário e transfere a mensagem para o servidor de destino.',
+        protocolNote: 'Um 250 depois do DATA significa que o próximo servidor assumiu a responsabilidade.',
         state: 'success',
         latencyMs: 214,
       },
       {
         id: 'mailbox',
-        title: 'Deliver to inbox',
+        title: 'Entregar na caixa de entrada',
         actor: 'mailbox',
-        command: 'Local delivery + filtering',
-        response: 'Inbox placement: primary',
+        command: 'Entrega local + filtros',
+        response: 'Posição na caixa: principal',
         detail:
-          'The receiving system applies reputation, content, authentication, and user-level filtering before mailbox placement.',
-        protocolNote: 'Accepted does not always mean inboxed, but this message passes cleanly.',
+          'O sistema que recebe aplica filtros de reputação, conteúdo, autenticação e do próprio usuário antes de colocar na caixa.',
+        protocolNote: 'Aceito nem sempre significa entregue na caixa de entrada, mas esta mensagem passa sem problemas.',
         state: 'success',
         latencyMs: 330,
       },
@@ -197,77 +197,77 @@ const scenarios: Scenario[] = [
   },
   {
     id: 'greylist',
-    title: 'Temporary greylisting retry',
+    title: 'Retry por greylisting temporário',
     badge: '451 retry',
     description:
-      'The recipient MX temporarily rejects the first attempt. A real relay queues the message and retries later.',
+      'O MX do destinatário rejeita temporariamente a primeira tentativa. Um relay de verdade coloca a mensagem na fila e tenta de novo depois.',
     steps: [
       {
         id: 'connect',
-        title: 'Submit to relay',
+        title: 'Enviar ao relay',
         actor: 'app',
         command: 'EHLO + STARTTLS + AUTH',
         response: '235 authenticated',
-        detail: 'The sender successfully submits the message to the outbound relay.',
-        protocolNote: 'Submission succeeds before remote delivery starts.',
+        detail: 'O remetente envia a mensagem ao relay de saída com sucesso.',
+        protocolNote: 'O envio dá certo antes de a entrega remota começar.',
         state: 'success',
         latencyMs: 98,
       },
       {
         id: 'queue',
-        title: 'Queue message for delivery',
+        title: 'Colocar a mensagem na fila de entrega',
         actor: 'smtp',
         command: 'DATA <message>',
         response: '250 queued as msg-82a9',
         detail:
-          'A relay accepts the message, stores it durably, and begins outbound delivery attempts.',
-        protocolNote: 'Queues are what make SMTP resilient to temporary failures.',
+          'O relay aceita a mensagem, guarda de forma durável e começa as tentativas de entrega.',
+        protocolNote: 'São as filas que deixam o SMTP resistente a falhas temporárias.',
         state: 'success',
         latencyMs: 64,
       },
       {
         id: 'mx-lookup',
-        title: 'Resolve recipient MX',
+        title: 'Resolver o MX do destinatário',
         actor: 'dns',
         command: 'dig MX example.org',
         response: '10 mx1.example.org',
-        detail: 'MX priority determines which recipient server to try first.',
-        protocolNote: 'If one MX fails, relays can try another host.',
+        detail: 'A prioridade do MX define qual servidor do destinatário tentar primeiro.',
+        protocolNote: 'Se um MX falha, o relay pode tentar outro host.',
         state: 'success',
         latencyMs: 122,
       },
       {
         id: 'tempfail',
-        title: 'Remote server asks for retry',
+        title: 'O servidor remoto pede nova tentativa',
         actor: 'mx',
         command: 'RCPT TO:<reader@example.org>',
         response: '451 4.7.1 Try again later',
         detail:
-          'A 4xx response is temporary. The sender should not bounce immediately; it should retry with backoff.',
-        protocolNote: '4xx means retry. 5xx means permanent failure.',
+          'Uma resposta 4xx é temporária. O remetente não deve gerar bounce na hora; deve tentar de novo com backoff.',
+        protocolNote: '4xx significa tentar de novo. 5xx significa falha permanente.',
         state: 'warning',
         latencyMs: 240,
       },
       {
         id: 'backoff',
-        title: 'Retry with backoff',
+        title: 'Tentar de novo com backoff',
         actor: 'smtp',
-        command: 'retry in 10 minutes, then 30, then 2 hours',
-        response: 'delivery pending',
+        command: 'nova tentativa em 10 minutos, depois 30, depois 2 horas',
+        response: 'entrega pendente',
         detail:
-          'Reliable providers expose queue state, attempts, and final failure reasons so operators can debug delivery.',
-        protocolNote: 'SMTP is asynchronous by design.',
+          'Provedores confiáveis mostram o estado da fila, as tentativas e o motivo final da falha, para quem opera conseguir depurar a entrega.',
+        protocolNote: 'O SMTP é assíncrono por natureza.',
         state: 'warning',
         latencyMs: 600,
       },
       {
         id: 'accepted',
-        title: 'Second attempt accepted',
+        title: 'Segunda tentativa aceita',
         actor: 'mx',
         command: 'DATA <message>',
         response: '250 2.0.0 queued',
-        detail: 'The recipient accepts the retried delivery attempt and queues the message locally.',
-        protocolNote: 'Retries turn short outages into delayed delivery instead of lost mail.',
+        detail: 'O destinatário aceita a nova tentativa e coloca a mensagem na fila local.',
+        protocolNote: 'Os retries transformam quedas curtas em entrega atrasada, e não em e-mail perdido.',
         state: 'success',
         latencyMs: 270,
       },
@@ -275,43 +275,43 @@ const scenarios: Scenario[] = [
   },
   {
     id: 'auth-failure',
-    title: 'Authentication failure',
+    title: 'Falha de autenticação',
     badge: '535 fail',
     description:
-      'The app connects but uses bad SMTP credentials. The server refuses to accept a message.',
+      'O app se conecta, mas usa credenciais SMTP erradas. O servidor se recusa a aceitar a mensagem.',
     steps: [
       {
         id: 'connect',
-        title: 'Open secure submission',
+        title: 'Abrir envio seguro',
         actor: 'app',
         command: 'EHLO + STARTTLS',
         response: '220 TLS active',
-        detail: 'The connection and encryption are fine. The failure happens at authentication.',
-        protocolNote: 'Network success does not mean sender authorization succeeded.',
+        detail: 'A conexão e a criptografia estão certas. A falha acontece na autenticação.',
+        protocolNote: 'Sucesso na rede não significa que o remetente foi autorizado.',
         state: 'success',
         latencyMs: 70,
       },
       {
         id: 'auth',
-        title: 'Bad credential rejected',
+        title: 'Credencial inválida rejeitada',
         actor: 'smtp',
         command: 'AUTH PLAIN ********',
         response: '535 5.7.8 Authentication credentials invalid',
         detail:
-          'The relay rejects the login. No envelope or DATA commands should be accepted after this.',
-        protocolNote: '535 is a permanent authentication failure for this attempt.',
+          'O relay rejeita o login. Depois disso, nenhum comando de envelope ou DATA deve ser aceito.',
+        protocolNote: 'O 535 é uma falha de autenticação permanente para esta tentativa.',
         state: 'error',
         latencyMs: 38,
       },
       {
         id: 'blocked',
-        title: 'Message is not accepted',
+        title: 'A mensagem não é aceita',
         actor: 'smtp',
         command: 'MAIL FROM:<alerts@exemplo.com>',
         response: '530 5.7.0 Authentication required',
         detail:
-          'A secure SMTP relay will not become an open relay. The app must rotate or fix credentials before retrying.',
-        protocolNote: 'Fix credentials first; blind retries only create noise.',
+          'Um relay SMTP seguro não vira open relay. O app precisa rotacionar ou corrigir as credenciais antes de tentar de novo.',
+        protocolNote: 'Corrija as credenciais primeiro; retries às cegas só geram ruído.',
         state: 'error',
         latencyMs: 12,
       },
@@ -322,20 +322,20 @@ const scenarios: Scenario[] = [
 const responseCodeGuide = [
   {
     code: '2xx',
-    label: 'Accepted',
-    description: 'The server accepted the command or took responsibility for the message.',
+    label: 'Aceito',
+    description: 'O servidor aceitou o comando ou assumiu a responsabilidade pela mensagem.',
     className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-500',
   },
   {
     code: '4xx',
-    label: 'Retry later',
-    description: 'Temporary failure. A relay should queue the message and retry with backoff.',
+    label: 'Tentar depois',
+    description: 'Falha temporária. O relay deve colocar a mensagem na fila e tentar de novo com backoff.',
     className: 'border-amber-500/30 bg-amber-500/10 text-amber-500',
   },
   {
     code: '5xx',
-    label: 'Permanent fail',
-    description: 'The attempt should stop until the sender, recipient, or credentials are fixed.',
+    label: 'Falha permanente',
+    description: 'A tentativa deve parar até corrigirem o remetente, o destinatário ou as credenciais.',
     className: 'border-red-500/30 bg-red-500/10 text-red-500',
   },
 ];
@@ -413,11 +413,11 @@ export default function SmtpFlowSimulator() {
       <div className="mb-5 text-center">
         <div className="mb-3 flex items-center justify-center gap-2.5">
           <Mail className="h-8 w-8 text-primary" strokeWidth={1.5} />
-          <h2 className="text-2xl font-bold md:text-3xl">SMTP Flow Simulator</h2>
+          <h2 className="text-2xl font-bold md:text-3xl">Simulador do fluxo SMTP</h2>
         </div>
         <p className="mx-auto max-w-2xl text-base text-muted-foreground">
-          Watch a message move from application code to an SMTP relay, through TLS and AUTH,
-          across DNS and recipient MX checks, and finally into a mailbox.
+          Veja uma mensagem sair do código da aplicação para um relay SMTP, passar por TLS e AUTH,
+          pelas checagens de DNS e do MX do destinatário e, por fim, chegar à caixa de entrada.
         </p>
       </div>
 
@@ -449,7 +449,7 @@ export default function SmtpFlowSimulator() {
             <CardContent className="p-4">
               <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-mono text-muted-foreground">// active trace</p>
+                  <p className="text-xs font-mono text-muted-foreground">// trace ativo</p>
                   <h3 className="text-lg font-semibold">{scenario.title}</h3>
                 </div>
                 <div className="flex items-center gap-2">
@@ -459,15 +459,15 @@ export default function SmtpFlowSimulator() {
                     onClick={() => setIsPlaying((value) => !value)}
                   >
                     {isPlaying ? <Pause className="mr-1 h-4 w-4" /> : <Play className="mr-1 h-4 w-4" />}
-                    {isPlaying ? 'Pause' : 'Play'}
+                    {isPlaying ? 'Pausar' : 'Reproduzir'}
                   </Button>
                   <Button size="sm" variant="outline" onClick={nextStep}>
                     <StepForward className="mr-1 h-4 w-4" />
-                    Step
+                    Avançar
                   </Button>
                   <Button size="sm" variant="ghost" onClick={reset}>
                     <RotateCcw className="mr-1 h-4 w-4" />
-                    Reset
+                    Reiniciar
                   </Button>
                 </div>
               </div>
@@ -506,7 +506,7 @@ export default function SmtpFlowSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Route className="h-5 w-5" />
-                Protocol Timeline
+                Linha do tempo do protocolo
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -588,7 +588,7 @@ export default function SmtpFlowSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <ShieldCheck className="h-5 w-5" />
-                Current Step
+                Passo atual
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0">
@@ -598,12 +598,12 @@ export default function SmtpFlowSimulator() {
                 <p className="mt-2 text-sm text-muted-foreground">{currentStep.detail}</p>
               </div>
               <div className="rounded-md border bg-muted/30 p-3">
-                <p className="mb-1 text-xs font-mono text-muted-foreground">// protocol note</p>
+                <p className="mb-1 text-xs font-mono text-muted-foreground">// nota do protocolo</p>
                 <p className="text-sm">{currentStep.protocolNote}</p>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <Metric label="Steps seen" value={`${completedSteps + 1}/${scenario.steps.length}`} />
-                <Metric label="Trace time" value={`${activeLatency}ms`} />
+                <Metric label="Passos vistos" value={`${completedSteps + 1}/${scenario.steps.length}`} />
+                <Metric label="Tempo do trace" value={`${activeLatency}ms`} />
               </div>
             </CardContent>
           </Card>
@@ -612,14 +612,14 @@ export default function SmtpFlowSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Lock className="h-5 w-5" />
-                Mail Auth
+                Autenticação de e-mail
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
               {[
-                ['SPF', 'Sender IP allowed by domain policy'],
-                ['DKIM', 'Message signed with domain key'],
-                ['DMARC', 'Visible From aligns with SPF or DKIM'],
+                ['SPF', 'IP do remetente autorizado pela política do domínio'],
+                ['DKIM', 'Mensagem assinada com a chave do domínio'],
+                ['DMARC', 'O From visível está alinhado com SPF ou DKIM'],
               ].map(([name, description]) => (
                 <div key={name} className="rounded-md border p-2.5">
                   <div className="flex items-center gap-2">
@@ -636,7 +636,7 @@ export default function SmtpFlowSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Server className="h-5 w-5" />
-                Response Codes
+                Códigos de resposta
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">

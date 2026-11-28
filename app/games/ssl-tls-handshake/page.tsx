@@ -10,68 +10,68 @@ export async function generateMetadata(): Promise<Metadata> {
 function SslTlsEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">Understanding SSL/TLS Handshakes</h3>
+      <h3 className="mb-4 text-xl font-semibold">Entendendo o handshake SSL/TLS</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 font-semibold text-sm">What you&apos;ll learn</h4>
+          <h4 className="mb-3 font-semibold text-sm">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>How TLS 1.2 and TLS 1.3 handshakes differ</li>
-            <li>Certificate chain validation process</li>
-            <li>Key exchange mechanisms (RSA, ECDHE)</li>
-            <li>Cipher suite negotiation</li>
-            <li>Common TLS failure scenarios</li>
+            <li>Como os handshakes do TLS 1.2 e do TLS 1.3 diferem</li>
+            <li>O processo de validação da cadeia de certificados</li>
+            <li>Mecanismos de troca de chaves (RSA, ECDHE)</li>
+            <li>A negociação da cipher suite</li>
+            <li>Cenários comuns de falha no TLS</li>
             <li>Perfect Forward Secrecy (PFS)</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">TLS versions</h4>
+          <h4 className="mb-3 font-semibold text-sm">Versões do TLS</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">TLS 1.3:</strong> Latest version with 1-RTT
-              handshake, mandatory PFS, and removed insecure algorithms.
+              <strong className="text-foreground">TLS 1.3:</strong> a versão mais recente, com
+              handshake de 1 RTT, PFS obrigatório e algoritmos inseguros removidos.
             </li>
             <li>
-              <strong className="text-foreground">TLS 1.2:</strong> Still widely used, 2-RTT
-              handshake with optional PFS.
+              <strong className="text-foreground">TLS 1.2:</strong> ainda muito usada, com handshake
+              de 2 RTTs e PFS opcional.
             </li>
             <li>
-              <strong className="text-foreground">TLS 1.0/1.1:</strong> Deprecated, should not be
-              used due to security vulnerabilities.
+              <strong className="text-foreground">TLS 1.0/1.1:</strong> descontinuadas; não devem ser
+              usadas por causa de vulnerabilidades de segurança.
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Key concepts</h4>
+        <h4 className="mb-2 font-semibold text-sm">Conceitos-chave</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
           <li>
-            <strong className="text-foreground">Certificate:</strong> Digital document that binds
-            a public key to an identity.
+            <strong className="text-foreground">Certificado:</strong> documento digital que associa
+            uma chave pública a uma identidade.
           </li>
           <li>
-            <strong className="text-foreground">Cipher Suite:</strong> Set of algorithms for
-            encryption, authentication, and key exchange.
+            <strong className="text-foreground">Cipher suite:</strong> conjunto de algoritmos de
+            criptografia, autenticação e troca de chaves.
           </li>
           <li>
-            <strong className="text-foreground">PFS:</strong> Ensures session keys aren&apos;t
-            compromised even if server&apos;s private key is.
+            <strong className="text-foreground">PFS:</strong> garante que as chaves de sessão não
+            sejam comprometidas mesmo que a chave privada do servidor seja.
           </li>
           <li>
             <strong className="text-foreground">AEAD:</strong> Authenticated Encryption with
-            Associated Data (e.g., AES-GCM).
+            Associated Data (por exemplo, AES-GCM).
           </li>
         </ul>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Best practices</h4>
+        <h4 className="mb-2 font-semibold text-sm">Boas práticas</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>Use TLS 1.3 where possible, TLS 1.2 as minimum.</li>
-          <li>Disable weak cipher suites (RC4, DES, export ciphers).</li>
-          <li>Enable HSTS to prevent protocol downgrade attacks.</li>
-          <li>Keep certificates up to date and use short validity periods.</li>
-          <li>Use Certificate Transparency (CT) logging.</li>
+          <li>Use TLS 1.3 quando possível e TLS 1.2 como mínimo.</li>
+          <li>Desative cipher suites fracas (RC4, DES, export ciphers).</li>
+          <li>Ative o HSTS para evitar ataques de downgrade de protocolo.</li>
+          <li>Mantenha os certificados atualizados e com validade curta.</li>
+          <li>Use registros de Certificate Transparency (CT).</li>
         </ul>
       </div>
     </>
@@ -83,7 +83,7 @@ export default function SSLTLSHandshakePage() {
     <SimulatorShell
       slug="ssl-tls-handshake"
       educational={<SslTlsEducational />}
-      shareText="Check out this SSL/TLS Handshake Simulator! Learn how secure connections work."
+      shareText="Conheça este simulador de handshake SSL/TLS! Aprenda como conexões seguras funcionam."
     >
       <SSLTLSHandshakeSimulator />
     </SimulatorShell>

@@ -10,36 +10,36 @@ export async function generateMetadata(): Promise<Metadata> {
 function SmtpEducationalContent() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">About this SMTP simulator</h3>
+      <h3 className="mb-4 text-xl font-semibold">Sobre este simulador de SMTP</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">What you&apos;ll learn</h4>
+          <h4 className="mb-3 text-sm font-semibold">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>How SMTP submission differs from server-to-server relay</li>
-            <li>Why EHLO, STARTTLS, AUTH, MAIL FROM, RCPT TO, and DATA happen in order</li>
-            <li>How SPF, DKIM, and DMARC affect sender trust and deliverability</li>
-            <li>Why 4xx SMTP responses retry while 5xx responses usually fail permanently</li>
-            <li>Where provider queues, logs, webhooks, and bounce handling fit into delivery</li>
+            <li>Como o envio (submission) pelo SMTP difere do relay entre servidores</li>
+            <li>Por que EHLO, STARTTLS, AUTH, MAIL FROM, RCPT TO e DATA acontecem nessa ordem</li>
+            <li>Como SPF, DKIM e DMARC afetam a confiança no remetente e a entregabilidade</li>
+            <li>Por que respostas SMTP 4xx geram retry, enquanto as 5xx costumam falhar de vez</li>
+            <li>Onde filas do provedor, logs, webhooks e tratamento de bounces entram na entrega</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">Key concepts covered</h4>
+          <h4 className="mb-3 text-sm font-semibold">Conceitos principais</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Submission:</strong> authenticated app-to-relay
-              sending, usually on port 587
+              <strong className="text-foreground">Submission:</strong> envio autenticado da aplicação
+              para o relay, normalmente na porta 587
             </li>
             <li>
-              <strong className="text-foreground">Relay:</strong> queued delivery from sender relay
-              to recipient MX
+              <strong className="text-foreground">Relay:</strong> entrega enfileirada do relay de envio
+              até o MX do destinatário
             </li>
             <li>
-              <strong className="text-foreground">Authentication:</strong> TLS, SMTP AUTH, SPF,
-              DKIM, and DMARC
+              <strong className="text-foreground">Autenticação:</strong> TLS, SMTP AUTH, SPF, DKIM e
+              DMARC
             </li>
             <li>
-              <strong className="text-foreground">Delivery:</strong> remote acceptance, retry,
-              bounce, and mailbox placement
+              <strong className="text-foreground">Entrega:</strong> aceite remoto, retry, bounce e
+              chegada à caixa de entrada
             </li>
           </ul>
         </div>
@@ -52,10 +52,10 @@ export default function SmtpFlowSimulatorPage() {
   return (
     <SimulatorShell
       slug="smtp-flow-simulator"
-      fallbackTitle="SMTP Flow Simulator"
-      fallbackDescription="Visualize how SMTP email delivery works from app submission through TLS, authentication, sender DNS checks, recipient MX relay, retries, bounces, and inbox placement."
+      fallbackTitle="Simulador do Fluxo SMTP"
+      fallbackDescription="Veja como funciona a entrega de e-mail via SMTP, do envio pela aplicação até TLS, autenticação, verificações de DNS do remetente, relay para o MX do destinatário, retries, bounces e chegada à caixa de entrada."
       educational={<SmtpEducationalContent />}
-      shareText="Visualize how SMTP email delivery works, from EHLO and STARTTLS to SPF, DKIM, DMARC, retries, and inbox placement."
+      shareText="Veja como funciona a entrega de e-mail via SMTP, do EHLO e STARTTLS até SPF, DKIM, DMARC, retries e a caixa de entrada."
     >
       <SmtpFlowSimulator />
     </SimulatorShell>

@@ -12,9 +12,9 @@ export default function RestVsGraphqlPage() {
     <SimulatorShell
       slug="rest-vs-graphql"
       seoLearningPoints={[
-        'Compare REST and GraphQL request patterns',
-        'Understand over-fetching and under-fetching',
-        'Learn when to choose REST vs GraphQL',
+        'Comparar os padrões de requisição de REST e GraphQL',
+        'Entender over-fetching e under-fetching',
+        'Aprender quando escolher REST ou GraphQL',
       ]}
     >
       <RestVsGraphqlSimulator />

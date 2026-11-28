@@ -48,35 +48,35 @@ const TOTAL_MEMORY = 256;
 const CPU_PER_PROCESS = 0.3;
 
 const CODE_PARTS = [
-  { text: ':', label: 'Function name (yes, just a colon)' },
-  { text: '()', label: 'No parameters' },
-  { text: '{', label: 'Function body start' },
-  { text: ' :', label: 'Call itself (fork #1)' },
-  { text: '|', label: 'Pipe output to...' },
-  { text: ':', label: 'Another copy of itself (fork #2)' },
-  { text: '&', label: 'Run in background' },
-  { text: ' }', label: 'Function body end' },
-  { text: ';', label: 'End statement' },
-  { text: ':', label: 'Execute the function' },
+  { text: ':', label: 'Nome da função (sim, só um dois-pontos)' },
+  { text: '()', label: 'Sem parâmetros' },
+  { text: '{', label: 'Início do corpo da função' },
+  { text: ' :', label: 'Chama a si mesma (fork nº 1)' },
+  { text: '|', label: 'Manda a saída via pipe para...' },
+  { text: ':', label: 'Outra cópia de si mesma (fork nº 2)' },
+  { text: '&', label: 'Roda em segundo plano' },
+  { text: ' }', label: 'Fim do corpo da função' },
+  { text: ';', label: 'Fim da instrução' },
+  { text: ':', label: 'Executa a função' },
 ];
 
 const PROTECTION_METHODS = [
   {
     id: 'ulimit',
     name: 'ulimit -u',
-    description: 'Limit max user processes',
+    description: 'Limita o máximo de processos por usuário',
     command: 'ulimit -u 100',
   },
   {
     id: 'cgroup',
     name: 'cgroups',
-    description: 'Kernel-level process limits',
+    description: 'Limites de processos no nível do kernel',
     command: 'echo 100 > /sys/fs/cgroup/pids/user/pids.max',
   },
   {
     id: 'systemd',
     name: 'systemd',
-    description: 'TasksMax in unit files',
+    description: 'TasksMax nos arquivos de unit',
     command: 'TasksMax=100 in [Service]',
   },
 ];
@@ -388,7 +388,7 @@ export default function ForkBombSimulator() {
                 type: 'fork' as const,
               })),
               ...(newProcesses.length > 2
-                ? [{ tick: newTick, text: `  ...and ${newProcesses.length - 2} more forks`, type: 'fork' as const }]
+                ? [{ tick: newTick, text: `  ...e mais ${newProcesses.length - 2} forks`, type: 'fork' as const }]
                 : []),
             ]);
           }
@@ -413,11 +413,11 @@ export default function ForkBombSimulator() {
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-2">
           <Zap className="w-6 h-6 text-red-500" />
-          <h2 className="text-2xl md:text-3xl font-bold">Fork Bomb Simulator</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">Simulador de Fork Bomb</h2>
           <Zap className="w-6 h-6 text-red-500" />
         </div>
         <p className="text-muted-foreground text-sm max-w-xl mx-auto">
-          Visualize how the infamous fork bomb works and why it crashes systems in seconds
+          Veja como a famosa fork bomb funciona e por que ela derruba um sistema em segundos
         </p>
       </div>
 
@@ -429,7 +429,7 @@ export default function ForkBombSimulator() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Info className="w-5 h-5 text-red-500" />
-                  How the Fork Bomb Works
+                  Como a fork bomb funciona
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -464,7 +464,7 @@ export default function ForkBombSimulator() {
                   )}
                 </AnimatePresence>
                 <p className="text-xs text-muted-foreground text-center">
-                  Hover over each part to see what it does. The function calls itself twice, piping to a background copy - exponential growth.
+                  Passe o mouse sobre cada parte para ver o que ela faz. A função chama a si mesma duas vezes, mandando a saída para uma cópia em segundo plano: crescimento exponencial.
                 </p>
               </CardContent>
             </Card>
@@ -518,7 +518,7 @@ export default function ForkBombSimulator() {
                 {state === 'idle' && processes.length === 0 && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
                     <TreePine className="w-16 h-16 text-muted-foreground/30" />
-                    <p className="text-muted-foreground/50 text-sm">Press Start to unleash the fork bomb</p>
+                    <p className="text-muted-foreground/50 text-sm">Clique em Iniciar para soltar a fork bomb</p>
                   </div>
                 )}
 
@@ -536,11 +536,11 @@ export default function ForkBombSimulator() {
                       >
                         <Skull className="w-20 h-20 text-red-500" />
                       </motion.div>
-                      <p className="text-red-400 font-bold text-xl mt-4">SYSTEM CRASHED</p>
+                      <p className="text-red-400 font-bold text-xl mt-4">SISTEMA TRAVOU</p>
                       <p className="text-red-400/70 text-sm mt-1">
-                        PID limit ({effectiveLimit}) reached in {timeElapsed}s
+                        Limite de PIDs ({effectiveLimit}) atingido em {timeElapsed}s
                       </p>
-                      <p className="text-red-400/50 text-xs mt-1">Peak: {peakProcesses} processes</p>
+                      <p className="text-red-400/50 text-xs mt-1">Pico: {peakProcesses} processos</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -556,9 +556,9 @@ export default function ForkBombSimulator() {
                       <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 1, repeat: Infinity }}>
                         <ShieldCheck className="w-20 h-20 text-emerald-500" />
                       </motion.div>
-                      <p className="text-emerald-400 font-bold text-xl mt-4">SYSTEM PROTECTED</p>
+                      <p className="text-emerald-400 font-bold text-xl mt-4">SISTEMA PROTEGIDO</p>
                       <p className="text-emerald-400/70 text-sm mt-1">
-                        Process limit enforced at 100 - system remains stable
+                        Limite de 100 processos aplicado: o sistema continua estável
                       </p>
                       <p className="text-emerald-400/50 text-xs mt-1">Fork bomb contained after {timeElapsed}s</p>
                     </motion.div>
@@ -603,7 +603,7 @@ export default function ForkBombSimulator() {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Terminal className="w-4 h-4 text-green-500" />
-                Process Log
+                Log de processos
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
@@ -619,7 +619,7 @@ export default function ForkBombSimulator() {
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Settings className="w-4 h-4" />
-                Controls
+                Controles
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -627,7 +627,7 @@ export default function ForkBombSimulator() {
                 {state === 'idle' || state === 'crashed' || state === 'protected' ? (
                   <Button onClick={startSimulation} className="flex-1 bg-red-600 hover:bg-red-700 text-white">
                     <Play className="w-4 h-4 mr-1" />
-                    {state === 'idle' ? 'Start' : 'Restart'}
+                    {state === 'idle' ? 'Iniciar' : 'Reiniciar'}
                   </Button>
                 ) : (
                   <Button
@@ -639,7 +639,7 @@ export default function ForkBombSimulator() {
                     className="flex-1"
                   >
                     <Pause className="w-4 h-4 mr-1" />
-                    Pause
+                    Pausar
                   </Button>
                 )}
                 <Button onClick={reset} variant="outline" size="icon">
@@ -648,7 +648,7 @@ export default function ForkBombSimulator() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs text-muted-foreground">Speed: {speed}x</label>
+                <label className="text-xs text-muted-foreground">Velocidade: {speed}x</label>
                 <input
                   type="range"
                   min={0.5}
@@ -662,7 +662,7 @@ export default function ForkBombSimulator() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs text-muted-foreground">PID Limit: {pidLimit}</label>
+                <label className="text-xs text-muted-foreground">Limite de PIDs: {pidLimit}</label>
                 <input
                   type="range"
                   min={64}
@@ -682,7 +682,7 @@ export default function ForkBombSimulator() {
                 onClick={() => setShowExplainer(!showExplainer)}
               >
                 <Info className="w-3 h-3 mr-1" />
-                {showExplainer ? 'Hide' : 'Show'} Code Explainer
+                {showExplainer ? 'Ocultar' : 'Mostrar'} explicação do código
               </Button>
             </CardContent>
           </Card>
@@ -692,13 +692,13 @@ export default function ForkBombSimulator() {
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Activity className="w-4 h-4" />
-                System Resources
+                Recursos do sistema
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <ResourceBar label="Processes" value={activeCount} max={effectiveLimit} unit="" icon={TreePine} danger={activeCount > effectiveLimit * 0.8} />
+              <ResourceBar label="Processos" value={activeCount} max={effectiveLimit} unit="" icon={TreePine} danger={activeCount > effectiveLimit * 0.8} />
               <ResourceBar label="CPU" value={cpuUsage} max={100} unit="%" icon={Cpu} danger={cpuUsage > 80} />
-              <ResourceBar label="Memory" value={memoryUsed} max={TOTAL_MEMORY} unit="MB" icon={MemoryStick} danger={memoryUsed > TOTAL_MEMORY * 0.8} />
+              <ResourceBar label="Memória" value={memoryUsed} max={TOTAL_MEMORY} unit="MB" icon={MemoryStick} danger={memoryUsed > TOTAL_MEMORY * 0.8} />
             </CardContent>
           </Card>
 
@@ -707,7 +707,7 @@ export default function ForkBombSimulator() {
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                Protection
+                Proteção
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -731,7 +731,7 @@ export default function ForkBombSimulator() {
               ))}
               {protection && (
                 <p className="text-[10px] text-emerald-500/70 text-center">
-                  Process limit capped at 100 - fork bomb will be contained
+                  Limite de processos fixado em 100: a fork bomb será contida
                 </p>
               )}
             </CardContent>
@@ -744,7 +744,7 @@ export default function ForkBombSimulator() {
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-yellow-500" />
-            Why Fork Bombs Are Dangerous
+            Por que fork bombs são perigosas
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -752,32 +752,32 @@ export default function ForkBombSimulator() {
             <div className="space-y-2">
               <h3 className="font-semibold flex items-center gap-1">
                 <Zap className="w-4 h-4 text-red-500" />
-                Exponential Growth
+                Crescimento exponencial
               </h3>
               <p className="text-muted-foreground">
-                Each process spawns 2 more. After 10 iterations: 1,024 processes. After 20: over 1 million.
-                Most systems hit their PID limit well before that.
+                Cada processo cria mais 2. Depois de 10 iterações: 1.024 processos. Depois de 20: mais de 1 milhão.
+                A maioria dos sistemas bate no limite de PIDs muito antes disso.
               </p>
             </div>
             <div className="space-y-2">
               <h3 className="font-semibold flex items-center gap-1">
                 <Cpu className="w-4 h-4 text-orange-500" />
-                Resource Exhaustion
+                Esgotamento de recursos
               </h3>
               <p className="text-muted-foreground">
-                Every process consumes CPU time, memory, and a process table entry.
-                The kernel scheduler gets overwhelmed trying to context-switch between thousands of processes.
+                Cada processo consome tempo de CPU, memória e uma entrada na tabela de processos.
+                O escalonador do kernel fica sobrecarregado tentando alternar entre milhares de processos.
               </p>
             </div>
             <div className="space-y-2">
               <h3 className="font-semibold flex items-center gap-1">
                 <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                Prevention
+                Prevenção
               </h3>
               <p className="text-muted-foreground">
-                Set process limits with <code className="text-xs bg-secondary px-1 rounded">ulimit -u</code>,
-                use cgroups, or configure <code className="text-xs bg-secondary px-1 rounded">TasksMax</code> in
-                systemd unit files. Most modern distros set sane defaults.
+                Defina limites de processos com <code className="text-xs bg-secondary px-1 rounded">ulimit -u</code>,
+                use cgroups ou configure <code className="text-xs bg-secondary px-1 rounded">TasksMax</code> in
+                nos arquivos de unit do systemd. A maioria das distros modernas já vem com padrões razoáveis.
               </p>
             </div>
           </div>
@@ -788,9 +788,9 @@ export default function ForkBombSimulator() {
       <Alert className="border-red-500/30 bg-red-500/5">
         <AlertTriangle className="w-4 h-4 text-red-500" />
         <AlertDescription className="text-xs text-muted-foreground">
-          <strong className="text-red-500">Warning:</strong> Never run a fork bomb on a real system.
-          It will freeze the machine and require a hard reboot. This simulator safely visualizes the concept
-          without actually forking any processes.
+          <strong className="text-red-500">Atenção:</strong> nunca rode uma fork bomb em um sistema real.
+          Ela trava a máquina e exige um reboot forçado. Este simulador mostra o conceito com segurança,
+          sem criar nenhum processo de verdade.
         </AlertDescription>
       </Alert>
     </div>

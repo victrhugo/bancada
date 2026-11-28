@@ -142,10 +142,10 @@ function ReplicationModePanel() {
 
   const leaderLabel =
     topology === 'single-leader'
-      ? 'Primary'
+      ? 'Primário'
       : topology === 'multi-leader'
-        ? 'Leader A'
-        : 'Coordinator';
+        ? 'Líder A'
+        : 'Coordenador';
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
@@ -155,11 +155,11 @@ function ReplicationModePanel() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <GitBranch className="h-5 w-5 text-primary" />
-                Replication topology
+                Topologia de replicação
               </CardTitle>
               <p className="mt-1 text-sm text-muted-foreground">
-                Writes land on leaders, reads fan out to replicas, and lag appears when durability
-                and latency pull in opposite directions.
+                As escritas chegam aos líderes, as leituras se espalham pelas réplicas, e o lag aparece
+                quando durabilidade e latência puxam para lados opostos.
               </p>
             </div>
             <Button
@@ -169,7 +169,7 @@ function ReplicationModePanel() {
               onClick={() => setPrimaryDown((value) => !value)}
             >
               {primaryDown ? <RefreshCw className="mr-2 h-4 w-4" /> : <X className="mr-2 h-4 w-4" />}
-              {primaryDown ? 'Recover primary' : 'Kill primary'}
+              {primaryDown ? 'Recuperar o primário' : 'Derrubar o primário'}
             </Button>
           </div>
         </CardHeader>
@@ -179,15 +179,15 @@ function ReplicationModePanel() {
               <div className="space-y-3">
                 <SimulatorNodeCard
                   title={leaderLabel}
-                  subtitle={primaryDown ? 'offline, failover needed' : `${Math.round(metrics.writeQps)} writes/sec`}
+                  subtitle={primaryDown ? 'fora do ar, precisa de failover' : `${Math.round(metrics.writeQps)} escritas/s`}
                   status={primaryDown ? 'down' : metrics.pressure > 95 ? 'hot' : 'healthy'}
                   load={metrics.pressure}
                   icon={Database}
                 />
                 {topology === 'multi-leader' && (
                   <SimulatorNodeCard
-                    title="Leader B"
-                    subtitle="accepts regional writes"
+                    title="Líder B"
+                    subtitle="aceita escritas regionais"
                     status={metrics.splitBrainRisk > 50 ? 'lagging' : 'healthy'}
                     load={Math.min(metrics.pressure * 0.75, 100)}
                     icon={Split}
@@ -203,12 +203,12 @@ function ReplicationModePanel() {
                 {Array.from({ length: replicas }, (_, index) => (
                   <SimulatorNodeCard
                     key={index}
-                    title={`Replica ${index + 1}`}
+                    title={`Réplica ${index + 1}`}
                     subtitle={
                       primaryDown && topology !== 'single-leader'
                         ? index === 0
-                          ? 'promoted leader'
-                          : 'serving reads'
+                          ? 'líder promovido'
+                          : 'atendendo leituras'
                         : `${Math.round(metrics.readQps / replicas)} reads/sec`
                     }
                     status={
@@ -227,25 +227,25 @@ function ReplicationModePanel() {
 
             <div className="mt-5 grid gap-3 md:grid-cols-3">
               <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-                <div className="text-xs text-slate-400">Write path</div>
+                <div className="text-xs text-slate-400">Caminho de escrita</div>
                 <div className="mt-1 font-medium">
-                  {topology === 'single-leader' ? 'leader only' : topology === 'multi-leader' ? 'regional leaders' : 'quorum writes'}
+                  {topology === 'single-leader' ? 'só no líder' : topology === 'multi-leader' ? 'líderes regionais' : 'escritas por quórum'}
                 </div>
               </div>
               <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-                <div className="text-xs text-slate-400">Read path</div>
+                <div className="text-xs text-slate-400">Caminho de leitura</div>
                 <div className="mt-1 font-medium">
-                  {consistency > 74 ? 'leader/quorum reads' : 'replica reads'}
+                  {consistency > 74 ? 'leituras no líder/quórum' : 'leituras nas réplicas'}
                 </div>
               </div>
               <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-                <div className="text-xs text-slate-400">Failure behavior</div>
+                <div className="text-xs text-slate-400">Comportamento em falha</div>
                 <div className="mt-1 font-medium">
                   {primaryDown
                     ? topology === 'single-leader'
-                      ? 'writes unavailable'
-                      : 'automatic failover'
-                    : 'normal operation'}
+                      ? 'escritas indisponíveis'
+                      : 'failover automático'
+                    : 'operação normal'}
                 </div>
               </div>
             </div>
@@ -258,7 +258,7 @@ function ReplicationModePanel() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <SlidersHorizontal className="h-4 w-4" />
-              Controls
+              Controles
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
@@ -266,32 +266,32 @@ function ReplicationModePanel() {
               <div className="mb-2 text-sm font-medium">Topology</div>
               <div className="flex flex-wrap gap-2">
                 <SimulatorModeButton value="single-leader" current={topology} onClick={setTopology}>
-                  Single leader
+                  Líder único
                 </SimulatorModeButton>
                 <SimulatorModeButton value="multi-leader" current={topology} onClick={setTopology}>
-                  Multi-leader
+                  Vários líderes
                 </SimulatorModeButton>
                 <SimulatorModeButton value="leaderless" current={topology} onClick={setTopology}>
-                  Leaderless
+                  Sem líder
                 </SimulatorModeButton>
               </div>
             </div>
 
             <div>
-              <div className="mb-2 text-sm font-medium">Commit mode</div>
+              <div className="mb-2 text-sm font-medium">Modo de commit</div>
               <div className="flex gap-2">
                 <SimulatorModeButton value="async" current={mode} onClick={setMode}>
-                  Async
+                  Assíncrono
                 </SimulatorModeButton>
                 <SimulatorModeButton value="sync" current={mode} onClick={setMode}>
-                  Sync
+                  Síncrono
                 </SimulatorModeButton>
               </div>
             </div>
 
             <div>
               <div className="mb-2 flex items-center justify-between text-sm">
-                <span className="font-medium">Replicas</span>
+                <span className="font-medium">Réplicas</span>
                 <Badge variant="secondary">{replicas}</Badge>
               </div>
               <div className="flex gap-2">
@@ -304,53 +304,53 @@ function ReplicationModePanel() {
               </div>
             </div>
 
-            <SimulatorControlSlider label="Load" value={load} min={100} max={1600} step={50} suffix=" qps" onChange={setLoad} />
-            <SimulatorControlSlider label="Writes" value={writePercent} min={5} max={80} step={5} suffix="%" onChange={setWritePercent} />
-            <SimulatorControlSlider label="Consistency preference" value={consistency} min={0} max={100} step={5} suffix="%" onChange={setConsistency} />
+            <SimulatorControlSlider label="Carga" value={load} min={100} max={1600} step={50} suffix=" qps" onChange={setLoad} />
+            <SimulatorControlSlider label="Escritas" value={writePercent} min={5} max={80} step={5} suffix="%" onChange={setWritePercent} />
+            <SimulatorControlSlider label="Preferência por consistência" value={consistency} min={0} max={100} step={5} suffix="%" onChange={setConsistency} />
           </CardContent>
         </Card>
 
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
           <SimulatorMetricCard
-            label="Replication lag"
+            label="Lag de replicação"
             value={ms(metrics.lag)}
             icon={Clock}
             tone={metrics.lag > 260 ? 'warn' : 'good'}
-            detail={mode === 'sync' ? 'lower lag, higher write latency' : 'higher throughput, possible stale reads'}
+            detail={mode === 'sync' ? 'menos lag, escrita mais lenta' : 'mais throughput, leituras possivelmente desatualizadas'}
           />
           <SimulatorMetricCard
-            label="Write capacity"
+            label="Capacidade de escrita"
             value={`${Math.round(metrics.writeCapacity)} qps`}
             icon={Zap}
             tone={metrics.writeCapacity < metrics.writeQps ? 'bad' : 'good'}
-            detail={`${Math.round(metrics.writeQps)} qps requested`}
+            detail={`${Math.round(metrics.writeQps)} qps solicitados`}
           />
           <SimulatorMetricCard
-            label="Availability"
+            label="Disponibilidade"
             value={pct(metrics.availability)}
             icon={ShieldCheck}
             tone={metrics.availability > 98 ? 'good' : metrics.availability > 85 ? 'warn' : 'bad'}
-            detail="failover and quorum effects"
+            detail="efeitos de failover e quórum"
           />
           <SimulatorMetricCard
-            label="Split-brain risk"
+            label="Risco de split-brain"
             value={pct(metrics.splitBrainRisk)}
             icon={AlertTriangle}
             tone={metrics.splitBrainRisk > 45 ? 'bad' : metrics.splitBrainRisk > 18 ? 'warn' : 'good'}
-            detail="lower with stronger coordination"
+            detail="menor com coordenação mais forte"
           />
         </div>
 
         <SimulatorAdvisorCard
-          title="Operator readout"
+          title="Leitura para quem opera"
           icon={Activity}
           tone={primaryDown && topology === 'single-leader' ? 'bad' : metrics.lag > 260 ? 'warn' : 'primary'}
         >
           {primaryDown && topology === 'single-leader'
-            ? 'The primary is down and this topology cannot accept writes until a replica is promoted.'
+            ? 'O primário caiu e esta topologia não aceita escritas até uma réplica ser promovida.'
             : metrics.lag > 260
-              ? 'Lag is climbing. Move critical reads to the leader, lower write pressure, or increase consistency for safer reads.'
-              : 'This setup is healthy for the current workload. Reads are spread out while writes remain coordinated.'}
+              ? 'O lag está subindo. Leve as leituras críticas para o líder, reduza a pressão de escrita ou aumente a consistência para leituras mais seguras.'
+              : 'Esta configuração está saudável para a carga atual. As leituras estão distribuídas e as escritas continuam coordenadas.'}
         </SimulatorAdvisorCard>
       </div>
     </div>
@@ -404,10 +404,10 @@ function ShardingModePanel() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Boxes className="h-5 w-5 text-primary" />
-            Shard map
+            Mapa de shards
           </CardTitle>
           <p className="text-sm text-muted-foreground">
-            Change the partitioning strategy and shard key to see hot spots and query routing.
+            Mude a estratégia de particionamento e a shard key para ver hot spots e o roteamento das consultas.
           </p>
         </CardHeader>
         <CardContent>
@@ -441,7 +441,7 @@ function ShardingModePanel() {
                   >
                     <div className="mb-3 flex items-center justify-between">
                       <div className="font-semibold">Shard {index + 1}</div>
-                      {isQueryShard && <Badge className="bg-primary text-primary-foreground">query</Badge>}
+                      {isQueryShard && <Badge className="bg-primary text-primary-foreground">consulta</Badge>}
                     </div>
                     <div className="flex h-28 items-end gap-1 rounded-md border border-white/10 bg-black/20 p-2">
                       {Array.from({ length: 9 }, (_, bar) => (
@@ -470,24 +470,24 @@ function ShardingModePanel() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Route className="h-4 w-4" />
-              Partitioning controls
+              Controles de particionamento
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
             <div>
-              <div className="mb-2 text-sm font-medium">Partitioning</div>
+              <div className="mb-2 text-sm font-medium">Particionamento</div>
               <div className="flex gap-2">
                 <SimulatorModeButton value="hash" current={partitioning} onClick={setPartitioning}>
                   Hash
                 </SimulatorModeButton>
                 <SimulatorModeButton value="range" current={partitioning} onClick={setPartitioning}>
-                  Range
+                  Faixa (range)
                 </SimulatorModeButton>
               </div>
             </div>
 
             <div>
-              <div className="mb-2 text-sm font-medium">Shard key exercise</div>
+              <div className="mb-2 text-sm font-medium">Exercício de shard key</div>
               <div className="grid grid-cols-2 gap-2">
                 {(Object.keys(shardKeyLabels) as ShardKey[]).map((key) => (
                   <Button
@@ -503,7 +503,7 @@ function ShardingModePanel() {
               </div>
             </div>
 
-            <SimulatorControlSlider label="Rows" value={rows} min={40} max={320} step={20} suffix="k" onChange={setRows} />
+            <SimulatorControlSlider label="Linhas" value={rows} min={40} max={320} step={20} suffix="k" onChange={setRows} />
 
             <div>
               <div className="mb-2 flex items-center justify-between text-sm">
@@ -521,7 +521,7 @@ function ShardingModePanel() {
             </div>
 
             <div>
-              <div className="mb-2 text-sm font-medium">Query simulator</div>
+              <div className="mb-2 text-sm font-medium">Simulador de consultas</div>
               <div className="grid gap-2">
                 {querySamples.map((sample) => (
                   <Button
@@ -542,34 +542,34 @@ function ShardingModePanel() {
 
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
           <SimulatorMetricCard
-            label="Hot spot ratio"
+            label="Concentração de hot spot"
             value={`${shardLoads.hotspot.toFixed(2)}x`}
             icon={AlertTriangle}
             tone={hotSpotTone}
-            detail="hottest shard compared with average"
+            detail="shard mais quente comparado à média"
           />
           <SimulatorMetricCard
-            label="Rebalance movement"
-            value={`${shardLoads.rebalanceCost}k rows`}
+            label="Movimentação no rebalanceamento"
+            value={`${shardLoads.rebalanceCost}k linhas`}
             icon={Shuffle}
             tone={partitioning === 'hash' ? 'good' : 'warn'}
-            detail={partitioning === 'hash' ? 'smaller with consistent hashing' : 'range splits can move large chunks'}
+            detail={partitioning === 'hash' ? 'menor com consistent hashing' : 'divisões por faixa podem mover blocos grandes'}
           />
           <SimulatorMetricCard
-            label="Query fanout"
+            label="Fanout da consulta"
             value={query.includes('created_at') && partitioning === 'hash' ? `${shards} shards` : '1 shard'}
             icon={Network}
             tone={query.includes('created_at') && partitioning === 'hash' ? 'warn' : 'good'}
-            detail="scatter/gather queries add latency"
+            detail="consultas scatter/gather aumentam a latência"
           />
         </div>
 
-        <SimulatorAdvisorCard title="Routing readout" icon={Route} tone={hotSpotTone === 'bad' ? 'bad' : hotSpotTone === 'warn' ? 'warn' : 'primary'}>
+        <SimulatorAdvisorCard title="Leitura do roteamento" icon={Route} tone={hotSpotTone === 'bad' ? 'bad' : hotSpotTone === 'warn' ? 'warn' : 'primary'}>
           {hotSpotTone === 'bad'
-            ? 'The shard key is concentrating data. Pick a higher-cardinality key or add a routing layer that can split hot tenants.'
+            ? 'A shard key está concentrando os dados. Escolha uma chave com cardinalidade maior ou adicione uma camada de roteamento que divida os tenants mais quentes.'
             : query.includes('created_at') && partitioning === 'hash'
-              ? 'This query fans out under hash partitioning. A time-range index or secondary lookup table would keep it cheaper.'
-              : 'The router can target a single shard, so this query shape stays predictable as the dataset grows.'}
+              ? 'Com particionamento por hash, esta consulta se espalha por vários shards. Um índice por faixa de tempo ou uma tabela auxiliar de busca a deixaria mais barata.'
+              : 'O roteador consegue mirar um único shard, então esta consulta continua previsível conforme os dados crescem.'}
         </SimulatorAdvisorCard>
       </div>
     </div>
@@ -619,20 +619,20 @@ function ScalingModePanel() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Scaling lab
+            Laboratório de escala
           </CardTitle>
           <p className="text-sm text-muted-foreground">
-            Start with one overloaded database, then combine vertical scaling, read replicas,
-            sharding, and pooling to meet the workload.
+            Comece com um banco sobrecarregado e combine escala vertical, réplicas de leitura,
+            sharding e pooling para dar conta da carga.
           </p>
         </CardHeader>
         <CardContent>
           <div className="rounded-xl border bg-linear-to-br from-zinc-950 via-neutral-950 to-stone-950 p-4 text-slate-100">
             <div className="mb-5 grid gap-3 md:grid-cols-4">
-              <ArchitectureBlock label="App pool" value={pooling ? 'pooled' : 'direct'} icon={CircuitBoard} active={pooling} />
-              <ArchitectureBlock label="Primary tier" value={`${verticalTier * 2} vCPU`} icon={HardDrive} active />
-              <ArchitectureBlock label="Read replicas" value={`${replicas}`} icon={Server} active={replicas > 0} />
-              <ArchitectureBlock label="Write shards" value={`${shards}`} icon={Layers3} active={shards > 1} />
+              <ArchitectureBlock label="Pool da aplicação" value={pooling ? 'com pool' : 'direto'} icon={CircuitBoard} active={pooling} />
+              <ArchitectureBlock label="Porte do primário" value={`${verticalTier * 2} vCPU`} icon={HardDrive} active />
+              <ArchitectureBlock label="Réplicas de leitura" value={`${replicas}`} icon={Server} active={replicas > 0} />
+              <ArchitectureBlock label="Shards de escrita" value={`${shards}`} icon={Layers3} active={shards > 1} />
             </div>
 
             <div className="grid gap-4 md:grid-cols-[1fr_72px_1fr_72px_1fr]">
@@ -643,11 +643,11 @@ function ScalingModePanel() {
                 </div>
                 <div className="space-y-2 text-sm text-slate-300">
                   <div className="flex justify-between">
-                    <span>Reads</span>
+                    <span>Leituras</span>
                     <span>{Math.round(metrics.readQps)} qps</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Writes</span>
+                    <span>Escritas</span>
                     <span>{Math.round(metrics.writeQps)} qps</span>
                   </div>
                 </div>
@@ -657,15 +657,15 @@ function ScalingModePanel() {
               </div>
               <div className="space-y-3">
                 <SimulatorNodeCard
-                  title="Primary database"
-                  subtitle={`${Math.round(metrics.writeCapacity)} write qps capacity`}
+                  title="Banco primário"
+                  subtitle={`capacidade de ${Math.round(metrics.writeCapacity)} qps de escrita`}
                   status={metrics.writeBottleneck && metrics.pressure > 90 ? 'hot' : 'healthy'}
                   load={metrics.writeQps / Math.max(metrics.writeCapacity, 1) * 100}
                   icon={Database}
                 />
                 <SimulatorNodeCard
-                  title="Connection pool"
-                  subtitle={pooling ? 'reuses client sessions' : 'disabled'}
+                  title="Pool de conexões"
+                  subtitle={pooling ? 'reaproveita as sessões dos clientes' : 'desativado'}
                   status={pooling ? 'routing' : 'lagging'}
                   load={pooling ? 38 : 88}
                   icon={CircuitBoard}
@@ -678,8 +678,8 @@ function ScalingModePanel() {
                 {Array.from({ length: Math.max(replicas, 1) }, (_, index) => (
                   <SimulatorNodeCard
                     key={index}
-                    title={index < replicas ? `Replica ${index + 1}` : 'No replicas'}
-                    subtitle={index < replicas ? 'read traffic only' : 'reads hit primary'}
+                    title={index < replicas ? `Réplica ${index + 1}` : 'Sem réplicas'}
+                    subtitle={index < replicas ? 'só tráfego de leitura' : 'as leituras vão ao primário'}
                     status={index < replicas ? 'healthy' : 'lagging'}
                     load={index < replicas ? metrics.readQps / Math.max(replicas, 1) / 3 : 90}
                     icon={Server}
@@ -696,15 +696,15 @@ function ScalingModePanel() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Gauge className="h-4 w-4" />
-              Scaling controls
+              Controles de escala
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
-            <SimulatorControlSlider label="Load" value={load} min={250} max={4200} step={50} suffix=" qps" onChange={setLoad} />
-            <SimulatorControlSlider label="Write traffic" value={writePercent} min={5} max={85} step={5} suffix="%" onChange={setWritePercent} />
-            <SimulatorControlSlider label="Vertical tier" value={verticalTier} min={1} max={6} step={1} suffix="x" onChange={setVerticalTier} />
-            <SimulatorControlSlider label="Read replicas" value={replicas} min={0} max={5} step={1} onChange={setReplicas} />
-            <SimulatorControlSlider label="Write shards" value={shards} min={1} max={6} step={1} onChange={setShards} />
+            <SimulatorControlSlider label="Carga" value={load} min={250} max={4200} step={50} suffix=" qps" onChange={setLoad} />
+            <SimulatorControlSlider label="Tráfego de escrita" value={writePercent} min={5} max={85} step={5} suffix="%" onChange={setWritePercent} />
+            <SimulatorControlSlider label="Porte vertical" value={verticalTier} min={1} max={6} step={1} suffix="x" onChange={setVerticalTier} />
+            <SimulatorControlSlider label="Réplicas de leitura" value={replicas} min={0} max={5} step={1} onChange={setReplicas} />
+            <SimulatorControlSlider label="Shards de escrita" value={shards} min={1} max={6} step={1} onChange={setShards} />
             <Button
               type="button"
               variant={pooling ? 'default' : 'outline'}
@@ -712,52 +712,52 @@ function ScalingModePanel() {
               className="w-full"
             >
               <CircuitBoard className="mr-2 h-4 w-4" />
-              {pooling ? 'Connection pooling enabled' : 'Enable connection pooling'}
+              {pooling ? 'Connection pooling ativado' : 'Ativar connection pooling'}
             </Button>
           </CardContent>
         </Card>
 
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
           <SimulatorMetricCard
-            label="Latency"
+            label="Latência"
             value={ms(metrics.latency)}
             icon={Clock}
             tone={metrics.latency < 140 ? 'good' : metrics.latency < 260 ? 'warn' : 'bad'}
-            detail={metrics.writeBottleneck ? 'writes are the bottleneck' : 'reads are the bottleneck'}
+            detail={metrics.writeBottleneck ? 'o gargalo são as escritas' : 'o gargalo são as leituras'}
           />
           <SimulatorMetricCard
             label="Throughput"
             value={`${Math.round(metrics.throughput)} qps`}
             icon={Activity}
             tone={metrics.throughput >= load ? 'good' : 'bad'}
-            detail={`${Math.round(metrics.pressure)}% pressure`}
+            detail={`${Math.round(metrics.pressure)}% de pressão`}
           />
           <SimulatorMetricCard
-            label="Error rate"
+            label="Taxa de erro"
             value={pct(metrics.errorRate)}
             icon={AlertTriangle}
             tone={metrics.errorRate < 2 ? 'good' : metrics.errorRate < 10 ? 'warn' : 'bad'}
-            detail="timeouts and saturated connections"
+            detail="timeouts e conexões saturadas"
           />
           <SimulatorMetricCard
-            label="Cost"
+            label="Custo"
             value={money(metrics.cost)}
             icon={WalletCards}
             tone={metrics.cost < 650 ? 'good' : metrics.cost < 1050 ? 'warn' : 'bad'}
-            detail="estimated monthly infrastructure spend"
+            detail="gasto mensal estimado com infraestrutura"
           />
         </div>
 
         <SimulatorAdvisorCard
-          title="Scaling readout"
+          title="Leitura da escala"
           icon={Gauge}
           tone={metrics.errorRate > 10 ? 'bad' : metrics.pressure > 90 ? 'warn' : 'primary'}
         >
           {metrics.errorRate > 10
-            ? 'The system is overloaded. Add capacity to the bottleneck path before increasing traffic.'
+            ? 'O sistema está sobrecarregado. Adicione capacidade no caminho do gargalo antes de aumentar o tráfego.'
             : metrics.writeBottleneck
-              ? 'Writes are limiting throughput. Read replicas will not fix this; use sharding or a larger primary tier.'
-              : 'Read scaling and pooling are absorbing most of the pressure. Cost is the next tradeoff to watch.'}
+              ? 'As escritas estão limitando o throughput. Réplicas de leitura não resolvem isso; use sharding ou um primário maior.'
+              : 'A escala de leitura e o pooling estão absorvendo a maior parte da pressão. O custo é a próxima contrapartida a observar.'}
         </SimulatorAdvisorCard>
       </div>
     </div>
@@ -799,20 +799,20 @@ export default function DatabaseReplicationShardingScaling() {
           <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="p-6 sm:p-8">
               <Badge variant="secondary" className="mb-4">
-                Interactive architecture lab
+                Laboratório interativo de arquitetura
               </Badge>
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                See how databases survive load, failure, and growth
+                Veja como bancos de dados sobrevivem a carga, falhas e crescimento
               </h2>
               <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
-                Replication improves availability and read throughput. Sharding distributes data
-                and write pressure. Scaling combines both with bigger nodes, pools, and cost
-                tradeoffs.
+                A replicação melhora a disponibilidade e o throughput de leitura. O sharding distribui
+                os dados e a pressão de escrita. A escala combina os dois com nodes maiores, pools e
+                contrapartidas de custo.
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <MiniOutcome icon={GitBranch} label="Replication" value="lag and failover" />
-                <MiniOutcome icon={Boxes} label="Sharding" value="hot spots and routing" />
-                <MiniOutcome icon={TrendingUp} label="Scaling" value="cost vs capacity" />
+                <MiniOutcome icon={GitBranch} label="Replicação" value="lag e failover" />
+                <MiniOutcome icon={Boxes} label="Sharding" value="hot spots e roteamento" />
+                <MiniOutcome icon={TrendingUp} label="Escala" value="custo vs capacidade" />
               </div>
             </div>
             <div className="relative min-h-[260px] overflow-hidden border-t bg-zinc-950 p-6 text-slate-100 lg:border-l lg:border-t-0">
@@ -839,7 +839,7 @@ export default function DatabaseReplicationShardingScaling() {
         <TabsList className="grid h-auto w-full grid-cols-3 gap-1 bg-muted/40 p-1">
           <TabsTrigger value="replication" className="gap-1 px-2 text-xs sm:gap-2 sm:text-sm">
             <GitBranch className="h-4 w-4" />
-            Replication
+            Replicação
           </TabsTrigger>
           <TabsTrigger value="sharding" className="gap-1 px-2 text-xs sm:gap-2 sm:text-sm">
             <Boxes className="h-4 w-4" />
@@ -847,7 +847,7 @@ export default function DatabaseReplicationShardingScaling() {
           </TabsTrigger>
           <TabsTrigger value="scaling" className="gap-1 px-2 text-xs sm:gap-2 sm:text-sm">
             <TrendingUp className="h-4 w-4" />
-            Scaling
+            Escala
           </TabsTrigger>
         </TabsList>
         <TabsContent value="replication" className="mt-6">

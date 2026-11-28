@@ -1,6 +1,6 @@
 {
   "id": "zero-downtime-postgres-migrations-quiz",
-  "title": "Zero-Downtime PostgreSQL Migrations Quiz",
+  "title": "Quiz de Migrações no PostgreSQL sem Downtime",
   "description": "Teste suas habilidades para aplicar mudanças de schema em um banco de dados PostgreSQL em produção sem derrubar tráfego, quebrar deploys, ou bloquear gravações.",
   "category": "Database Operations",
   "icon": "Database",

@@ -26,6 +26,7 @@ export const learnSection: FooterSection = {
     { href: '/roadmap', label: 'Roadmap' },
     { href: '/roadmaps', label: 'Todos os Roadmaps' },
     { href: '/roadmap/ia', label: 'Módulo de IA' },
+    { href: '/tutor', label: 'Tutor com IA' },
     { href: '/search', label: 'Busca' },
   ],
 };

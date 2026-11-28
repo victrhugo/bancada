@@ -296,113 +296,113 @@ function diffPlan(desired: ManagedResource[], current: ManagedResource[]): PlanR
 const LESSONS: Lesson[] = [
   {
     id: 'init',
-    title: 'Initialize',
-    description: 'Download the AWS provider and prepare the directory.',
+    title: 'Inicializar',
+    description: 'Baixe o provider da AWS e prepare o diretório.',
     icon: <Boxes className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Initialize the working directory so Terraform installs the AWS provider.',
-        hint: 'The command is terraform init.',
+        instruction: 'Inicialize o diretório de trabalho para o Terraform instalar o provider da AWS.',
+        hint: 'O comando é terraform init.',
         expectedCommand: ['terraform init'],
         explanation:
-          'terraform init reads required_providers, downloads the AWS plugin, and creates the .terraform directory and lock file. Run it once per project and again whenever providers or modules change.',
+          'O terraform init lê o required_providers, baixa o plugin da AWS e cria o diretório .terraform e o lock file. Rode uma vez por projeto e de novo sempre que providers ou módulos mudarem.',
       },
       {
-        instruction: 'Check that the configuration is internally valid.',
+        instruction: 'Confira se a configuração é válida internamente.',
         hint: 'Use terraform validate.',
         expectedCommand: ['terraform validate'],
         explanation:
-          'terraform validate checks syntax and references without touching real infrastructure. It is fast and safe to run in CI before plan.',
+          'O terraform validate confere a sintaxe e as referências sem mexer em infraestrutura real. É rápido e seguro de rodar no CI antes do plan.',
       },
     ],
   },
   {
     id: 'plan',
     title: 'Plan',
-    description: 'Preview what Terraform will create before it touches anything.',
+    description: 'Veja o que o Terraform vai criar antes de ele mexer em qualquer coisa.',
     icon: <FileCode className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Generate an execution plan to see what will be created.',
-        hint: 'Run terraform plan.',
+        instruction: 'Gere um plano de execução para ver o que será criado.',
+        hint: 'Rode terraform plan.',
         expectedCommand: ['terraform plan'],
         explanation:
-          'terraform plan compares your configuration against state and prints the actions it would take. The + symbol means create, ~ means change in place, and - means destroy. Nothing is applied yet.',
+          'O terraform plan compara sua configuração com o state e mostra as ações que faria. O símbolo + significa criar, ~ significa alterar no lugar e - significa destruir. Nada é aplicado ainda.',
       },
     ],
   },
   {
     id: 'apply',
     title: 'Apply',
-    description: 'Create the resources and write them to state.',
+    description: 'Crie os recursos e grave-os no state.',
     icon: <Cloud className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Apply the plan to create the resources.',
-        hint: 'Run terraform apply -auto-approve.',
+        instruction: 'Aplique o plano para criar os recursos.',
+        hint: 'Rode terraform apply -auto-approve.',
         expectedCommand: ['terraform apply -auto-approve', 'terraform apply'],
         explanation:
-          'terraform apply creates the resources and records them in state. In real projects you review the plan before approving. -auto-approve skips the interactive prompt, which is common in CI.',
+          'O terraform apply cria os recursos e registra no state. Em projetos reais, você revisa o plano antes de aprovar. O -auto-approve pula a confirmação interativa, o que é comum no CI.',
       },
     ],
   },
   {
     id: 'change',
-    title: 'Make a change',
-    description: 'Edit the config and watch plan detect the difference.',
+    title: 'Faça uma mudança',
+    description: 'Edite a configuração e veja o plan detectar a diferença.',
     icon: <Pencil className="h-5 w-5" />,
     commands: [
       {
         instruction:
-          'Edit variables.tf and change instance_type (try t3.small), then run terraform plan to preview the in-place update.',
-        hint: 'Click the variables.tf tab, change the default, then run terraform plan.',
+          'Edite o variables.tf e mude o instance_type (tente t3.small); depois rode terraform plan para ver a atualização no lugar.',
+        hint: 'Clique na aba variables.tf, mude o default e rode terraform plan.',
         expectedCommand: ['terraform plan'],
         explanation:
-          'Because the value in your config no longer matches state, Terraform shows a ~ update in place. This is how you preview drift between what you want and what exists.',
+          'Como o valor na sua configuração não bate mais com o state, o Terraform mostra um ~ (atualização no lugar). É assim que você vê a diferença entre o que quer e o que existe.',
       },
       {
-        instruction: 'Apply the change you just previewed.',
-        hint: 'Run terraform apply -auto-approve.',
+        instruction: 'Aplique a mudança que você acabou de ver.',
+        hint: 'Rode terraform apply -auto-approve.',
         expectedCommand: ['terraform apply -auto-approve', 'terraform apply'],
         explanation:
-          'Apply reconciles state with your configuration. Many resources update in place; some force a replacement, which a real plan would mark with -/+.',
+          'O apply reconcilia o state com a sua configuração. Muitos recursos são atualizados no lugar; alguns forçam uma substituição, que um plano real marcaria com -/+.',
       },
     ],
   },
   {
     id: 'inspect',
-    title: 'Inspect state',
-    description: 'List managed resources and read the outputs.',
+    title: 'Inspecione o state',
+    description: 'Liste os recursos gerenciados e leia os outputs.',
     icon: <Server className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'List every resource Terraform now manages.',
-        hint: 'Run terraform state list.',
+        instruction: 'Liste todos os recursos que o Terraform gerencia agora.',
+        hint: 'Rode terraform state list.',
         expectedCommand: ['terraform state list'],
         explanation:
-          'terraform state list prints the address of every resource in state. Addresses like aws_instance.web are how you target, move, or remove specific resources.',
+          'O terraform state list mostra o endereço de cada recurso no state. Endereços como aws_instance.web são como você mira, move ou remove recursos específicos.',
       },
       {
-        instruction: 'Print the output values, such as the instance IP and bucket name.',
-        hint: 'Run terraform output.',
+        instruction: 'Mostre os valores de output, como o IP da instância e o nome do bucket.',
+        hint: 'Rode terraform output.',
         expectedCommand: ['terraform output'],
         explanation:
-          'Outputs expose useful values from your resources. Other tools and CI steps read them with terraform output -json.',
+          'Outputs expõem valores úteis dos seus recursos. Outras ferramentas e etapas do CI leem esses valores com terraform output -json.',
       },
     ],
   },
   {
     id: 'destroy',
-    title: 'Tear down',
-    description: 'Destroy everything so nothing keeps costing money.',
+    title: 'Derrubar tudo',
+    description: 'Destrua tudo para nada continuar custando dinheiro.',
     icon: <RotateCcw className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Destroy all managed resources to clean up.',
-        hint: 'Run terraform destroy -auto-approve.',
+        instruction: 'Destrua todos os recursos gerenciados para limpar.',
+        hint: 'Rode terraform destroy -auto-approve.',
         expectedCommand: ['terraform destroy -auto-approve', 'terraform destroy'],
         explanation:
-          'terraform destroy removes the resources it created and empties state. Always tear down throwaway environments so you do not pay for idle infrastructure.',
+          'O terraform destroy remove os recursos que criou e esvazia o state. Sempre derrube ambientes descartáveis para não pagar por infraestrutura parada.',
       },
     ],
   },
@@ -546,20 +546,20 @@ export default function TerraformTerminalSimulator() {
 
       if (command === 'help') {
         pushLines([
-          out('Available commands:'),
-          out('  terraform version              Show the Terraform version'),
-          out('  terraform init                 Install providers, prepare the directory'),
-          out('  terraform validate             Check the configuration is valid'),
-          out('  terraform fmt                  Format the configuration files'),
-          out('  terraform providers            Show the providers the config requires'),
-          out('  terraform plan                 Preview changes without applying'),
-          out('  terraform apply -auto-approve  Create or update resources'),
-          out('  terraform state list           List resources in state'),
-          out('  terraform state show <addr>    Show one resource in detail'),
-          out('  terraform output [name]        Print output values'),
-          out('  terraform destroy -auto-approve  Destroy all resources'),
-          out('  clear                          Clear the terminal'),
-          out('Tip: edit the .tf files, then run plan to see the diff.'),
+          out('Comandos disponíveis:'),
+          out('  terraform version              Mostra a versão do Terraform'),
+          out('  terraform init                 Instala os providers e prepara o diretório'),
+          out('  terraform validate             Confere se a configuração é válida'),
+          out('  terraform fmt                  Formata os arquivos de configuração'),
+          out('  terraform providers            Mostra os providers que a configuração exige'),
+          out('  terraform plan                 Mostra as mudanças sem aplicar'),
+          out('  terraform apply -auto-approve  Cria ou atualiza recursos'),
+          out('  terraform state list           Lista os recursos no state'),
+          out('  terraform state show <addr>    Mostra um recurso em detalhe'),
+          out('  terraform output [name]        Mostra os valores de output'),
+          out('  terraform destroy -auto-approve  Destrói todos os recursos'),
+          out('  clear                          Limpa o terminal'),
+          out('Dica: edite os arquivos .tf e rode plan para ver a diferença.'),
         ]);
         return;
       }
@@ -756,7 +756,7 @@ export default function TerraformTerminalSimulator() {
         return;
       }
 
-      pushLines([err(`Terraform has no command named "${sub ?? ''}". Run "help" for the list.`)]);
+      pushLines([err(`O Terraform não tem um comando chamado "${sub ?? ''}". Rode "help" para ver a lista.`)]);
     },
     [advanceLesson, files, hasApplied, initialized, pushLines, state]
   );
@@ -819,10 +819,10 @@ export default function TerraformTerminalSimulator() {
         adds: lastPlan.creates.length,
         changes: lastPlan.updates.length,
         destroys: lastPlan.deletes.length,
-        label: 'last plan',
+        label: 'último plan',
       };
     }
-    return { adds: 0, changes: 0, destroys: 0, label: hasApplied ? 'applied' : 'no plan yet' };
+    return { adds: 0, changes: 0, destroys: 0, label: hasApplied ? 'aplicado' : 'nenhum plan ainda' };
   }, [lastPlan, hasApplied]);
 
   return (
@@ -830,12 +830,12 @@ export default function TerraformTerminalSimulator() {
       <div className="mb-5 text-center">
         <div className="mb-3 flex items-center justify-center gap-2.5">
           <FileCode className="h-8 w-8 text-primary" strokeWidth={1.5} />
-          <h2 className="text-2xl font-bold md:text-3xl">Terraform Basics Lab</h2>
+          <h2 className="text-2xl font-bold md:text-3xl">Laboratório básico de Terraform</h2>
         </div>
         <p className="mx-auto max-w-2xl text-base text-muted-foreground">
-          Learn Terraform by doing. Read and edit the HCL on the left, run init, plan, apply, and
-          destroy in the terminal, and watch state change on the right. Edit the config and plan
-          again to see Terraform detect the difference. Nothing is provisioned for real.
+          Aprenda Terraform na prática. Leia e edite o HCL à esquerda, rode init, plan, apply e
+          destroy no terminal e veja o state mudar à direita. Edite a configuração e rode o plan
+          de novo para ver o Terraform detectar a diferença. Nada é provisionado de verdade.
         </p>
       </div>
 
@@ -876,7 +876,7 @@ export default function TerraformTerminalSimulator() {
               })}
               <Button variant="outline" size="sm" onClick={resetLab} className="ml-1 h-7">
                 <RotateCcw className="mr-1 h-3.5 w-3.5" />
-                Reset
+                Reiniciar
               </Button>
             </div>
           </div>
@@ -892,7 +892,7 @@ export default function TerraformTerminalSimulator() {
                   </p>
                   {showHint && (
                     <p className="mt-1 text-xs text-yellow-700 dark:text-yellow-300">
-                      Hint: {currentCommand.hint}
+                      Dica: {currentCommand.hint}
                     </p>
                   )}
                 </div>
@@ -904,12 +904,12 @@ export default function TerraformTerminalSimulator() {
                 className="h-7 text-muted-foreground"
               >
                 <Lightbulb className="mr-1 h-3.5 w-3.5" />
-                {showHint ? 'Hide hint' : 'Hint'}
+                {showHint ? 'Esconder dica' : 'Dica'}
               </Button>
             </div>
           ) : (
             <p className="mt-3 text-sm font-medium text-emerald-600">
-              Lab complete. Edit the config and experiment freely, or reset to run through it again.
+              Laboratório concluído. Edite a configuração e experimente à vontade, ou reinicie para fazer tudo de novo.
             </p>
           )}
         </CardContent>
@@ -936,10 +936,10 @@ export default function TerraformTerminalSimulator() {
             <button
               onClick={() => setEditing((value) => !value)}
               className="ml-auto flex items-center gap-1 px-3 py-2 font-mono text-xs text-muted-foreground hover:text-slate-200"
-              title="Toggle editing"
+              title="Alternar edição"
             >
               <Pencil className="h-3.5 w-3.5" />
-              {editing ? 'done' : 'edit'}
+              {editing ? 'pronto' : 'editar'}
             </button>
           </CardHeader>
           <CardContent className="p-0">
@@ -951,7 +951,7 @@ export default function TerraformTerminalSimulator() {
                 }
                 spellCheck={false}
                 className="h-[28rem] w-full resize-none bg-[#171717] p-3 font-mono text-[12px] leading-relaxed text-slate-200 outline-none sm:text-[13px]"
-                aria-label={`Edit ${activeFile}`}
+                aria-label={`Editar ${activeFile}`}
               />
             ) : (
               <pre className="h-[28rem] overflow-auto p-3 font-mono text-[12px] leading-relaxed text-slate-300 sm:text-[13px]">
@@ -974,8 +974,8 @@ export default function TerraformTerminalSimulator() {
                 <span className="ml-2 text-sm text-muted-foreground">terraform-lab ~/infra</span>
               </div>
               <div className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
-                <span>{initialized ? 'initialized' : 'not initialized'}</span>
-                <span>{state.length} resources</span>
+                <span>{initialized ? 'inicializado' : 'não inicializado'}</span>
+                <span>{state.length} recursos</span>
               </div>
             </div>
           </CardHeader>
@@ -987,9 +987,9 @@ export default function TerraformTerminalSimulator() {
             >
               {terminalHistory.length === 0 && (
                 <div className="mb-4 text-green-400">
-                  <p>Welcome to the Terraform Basics Lab.</p>
+                  <p>Boas-vindas ao laboratório básico de Terraform.</p>
                   <p className="mt-2 text-muted-foreground">
-                    Type &quot;help&quot; for commands, or follow the current task. Start with{' '}
+                    Digite &quot;help&quot; para ver os comandos ou siga a tarefa atual. Comece com{' '}
                     <span className="text-primary">terraform init</span>.
                   </p>
                 </div>
@@ -1025,7 +1025,7 @@ export default function TerraformTerminalSimulator() {
                   autoComplete="off"
                   autoCapitalize="off"
                   placeholder="terraform init"
-                  aria-label="Terraform command input"
+                  aria-label="Entrada de comandos do Terraform"
                 />
               </form>
             </div>
@@ -1063,8 +1063,8 @@ export default function TerraformTerminalSimulator() {
             <CardContent className="space-y-2 p-4 pt-0">
               {state.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
-                  No resources yet. Run <code className="text-primary">terraform apply</code> to
-                  create them.
+                  Nenhum recurso ainda. Rode <code className="text-primary">terraform apply</code> para
+                  criá-los.
                 </p>
               ) : (
                 <div className="max-h-[20rem] space-y-2 overflow-y-auto">

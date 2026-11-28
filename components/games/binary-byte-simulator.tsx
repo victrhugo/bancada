@@ -44,68 +44,68 @@ interface Challenge {
 const CHALLENGES: Record<Mode, Challenge[]> = {
   byte: [
     {
-      prompt: 'Make 42',
+      prompt: 'Forme 42',
       target: '00101010',
-      note: '42 is 32 + 8 + 2. Every number is just the lit place values added up.',
+      note: '42 é 32 + 8 + 2. Todo número é só a soma dos valores posicionais acesos.',
     },
     {
-      prompt: 'Make 255',
+      prompt: 'Forme 255',
       target: '11111111',
-      note: 'All eight bits lit. This is why a byte tops out at 255, and why colour channels and IPv4 octets do too.',
+      note: 'Os oito bits acesos. É por isso que um byte vai até 255, e por isso canais de cor e octetos IPv4 também param aí.',
     },
     {
-      prompt: 'Make 128',
+      prompt: 'Forme 128',
       target: '10000000',
-      note: 'One bit, the highest. In a signed byte this bit is the sign, which is how 128 becomes -128.',
+      note: 'Um bit só, o mais alto. Num byte com sinal, esse bit é o sinal, e é assim que 128 vira -128.',
     },
     {
-      prompt: 'Make 7',
+      prompt: 'Forme 7',
       target: '00000111',
-      note: 'Three low bits. Notice 7 is one less than 8, so it fills every bit below it. That pattern is why masks are written as 2^n - 1.',
+      note: 'Os três bits mais baixos. Repare que 7 é um a menos que 8, então preenche todos os bits abaixo dele. É por esse padrão que máscaras são escritas como 2^n - 1.',
     },
   ],
   perms: [
     {
-      prompt: 'Make 755',
+      prompt: 'Forme 755',
       target: '111101101',
-      note: 'The default for a directory or a script: the owner can do everything, everyone else can read and execute but not write.',
+      note: 'O padrão para um diretório ou um script: o dono pode tudo; os demais podem ler e executar, mas não escrever.',
     },
     {
-      prompt: 'Make 644',
+      prompt: 'Forme 644',
       target: '110100100',
-      note: 'The default for a normal file. Owner reads and writes, everyone else only reads.',
+      note: 'O padrão para um arquivo comum. O dono lê e escreve; os demais só leem.',
     },
     {
-      prompt: 'Make 600',
+      prompt: 'Forme 600',
       target: '110000000',
-      note: 'Owner only. This is what an SSH private key needs, and why ssh refuses a key that is readable by anyone else.',
+      note: 'Só o dono. É o que uma chave privada SSH precisa, e por isso o ssh recusa uma chave que outras pessoas conseguem ler.',
     },
     {
-      prompt: 'Make 777',
+      prompt: 'Forme 777',
       target: '111111111',
-      note: 'Everything to everyone. It fixes your permission error and opens a hole. If you reached for this in production, the real answer is usually correct ownership.',
+      note: 'Tudo para todo mundo. Resolve o erro de permissão e abre um buraco. Se você recorreu a isso em produção, a resposta certa costuma ser acertar o dono do arquivo.',
     },
   ],
   subnet: [
     {
-      prompt: 'Make a /24 mask',
+      prompt: 'Forme uma máscara /24',
       target: '11111111111111111111111100000000',
-      note: '255.255.255.0. Three octets of network, one of host, so 254 usable addresses. The most common subnet you will meet.',
+      note: '255.255.255.0. Três octetos de rede e um de host, então 254 endereços utilizáveis. A sub-rede mais comum que você vai encontrar.',
     },
     {
-      prompt: 'Make a /26 mask',
+      prompt: 'Forme uma máscara /26',
       target: '11111111111111111111111111000000',
-      note: '255.255.255.192. Borrowing two host bits splits a /24 into four subnets of 62 usable addresses each.',
+      note: '255.255.255.192. Pegar emprestados dois bits de host divide uma /24 em quatro sub-redes de 62 endereços utilizáveis cada.',
     },
     {
-      prompt: 'Make a /30 mask',
+      prompt: 'Forme uma máscara /30',
       target: '11111111111111111111111111111100',
-      note: '255.255.255.252. Two usable addresses, which is exactly what a point-to-point link between two routers needs.',
+      note: '255.255.255.252. Dois endereços utilizáveis, exatamente o que um link ponto a ponto entre dois roteadores precisa.',
     },
     {
-      prompt: 'Make a /16 mask',
+      prompt: 'Forme uma máscara /16',
       target: '11111111111111110000000000000000',
-      note: '255.255.0.0. A large private range, the shape of 10.0.0.0/16 or a default VPC in some clouds.',
+      note: '255.255.0.0. Uma faixa privada grande, no formato de 10.0.0.0/16 ou da VPC padrão em algumas nuvens.',
     },
   ],
 };
@@ -114,7 +114,7 @@ const CHALLENGES: Record<Mode, Challenge[]> = {
 const STAGGER_MS = 45;
 
 const PERM_LETTERS = ['r', 'w', 'x'] as const;
-const PERM_GROUPS = ['owner', 'group', 'other'] as const;
+const PERM_GROUPS = ['dono', 'grupo', 'outros'] as const;
 
 function bitsToNumber(bits: string): number {
   return parseInt(bits, 2) || 0;
@@ -144,15 +144,15 @@ function permOctal(bits: string): string {
  * headings above the tiles: "owner read", not "place value r".
  */
 function tileLabel(mode: Mode, i: number, place: string, bit: string): string {
-  const state = bit === '1' ? 'on' : 'off';
+  const state = bit === '1' ? 'ligado' : 'desligado';
   if (mode === 'perms') {
-    const word = ['read', 'write', 'execute'][i % 3];
-    return `${PERM_GROUPS[Math.floor(i / 3)]} ${word}, ${state}`;
+    const word = ['leitura', 'escrita', 'execução'][i % 3];
+    return `${word} (${PERM_GROUPS[Math.floor(i / 3)]}), ${state}`;
   }
   if (mode === 'subnet') {
-    return `Octet ${Math.floor(i / 8) + 1}, place value ${place}, ${state}`;
+    return `Octeto ${Math.floor(i / 8) + 1}, valor posicional ${place}, ${state}`;
   }
-  return `Place value ${place}, ${state}`;
+  return `Valor posicional ${place}, ${state}`;
 }
 
 function permSymbolic(bits: string): string {
@@ -351,19 +351,19 @@ export default function BinaryByteSimulator() {
     <div className="bytesim">
       <style>{CSS}</style>
 
-      <p className="bs-eyebrow">Binary · one bit at a time</p>
-      <h2 className="bs-h">Flip the bits, watch the value</h2>
+      <p className="bs-eyebrow">Binário · um bit de cada vez</p>
+      <h2 className="bs-h">Vire os bits, veja o valor</h2>
       <p className="bs-sub">
-        Eight tiles, each one a bit. Click one to flip it, or press <kbd className="bs-kbd">Space</kbd>{' '}
-        on a focused tile. The same tiles become a byte, a set of file permissions, and a subnet mask.
+        Oito blocos, cada um é um bit. Clique em um para virar, ou aperte <kbd className="bs-kbd">Espaço</kbd>{' '}
+        com o bloco em foco. Os mesmos blocos viram um byte, um conjunto de permissões de arquivo e uma máscara de sub-rede.
       </p>
 
       <div className="bs-modes" role="group" aria-label="Simulator mode">
         {(
           [
             ['byte', 'Byte', '8 bits'],
-            ['perms', 'Permissions', 'chmod'],
-            ['subnet', 'Subnet mask', 'CIDR'],
+            ['perms', 'Permissões', 'chmod'],
+            ['subnet', 'Máscara de sub-rede', 'CIDR'],
           ] as Array<[Mode, string, string]>
         ).map(([m, label, hint]) => (
           <button
@@ -393,17 +393,17 @@ export default function BinaryByteSimulator() {
                 <button className="bs-chip" onClick={() => copy(`0x${value.toString(16).toUpperCase().padStart(2, '0')}`, 'hex')}>
                   <span className="bs-chipk">hex</span>
                   <span className="bs-chipv">0x{value.toString(16).toUpperCase().padStart(2, '0')}</span>
-                  <span className="bs-copy">{copied === 'hex' ? 'copied' : 'copy'}</span>
+                  <span className="bs-copy">{copied === 'hex' ? 'copiado' : 'copiar'}</span>
                 </button>
               )}
               <button className="bs-chip" onClick={() => copy(bits, 'bin')}>
-                <span className="bs-chipk">binary</span>
+                <span className="bs-chipk">binário</span>
                 <span className="bs-chipv">{bits}</span>
-                <span className="bs-copy">{copied === 'bin' ? 'copied' : 'copy'}</span>
+                <span className="bs-copy">{copied === 'bin' ? 'copiado' : 'copiar'}</span>
               </button>
               {!predicting && (
               <div className="bs-chip bs-static">
-                <span className="bs-chipk">as maths</span>
+                <span className="bs-chipk">como soma</span>
                 <span className="bs-chipv bs-sum">
                   {value === 0
                     ? '0'
@@ -432,7 +432,7 @@ export default function BinaryByteSimulator() {
                 <button className="bs-chip" onClick={() => copy(`chmod ${permOctal(bits)} file.sh`, 'chmod')}>
                   <span className="bs-chipk">command</span>
                   <span className="bs-chipv">chmod {permOctal(bits)} file.sh</span>
-                  <span className="bs-copy">{copied === 'chmod' ? 'copied' : 'copy'}</span>
+                  <span className="bs-copy">{copied === 'chmod' ? 'copiado' : 'copiar'}</span>
                 </button>
               )}
               <div className="bs-chip bs-static">
@@ -440,12 +440,12 @@ export default function BinaryByteSimulator() {
                 <span className="bs-chipv">-{permSymbolic(bits)}</span>
               </div>
               <div className="bs-chip bs-static">
-                <span className="bs-chipk">meaning</span>
+                <span className="bs-chipk">significado</span>
                 <span className="bs-chipv bs-sum">
                   {PERM_GROUPS.map((g, gi) => {
                     const grp = bits.slice(gi * 3, gi * 3 + 3);
-                    const words = ['read', 'write', 'execute'].filter((_, i) => grp[i] === '1');
-                    return `${g}: ${words.length ? words.join(', ') : 'nothing'}`;
+                    const words = ['leitura', 'escrita', 'execução'].filter((_, i) => grp[i] === '1');
+                    return `${g}: ${words.length ? words.join(', ') : 'nada'}`;
                   }).join(' · ')}
                 </span>
               </div>
@@ -457,30 +457,30 @@ export default function BinaryByteSimulator() {
           <>
             <div className="bs-big">
               <span className="bs-bigval bs-small">{octets.join('.')}</span>
-              <span className="bs-biglabel">subnet mask</span>
+              <span className="bs-biglabel">máscara de sub-rede</span>
             </div>
             <div className="bs-side">
               <div className={`bs-chip bs-static${maskValid ? '' : ' bs-bad'}`}>
-                <span className="bs-chipk">prefix</span>
-                <span className="bs-chipv">{maskValid ? `/${prefixLen}` : 'invalid'}</span>
+                <span className="bs-chipk">prefixo</span>
+                <span className="bs-chipv">{maskValid ? `/${prefixLen}` : 'inválida'}</span>
               </div>
               <div className="bs-chip bs-static">
-                <span className="bs-chipk">usable hosts</span>
+                <span className="bs-chipk">hosts utilizáveis</span>
                 <span className="bs-chipv">
                   {maskValid
                     ? prefixLen >= 31
                       ? prefixLen === 32
-                        ? '1 address, a single host route'
-                        : '2 addresses, a point-to-point link'
+                        ? '1 endereço, rota para um único host'
+                        : '2 endereços, um link ponto a ponto'
                       : (2 ** (32 - prefixLen) - 2).toLocaleString()
                     : '—'}
                 </span>
               </div>
               {!maskValid && (
                 <div className="bs-warn">
-                  A mask has to be a solid run of 1s from the left. You have a gap, so this is not
-                  a usable mask and it has no prefix length. That rule is why a mask can be written
-                  as a single number like <b>/24</b> instead of a pattern.
+                  Uma máscara precisa ser uma sequência contínua de 1s a partir da esquerda. Aqui há um buraco,
+                  então ela não é utilizável e não tem tamanho de prefixo. É por essa regra que uma máscara pode ser
+                  escrita como um único número, tipo <b>/24</b>, em vez de um padrão.
                 </div>
               )}
             </div>
@@ -503,7 +503,7 @@ export default function BinaryByteSimulator() {
           <div className="bs-groups bs-groups-4">
             {[1, 2, 3, 4].map((n) => (
               <span key={n} className="bs-group">
-                octet {n}
+                octeto {n}
               </span>
             ))}
           </div>
@@ -532,10 +532,10 @@ export default function BinaryByteSimulator() {
       {/* ---------- controls ---------- */}
       <div className="bs-controls">
         <button className="bs-btn" onClick={() => applyBits('0'.repeat(width))}>
-          Clear
+          Limpar
         </button>
         <button className="bs-btn" onClick={() => applyBits('1'.repeat(width))}>
-          Fill
+          Preencher
         </button>
         <button
           className="bs-btn"
@@ -545,13 +545,13 @@ export default function BinaryByteSimulator() {
             )
           }
         >
-          Random
+          Aleatório
         </button>
         <span className="bs-sep" />
-        <button className="bs-btn" onClick={() => step(-1)} aria-label="Subtract one">
+        <button className="bs-btn" onClick={() => step(-1)} aria-label="Subtrair um">
           &minus;1
         </button>
-        <button className="bs-btn" onClick={() => step(1)} aria-label="Add one">
+        <button className="bs-btn" onClick={() => step(1)} aria-label="Somar um">
           +1
         </button>
         <button
@@ -561,29 +561,29 @@ export default function BinaryByteSimulator() {
             setCounting((c) => !c);
           }}
         >
-          {counting ? 'Stop' : 'Count up'}
+          {counting ? 'Parar' : 'Contar'}
         </button>
         <span className="bs-sep" />
         <button
           className="bs-btn"
           onClick={() => applyBits(bits.slice(1) + '0')}
-          title="Shift left. Doubles the value, and the top bit falls off the end."
+          title="Desloca para a esquerda. Dobra o valor, e o bit mais alto cai fora."
         >
-          &laquo; Shift
+          &laquo; Deslocar
         </button>
         <button
           className="bs-btn"
           onClick={() => applyBits('0' + bits.slice(0, -1))}
-          title="Shift right. Halves the value, discarding the remainder."
+          title="Desloca para a direita. Divide o valor por dois, descartando o resto."
         >
-          Shift &raquo;
+          Deslocar &raquo;
         </button>
       </div>
 
       <p className="bs-hint">
-        Press <b>Count up</b> and watch the carry travel. A tile can only show 0 or 1, so when it is
-        already 1 and has to grow, it flips back to 0 and pushes the carry to its neighbour. That is
-        the whole of binary arithmetic.
+        Aperte <b>Contar</b> e veja o “vai um” viajar. Um bloco só mostra 0 ou 1, então quando ele já
+        está em 1 e precisa crescer, volta para 0 e empurra o “vai um” para o vizinho. Essa é
+        toda a aritmética binária.
       </p>
 
       {/* ---------- predict ---------- */}
@@ -595,27 +595,27 @@ export default function BinaryByteSimulator() {
         >
           <div className="bs-chtop">
             <div>
-              <span className="bs-chlabel">Predict</span>
+              <span className="bs-chlabel">Prever</span>
               <span className="bs-chprompt">
                 {predicting
                   ? mode === 'perms'
-                    ? 'Read the chmod value off the tiles'
-                    : 'Read the decimal value off the tiles'
-                  : 'Hide the value and work it out from the bits'}
+                    ? 'Leia o valor do chmod nos blocos'
+                    : 'Leia o valor decimal nos blocos'
+                  : 'Esconda o valor e descubra pelos bits'}
               </span>
             </div>
             <div className="bs-chactions">
               {!predicting ? (
                 <button className="bs-btn bs-primary" onClick={startRound}>
-                  Start
+                  Começar
                 </button>
               ) : (
                 <>
                   <button className="bs-btn" onClick={startRound}>
-                    New round &rsaquo;
+                    Nova rodada &rsaquo;
                   </button>
                   <button className="bs-btn" onClick={exitPredict}>
-                    Exit
+                    Sair
                   </button>
                 </>
               )}
@@ -651,7 +651,7 @@ export default function BinaryByteSimulator() {
                   aria-describedby="bs-verdict"
                 />
                 <button className="bs-btn bs-primary" type="submit" disabled={!guess.trim()}>
-                  Check
+                  Conferir
                 </button>
                 <button
                   className="bs-btn"
@@ -661,7 +661,7 @@ export default function BinaryByteSimulator() {
                     setVerdict({ correct: true, diffs: [] });
                   }}
                 >
-                  Reveal
+                  Revelar
                 </button>
               </form>
 
@@ -670,14 +670,14 @@ export default function BinaryByteSimulator() {
                   <p className="bs-chnote bs-chwait">
                     {guess.trim() && parseGuess(predictMode, guess) === null
                       ? mode === 'perms'
-                        ? 'Three digits, each 0 to 7. For example 755.'
-                        : 'A whole number from 0 to 255.'
-                      : 'The tiles are the only clue. Add up what is switched on.'}
+                        ? 'Três dígitos, cada um de 0 a 7. Por exemplo, 755.'
+                        : 'Um número inteiro de 0 a 255.'
+                      : 'Os blocos são a única pista. Some o que está ligado.'}
                   </p>
                 ) : verdict.correct ? (
                   <div className="bs-chnote">
                     <p>
-                      <b>Correct.</b> {expectedAnswer(predictMode, bits)} is what those tiles say.
+                      <b>Correto.</b> Esses blocos dizem {expectedAnswer(predictMode, bits)}.
                     </p>
                     <ul className="bs-sums">
                       {breakdown(predictMode, bits).map((line) => (
@@ -689,7 +689,7 @@ export default function BinaryByteSimulator() {
                   <div className="bs-chnote">
                     <p>
                       <b>
-                        Not {guess.trim()}, and the gap is {verdict.diffs.length} bit
+                        Não é {guess.trim()}: a diferença está em {verdict.diffs.length} bit
                         {verdict.diffs.length > 1 ? 's' : ''}.
                       </b>
                     </p>
@@ -701,7 +701,7 @@ export default function BinaryByteSimulator() {
                       ))}
                     </ul>
                     <p className="bs-chwait">
-                      Look at those tiles again, then try once more.
+                      Olhe esses blocos de novo e tente mais uma vez.
                     </p>
                   </div>
                 )}
@@ -715,7 +715,7 @@ export default function BinaryByteSimulator() {
       <div className={`bs-challenge${solved ? ' bs-solved' : ''}`}>
         <div className="bs-chtop">
           <div>
-            <span className="bs-chlabel">Challenge</span>
+            <span className="bs-chlabel">Desafio</span>
             <span className="bs-chprompt">{challenge.prompt}</span>
           </div>
           <div className="bs-chactions">
@@ -730,7 +730,7 @@ export default function BinaryByteSimulator() {
                   setShowChallenge(true);
                 }}
               >
-                Start
+                Começar
               </button>
             ) : (
               <>
@@ -741,10 +741,10 @@ export default function BinaryByteSimulator() {
                     applyBits('0'.repeat(width));
                   }}
                 >
-                  Next &rsaquo;
+                  Próximo &rsaquo;
                 </button>
                 <button className="bs-btn" onClick={() => setShowChallenge(false)}>
-                  Exit
+                  Sair
                 </button>
               </>
             )}
@@ -754,11 +754,11 @@ export default function BinaryByteSimulator() {
           <div className="bs-chbody">
             {solved ? (
               <p className="bs-chnote">
-                <b>Solved.</b> {challenge.note}
+                <b>Resolvido.</b> {challenge.note}
               </p>
             ) : (
               <p className="bs-chnote bs-chwait">
-                Set the tiles to match, and this panel will tell you why the value matters.
+                Ajuste os blocos para bater com o alvo, e este painel explica por que esse valor importa.
               </p>
             )}
           </div>

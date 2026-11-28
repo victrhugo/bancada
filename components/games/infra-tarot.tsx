@@ -41,177 +41,177 @@ interface TarotCard {
 const TAROT_CARDS: TarotCard[] = [
   {
     id: 'outage',
-    name: 'The Outage',
+    name: 'A Queda',
     icon: <ServerCrash className="h-8 w-8" />,
-    meaning: 'Unexpected downtime approaches',
+    meaning: 'Um downtime inesperado se aproxima',
     description:
-      'A critical service disruption looms in your infrastructure future. Prepare your incident response.',
+      'Uma interrupção crítica ronda o futuro da sua infraestrutura. Prepare a resposta a incidentes.',
     color: 'text-red-600',
     gradient: 'from-red-500 to-red-700',
   },
   {
     id: 'sidecar',
-    name: 'The Sidecar',
+    name: 'O Sidecar',
     icon: <GitMerge className="h-8 w-8" />,
-    meaning: 'Microservices harmony awaits',
-    description: 'A companion service will bring balance to your application architecture.',
+    meaning: 'A harmonia dos microsserviços te espera',
+    description: 'Um serviço companheiro trará equilíbrio à arquitetura da sua aplicação.',
     color: 'text-blue-600',
     gradient: 'from-blue-500 to-blue-700',
   },
   {
     id: 'budget-cut',
-    name: 'The Budget Cut',
+    name: 'O Corte de Orçamento',
     icon: <DollarSign className="h-8 w-8" />,
-    meaning: 'Financial optimization required',
+    meaning: 'Otimização financeira necessária',
     description:
-      'Resource constraints will force innovative solutions and cost-effective thinking.',
+      'A falta de recursos vai forçar soluções criativas e um olhar atento para custos.',
     color: 'text-yellow-600',
     gradient: 'from-yellow-500 to-orange-600',
   },
   {
     id: 'autoscaler',
-    name: 'The Autoscaler',
+    name: 'O Autoscaler',
     icon: <Activity className="h-8 w-8" />,
-    meaning: 'Dynamic scaling energy flows',
+    meaning: 'A energia da escala dinâmica flui',
     description:
-      'Your infrastructure will adapt and grow automatically, bringing elasticity to your systems.',
+      'Sua infraestrutura vai se adaptar e crescer sozinha, trazendo elasticidade aos sistemas.',
     color: 'text-green-600',
     gradient: 'from-green-500 to-emerald-600',
   },
   {
     id: 'security-breach',
-    name: 'The Security Breach',
+    name: 'A Brecha de Segurança',
     icon: <Shield className="h-8 w-8" />,
-    meaning: 'Vigilance and protection needed',
+    meaning: 'Vigilância e proteção necessárias',
     description:
-      'A security challenge will test your defenses and strengthen your security posture.',
+      'Um desafio de segurança vai testar suas defesas e fortalecer sua postura de segurança.',
     color: 'text-purple-600',
     gradient: 'from-purple-500 to-purple-700',
   },
   {
     id: 'database-lock',
-    name: 'The Database Lock',
+    name: 'O Lock no Banco',
     icon: <Database className="h-8 w-8" />,
-    meaning: 'Data conflicts arise',
+    meaning: 'Conflitos de dados surgem',
     description:
-      'Concurrent operations will challenge your transaction management and require careful coordination.',
+      'Operações concorrentes vão desafiar o controle de transações e exigir coordenação cuidadosa.',
     color: 'text-indigo-600',
     gradient: 'from-indigo-500 to-indigo-700',
   },
   {
     id: 'network-partition',
-    name: 'The Network Partition',
+    name: 'A Partição de Rede',
     icon: <Network className="h-8 w-8" />,
-    meaning: 'Connectivity challenges ahead',
-    description: 'Network splits will test your distributed systems design and fault tolerance.',
+    meaning: 'Desafios de conectividade à frente',
+    description: 'Divisões na rede vão testar o design dos seus sistemas distribuídos e a tolerância a falhas.',
     color: 'text-cyan-600',
     gradient: 'from-cyan-500 to-cyan-700',
   },
   {
     id: 'disk-full',
-    name: 'The Disk Full',
+    name: 'O Disco Cheio',
     icon: <HardDrive className="h-8 w-8" />,
-    meaning: 'Storage limitations emerge',
-    description: 'Capacity planning becomes crucial as your storage resources reach their limits.',
+    meaning: 'Limites de armazenamento aparecem',
+    description: 'O planejamento de capacidade vira prioridade conforme o armazenamento chega ao limite.',
     color: 'text-pink-600',
     gradient: 'from-pink-500 to-rose-600',
   },
   {
     id: 'memory-leak',
-    name: 'The Memory Leak',
+    name: 'O Vazamento de Memória',
     icon: <Gauge className="h-8 w-8" />,
-    meaning: 'Resource consumption grows',
-    description: 'Gradual resource drain will require monitoring and optimization vigilance.',
+    meaning: 'O consumo de recursos cresce',
+    description: 'Um dreno gradual de recursos vai exigir monitoramento e otimização constantes.',
     color: 'text-orange-600',
     gradient: 'from-orange-500 to-red-600',
   },
   {
     id: 'config-drift',
-    name: 'The Config Drift',
+    name: 'O Drift de Configuração',
     icon: <Settings className="h-8 w-8" />,
-    meaning: 'Configuration chaos looms',
+    meaning: 'O caos de configuração se aproxima',
     description:
-      'Your infrastructure will diverge from desired state, requiring configuration management.',
+      'Sua infraestrutura vai se afastar do estado desejado, exigindo gestão de configuração.',
     color: 'text-teal-600',
     gradient: 'from-teal-500 to-teal-700',
   },
   {
     id: 'cert-expiry',
-    name: 'The Cert Expiry',
+    name: 'O Certificado Expirado',
     icon: <Lock className="h-8 w-8" />,
-    meaning: 'Security renewal required',
-    description: 'Certificate lifecycle management becomes critical as expiration dates approach.',
+    meaning: 'Renovação de segurança necessária',
+    description: 'Gerenciar o ciclo de vida dos certificados vira crítico conforme as datas de expiração chegam.',
     color: 'text-red-600',
     gradient: 'from-red-500 to-pink-600',
   },
   {
     id: 'api-timeout',
-    name: 'The API Timeout',
+    name: 'O Timeout da API',
     icon: <Timer className="h-8 w-8" />,
-    meaning: 'Response delays manifest',
+    meaning: 'Atrasos nas respostas se manifestam',
     description:
-      'Service latency will challenge your timeout strategies and circuit breaker patterns.',
+      'A latência dos serviços vai desafiar suas estratégias de timeout e de circuit breaker.',
     color: 'text-amber-600',
     gradient: 'from-amber-500 to-orange-600',
   },
   {
     id: 'load-spike',
-    name: 'The Load Spike',
+    name: 'O Pico de Carga',
     icon: <Zap className="h-8 w-8" />,
-    meaning: 'Traffic surge incoming',
+    meaning: 'Uma onda de tráfego está chegando',
     description:
-      'Unexpected high demand will test your capacity planning and performance optimization.',
+      'Uma demanda alta e inesperada vai testar seu planejamento de capacidade e sua otimização de performance.',
     color: 'text-yellow-600',
     gradient: 'from-yellow-400 to-yellow-600',
   },
   {
     id: 'dependency-hell',
-    name: 'The Dependency Hell',
+    name: 'O Inferno das Dependências',
     icon: <AlertTriangle className="h-8 w-8" />,
-    meaning: 'Version conflicts arise',
+    meaning: 'Conflitos de versão surgem',
     description:
-      'Package dependencies will create conflicts requiring careful resolution and management.',
+      'As dependências de pacotes vão gerar conflitos que exigem resolução e gestão cuidadosas.',
     color: 'text-red-600',
     gradient: 'from-red-600 to-red-800',
   },
   {
     id: 'cloud-migration',
-    name: 'The Cloud Migration',
+    name: 'A Migração para a Nuvem',
     icon: <CloudLightning className="h-8 w-8" />,
-    meaning: 'Transformation journey begins',
+    meaning: 'A jornada de transformação começa',
     description:
-      'A major platform shift will bring both challenges and opportunities for modernization.',
+      'Uma grande mudança de plataforma vai trazer desafios e oportunidades de modernização.',
     color: 'text-blue-600',
     gradient: 'from-blue-400 to-purple-600',
   },
   {
     id: 'dns-outage',
-    name: 'The DNS Outage',
+    name: 'A Queda do DNS',
     icon: <Wifi className="h-8 w-8" />,
-    meaning: 'Name resolution fails',
+    meaning: 'A resolução de nomes falha',
     description:
-      'Domain resolution issues will remind you that DNS is the foundation of everything.',
+      'Problemas de resolução de domínio vão te lembrar que o DNS é a base de tudo.',
     color: 'text-gray-600',
     gradient: 'from-gray-500 to-gray-700',
   },
 ];
 
 const MYSTICAL_READINGS = [
-  'Mercury in retrograde suggests a node pool autoscaling bug is on your horizon.',
-  'The stars align with your Kubernetes clusters, but beware of resource quotas in the third house.',
-  'Venus is ascending through your CI/CD pipeline, bringing harmony to your deployment strategies.',
-  "Jupiter's influence strengthens your monitoring dashboards, revealing hidden performance insights.",
-  'Mars in your infrastructure suggests aggressive optimization opportunities ahead.',
-  "The moon's phases mirror your backup cycles - ensure your disaster recovery is in sync.",
-  "Saturn's rings remind you that circular dependencies will challenge your microservices.",
-  "Neptune's depths reflect the mysteries of your legacy database schemas.",
-  'Uranus brings unexpected innovation to your containerization efforts.',
-  "Pluto's transformation energy indicates a major architectural refactoring in your future.",
-  'The cosmic alignment favors infrastructure as code - your Terraform will flourish.',
-  'Celestial bodies suggest your API gateway will become the center of your digital universe.',
-  'The constellation of microservices points to service mesh adoption in your near future.',
-  'Solar flares indicate potential electromagnetic interference with your cloud deployments.',
-  'The gravitational pull of technical debt will require careful orbital adjustments.',
+  'Mercúrio retrógrado indica um bug de autoscaling no node pool no seu horizonte.',
+  'Os astros se alinham com seus clusters Kubernetes, mas cuidado com as resource quotas na terceira casa.',
+  'Vênus ascende pelo seu pipeline de CI/CD, trazendo harmonia às suas estratégias de deploy.',
+  'A influência de Júpiter fortalece seus dashboards de monitoramento e revela insights escondidos de performance.',
+  'Marte na sua infraestrutura indica oportunidades agressivas de otimização à frente.',
+  'As fases da lua espelham seus ciclos de backup: garanta que o disaster recovery esteja em dia.',
+  'Os anéis de Saturno lembram que dependências circulares vão desafiar seus microsserviços.',
+  'As profundezas de Netuno refletem os mistérios dos seus schemas de banco legados.',
+  'Urano traz uma inovação inesperada para sua jornada com containers.',
+  'A energia de transformação de Plutão indica uma grande refatoração de arquitetura no seu futuro.',
+  'O alinhamento cósmico favorece a infraestrutura como código: seu Terraform vai florescer.',
+  'Os corpos celestes sugerem que seu API gateway vai virar o centro do seu universo digital.',
+  'A constelação dos microsserviços aponta para a adoção de service mesh em breve.',
+  'Tempestades solares indicam possível interferência eletromagnética nos seus deploys na nuvem.',
+  'A atração gravitacional da dívida técnica vai exigir ajustes de órbita cuidadosos.',
 ];
 
 export default function InfraTarot() {
@@ -256,7 +256,7 @@ export default function InfraTarot() {
 
   const shareReading = () => {
     const cardNames = selectedCards.map((card) => card.name).join(', ');
-    const shareText = `I just drew ${cardNames} in the Infra Tarot! 🔮\n\nMy reading: "${reading}"\n\nDiscover yours!`;
+    const shareText = `Acabei de tirar ${cardNames} no Tarot da Infra! 🔮\n\nMinha leitura: "${reading}"\n\nDescubra a sua!`;
 
     // Create Twitter share URL
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`;
@@ -368,7 +368,7 @@ export default function InfraTarot() {
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
                 <h2 className="text-5xl md:text-7xl font-bold text-primary">
-                  Infra Tarot
+                  Tarot da Infra
                 </h2>
               </motion.div>
               <motion.div
@@ -395,8 +395,8 @@ export default function InfraTarot() {
           transition={{ delay: 0.3, duration: 0.8 }}
         >
           <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-medium">
-            🔮 Peer into the mystical realm of infrastructure! Draw 3 enchanted cards to unveil the
-            cosmic secrets of your DevOps destiny. ✨
+            🔮 Espie o reino místico da infraestrutura! Tire 3 cartas encantadas para revelar os
+            segredos cósmicos do seu destino em DevOps. ✨
           </p>
         </motion.div>
 
@@ -438,12 +438,12 @@ export default function InfraTarot() {
                   >
                     <Sparkles className="h-6 w-6 mr-3" />
                   </motion.div>
-                  Consulting the DevOps Oracle...
+                  Consultando o Oráculo do DevOps...
                 </>
               ) : (
                 <>
                   <Sparkles className="h-6 w-6 mr-3" />
-                  Draw 3 Mystical Cards
+                  Tirar 3 cartas místicas
                 </>
               )}
             </Button>
@@ -463,13 +463,13 @@ export default function InfraTarot() {
                   className="px-6 py-3 text-lg shadow-lg"
                 >
                   <RotateCcw className="h-5 w-5 mr-2" />
-                  Draw Again
+                  Tirar de novo
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button onClick={shareReading} size="lg" className="px-6 py-3 text-lg shadow-lg">
                   <Share2 className="h-5 w-5 mr-2" />
-                  Share Reading
+                  Compartilhar leitura
                 </Button>
               </motion.div>
             </div>
@@ -554,12 +554,12 @@ export default function InfraTarot() {
                               animate={{ opacity: [0.7, 1, 0.7] }}
                               transition={{ duration: 2, repeat: Infinity }}
                             >
-                              <p className="text-2xl font-bold mb-2">Click to Reveal</p>
+                              <p className="text-2xl font-bold mb-2">Clique para revelar</p>
                             </motion.div>
                             <p className="text-lg opacity-90 font-medium">
-                              {index === 0 && 'Past Influences'}
-                              {index === 1 && 'Present Situation'}
-                              {index === 2 && 'Future Outcome'}
+                              {index === 0 && 'Influências do passado'}
+                              {index === 1 && 'Situação atual'}
+                              {index === 2 && 'Resultado futuro'}
                             </p>
                             <div className="mt-4 text-sm opacity-75">Card {index + 1} of 3</div>
                           </div>
@@ -619,7 +619,7 @@ export default function InfraTarot() {
                           >
                             <Sparkles className="h-8 w-8" />
                           </motion.div>
-                          Your Mystical Reading
+                          Sua leitura mística
                           <motion.div
                             animate={{ rotate: [0, -10, 10, 0] }}
                             transition={{
@@ -694,7 +694,7 @@ export default function InfraTarot() {
             transition={{ delay: 1, duration: 0.5 }}
           >
             <h2 className="text-3xl font-bold mb-8 text-center text-primary">
-              About Infra Tarot
+              Sobre o Tarot da Infra
             </h2>
           </motion.div>
           <div className="grid gap-8 md:grid-cols-2">
@@ -704,17 +704,17 @@ export default function InfraTarot() {
               transition={{ delay: 1.2, duration: 0.5 }}
             >
               <h3 className="text-xl font-semibold mb-4 text-purple-700 dark:text-purple-300">
-                How It Works
+                Como funciona
               </h3>
               <ul className="space-y-3 text-sm list-disc list-inside text-muted-foreground leading-relaxed">
-                <li>Click "Draw 3 Mystical Cards" to receive your infrastructure reading</li>
-                <li>Each card represents a different aspect of DevOps/infrastructure challenges</li>
-                <li>Click on face-down cards to reveal their meaning and significance</li>
+                <li>Clique em "Tirar 3 cartas místicas" para receber sua leitura de infraestrutura</li>
+                <li>Cada carta representa um aspecto diferente dos desafios de DevOps e infraestrutura</li>
+                <li>Clique nas cartas viradas para revelar o significado de cada uma</li>
                 <li>
-                  Get a mystical (and delightfully humorous) interpretation of your tech future
+                  Receba uma interpretação mística (e bem-humorada) do seu futuro na tecnologia
                 </li>
-                <li>Share your reading with teammates for fun discussions about infrastructure</li>
-                <li>Draw again for a different perspective on your infrastructure destiny</li>
+                <li>Compartilhe sua leitura com o time e puxe conversas divertidas sobre infraestrutura</li>
+                <li>Tire de novo para ter outra visão do destino da sua infraestrutura</li>
               </ul>
             </motion.div>
             <motion.div
@@ -723,40 +723,40 @@ export default function InfraTarot() {
               transition={{ delay: 1.4, duration: 0.5 }}
             >
               <h3 className="text-xl font-semibold mb-4 text-blue-700 dark:text-blue-300">
-                Card Categories
+                Categorias de cartas
               </h3>
               <div className="space-y-3 text-sm text-muted-foreground">
                 <div className="p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border-l-4 border-red-400">
-                  <strong className="text-red-600 dark:text-red-400">🔥 Chaos Cards:</strong> The
-                  Outage, Security Breach, Dependency Hell
+                  <strong className="text-red-600 dark:text-red-400">🔥 Cartas do caos:</strong> A
+                  Queda, A Brecha de Segurança, O Inferno das Dependências
                 </div>
                 <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border-l-4 border-blue-400">
                   <strong className="text-blue-600 dark:text-blue-400">
-                    🏗️ Architecture Cards:
+                    🏗️ Cartas de arquitetura:
                   </strong>{' '}
-                  The Sidecar, Cloud Migration, API Timeout
+                  O Sidecar, A Migração para a Nuvem, O Timeout da API
                 </div>
                 <div className="p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border-l-4 border-green-400">
                   <strong className="text-green-600 dark:text-green-400">
-                    ⚙️ Operations Cards:
+                    ⚙️ Cartas de operação:
                   </strong>{' '}
-                  The Autoscaler, Config Drift, Load Spike
+                  O Autoscaler, O Drift de Configuração, O Pico de Carga
                 </div>
                 <div className="p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg border-l-4 border-yellow-400">
                   <strong className="text-yellow-600 dark:text-yellow-400">
-                    💰 Resource Cards:
+                    💰 Cartas de recursos:
                   </strong>{' '}
-                  Budget Cut, Disk Full, Memory Leak
+                  O Corte de Orçamento, O Disco Cheio, O Vazamento de Memória
                 </div>
                 <div className="p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg border-l-4 border-purple-400">
                   <strong className="text-purple-600 dark:text-purple-400">
-                    🌐 Network Cards:
+                    🌐 Cartas de rede:
                   </strong>{' '}
-                  DNS Outage, Network Partition
+                  A Queda do DNS, A Partição de Rede
                 </div>
                 <div className="p-3 bg-indigo-50 dark:bg-indigo-950/20 rounded-lg border-l-4 border-indigo-400">
-                  <strong className="text-indigo-600 dark:text-indigo-400">💾 Data Cards:</strong>{' '}
-                  Database Lock, Cert Expiry
+                  <strong className="text-indigo-600 dark:text-indigo-400">💾 Cartas de dados:</strong>{' '}
+                  O Lock no Banco, O Certificado Expirado
                 </div>
               </div>
             </motion.div>
@@ -768,13 +768,13 @@ export default function InfraTarot() {
             transition={{ delay: 1.6, duration: 0.5 }}
           >
             <p className="text-sm text-yellow-800 dark:text-yellow-200 text-center leading-relaxed">
-              <strong className="text-lg">🎭 Disclaimer:</strong> This is a fun parody game designed
-              purely for entertainment! While the cards reference real infrastructure concepts and
-              challenges, the mystical readings are completely satirical and should absolutely not
-              be used for actual infrastructure planning or decision-making.
+              <strong className="text-lg">🎭 Aviso:</strong> este é um jogo de paródia feito só
+              para diversão! As cartas citam conceitos e desafios reais de infraestrutura, mas as
+              leituras místicas são pura sátira e não devem, de jeito nenhum, ser usadas para
+              planejar infraestrutura ou tomar decisões.
               <br />
               <span className="italic mt-2 block">
-                Remember: Your monitoring dashboards are more reliable than crystal balls! 📊✨
+                Lembre-se: seus dashboards de monitoramento são mais confiáveis que bola de cristal! 📊✨
               </span>
             </p>
           </motion.div>

@@ -47,40 +47,40 @@ interface Category {
 const SCORECARD_DATA: Category[] = [
   {
     id: 'foundational',
-    name: 'Foundational Knowledge',
+    name: 'Conhecimentos fundamentais',
     icon: <Target className="h-5 w-5" />,
     color: 'from-blue-500 to-cyan-500',
     skills: [
-      { name: 'Linux/Unix System Administration', score: 0 },
-      { name: 'Networking Fundamentals (DNS, TCP/IP, HTTP)', score: 0 },
-      { name: 'Scripting (Bash, Python, etc.)', score: 0 },
-      { name: 'Version Control (Git, branching strategies)', score: 0 },
-      { name: 'Agile and CI/CD Principles', score: 0 },
+      { name: 'Administração de sistemas Linux/Unix', score: 0 },
+      { name: 'Fundamentos de redes (DNS, TCP/IP, HTTP)', score: 0 },
+      { name: 'Scripting (Bash, Python etc.)', score: 0 },
+      { name: 'Controle de versão (Git, estratégias de branch)', score: 0 },
+      { name: 'Princípios de ágil e CI/CD', score: 0 },
     ],
   },
   {
     id: 'iac',
-    name: 'Infrastructure as Code',
+    name: 'Infraestrutura como código',
     icon: <BarChart3 className="h-5 w-5" />,
     color: 'from-purple-500 to-pink-500',
     skills: [
-      { name: 'Terraform or CloudFormation', score: 0 },
-      { name: 'Ansible, Chef, or Puppet', score: 0 },
-      { name: 'Kubernetes & Helm', score: 0 },
-      { name: 'Docker and Containerization', score: 0 },
-      { name: 'YAML/JSON configuration management', score: 0 },
+      { name: 'Terraform ou CloudFormation', score: 0 },
+      { name: 'Ansible, Chef ou Puppet', score: 0 },
+      { name: 'Kubernetes e Helm', score: 0 },
+      { name: 'Docker e containers', score: 0 },
+      { name: 'Gestão de configuração em YAML/JSON', score: 0 },
     ],
   },
   {
     id: 'cloud',
-    name: 'Cloud Platforms',
+    name: 'Plataformas de nuvem',
     icon: <Star className="h-5 w-5" />,
     color: 'from-green-500 to-emerald-500',
     skills: [
-      { name: 'AWS (EC2, S3, IAM, RDS, etc.)', score: 0 },
-      { name: 'Azure or Google Cloud Platform (GCP)', score: 0 },
-      { name: 'Multi-cloud or hybrid cloud setups', score: 0 },
-      { name: 'Cloud cost optimization (FinOps)', score: 0 },
+      { name: 'AWS (EC2, S3, IAM, RDS etc.)', score: 0 },
+      { name: 'Azure ou Google Cloud Platform (GCP)', score: 0 },
+      { name: 'Ambientes multi-cloud ou de nuvem híbrida', score: 0 },
+      { name: 'Otimização de custos na nuvem (FinOps)', score: 0 },
     ],
   },
   {
@@ -90,77 +90,77 @@ const SCORECARD_DATA: Category[] = [
     color: 'from-orange-500 to-red-500',
     skills: [
       { name: 'Jenkins, GitLab CI, GitHub Actions', score: 0 },
-      { name: 'Automated testing (unit, integration, etc)', score: 0 },
-      { name: 'Deployment Strategies (blue-green, canary, etc)', score: 0 },
-      { name: 'Monitoring and rollback mechanisms', score: 0 },
+      { name: 'Testes automatizados (unitários, de integração etc.)', score: 0 },
+      { name: 'Estratégias de deploy (blue-green, canary etc.)', score: 0 },
+      { name: 'Monitoramento e mecanismos de rollback', score: 0 },
     ],
   },
   {
     id: 'monitoring',
-    name: 'Monitoring and Logging',
+    name: 'Monitoramento e logs',
     icon: <Trophy className="h-5 w-5" />,
     color: 'from-teal-500 to-blue-500',
     skills: [
-      { name: 'Prometheus and Grafana', score: 0 },
+      { name: 'Prometheus e Grafana', score: 0 },
       { name: 'ELK/EFK stack (Elasticsearch, Logstash/Fluentd, Kibana)', score: 0 },
-      { name: 'Distributed Tracing (Jaeger, OpenTelemetry)', score: 0 },
-      { name: 'Incident response and on-call practices', score: 0 },
+      { name: 'Tracing distribuído (Jaeger, OpenTelemetry)', score: 0 },
+      { name: 'Resposta a incidentes e práticas de plantão', score: 0 },
     ],
   },
   {
     id: 'security',
-    name: 'Security and Compliance',
+    name: 'Segurança e compliance',
     icon: <Award className="h-5 w-5" />,
     color: 'from-red-500 to-pink-500',
     skills: [
-      { name: 'Secrets management (Vault, AWS Secrets Manager)', score: 0 },
-      { name: 'Secure CI/CD pipelines', score: 0 },
-      { name: 'Vulnerability Scanning (Snyk, Trivy, etc)', score: 0 },
-      { name: 'Compliance frameworks (SOC 2, GDPR, etc)', score: 0 },
+      { name: 'Gestão de secrets (Vault, AWS Secrets Manager)', score: 0 },
+      { name: 'Pipelines de CI/CD seguros', score: 0 },
+      { name: 'Scan de vulnerabilidades (Snyk, Trivy etc.)', score: 0 },
+      { name: 'Frameworks de compliance (SOC 2, LGPD/GDPR etc.)', score: 0 },
     ],
   },
   {
     id: 'soft',
-    name: 'Soft Skills',
+    name: 'Soft skills',
     icon: <User className="h-5 w-5" />,
     color: 'from-indigo-500 to-purple-500',
     skills: [
-      { name: 'Communication and Collaboration', score: 0 },
-      { name: 'Problem-solving and troubleshooting', score: 0 },
-      { name: 'Documentation and knowledge sharing', score: 0 },
-      { name: 'Mentoring and leadership', score: 0 },
+      { name: 'Comunicação e colaboração', score: 0 },
+      { name: 'Resolução de problemas e troubleshooting', score: 0 },
+      { name: 'Documentação e compartilhamento de conhecimento', score: 0 },
+      { name: 'Mentoria e liderança', score: 0 },
     ],
   },
   {
     id: 'advanced',
-    name: 'Advanced Topics',
+    name: 'Tópicos avançados',
     icon: <Sparkles className="h-5 w-5" />,
     color: 'from-violet-500 to-purple-500',
     skills: [
-      { name: 'Site Reliability Engineering (SRE) practices', score: 0 },
+      { name: 'Práticas de Site Reliability Engineering (SRE)', score: 0 },
       { name: 'Chaos Engineering', score: 0 },
       { name: 'Service Mesh (Istio, Linkerd)', score: 0 },
-      { name: 'Event-driven Architecture (Kafka, RabbitMQ)', score: 0 },
+      { name: 'Arquitetura orientada a eventos (Kafka, RabbitMQ)', score: 0 },
     ],
   },
 ];
 
 const SKILL_LEVELS = {
-  1: { label: 'Beginner', description: 'Learning the basics', color: 'bg-red-500' },
-  2: { label: 'Novice', description: 'Some hands-on experience', color: 'bg-orange-500' },
+  1: { label: 'Iniciante', description: 'Aprendendo o básico', color: 'bg-red-500' },
+  2: { label: 'Novato', description: 'Alguma experiência prática', color: 'bg-orange-500' },
   3: {
-    label: 'Intermediate',
-    description: 'Comfortable with day-to-day tasks',
+    label: 'Intermediário',
+    description: 'À vontade com as tarefas do dia a dia',
     color: 'bg-yellow-500',
   },
   4: {
-    label: 'Advanced',
-    description: 'Can mentor others and solve complex problems',
+    label: 'Avançado',
+    description: 'Consegue mentorar outras pessoas e resolver problemas complexos',
     color: 'bg-blue-500',
   },
   5: {
-    label: 'Expert',
-    description: 'Industry leader, innovating and teaching',
+    label: 'Especialista',
+    description: 'Referência no mercado, inovando e ensinando',
     color: 'bg-green-500',
   },
 };
@@ -190,11 +190,11 @@ export default function DevOpsScorecard() {
   };
 
   const getScoreLevel = (score: number) => {
-    if (score >= 90) return { level: 'Expert', color: 'text-green-500', icon: '🚀' };
-    if (score >= 75) return { level: 'Advanced', color: 'text-blue-500', icon: '⭐' };
-    if (score >= 60) return { level: 'Intermediate', color: 'text-yellow-500', icon: '👍' };
-    if (score >= 40) return { level: 'Developing', color: 'text-orange-500', icon: '📈' };
-    return { level: 'Beginner', color: 'text-red-500', icon: '🌱' };
+    if (score >= 90) return { level: 'Especialista', color: 'text-green-500', icon: '🚀' };
+    if (score >= 75) return { level: 'Avançado', color: 'text-blue-500', icon: '⭐' };
+    if (score >= 60) return { level: 'Intermediário', color: 'text-yellow-500', icon: '👍' };
+    if (score >= 40) return { level: 'Em desenvolvimento', color: 'text-orange-500', icon: '📈' };
+    return { level: 'Iniciante', color: 'text-red-500', icon: '🌱' };
   };
 
   // Update skill score
@@ -233,7 +233,7 @@ export default function DevOpsScorecard() {
     const { level } = getScoreLevel(overallScore);
 
     const text = encodeURIComponent(
-      `I just completed my DevOps Scorecard! 🚀\n\nOverall Level: ${level} (${overallScore.toFixed(1)}%)\n\nCheck your DevOps skills at Bancada!`
+      `Acabei de fazer meu DevOps Scorecard! 🚀\n\nNível geral: ${level} (${overallScore.toFixed(1)}%)\n\nAvalie suas habilidades de DevOps na Bancada!`
     );
     const url = encodeURIComponent(window.location.href);
 
@@ -242,7 +242,7 @@ export default function DevOpsScorecard() {
     sharePopup.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4';
     sharePopup.innerHTML = `
       <div class="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-sm w-full shadow-xl">
-        <h3 class="text-lg font-semibold mb-4 text-center">Share Your DevOps Scorecard</h3>
+        <h3 class="text-lg font-semibold mb-4 text-center">Compartilhe seu DevOps Scorecard</h3>
         <div class="flex justify-center gap-4 mb-4">
           <a href="https://twitter.com/intent/tweet?text=${text}&url=${url}" 
              target="_blank" rel="noopener noreferrer"
@@ -267,7 +267,7 @@ export default function DevOpsScorecard() {
         </div>
         <button onclick="this.parentElement.parentElement.remove()" 
                 class="w-full py-2 px-4 bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors">
-          Close
+          Fechar
         </button>
       </div>
     `;
@@ -295,14 +295,14 @@ export default function DevOpsScorecard() {
           className="text-center space-y-4"
         >
           <div className="text-6xl mb-4">{icon}</div>
-          <h2 className="text-4xl font-bold">Your DevOps Scorecard</h2>
+          <h2 className="text-4xl font-bold">Seu DevOps Scorecard</h2>
           {userName && (
             <div className="text-lg text-muted-foreground">
               {userName} {userTitle && `• ${userTitle}`}
             </div>
           )}
           <div className="flex items-center justify-center gap-2 text-lg">
-            <span className="text-muted-foreground">Overall Level:</span>
+            <span className="text-muted-foreground">Nível geral:</span>
             <span className={cn('font-bold text-2xl', color)}>{level}</span>
             <Badge variant="outline" className="text-lg px-3 py-1">
               {overallScore.toFixed(1)}%
@@ -383,18 +383,18 @@ export default function DevOpsScorecard() {
             size="lg"
           >
             <Share2 className="mr-2 h-4 w-4" />
-            Share Results
+            Compartilhar resultado
           </Button>
           <Button onClick={resetScorecard} variant="outline" size="lg">
             <RotateCcw className="mr-2 h-4 w-4" />
-            Take Again
+            Fazer de novo
           </Button>
         </motion.div>
 
         {/* Date stamp */}
         <div className="text-center text-sm text-muted-foreground">
           <Calendar className="inline-block mr-1 h-4 w-4" />
-          Completed on {new Date().toLocaleDateString()}
+          Concluído em {new Date().toLocaleDateString('pt-BR')}
         </div>
       </div>
     );
@@ -412,22 +412,22 @@ export default function DevOpsScorecard() {
           DevOps Scorecard
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Evaluate your DevOps skills across 8 key areas and discover your strengths and growth
-          opportunities
+          Avalie suas habilidades de DevOps em 8 áreas-chave e descubra seus pontos fortes e onde
+          você pode crescer
         </p>
 
         {/* User Info */}
         <div className="max-w-md mx-auto space-y-3">
           <input
             type="text"
-            placeholder="Your name (optional)"
+            placeholder="Seu nome (opcional)"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <input
             type="text"
-            placeholder="Your title (optional)"
+            placeholder="Seu cargo (opcional)"
             value={userTitle}
             onChange={(e) => setUserTitle(e.target.value)}
             className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
@@ -453,7 +453,7 @@ export default function DevOpsScorecard() {
                   <div className="flex-1">
                     <CardTitle className="text-xl">{category.name}</CardTitle>
                     <CardDescription>
-                      Rate your experience level (1 = Beginner, 5 = Expert)
+                      Avalie seu nível de experiência (1 = iniciante, 5 = especialista)
                     </CardDescription>
                   </div>
                   <Badge variant="outline" className="text-sm">
@@ -490,7 +490,7 @@ export default function DevOpsScorecard() {
                                   )
                                 : 'border-border hover:border-primary bg-background'
                             )}
-                            aria-label={`Rate ${skill.name} as ${SKILL_LEVELS[rating as keyof typeof SKILL_LEVELS]?.label}`}
+                            aria-label={`Avaliar ${skill.name} como ${SKILL_LEVELS[rating as keyof typeof SKILL_LEVELS]?.label}`}
                           >
                             {rating}
                           </motion.button>
@@ -529,7 +529,7 @@ export default function DevOpsScorecard() {
           disabled={categories.every((cat) => cat.skills.every((skill) => skill.score === 0))}
         >
           <Trophy className="mr-2 h-4 w-4" />
-          Generate My Scorecard
+          Gerar meu scorecard
         </Button>
       </motion.div>
     </div>

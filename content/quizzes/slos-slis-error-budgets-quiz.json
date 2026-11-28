@@ -1,6 +1,6 @@
 {
   "id": "slos-slis-error-budgets-quiz",
-  "title": "SLOs, SLIs, and Error Budgets Quiz",
+  "title": "Quiz de SLOs, SLIs e Error Budgets",
   "description": "Teste sua capacidade de definir objetivos de nível de serviço, escolher os indicadores de nível de serviço certos, calcular error budgets e tomar decisões reais quando o orçamento está acabando.",
   "category": "SRE",
   "icon": "Target",

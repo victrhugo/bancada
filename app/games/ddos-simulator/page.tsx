@@ -12,9 +12,9 @@ export default function DDoSSimulatorPage() {
     <SimulatorShell
       slug="ddos-simulator"
       seoLearningPoints={[
-        'Recognize different types of DDoS attacks',
-        'Implement rate limiting and traffic filtering',
-        'Design resilient architectures against DDoS',
+        'Reconhecer os diferentes tipos de ataque DDoS',
+        'Implementar rate limiting e filtragem de tráfego',
+        'Projetar arquiteturas resilientes contra DDoS',
       ]}
     >
       <DDoSSimulator />

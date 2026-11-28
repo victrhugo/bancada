@@ -76,237 +76,237 @@ interface Lesson {
 const LESSONS: Lesson[] = [
   {
     id: 'mental-model',
-    title: 'Mental Model',
-    description: 'Map the working tree, staging area, local repo, and remote',
+    title: 'Modelo mental',
+    description: 'Mapeie o working tree, a staging area, o repositório local e o remoto',
     icon: <GitCommit className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Start by checking where the lab repository lives.',
+        instruction: 'Comece verificando onde fica o repositório do laboratório.',
         hint: 'Use "pwd".',
         expectedCommand: 'pwd',
         explanation:
-          'The working directory is the files you can edit. Git tracks selected snapshots of this directory.',
+          'O working directory são os arquivos que você pode editar. O Git rastreia snapshots selecionados desse diretório.',
       },
       {
-        instruction: 'List the files in the working directory.',
+        instruction: 'Liste os arquivos do working directory.',
         hint: 'Use "ls -l".',
         expectedCommand: ['ls -l', 'ls'],
         explanation:
-          'Files begin in the working directory. Git compares this directory with the index and the latest commit.',
+          'Os arquivos começam no working directory. O Git compara esse diretório com o index e com o último commit.',
       },
       {
-        instruction: 'Ask Git what it sees right now.',
+        instruction: 'Pergunte ao Git o que ele está vendo agora.',
         hint: 'Use "git status".',
         expectedCommand: 'git status',
         explanation:
-          'status is the map: current branch, staged changes, unstaged changes, and untracked files.',
+          'O status é o mapa: branch atual, mudanças em stage, mudanças fora do stage e arquivos não rastreados.',
       },
       {
-        instruction: 'Read the existing commit history.',
+        instruction: 'Leia o histórico de commits existente.',
         hint: 'Use "git log --oneline --decorate".',
         expectedCommand: ['git log --oneline --decorate', 'git log --oneline'],
         explanation:
-          'A Git commit is a snapshot with a parent pointer. Branches point at commits, and HEAD points at your current branch.',
+          'Um commit do Git é um snapshot com um ponteiro para o pai. Branches apontam para commits, e o HEAD aponta para a sua branch atual.',
       },
     ],
   },
   {
     id: 'stage-commit',
-    title: 'Stage & Commit',
-    description: 'Move a change from working tree to index to local history',
+    title: 'Stage e commit',
+    description: 'Leve uma mudança do working tree para o index e dali para o histórico local',
     icon: <FileText className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Create a new file in the working directory.',
+        instruction: 'Crie um arquivo novo no working directory.',
         hint: 'Use "echo \"Hi, I am Bob.\" > Bob.txt".',
         expectedCommand: 'echo "Hi, I am Bob." > Bob.txt',
         explanation:
-          'This creates an untracked file. It exists in your directory, but it is not part of Git history yet.',
+          'Isso cria um arquivo não rastreado. Ele existe no seu diretório, mas ainda não faz parte do histórico do Git.',
       },
       {
-        instruction: 'Check how Git classifies that new file.',
+        instruction: 'Veja como o Git classifica esse arquivo novo.',
         hint: 'Use "git status".',
         expectedCommand: 'git status',
         explanation:
-          'Untracked means Git sees the file but will not include it in a commit until you stage it.',
+          'Untracked significa que o Git vê o arquivo, mas não vai incluí-lo em um commit até você colocá-lo em stage.',
       },
       {
-        instruction: 'Stage the new file.',
+        instruction: 'Coloque o arquivo novo em stage.',
         hint: 'Use "git add Bob.txt".',
         expectedCommand: ['git add Bob.txt', 'git add .'],
         explanation:
-          'git add copies the selected content into the staging area, also called the index.',
+          'O git add copia o conteúdo selecionado para a staging area, também chamada de index.',
       },
       {
-        instruction: 'Inspect the staged change.',
+        instruction: 'Inspecione a mudança em stage.',
         hint: 'Use "git diff --staged".',
         expectedCommand: ['git diff --staged', 'git diff --cached'],
         explanation:
-          'git diff shows unstaged changes by default (working tree vs index). --staged (or --cached) compares the index to your last commit, known as HEAD.',
+          'Por padrão, o git diff mostra as mudanças fora do stage (working tree vs index). --staged (ou --cached) compara o index com o seu último commit, o HEAD.',
       },
       {
-        instruction: 'Commit the staged snapshot into the local repository.',
+        instruction: 'Faça commit do snapshot em stage no repositório local.',
         hint: 'Use "git commit -m \"Add Bob\"".',
         expectedCommand: 'git commit -m "Add Bob"',
         explanation:
-          'A commit stores the staged snapshot, moves the current branch forward, and makes the working tree clean.',
+          'Um commit guarda o snapshot em stage, avança a branch atual e deixa o working tree limpo.',
       },
     ],
   },
   {
     id: 'remote',
-    title: 'Remote Sync',
-    description: 'Share local commits with origin',
+    title: 'Sincronizar com o remoto',
+    description: 'Compartilhe commits locais com o origin',
     icon: <Cloud className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Check whether your local branch is ahead of origin.',
+        instruction: 'Verifique se a sua branch local está à frente do origin.',
         hint: 'Use "git status".',
         expectedCommand: 'git status',
         explanation:
-          'After a local commit, main points at a commit that origin/main does not have yet.',
+          'Depois de um commit local, a main aponta para um commit que o origin/main ainda não tem.',
       },
       {
-        instruction: 'Push the local commit to the remote.',
+        instruction: 'Envie o commit local para o remoto.',
         hint: 'Use "git push".',
         expectedCommand: 'git push',
         explanation:
-          'push copies commits from your local repository to the remote repository and advances origin/main.',
+          'O push copia os commits do repositório local para o remoto e avança o origin/main.',
       },
     ],
   },
   {
     id: 'branches',
-    title: 'Branch Pointers',
-    description: 'Create a branch and watch HEAD move',
+    title: 'Ponteiros de branch',
+    description: 'Crie uma branch e veja o HEAD se mover',
     icon: <GitBranch className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Create and switch to a feature branch.',
+        instruction: 'Crie uma feature branch e mude para ela.',
         hint: 'Use "git switch -c change-alice".',
         expectedCommand: ['git switch -c change-alice', 'git checkout -b change-alice'],
         explanation:
-          'A branch is a movable pointer to a commit. HEAD now points to change-alice instead of main.',
+          'Uma branch é um ponteiro móvel para um commit. Agora o HEAD aponta para change-alice em vez de main.',
       },
       {
-        instruction: 'Modify Alice.txt on the feature branch.',
+        instruction: 'Modifique o Alice.txt na feature branch.',
         hint: 'Use "echo \"Alice learns branches.\" >> Alice.txt".',
         expectedCommand: 'echo "Alice learns branches." >> Alice.txt',
         explanation:
-          'The working directory can change before Git history changes. The branch pointer moves only when you commit.',
+          'O working directory pode mudar antes do histórico do Git. O ponteiro da branch só se move quando você faz commit.',
       },
       {
-        instruction: 'Stage the modified file.',
+        instruction: 'Coloque o arquivo modificado em stage.',
         hint: 'Use "git add Alice.txt".',
         expectedCommand: ['git add Alice.txt', 'git add .'],
         explanation:
-          'The index now contains the version of Alice.txt you want in the next commit.',
+          'Agora o index contém a versão do Alice.txt que você quer no próximo commit.',
       },
       {
-        instruction: 'Commit on the feature branch.',
+        instruction: 'Faça commit na feature branch.',
         hint: 'Use "git commit -m \"Update Alice\"".',
         expectedCommand: 'git commit -m "Update Alice"',
         explanation:
-          'Only change-alice moved forward. main still points at the previous commit.',
+          'Só a change-alice avançou. A main ainda aponta para o commit anterior.',
       },
       {
-        instruction: 'List local branches and confirm where HEAD points.',
+        instruction: 'Liste as branches locais e confirme para onde o HEAD aponta.',
         hint: 'Use "git branch".',
         expectedCommand: 'git branch',
         explanation:
-          'The star marks the branch HEAD is attached to. Commits advance that branch.',
+          'O asterisco marca a branch à qual o HEAD está ligado. Os commits avançam essa branch.',
       },
     ],
   },
   {
     id: 'merge',
-    title: 'Merge Concepts',
-    description: 'Fast-forward a branch and inspect the graph',
+    title: 'Conceitos de merge',
+    description: 'Faça fast-forward de uma branch e inspecione o grafo',
     icon: <GitMerge className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Switch back to main.',
+        instruction: 'Volte para a main.',
         hint: 'Use "git switch main".',
         expectedCommand: ['git switch main', 'git checkout main'],
         explanation:
-          'Switching moves HEAD and updates the working directory to match that branch snapshot.',
+          'Trocar de branch move o HEAD e atualiza o working directory para o snapshot dessa branch.',
       },
       {
-        instruction: 'Merge change-alice into main.',
+        instruction: 'Faça merge da change-alice na main.',
         hint: 'Use "git merge change-alice".',
         expectedCommand: 'git merge change-alice',
         explanation:
-          'Because main has not diverged, Git can fast-forward main to the same commit as change-alice.',
+          'Como a main não divergiu, o Git pode fazer fast-forward da main até o mesmo commit da change-alice.',
       },
       {
-        instruction: 'Show the commit graph after the merge.',
+        instruction: 'Mostre o grafo de commits depois do merge.',
         hint: 'Use "git log --oneline --graph --decorate".',
         expectedCommand: [
           'git log --oneline --graph --decorate',
           'git log --graph --oneline --decorate',
         ],
         explanation:
-          'The graph shows commits and labels. Branch names are just labels pointing at commits.',
+          'O grafo mostra commits e rótulos. Nomes de branch são só rótulos apontando para commits.',
       },
     ],
   },
   {
     id: 'rebase',
-    title: 'Fetch & Rebase',
-    description: 'Bring in remote work and replay your local branch on top',
+    title: 'Fetch e rebase',
+    description: 'Traga o trabalho remoto e reaplique sua branch local por cima',
     icon: <GitFork className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Create a new feature branch from main.',
+        instruction: 'Crie uma nova feature branch a partir da main.',
         hint: 'Use "git switch -c feature-bob".',
         expectedCommand: ['git switch -c feature-bob', 'git checkout -b feature-bob'],
         explanation:
-          'Feature branches let you work without moving main until you are ready to integrate.',
+          'Feature branches permitem trabalhar sem mexer na main até você estar pronto para integrar.',
       },
       {
-        instruction: 'Change Bob.txt on the feature branch.',
+        instruction: 'Altere o Bob.txt na feature branch.',
         hint: 'Use "echo \"Bob learns remotes.\" >> Bob.txt".',
         expectedCommand: 'echo "Bob learns remotes." >> Bob.txt',
         explanation:
-          'This change is local. It exists only in the working directory until you stage and commit it.',
+          'Essa mudança é local. Ela só existe no working directory até você colocá-la em stage e fazer commit.',
       },
       {
-        instruction: 'Stage the Bob change.',
+        instruction: 'Coloque a mudança do Bob em stage.',
         hint: 'Use "git add Bob.txt".',
         expectedCommand: ['git add Bob.txt', 'git add .'],
         explanation:
-          'The feature branch still has not moved, but the index now has the Bob change ready for a commit.',
+          'A feature branch ainda não se moveu, mas o index já tem a mudança do Bob pronta para o commit.',
       },
       {
-        instruction: 'Commit the Bob change on your feature branch.',
+        instruction: 'Faça commit da mudança do Bob na sua feature branch.',
         hint: 'Use "git commit -m \"Teach Bob remotes\"".',
         expectedCommand: 'git commit -m "Teach Bob remotes"',
         explanation:
-          'Your feature branch now points at a local commit that origin/main does not have.',
+          'Agora sua feature branch aponta para um commit local que o origin/main não tem.',
       },
       {
-        instruction: 'Fetch a simulated teammate change from origin.',
+        instruction: 'Busque no origin uma mudança simulada de um colega de equipe.',
         hint: 'Use "git fetch".',
         expectedCommand: 'git fetch',
         explanation:
-          'fetch updates remote-tracking branches without changing your current branch or working directory.',
+          'O fetch atualiza as remote-tracking branches sem mudar sua branch atual nem o working directory.',
       },
       {
-        instruction: 'Rebase your feature branch onto the updated origin/main.',
+        instruction: 'Faça rebase da sua feature branch sobre o origin/main atualizado.',
         hint: 'Use "git rebase origin/main".',
         expectedCommand: 'git rebase origin/main',
         explanation:
-          'rebase replays your branch commits on top of a new base, creating a linear story.',
+          'O rebase reaplica os commits da sua branch sobre uma nova base, criando um histórico linear.',
       },
       {
-        instruction: 'Read the final graph with local and remote labels.',
+        instruction: 'Leia o grafo final com os rótulos locais e remotos.',
         hint: 'Use "git log --oneline --graph --decorate --all".',
         expectedCommand: [
           'git log --oneline --graph --decorate --all',
           'git log --graph --oneline --decorate --all',
         ],
         explanation:
-          'Seeing all branch labels together makes the pointer model click: commits are history, labels are movable names.',
+          'Ver todos os rótulos de branch juntos faz o modelo de ponteiros fazer sentido: commits são histórico, rótulos são nomes móveis.',
       },
     ],
   },
@@ -535,7 +535,7 @@ export default function GitConceptsSimulator() {
           const inlineMessage = rest.find((item) => item.startsWith('-m=') || item.startsWith('--message='));
           const message = inlineMessage?.split('=').slice(1).join('=') || (messageIndex >= 0 ? rest[messageIndex + 1] : '');
           if (repo.staged.length === 0) return { output: 'nothing to commit, working tree clean', type: 'output' };
-          if (!message) return { output: 'error: commit message required in this lab', type: 'error' };
+          if (!message) return { output: 'error: este laboratório exige uma mensagem de commit', type: 'error' };
 
           const files = { ...headCommit(repo).files };
           for (const change of repo.staged) files[change.file] = change.content;
@@ -597,7 +597,7 @@ export default function GitConceptsSimulator() {
             }));
             return { output: `Updating ${repo.head}..${target}\nFast-forward`, type: 'output' };
           }
-          return { output: 'Automatic merge would create a merge commit. This lab focuses on fast-forward merge here.', type: 'output' };
+          return { output: 'O merge automático criaria um merge commit. Aqui o laboratório foca no merge fast-forward.', type: 'output' };
         }
 
         case 'push': {
@@ -635,7 +635,7 @@ export default function GitConceptsSimulator() {
           const target = rest[0];
           const targetHead = repo.remoteBranches[target] || repo.branches[target];
           if (!targetHead) return { output: `fatal: invalid upstream '${target || ''}'`, type: 'error' };
-          if (repo.currentBranch === 'main') return { output: 'Current branch main is already the integration branch in this lab.', type: 'output' };
+          if (repo.currentBranch === 'main') return { output: 'Neste laboratório, a branch main já é a branch de integração.', type: 'output' };
           if (repo.head === targetHead) return { output: 'Current branch is up to date.', type: 'output' };
           const current = headCommit(repo);
           const targetCommit = findCommit(repo, targetHead);
@@ -659,7 +659,7 @@ export default function GitConceptsSimulator() {
         }
 
         default:
-          return { output: `git: '${command || ''}' is not a git command in this lab`, type: 'error' };
+          return { output: `git: '${command || ''}' não é um comando git disponível neste laboratório`, type: 'error' };
       }
     },
     [repo]
@@ -681,7 +681,7 @@ export default function GitConceptsSimulator() {
 
       if (command === 'help') {
         return {
-          output: `Available commands:
+          output: `Comandos disponíveis:
   pwd, ls, ls -l, cat FILE, clear
   echo "text" > FILE
   echo "text" >> FILE
@@ -709,7 +709,7 @@ export default function GitConceptsSimulator() {
         return { output: files[file], type: 'output' };
       }
       if (command === 'git') return runGit(args.slice(1));
-      return { output: `command not found: ${command || ''}`, type: 'error' };
+      return { output: `comando não encontrado: ${command || ''}`, type: 'error' };
     },
     [addWorkingChange, repo, runGit]
   );
@@ -792,13 +792,13 @@ export default function GitConceptsSimulator() {
               <GitBranch className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// git mental model lab</p>
-              <h2 className="text-2xl font-bold md:text-3xl">Git Concepts Simulator</h2>
+              <p className="font-mono text-xs text-muted-foreground">// laboratório do modelo mental do Git</p>
+              <h2 className="text-2xl font-bold md:text-3xl">Simulador de conceitos do Git</h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Practice Git by watching files move through the working directory, staging area, local
-            repository, branch pointers, and remote repository.
+            Pratique Git vendo os arquivos passarem pelo working directory, pela staging area, pelo
+            repositório local, pelos ponteiros de branch e pelo repositório remoto.
           </p>
         </div>
 
@@ -813,8 +813,8 @@ export default function GitConceptsSimulator() {
             <Progress value={progress} />
             <div className="grid grid-cols-3 gap-2 text-center">
               <Metric label="Branch" value={repo.currentBranch} />
-              <Metric label="Staged" value={String(repo.staged.length)} />
-              <Metric label="Working" value={String(repo.working.length)} />
+              <Metric label="Em stage" value={String(repo.staged.length)} />
+              <Metric label="Alterados" value={String(repo.working.length)} />
             </div>
           </CardContent>
         </Card>
@@ -826,7 +826,7 @@ export default function GitConceptsSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Code2 className="h-5 w-5" />
-                Lessons
+                Lições
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -868,7 +868,7 @@ export default function GitConceptsSimulator() {
 
           <Button size="sm" variant="outline" onClick={resetLab} className="w-full">
             <RotateCcw className="mr-1 h-4 w-4" />
-            Reset lab
+            Reiniciar laboratório
           </Button>
         </div>
 
@@ -895,11 +895,11 @@ export default function GitConceptsSimulator() {
                 <div className="flex shrink-0 gap-2">
                   <Button size="sm" variant="outline" onClick={() => setShowHint((value) => !value)}>
                     <Lightbulb className="mr-1 h-4 w-4" />
-                    Hint
+                    Dica
                   </Button>
                   <Button size="sm" onClick={runCurrentCommand}>
                     <Play className="mr-1 h-4 w-4" />
-                    Run
+                    Executar
                   </Button>
                 </div>
               </div>
@@ -930,9 +930,9 @@ export default function GitConceptsSimulator() {
               >
                 {terminalHistory.length === 0 && (
                   <div className="mb-4 text-emerald-400">
-                    <p>Welcome to Git Concepts Lab.</p>
+                    <p>Boas-vindas ao laboratório de conceitos do Git.</p>
                     <p className="mt-2 text-muted-foreground">
-                      Type "help", run "git status", or follow the current task above.
+                      Digite "help", rode "git status" ou siga a tarefa atual acima.
                     </p>
                   </div>
                 )}
@@ -979,21 +979,21 @@ export default function GitConceptsSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <CircleDot className="h-5 w-5" />
-                Pointer Model
+                Modelo de ponteiros
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0 text-sm text-muted-foreground">
               <p>
-                <strong className="text-foreground">HEAD</strong> follows{' '}
+                <strong className="text-foreground">HEAD</strong> acompanha{' '}
                 <strong className="text-foreground">{repo.currentBranch}</strong>.
               </p>
               <p>
-                <strong className="text-foreground">{repo.currentBranch}</strong> points at{' '}
+                <strong className="text-foreground">{repo.currentBranch}</strong> aponta para{' '}
                 <strong className="font-mono text-foreground">{repo.head}</strong>.
               </p>
               <p>
-                Branches and remote refs are labels. Commits are immutable snapshots with parent
-                links.
+                Branches e refs remotas são rótulos. Commits são snapshots imutáveis com ligação
+                para o pai.
               </p>
             </CardContent>
           </Card>
@@ -1006,14 +1006,14 @@ export default function GitConceptsSimulator() {
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">Lab complete</p>
+                <p className="font-semibold">Laboratório concluído</p>
                 <p className="text-sm text-muted-foreground">
-                  You practiced Git as a model of snapshots, areas, refs, remotes, and history.
+                  Você praticou Git como um modelo de snapshots, áreas, refs, remotos e histórico.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetLab}>
-              Start over
+              Começar de novo
             </Button>
           </CardContent>
         </Card>
@@ -1040,14 +1040,14 @@ function ConceptPipeline({ repo }: { repo: RepoState }) {
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <Send className="h-5 w-5" />
-          Git Areas
+          Áreas do Git
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 p-4 pt-0">
-        <AreaCard title="Working Directory" tone="amber" items={repo.working.map((change) => `${change.kind}: ${change.file}`)} empty="Clean" />
-        <AreaCard title="Staging Area" tone="sky" items={repo.staged.map((change) => `${change.kind}: ${change.file}`)} empty="Nothing staged" />
-        <AreaCard title="Local Repository" tone="emerald" items={[`${repo.currentBranch} -> ${repo.head}`, localClean ? 'working tree clean' : 'snapshot pending']} empty="" />
-        <AreaCard title="Remote Repository" tone="violet" items={remoteRefs.map(([name, id]) => `${name} -> ${id}`)} empty="No remotes" />
+        <AreaCard title="Working directory" tone="amber" items={repo.working.map((change) => `${change.kind}: ${change.file}`)} empty="Limpo" />
+        <AreaCard title="Staging Area" tone="sky" items={repo.staged.map((change) => `${change.kind}: ${change.file}`)} empty="Nada em stage" />
+        <AreaCard title="Repositório local" tone="emerald" items={[`${repo.currentBranch} -> ${repo.head}`, localClean ? 'working tree limpo' : 'snapshot pendente']} empty="" />
+        <AreaCard title="Repositório remoto" tone="violet" items={remoteRefs.map(([name, id]) => `${name} -> ${id}`)} empty="Sem remotos" />
       </CardContent>
     </Card>
   );
@@ -1093,7 +1093,7 @@ function CommitGraph({ repo }: { repo: RepoState }) {
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <GitFork className="h-5 w-5" />
-          Commit Graph
+          Grafo de commits
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 p-4 pt-0">

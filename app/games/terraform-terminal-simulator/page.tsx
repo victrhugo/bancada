@@ -10,103 +10,104 @@ export async function generateMetadata(): Promise<Metadata> {
 function TerraformEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">Terraform basics, explained</h3>
+      <h3 className="mb-4 text-xl font-semibold">Terraform básico, explicado</h3>
       <p className="mb-6 max-w-3xl text-sm text-muted-foreground">
-        Terraform is an infrastructure as code (IaC) tool. Instead of clicking through a cloud
-        console, you describe the infrastructure you want in configuration files, and Terraform
-        figures out how to create, change, or destroy it to match. This lab teaches that loop
-        hands-on. Below is the background to go with it.
+        Terraform é uma ferramenta de infraestrutura como código (IaC). Em vez de clicar pelo console
+        da nuvem, você descreve a infraestrutura que quer em arquivos de configuração, e o Terraform
+        descobre como criar, alterar ou destruir recursos para chegar lá. Este laboratório ensina esse
+        ciclo na prática. Abaixo está o contexto para acompanhar.
       </p>
 
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 text-sm font-semibold">The building blocks (HCL)</h4>
+          <h4 className="mb-3 text-sm font-semibold">As peças básicas (HCL)</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">provider:</strong> the plugin Terraform uses to
-              talk to a platform, such as AWS, Azure, or GCP.
+              <strong className="text-foreground">provider:</strong> o plugin que o Terraform usa para
+              falar com uma plataforma, como AWS, Azure ou GCP.
             </li>
             <li>
-              <strong className="text-foreground">resource:</strong> a single piece of
-              infrastructure, like an EC2 instance or an S3 bucket.
+              <strong className="text-foreground">resource:</strong> uma única peça de infraestrutura,
+              como uma instância EC2 ou um bucket S3.
             </li>
             <li>
-              <strong className="text-foreground">variable:</strong> an input you can change without
-              editing the main config, such as region or instance size.
+              <strong className="text-foreground">variable:</strong> uma entrada que você muda sem
+              editar a configuração principal, como a região ou o tamanho da instância.
             </li>
             <li>
-              <strong className="text-foreground">output:</strong> a value Terraform exposes after
-              apply, like an instance IP, for you or other tools to read.
+              <strong className="text-foreground">output:</strong> um valor que o Terraform expõe
+              depois do apply, como o IP de uma instância, para você ou outras ferramentas lerem.
             </li>
             <li>
-              <strong className="text-foreground">state:</strong> Terraform&apos;s record of what it
-              created, so it knows what to change next time.
+              <strong className="text-foreground">state:</strong> o registro do Terraform sobre o que
+              ele criou, para saber o que mudar da próxima vez.
             </li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 text-sm font-semibold">The core workflow</h4>
+          <h4 className="mb-3 text-sm font-semibold">O fluxo principal</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">terraform init:</strong> download providers and
-              prepare the directory. Run it first.
+              <strong className="text-foreground">terraform init:</strong> baixa os providers e prepara
+              o diretório. Rode primeiro.
             </li>
             <li>
-              <strong className="text-foreground">terraform validate:</strong> check the config is
-              syntactically valid.
+              <strong className="text-foreground">terraform validate:</strong> confere se a
+              configuração é sintaticamente válida.
             </li>
             <li>
-              <strong className="text-foreground">terraform plan:</strong> preview the changes.{' '}
-              <span className="font-mono">+</span> create, <span className="font-mono">~</span>{' '}
-              change, <span className="font-mono">-</span> destroy.
+              <strong className="text-foreground">terraform plan:</strong> mostra uma prévia das
+              mudanças. <span className="font-mono">+</span> cria, <span className="font-mono">~</span>{' '}
+              altera, <span className="font-mono">-</span> destrói.
             </li>
             <li>
-              <strong className="text-foreground">terraform apply:</strong> make the changes and
-              write them to state.
+              <strong className="text-foreground">terraform apply:</strong> aplica as mudanças e grava
+              no state.
             </li>
             <li>
-              <strong className="text-foreground">terraform destroy:</strong> tear everything down so
-              it stops costing money.
+              <strong className="text-foreground">terraform destroy:</strong> remove tudo para parar de
+              gerar custo.
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Try it in the lab</h4>
+        <h4 className="mb-2 text-sm font-semibold">Experimente no laboratório</h4>
         <p className="text-sm text-muted-foreground">
-          Run <code className="text-primary">terraform init</code>, then{' '}
-          <code className="text-primary">plan</code> and{' '}
-          <code className="text-primary">apply</code> to create the example resources. Then switch the
-          config panel to <span className="font-mono">edit</span> mode, change{' '}
-          <code className="text-primary">instance_type</code> in <span className="font-mono">variables.tf</span>,
-          and run <code className="text-primary">terraform plan</code> again. Terraform shows a{' '}
-          <span className="font-mono">~</span> in-place update because your config no longer matches
-          state. Delete a resource block and plan shows a <span className="font-mono">-</span>{' '}
-          destroy. That diff between desired and actual is the heart of how Terraform works.
+          Rode <code className="text-primary">terraform init</code>, depois{' '}
+          <code className="text-primary">plan</code> e <code className="text-primary">apply</code> para
+          criar os recursos de exemplo. Em seguida, coloque o painel de configuração no modo{' '}
+          <span className="font-mono">editar</span>, mude o{' '}
+          <code className="text-primary">instance_type</code> em{' '}
+          <span className="font-mono">variables.tf</span> e rode{' '}
+          <code className="text-primary">terraform plan</code> de novo. O Terraform mostra um{' '}
+          <span className="font-mono">~</span>, uma atualização no lugar, porque sua configuração não
+          bate mais com o state. Apague um bloco de resource e o plan mostra um{' '}
+          <span className="font-mono">-</span>, uma destruição. Essa diferença entre o desejado e o
+          real é o coração do funcionamento do Terraform.
         </p>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Common beginner gotchas</h4>
+        <h4 className="mb-2 text-sm font-semibold">Armadilhas comuns de quem está começando</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>Always read the plan before you apply. The plan is your safety check.</li>
-          <li>State is the source of truth. Never hand-edit it, and store it in a remote backend for teams.</li>
-          <li>Some changes update in place; others force a replacement (shown as -/+ in a real plan).</li>
-          <li>Keep secrets out of plaintext config and state. Use variables and a secrets manager.</li>
-          <li>Run terraform destroy on throwaway environments so you do not pay for idle resources.</li>
+          <li>Sempre leia o plan antes do apply. O plan é a sua verificação de segurança.</li>
+          <li>O state é a fonte da verdade. Nunca edite à mão e, em times, guarde em um backend remoto.</li>
+          <li>Algumas mudanças atualizam no lugar; outras forçam a substituição (aparece como -/+ em um plan real).</li>
+          <li>Não deixe segredos em texto puro na configuração nem no state. Use variáveis e um gerenciador de segredos.</li>
+          <li>Rode terraform destroy em ambientes descartáveis para não pagar por recursos parados.</li>
         </ul>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 text-sm font-semibold">Browser-safe by design</h4>
+        <h4 className="mb-2 text-sm font-semibold">Seguro para o navegador</h4>
         <p className="text-sm text-muted-foreground">
-          This lab does not provision real infrastructure. It models a small AWS configuration (a
-          security group, an EC2 instance, and an S3 bucket) in the browser so you can read and edit
-          the HCL, run the full workflow, and see state change without an AWS account or any cost.
+          Este laboratório não cria infraestrutura de verdade. Ele simula uma pequena configuração da
+          AWS (um security group, uma instância EC2 e um bucket S3) no navegador, para você ler e
+          editar o HCL, rodar o fluxo completo e ver o state mudar sem conta na AWS e sem custo.
         </p>
       </div>
-
     </>
   );
 }
@@ -115,17 +116,17 @@ export default function TerraformTerminalSimulatorPage() {
   return (
     <SimulatorShell
       slug="terraform-terminal-simulator"
-      fallbackTitle="Terraform Basics Simulator"
-      fallbackDescription="Learn Terraform basics in an interactive browser lab. Read and edit the HCL config, run init, plan, apply, and destroy, and watch state react to your changes. No AWS account needed."
+      fallbackTitle="Simulador de Terraform Básico"
+      fallbackDescription="Aprenda o básico de Terraform em um laboratório interativo no navegador. Leia e edite a configuração HCL, rode init, plan, apply e destroy e veja o state reagir às suas mudanças. Sem conta na AWS."
       educational={<TerraformEducational />}
-      shareText="Learn Terraform basics in the browser: edit the HCL, run plan and apply, and watch state change in this interactive lab."
+      shareText="Aprenda Terraform no navegador: edite o HCL, rode plan e apply e veja o state mudar neste laboratório interativo."
       seoLearningPoints={[
-        'What infrastructure as code (IaC) is and why teams use Terraform',
-        'The HCL building blocks: provider, resource, variable, output, and state',
-        'The core Terraform workflow: init, validate, plan, apply, and destroy',
-        'How to read a plan: + create, ~ change in place, and - destroy',
-        'How editing your config changes the plan against existing state',
-        'Why you destroy throwaway environments to control cost',
+        'O que é infraestrutura como código (IaC) e por que times usam Terraform',
+        'As peças do HCL: provider, resource, variable, output e state',
+        'O fluxo principal do Terraform: init, validate, plan, apply e destroy',
+        'Como ler um plan: + cria, ~ altera no lugar e - destrói',
+        'Como editar a configuração muda o plan em relação ao state existente',
+        'Por que destruir ambientes descartáveis para controlar custos',
       ]}
     >
       <TerraformTerminalSimulator />

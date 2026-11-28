@@ -72,229 +72,229 @@ const STRATEGIES: Record<
 > = {
   recreate: {
     name: 'Recreate',
-    description: 'Stop all old pods, then start new ones. Simple but causes downtime.',
+    description: 'Para todos os pods antigos e depois sobe os novos. Simples, mas causa downtime.',
     steps: [
       {
-        title: 'Initial State',
+        title: 'Estado inicial',
         v1Pods: createPods('v1', 3),
         v2Pods: [],
         trafficSplit: { v1: 100, v2: 0 },
-        note: 'All traffic goes to v1',
+        note: 'Todo o tráfego vai para a v1',
       },
       {
-        title: 'Terminate v1',
+        title: 'Derrubar a v1',
         v1Pods: createPods('v1', 3, 'terminating'),
         v2Pods: [],
         trafficSplit: { v1: 0, v2: 0 },
         hasDowntime: true,
-        note: 'DOWNTIME - No pods available',
+        note: 'DOWNTIME - nenhum pod disponível',
       },
       {
-        title: 'Start v2',
+        title: 'Subir a v2',
         v1Pods: [],
         v2Pods: createPods('v2', 3, 'starting'),
         trafficSplit: { v1: 0, v2: 0 },
         hasDowntime: true,
-        note: 'Still starting...',
+        note: 'Ainda subindo...',
       },
       {
-        title: 'Complete',
+        title: 'Concluído',
         v1Pods: [],
         v2Pods: createPods('v2', 3),
         trafficSplit: { v1: 0, v2: 100 },
-        note: 'All traffic to v2',
+        note: 'Todo o tráfego na v2',
       },
     ],
-    pros: ['Simple', 'Clean state', 'Low cost'],
-    cons: ['Downtime', 'No rollback', 'Risky'],
+    pros: ['Simples', 'Estado limpo', 'Baixo custo'],
+    cons: ['Downtime', 'Sem rollback', 'Arriscado'],
   },
   rolling: {
   name: 'Rolling Update',
-  description: 'Replace pods one at a time. Zero downtime with temporary version mixing.',
+  description: 'Substitui um pod por vez. Sem downtime, com versões misturadas por um tempo.',
   steps: [
     {
-      title: 'Initial State',
+      title: 'Estado inicial',
       v1Pods: createPods('v1', 3),
       v2Pods: [],
       trafficSplit: { v1: 100, v2: 0 },
-      note: 'Starting automatic pod replacement',
+      note: 'Iniciando a substituição automática dos pods',
     },
     {
-      title: 'Start v2 Pod 1',
+      title: 'Subir o pod 1 da v2',
       v1Pods: createPods('v1', 3),
       v2Pods: createPods('v2', 1, 'starting'),
       trafficSplit: { v1: 100, v2: 0 },
       isAutomatic: true,
-      note: 'Auto: New v2 pod starting (v1 stays up)',
+      note: 'Automático: novo pod v2 subindo (a v1 continua no ar)',
     },
     {
-      title: 'Pod 1 Ready',
+      title: 'Pod 1 pronto',
       v1Pods: createPods('v1', 3),
       v2Pods: createPods('v2', 1),
       trafficSplit: { v1: 75, v2: 25 },
       isAutomatic: true,
-      note: 'Auto: v2 pod healthy, can remove v1',
+      note: 'Automático: pod v2 saudável, pode remover a v1',
     },
     {
-      title: 'Remove v1 Pod',
+      title: 'Remover pod da v1',
       v1Pods: createPods('v1', 2),
       v2Pods: createPods('v2', 1),
       trafficSplit: { v1: 67, v2: 33 },
       isAutomatic: true,
-      note: 'Auto: Terminating old v1 pod',
+      note: 'Automático: encerrando o pod antigo da v1',
     },
     {
-      title: 'Start v2 Pod 2',
+      title: 'Subir o pod 2 da v2',
       v1Pods: createPods('v1', 2),
       v2Pods: createPods('v2', 2, 'starting'),
       trafficSplit: { v1: 67, v2: 33 },
       isAutomatic: true,
-      note: 'Auto: Starting second v2 pod',
+      note: 'Automático: subindo o segundo pod v2',
     },
     {
-      title: 'Pod 2 Ready',
+      title: 'Pod 2 pronto',
       v1Pods: createPods('v1', 2),
       v2Pods: createPods('v2', 2),
       trafficSplit: { v1: 50, v2: 50 },
       isAutomatic: true,
-      note: 'Auto: Second v2 pod healthy',
+      note: 'Automático: segundo pod v2 saudável',
     },
     {
-      title: 'Remove v1 Pod',
+      title: 'Remover pod da v1',
       v1Pods: createPods('v1', 1),
       v2Pods: createPods('v2', 2),
       trafficSplit: { v1: 33, v2: 67 },
       isAutomatic: true,
-      note: 'Auto: Terminating second v1 pod',
+      note: 'Automático: encerrando o segundo pod da v1',
     },
     {
-      title: 'Start v2 Pod 3',
+      title: 'Subir o pod 3 da v2',
       v1Pods: createPods('v1', 1),
       v2Pods: createPods('v2', 3, 'starting'),
       trafficSplit: { v1: 33, v2: 67 },
       isAutomatic: true,
-      note: 'Auto: Starting final v2 pod',
+      note: 'Automático: subindo o último pod v2',
     },
     {
-      title: 'Pod 3 Ready',
+      title: 'Pod 3 pronto',
       v1Pods: createPods('v1', 1),
       v2Pods: createPods('v2', 3),
       trafficSplit: { v1: 25, v2: 75 },
       isAutomatic: true,
-      note: 'Auto: Final v2 pod healthy',
+      note: 'Automático: último pod v2 saudável',
     },
     {
-      title: 'Complete',
+      title: 'Concluído',
       v1Pods: [],
       v2Pods: createPods('v2', 3),
       trafficSplit: { v1: 0, v2: 100 },
-      note: 'All pods replaced automatically',
+      note: 'Todos os pods substituídos automaticamente',
     },
   ],
-    pros: ['Zero downtime', 'Gradual rollout', 'Easy rollback'],
-    cons: ['Slow', 'Version mixing', 'Complex'],
+    pros: ['Sem downtime', 'Liberação gradual', 'Rollback fácil'],
+    cons: ['Lento', 'Versões misturadas', 'Complexo'],
   },
   'blue-green': {
     name: 'Blue-Green',
-    description: 'Run v2 alongside v1, then switch all traffic instantly.',
+    description: 'Sobe a v2 ao lado da v1 e depois troca todo o tráfego de uma vez.',
     steps: [
       {
-        title: 'Blue Active',
+        title: 'Blue ativo',
         v1Pods: createPods('v1', 3),
         v2Pods: [],
         trafficSplit: { v1: 100, v2: 0 },
-        note: 'Blue (v1) serves all traffic',
+        note: 'O Blue (v1) atende todo o tráfego',
       },
       {
-        title: 'Deploy Green',
+        title: 'Publicar o Green',
         v1Pods: createPods('v1', 3),
         v2Pods: createPods('v2', 3, 'starting'),
         trafficSplit: { v1: 100, v2: 0 },
-        note: 'Green (v2) starting in parallel',
+        note: 'O Green (v2) sobe em paralelo',
       },
       {
-        title: 'Green Ready',
+        title: 'Green pronto',
         v1Pods: createPods('v1', 3),
         v2Pods: createPods('v2', 3),
         trafficSplit: { v1: 100, v2: 0 },
-        note: 'Both environments ready',
+        note: 'Os dois ambientes prontos',
       },
       {
-        title: 'Switch Traffic',
+        title: 'Trocar o tráfego',
         v1Pods: createPods('v1', 3),
         v2Pods: createPods('v2', 3),
         trafficSplit: { v1: 0, v2: 100 },
-        note: 'Instant switch to Green (v2)',
+        note: 'Troca instantânea para o Green (v2)',
       },
       {
-        title: 'Complete',
+        title: 'Concluído',
         v1Pods: [],
         v2Pods: createPods('v2', 3),
         trafficSplit: { v1: 0, v2: 100 },
-        note: 'Blue (v1) decommissioned',
+        note: 'Blue (v1) desativado',
       },
     ],
-    pros: ['Instant switch', 'Easy rollback', 'No mixing'],
-    cons: ['Double resources', 'Expensive', 'Stateful issues'],
+    pros: ['Troca instantânea', 'Rollback fácil', 'Sem mistura'],
+    cons: ['Recursos em dobro', 'Caro', 'Problemas com estado'],
   },
   canary: {
    name: 'Canary',
-   description: 'Gradually shift traffic from v1 to v2, monitoring for issues.',
+   description: 'Move o tráfego aos poucos da v1 para a v2, monitorando problemas.',
    steps: [
      {
-       title: 'Initial State',
+       title: 'Estado inicial',
        v1Pods: createPods('v1', 3),
        v2Pods: [],
        trafficSplit: { v1: 100, v2: 0 },
-       note: 'Preparing canary deployment',
+       note: 'Preparando o deploy canary',
      },
      {
-       title: 'Deploy Canary',
+       title: 'Publicar o canary',
        v1Pods: createPods('v1', 3),
        v2Pods: createPods('v2', 1, 'starting'),
        trafficSplit: { v1: 100, v2: 0 },
-       note: 'Deploy single canary pod',
+       note: 'Publica um único pod canary',
      },
      {
-       title: 'Route 10%',
+       title: 'Rotear 10%',
        v1Pods: createPods('v1', 3),
        v2Pods: createPods('v2', 1),
        trafficSplit: { v1: 90, v2: 10 },
-       note: 'Manually route 10% to canary',
+       note: 'Roteia manualmente 10% para o canary',
      },
      {
-       title: 'Observe Metrics',
+       title: 'Observar métricas',
        v1Pods: createPods('v1', 3),
        v2Pods: createPods('v2', 1),
        trafficSplit: { v1: 90, v2: 10 },
        isObserving: true,
-       note: 'Monitor error rates, latency, logs...',
+       note: 'Monitore taxa de erro, latência, logs...',
      },
      {
-       title: 'Increase to 50%',
+       title: 'Aumentar para 50%',
        v1Pods: createPods('v1', 2),
        v2Pods: createPods('v2', 2),
        trafficSplit: { v1: 50, v2: 50 },
-       note: 'Manually increase traffic after validation',
+       note: 'Aumenta o tráfego manualmente depois da validação',
      },
      {
-       title: 'Final Check',
+       title: 'Verificação final',
        v1Pods: createPods('v1', 2),
        v2Pods: createPods('v2', 2),
        trafficSplit: { v1: 50, v2: 50 },
        isObserving: true,
-       note: 'Verify metrics before full rollout',
+       note: 'Confere as métricas antes da liberação total',
      },
      {
-       title: 'Full Rollout',
+       title: 'Liberação total',
        v1Pods: [],
        v2Pods: createPods('v2', 3),
        trafficSplit: { v1: 0, v2: 100 },
-       note: 'Manual decision: promote to 100%',
+       note: 'Decisão manual: promover para 100%',
      },
    ],
-    pros: ['Low risk', 'Gradual', 'Monitorable'],
-    cons: ['Slow', 'Complex routing', 'Version mixing'],
+    pros: ['Baixo risco', 'Gradual', 'Monitorável'],
+    cons: ['Lento', 'Roteamento complexo', 'Versões misturadas'],
   },
 };
 
@@ -463,15 +463,15 @@ export default function DeploymentStrategiesSimulator() {
     <Card className="w-full max-w-3xl mx-auto overflow-hidden">
       <CardHeader className="pb-3 px-3 sm:px-6">
         <CardTitle className="flex items-center justify-between">
-          <span className="text-base sm:text-lg">Deployment Strategies</span>
+          <span className="text-base sm:text-lg">Estratégias de deploy</span>
           <div className="flex gap-1 sm:gap-2">
             <Button onClick={() => setIsPlaying(!isPlaying)} variant="outline" size="sm" className="px-2 sm:px-3">
               {isPlaying ? <Pause className="w-4 h-4 mr-1" /> : <Play className="w-4 h-4 mr-1" />}
-              <span className="hidden sm:inline">{isPlaying ? 'Pause' : 'Play'}</span>
+              <span className="hidden sm:inline">{isPlaying ? 'Pausar' : 'Reproduzir'}</span>
             </Button>
             <Button onClick={reset} variant="outline" size="sm" className="px-2 sm:px-3">
               <RotateCcw className="w-4 h-4 sm:mr-1" />
-              <span className="hidden sm:inline"> Reset</span>
+              <span className="hidden sm:inline"> Reiniciar</span>
             </Button>
           </div>
         </CardTitle>
@@ -742,14 +742,14 @@ export default function DeploymentStrategiesSimulator() {
             className="flex items-center justify-center gap-2 text-green-500"
           >
             <CheckCircle className="w-5 h-5" />
-            <span className="font-medium">Deployment Complete!</span>
+            <span className="font-medium">Deploy concluído!</span>
           </motion.div>
         )}
 
         {/* Pros/Cons */}
         <div className="grid grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
           <div className="p-2 sm:p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-            <h4 className="font-medium text-green-600 dark:text-green-400 mb-1 sm:mb-2 text-xs sm:text-sm">Pros</h4>
+            <h4 className="font-medium text-green-600 dark:text-green-400 mb-1 sm:mb-2 text-xs sm:text-sm">Vantagens</h4>
             <ul className="space-y-0.5 sm:space-y-1 text-muted-foreground text-[10px] sm:text-xs">
               {config.pros.map((pro, i) => (
                 <li key={i}>+ {pro}</li>
@@ -757,7 +757,7 @@ export default function DeploymentStrategiesSimulator() {
             </ul>
           </div>
           <div className="p-2 sm:p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-            <h4 className="font-medium text-red-600 dark:text-red-400 mb-1 sm:mb-2 text-xs sm:text-sm">Cons</h4>
+            <h4 className="font-medium text-red-600 dark:text-red-400 mb-1 sm:mb-2 text-xs sm:text-sm">Desvantagens</h4>
             <ul className="space-y-0.5 sm:space-y-1 text-muted-foreground text-[10px] sm:text-xs">
               {config.cons.map((con, i) => (
                 <li key={i}>- {con}</li>
@@ -769,7 +769,7 @@ export default function DeploymentStrategiesSimulator() {
         {/* Keyboard shortcuts hint */}
         <div className="hidden sm:flex items-center justify-center gap-2 text-xs opacity-70">
           <Keyboard className="h-3 w-3" />
-          <span>Space play/pause · ←→ step · 1-4 strategy · R reset</span>
+          <span>Espaço reproduzir/pausar · ←→ passo · 1-4 estratégia · R reiniciar</span>
         </div>
       </CardContent>
     </Card>

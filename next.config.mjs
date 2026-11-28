@@ -106,9 +106,17 @@ const withPWA = withPWAInit({
   },
 });
 
+// Static export everywhere except Vercel, where the site also gets the /api/tutor
+// serverless function (RAG tutor). Set STATIC_EXPORT=1 to force the export on Vercel.
+const isStaticExport = !process.env.VERCEL || process.env.STATIC_EXPORT === '1';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  ...(isStaticExport ? { output: 'export' } : {}),
+  // `.api.ts` files are server-only routes, registered only when not exporting.
+  pageExtensions: isStaticExport ? ['tsx', 'ts', 'jsx', 'js'] : ['tsx', 'ts', 'jsx', 'js', 'api.ts'],
+  // Lets the client know whether the RAG tutor API exists in this build.
+  env: { NEXT_PUBLIC_TUTOR_ENABLED: isStaticExport ? '0' : '1' },
   trailingSlash: false,
   // Enable Turbopack explicitly (default in Next.js 16)
   turbopack: {},

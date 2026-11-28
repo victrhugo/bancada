@@ -10,72 +10,72 @@ export async function generateMetadata(): Promise<Metadata> {
 function ScalingEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">Understanding Scaling Strategies</h3>
+      <h3 className="mb-4 text-xl font-semibold">Entendendo estratégias de escala</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 font-semibold text-sm">What you&apos;ll learn</h4>
+          <h4 className="mb-3 font-semibold text-sm">O que você vai aprender</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>Horizontal scaling (scale out) vs vertical scaling (scale up)</li>
-            <li>When to use each scaling strategy based on workload</li>
-            <li>Impact on performance, cost, and reliability</li>
-            <li>Auto-scaling configuration and benefits</li>
-            <li>Load distribution with horizontal scaling</li>
-            <li>Budget management and cost optimization</li>
+            <li>Escala horizontal (scale out) vs escala vertical (scale up)</li>
+            <li>Quando usar cada estratégia de acordo com a carga</li>
+            <li>O impacto em desempenho, custo e confiabilidade</li>
+            <li>Como configurar auto-scaling e quais os benefícios</li>
+            <li>Distribuição de carga com escala horizontal</li>
+            <li>Gestão de orçamento e otimização de custos</li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">Scaling strategies</h4>
+          <h4 className="mb-3 font-semibold text-sm">Estratégias de escala</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Vertical Scaling:</strong> Increase server
-              resources (CPU, RAM, disk). Simple but limited.
+              <strong className="text-foreground">Escala vertical:</strong> aumentar os recursos do
+              servidor (CPU, RAM, disco). Simples, mas limitada.
             </li>
             <li>
-              <strong className="text-foreground">Horizontal Scaling:</strong> Add more servers
-              with load balancer. Unlimited but complex.
+              <strong className="text-foreground">Escala horizontal:</strong> adicionar mais
+              servidores atrás de um load balancer. Quase ilimitada, mas mais complexa.
             </li>
             <li>
-              <strong className="text-foreground">Auto-Scaling:</strong> Automatically adjust
-              capacity based on demand.
+              <strong className="text-foreground">Auto-scaling:</strong> ajustar a capacidade
+              automaticamente conforme a demanda.
             </li>
             <li>
-              <strong className="text-foreground">Hybrid Approach:</strong> Combine both
-              strategies for optimal results.
+              <strong className="text-foreground">Abordagem híbrida:</strong> combinar as duas
+              estratégias para o melhor resultado.
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Real-world applications</h4>
+        <h4 className="mb-2 font-semibold text-sm">Aplicações no mundo real</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
           <li>
-            <strong className="text-foreground">AWS EC2:</strong> Use Auto Scaling Groups with ELB
-            for horizontal scaling.
+            <strong className="text-foreground">AWS EC2:</strong> Auto Scaling Groups com ELB para
+            escala horizontal.
           </li>
           <li>
-            <strong className="text-foreground">Kubernetes:</strong> Horizontal Pod Autoscaler
-            (HPA) for container workloads.
+            <strong className="text-foreground">Kubernetes:</strong> Horizontal Pod Autoscaler (HPA)
+            para workloads em containers.
           </li>
           <li>
-            <strong className="text-foreground">Databases:</strong> Read replicas (horizontal) vs
-            larger instances (vertical).
+            <strong className="text-foreground">Bancos de dados:</strong> réplicas de leitura
+            (horizontal) vs instâncias maiores (vertical).
           </li>
           <li>
-            <strong className="text-foreground">Serverless:</strong> Automatic scaling without
-            managing servers.
+            <strong className="text-foreground">Serverless:</strong> escala automática sem gerenciar
+            servidores.
           </li>
         </ul>
       </div>
 
       <div className="mt-4 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Best practices</h4>
+        <h4 className="mb-2 font-semibold text-sm">Boas práticas</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
-          <li>Start with vertical scaling for simplicity, then scale horizontally.</li>
-          <li>Use auto-scaling to handle traffic spikes cost-effectively.</li>
-          <li>Set appropriate cooldown periods to avoid scaling thrashing.</li>
-          <li>Monitor key metrics: CPU, memory, response time, error rate.</li>
-          <li>Design stateless applications for easier horizontal scaling.</li>
+          <li>Comece pela escala vertical, que é mais simples, e depois escale na horizontal.</li>
+          <li>Use auto-scaling para absorver picos de tráfego com custo controlado.</li>
+          <li>Defina períodos de cooldown adequados para evitar que a escala fique oscilando.</li>
+          <li>Monitore as métricas principais: CPU, memória, tempo de resposta e taxa de erro.</li>
+          <li>Projete aplicações stateless para facilitar a escala horizontal.</li>
         </ul>
       </div>
     </>
@@ -87,7 +87,7 @@ export default function ScalingSimulatorPage() {
     <SimulatorShell
       slug="scaling-simulator"
       educational={<ScalingEducational />}
-      shareText="Check out this Scaling Simulator! Learn horizontal vs vertical scaling strategies interactively."
+      shareText="Conheça este simulador de escala! Aprenda escala horizontal vs vertical de forma interativa."
     >
       <ScalingSimulator />
     </SimulatorShell>

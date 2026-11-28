@@ -56,7 +56,7 @@ const SERVER_TYPES = {
     cooling: 0.6,
     heatGen: 0.8,
     icon: Server,
-    desc: 'Balanced processing.',
+    desc: 'Processamento equilibrado.',
     type: 'damage'
   },
   cache: {
@@ -68,7 +68,7 @@ const SERVER_TYPES = {
     cooling: 1.5,
     heatGen: 0.4,
     icon: Layers,
-    desc: 'Fast fire rate. Good vs DDoS.',
+    desc: 'Disparo rápido. Bom contra DDoS.',
     type: 'damage'
   },
   db: {
@@ -80,7 +80,7 @@ const SERVER_TYPES = {
     cooling: 0.3,
     heatGen: 3.5,
     icon: Database,
-    desc: 'Heavy hitter. Good vs Monoliths.',
+    desc: 'Dano pesado. Bom contra monólitos.',
     type: 'damage'
   },
   firewall: {
@@ -92,7 +92,7 @@ const SERVER_TYPES = {
     cooling: 0.8,
     heatGen: 0.5,
     icon: Lock,
-    desc: 'Slows traffic (Latency).',
+    desc: 'Deixa o tráfego mais lento (latência).',
     type: 'slow'
   },
   observability: {
@@ -104,7 +104,7 @@ const SERVER_TYPES = {
     cooling: 0.1,
     heatGen: 0,
     icon: MonitorCheck,
-    desc: 'Generates passive income.',
+    desc: 'Gera renda passiva.',
     type: 'support'
   }
 };
@@ -114,13 +114,13 @@ const TRAFFIC_TYPES = {
   ddos: { hp: 35, speed: 3.8, color: '#ef4444', radius: 3, score: 6, name: 'DDoS' },
   sql:  { hp: 700, speed: 0.6, color: '#fbbf24', radius: 9, score: 50, name: 'Heavy SQL' },
   tls:  { hp: 250, speed: 1.2, color: '#34d399', radius: 6, score: 20, name: 'TLS Handshake', tls: true },
-  monolith: { hp: 5000, speed: 0.3, color: '#8b5cf6', radius: 25, score: 1000, name: 'The Monolith' }
+  monolith: { hp: 5000, speed: 0.3, color: '#8b5cf6', radius: 25, score: 1000, name: 'O Monólito' }
 };
 
 const TARGETING_MODES = {
-  nearest: 'Nearest',
-  strongest: 'Strongest',
-  weakest: 'Weakest'
+  nearest: 'Mais próximo',
+  strongest: 'Mais forte',
+  weakest: 'Mais fraco'
 };
 
 const COLORS = {
@@ -508,7 +508,7 @@ export default function ScalableSentry() {
        setTimeout(() => setChaosActive(false), 2000);
 
        // Boss spawn effects
-       state.floatingTexts.push(createFloatingText(GAME_WIDTH / 2, GAME_HEIGHT / 2, '⚠ BOSS WAVE ⚠', '#8b5cf6', 28));
+       state.floatingTexts.push(createFloatingText(GAME_WIDTH / 2, GAME_HEIGHT / 2, '⚠ ONDA DE CHEFE ⚠', '#8b5cf6', 28));
        for (let i = 0; i < 50; i++) {
          state.particles.push(createParticle(
            GAME_WIDTH / 2 + (Math.random() - 0.5) * 200,
@@ -1029,7 +1029,7 @@ export default function ScalableSentry() {
           // Wave transition effects (not on boss waves - they get their own)
           if (nextWave % 5 !== 0) {
             const state = stateRef.current;
-            state.floatingTexts.push(createFloatingText(GAME_WIDTH / 2, 80, `Wave ${nextWave}`, '#3b82f6', 22));
+            state.floatingTexts.push(createFloatingText(GAME_WIDTH / 2, 80, `Onda ${nextWave}`, '#3b82f6', 22));
             for (let i = 0; i < 20; i++) {
               state.particles.push(createParticle(
                 GAME_WIDTH / 2 + (Math.random() - 0.5) * 150,
@@ -1152,7 +1152,7 @@ export default function ScalableSentry() {
 
           // Visual feedback
           const state = stateRef.current;
-          state.floatingTexts.push(createFloatingText(deployX, deployY, 'AUTO-SCALING!', '#6366f1', 18));
+          state.floatingTexts.push(createFloatingText(deployX, deployY, 'AUTOSCALING!', '#6366f1', 18));
           state.shockwaves.push(createShockwave(deployX, deployY - 40, '#6366f1', 60));
           state.shockwaves.push(createShockwave(deployX, deployY + 40, '#6366f1', 60));
           triggerScreenShake(6);
@@ -1178,7 +1178,7 @@ export default function ScalableSentry() {
         const sType = SERVER_TYPES[server.type];
         for(let i=0; i<25; i++) state.particles.push(createParticle(server.x, server.y, sType.color));
         state.shockwaves.push(createShockwave(server.x, server.y, sType.color, 45));
-        state.floatingTexts.push(createFloatingText(server.x, server.y - 35, `LEVEL ${server.level}!`, sType.color, 14));
+        state.floatingTexts.push(createFloatingText(server.x, server.y - 35, `NÍVEL ${server.level}!`, sType.color, 14));
         triggerScreenShake(3);
     }
   };
@@ -1252,12 +1252,12 @@ export default function ScalableSentry() {
                 <h3 className={cn(
                   "font-bold text-sm mb-1",
                   isDark ? "text-amber-300" : "text-amber-900"
-                )}>Desktop Recommended</h3>
+                )}>Recomendado no desktop</h3>
                 <p className={cn(
                   "text-xs leading-relaxed",
                   isDark ? "text-amber-200/80" : "text-amber-800"
                 )}>
-                  This tower defense game is best experienced on desktop with mouse/keyboard controls. Mobile play may be challenging due to drag-and-drop mechanics.
+                  Este tower defense funciona melhor no desktop, com mouse e teclado. No celular pode ser difícil por causa do arrastar e soltar.
                 </p>
               </div>
             </div>
@@ -1276,14 +1276,14 @@ export default function ScalableSentry() {
             <div className={cn(
               "text-xs",
               isDark ? "text-slate-400" : "text-gray-600"
-            )}>BUDGET</div>
+            )}>ORÇAMENTO</div>
             <div className="text-xl sm:text-2xl font-bold text-emerald-400">${stats.money.toFixed(0)}</div>
           </div>
           <div className="text-center sm:text-left">
             <div className={cn(
               "text-xs",
               isDark ? "text-slate-400" : "text-gray-600"
-            )}>SYSTEM INTEGRITY</div>
+            )}>INTEGRIDADE DO SISTEMA</div>
             <div className="flex items-center gap-2">
                 <div className={cn(
                   "w-24 sm:w-32 h-3 rounded-full overflow-hidden",
@@ -1311,7 +1311,7 @@ export default function ScalableSentry() {
             )}
           >
               <span className="font-bold text-sky-400 flex items-center gap-1">
-                <Snowflake size={10}/> FREEZE
+                <Snowflake size={10}/> CONGELAR
               </span>
               <span className={cn(
                 isDark ? "text-slate-400" : "text-gray-600"
@@ -1326,7 +1326,7 @@ export default function ScalableSentry() {
             `}
           >
               <span className="font-bold flex items-center gap-1">
-                  <TrendingUp size={10}/> SCALE
+                  <TrendingUp size={10}/> ESCALAR
               </span>
               <span>
                 {autoscalerCooldown > 0 ? `${(autoscalerCooldown/60).toFixed(1)}s` : `$${CONFIG.autoscalerCost}`}
@@ -1337,13 +1337,13 @@ export default function ScalableSentry() {
             <div className={cn(
               "text-xs",
               isDark ? "text-slate-400" : "text-gray-600"
-            )}>WAVE</div>
+            )}>ONDA</div>
             <div className="text-xl font-bold text-amber-400">{stats.wave}</div>
             <div className={cn(
               "text-[10px]",
               isDark ? "text-slate-500" : "text-gray-500"
             )}>
-                {stats.wave % 5 === 0 ? 'BOSS ACTIVE' : `Next Boss: Wave ${Math.ceil(stats.wave/5)*5}`}
+                {stats.wave % 5 === 0 ? 'CHEFE ATIVO' : `Próximo chefe: onda ${Math.ceil(stats.wave/5)*5}`}
             </div>
         </div>
       </div>
@@ -1370,7 +1370,7 @@ export default function ScalableSentry() {
         {chaosActive && (
             <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-3 bg-red-500/90 text-white rounded-full animate-bounce z-10 shadow-lg shadow-red-500/50">
                 <Skull size={24} />
-                <span className="font-bold text-lg">SYSTEM ALERT!</span>
+                <span className="font-bold text-lg">ALERTA DO SISTEMA!</span>
             </div>
         )}
 
@@ -1383,7 +1383,7 @@ export default function ScalableSentry() {
                 <p className={cn(
                   "mb-8 tracking-widest uppercase text-sm",
                   isDark ? "text-slate-400" : "text-gray-600"
-                )}>Advanced Load Balancer Simulation</p>
+                )}>Simulação avançada de load balancer</p>
 
                 <div className="grid grid-cols-5 gap-4 mb-8 max-w-4xl text-center">
                     {Object.entries(SERVER_TYPES).map(([key, type]) => {
@@ -1408,7 +1408,7 @@ export default function ScalableSentry() {
                 </div>
 
                 <button onClick={() => setGameState('playing')} className="px-12 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold text-xl transition-colors">
-                    BOOTSTRAP SYSTEM
+                    INICIAR SISTEMA
                 </button>
             </div>
         )}
@@ -1416,12 +1416,12 @@ export default function ScalableSentry() {
         {gameState === 'gameover' && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-red-950/90 backdrop-blur-md rounded-lg z-20">
                 <AlertTriangle size={64} className="text-red-500 mb-4" />
-                <h2 className="text-4xl font-bold text-white mb-2">SYSTEM CRITICAL</h2>
+                <h2 className="text-4xl font-bold text-white mb-2">SISTEMA CRÍTICO</h2>
                 <p className="text-red-200 mb-2">503 Service Unavailable</p>
                 <p className="text-red-300 text-sm mb-6">
-                  Processed: {stats.requestsProcessed} | Dropped: {stats.requestsDropped} | Wave: {stats.wave}
+                  Processadas: {stats.requestsProcessed} | Descartadas: {stats.requestsDropped} | Onda: {stats.wave}
                 </p>
-                <button onClick={restartGame} className="px-8 py-3 bg-white text-red-900 hover:bg-slate-200 rounded-full font-bold">REBOOT</button>
+                <button onClick={restartGame} className="px-8 py-3 bg-white text-red-900 hover:bg-slate-200 rounded-full font-bold">REINICIAR</button>
             </div>
         )}
       </div>
@@ -1474,12 +1474,12 @@ export default function ScalableSentry() {
                             <div className={cn(
                               "text-xs uppercase",
                               isDark ? "text-slate-500" : "text-gray-600"
-                            )}>Pod Config</div>
+                            )}>Configuração do pod</div>
                             <div className={cn(
                               "font-bold text-sm truncate",
                               isDark ? "text-white" : "text-gray-900"
                             )}>
-                                {stateRef.current.servers.find(s=>s.id===selection)?.isTemporary && <span className='text-orange-400'>(TEMP) </span>}
+                                {stateRef.current.servers.find(s=>s.id===selection)?.isTemporary && <span className='text-orange-400'>(TEMPORÁRIO) </span>}
                                 v{stateRef.current.servers.find(s=>s.id===selection)?.level} {SERVER_TYPES[stateRef.current.servers.find(s=>s.id===selection)?.type ?? 'api'].name}
                             </div>
                         </div>
@@ -1509,7 +1509,7 @@ export default function ScalableSentry() {
                             : (isDark ? "bg-slate-800 text-slate-500" : "bg-gray-100 text-gray-400")
                         )}
                     >
-                       <ArrowUpCircle size={14}/> <span className="truncate">Upgrade ${getUpgradeCost()}</span>
+                       <ArrowUpCircle size={14}/> <span className="truncate">Melhorar ${getUpgradeCost()}</span>
                     </button>
                 </>
             ) : (
@@ -1517,7 +1517,7 @@ export default function ScalableSentry() {
                   "h-full flex items-center justify-center text-center text-[10px] italic px-2",
                   isDark ? "text-slate-600" : "text-gray-500"
                 )}>
-                    Select a deployed pod to configure targeting or scale up resources.
+                    Selecione um pod implantado para configurar a mira ou aumentar os recursos.
                 </div>
             )}
         </div>
@@ -1539,12 +1539,12 @@ export default function ScalableSentry() {
               isDark ? "text-white" : "text-gray-900"
             )}>
               <HelpCircle size={20} className="text-blue-500" />
-              Game Instructions
+              Instruções do jogo
             </h3>
             <p className={cn(
               "text-xs sm:text-sm",
               isDark ? "text-slate-400" : "text-gray-600"
-            )}>Learn about servers, traffic types, and strategies to defend your infrastructure</p>
+            )}>Conheça os servidores, os tipos de tráfego e as estratégias para defender sua infraestrutura</p>
           </div>
 
           {/* Content */}
@@ -1556,7 +1556,7 @@ export default function ScalableSentry() {
                   isDark ? "text-blue-400" : "text-blue-600"
                 )}>
                   <Server size={24} />
-                  Server Types
+                  Tipos de servidor
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* API Node */}
@@ -1574,17 +1574,17 @@ export default function ScalableSentry() {
                     <p className={cn(
                       "text-sm mb-3",
                       isDark ? "text-slate-300" : "text-gray-700"
-                    )}>Balanced general-purpose defense server</p>
+                    )}>Servidor de defesa equilibrado e de uso geral</p>
                     <div className={cn(
                       "text-xs space-y-1",
                       isDark ? "text-slate-400" : "text-gray-600"
                     )}>
-                      <div><strong>Range:</strong> 150px | <strong>Power:</strong> 2.5 | <strong>Cooling:</strong> 0.6s</div>
-                      <div><strong>Heat Gen:</strong> 0.8 (Medium)</div>
-                      <div className="text-green-500"><strong>✓ Good Against:</strong> HTTP, balanced traffic</div>
-                      <div className="text-red-500"><strong>✗ Struggles With:</strong> High-volume DDoS, bosses</div>
+                      <div><strong>Alcance:</strong> 150px | <strong>Poder:</strong> 2.5 | <strong>Resfriamento:</strong> 0.6s</div>
+                      <div><strong>Geração de calor:</strong> 0.8 (média)</div>
+                      <div className="text-green-500"><strong>✓ Bom contra:</strong> HTTP, tráfego equilibrado</div>
+                      <div className="text-red-500"><strong>✗ Sofre com:</strong> DDoS de alto volume, chefes</div>
                       <div className={cn("mt-2 pt-2 border-t", isDark ? "border-slate-700" : "border-gray-200")}>
-                        <strong className="text-blue-400">💡 Strategy:</strong> Use as your foundation. Affordable and reliable for early waves.
+                        <strong className="text-blue-400">💡 Estratégia:</strong> Use como base. Barato e confiável nas primeiras ondas.
                       </div>
                     </div>
                   </div>
@@ -1604,17 +1604,17 @@ export default function ScalableSentry() {
                     <p className={cn(
                       "text-sm mb-3",
                       isDark ? "text-slate-300" : "text-gray-700"
-                    )}>Fast-firing cache layer excellent for volume attacks</p>
+                    )}>Camada de cache com disparo rápido, ótima contra ataques de volume</p>
                     <div className={cn(
                       "text-xs space-y-1",
                       isDark ? "text-slate-400" : "text-gray-600"
                     )}>
-                      <div><strong>Range:</strong> 110px | <strong>Power:</strong> 1.5 | <strong>Cooling:</strong> 1.5s</div>
-                      <div><strong>Heat Gen:</strong> 0.4 (Low)</div>
-                      <div className="text-green-500"><strong>✓ Good Against:</strong> DDoS swarms, multiple small requests</div>
-                      <div className="text-red-500"><strong>✗ Struggles With:</strong> Heavy SQL, Monoliths</div>
+                      <div><strong>Alcance:</strong> 110px | <strong>Poder:</strong> 1.5 | <strong>Resfriamento:</strong> 1.5s</div>
+                      <div><strong>Geração de calor:</strong> 0.4 (baixa)</div>
+                      <div className="text-green-500"><strong>✓ Bom contra:</strong> enxames de DDoS, muitas requisições pequenas</div>
+                      <div className="text-red-500"><strong>✗ Sofre com:</strong> Heavy SQL, monólitos</div>
                       <div className={cn("mt-2 pt-2 border-t", isDark ? "border-slate-700" : "border-gray-200")}>
-                        <strong className="text-blue-400">💡 Strategy:</strong> Deploy near spawn points to catch DDoS early. Low heat means continuous fire.
+                        <strong className="text-blue-400">💡 Estratégia:</strong> Coloque perto dos pontos de entrada para pegar o DDoS cedo. Pouco calor permite disparo contínuo.
                       </div>
                     </div>
                   </div>
@@ -1634,17 +1634,17 @@ export default function ScalableSentry() {
                     <p className={cn(
                       "text-sm mb-3",
                       isDark ? "text-slate-300" : "text-gray-700"
-                    )}>Heavy-hitting database with massive damage output</p>
+                    )}>Banco de dados de dano pesado</p>
                     <div className={cn(
                       "text-xs space-y-1",
                       isDark ? "text-slate-400" : "text-gray-600"
                     )}>
-                      <div><strong>Range:</strong> 200px | <strong>Power:</strong> 15 | <strong>Cooling:</strong> 0.3s</div>
-                      <div><strong>Heat Gen:</strong> 3.5 (Very High)</div>
-                      <div className="text-green-500"><strong>✓ Good Against:</strong> Monoliths, Heavy SQL, boss waves</div>
-                      <div className="text-red-500"><strong>✗ Struggles With:</strong> Fast DDoS swarms, overheats quickly</div>
+                      <div><strong>Alcance:</strong> 200px | <strong>Poder:</strong> 15 | <strong>Resfriamento:</strong> 0.3s</div>
+                      <div><strong>Geração de calor:</strong> 3.5 (muito alta)</div>
+                      <div className="text-green-500"><strong>✓ Bom contra:</strong> monólitos, Heavy SQL, ondas de chefe</div>
+                      <div className="text-red-500"><strong>✗ Sofre com:</strong> enxames rápidos de DDoS, superaquece rápido</div>
                       <div className={cn("mt-2 pt-2 border-t", isDark ? "border-slate-700" : "border-gray-200")}>
-                        <strong className="text-blue-400">💡 Strategy:</strong> Essential for bosses. Place strategically and manage heat carefully.
+                        <strong className="text-blue-400">💡 Estratégia:</strong> Essencial contra chefes. Posicione com estratégia e cuide bem do calor.
                       </div>
                     </div>
                   </div>
@@ -1664,17 +1664,17 @@ export default function ScalableSentry() {
                     <p className={cn(
                       "text-sm mb-3",
                       isDark ? "text-slate-300" : "text-gray-700"
-                    )}>Firewall that slows down incoming traffic</p>
+                    )}>Firewall que deixa o tráfego de entrada mais lento</p>
                     <div className={cn(
                       "text-xs space-y-1",
                       isDark ? "text-slate-400" : "text-gray-600"
                     )}>
-                      <div><strong>Range:</strong> 130px | <strong>Power:</strong> 0.5 | <strong>Effect:</strong> Slows traffic</div>
-                      <div><strong>Heat Gen:</strong> 0.5 (Low)</div>
-                      <div className="text-green-500"><strong>✓ Good Against:</strong> Fast targets, buying time</div>
-                      <div className="text-red-500"><strong>✗ Struggles With:</strong> Low damage output</div>
+                      <div><strong>Alcance:</strong> 130px | <strong>Poder:</strong> 0.5 | <strong>Efeito:</strong> deixa o tráfego mais lento</div>
+                      <div><strong>Geração de calor:</strong> 0.5 (baixa)</div>
+                      <div className="text-green-500"><strong>✓ Bom contra:</strong> alvos rápidos, ganhar tempo</div>
+                      <div className="text-red-500"><strong>✗ Sofre com:</strong> pouco dano</div>
                       <div className={cn("mt-2 pt-2 border-t", isDark ? "border-slate-700" : "border-gray-200")}>
-                        <strong className="text-blue-400">💡 Strategy:</strong> Place early in path to slow all traffic, giving damage dealers more time.
+                        <strong className="text-blue-400">💡 Estratégia:</strong> Coloque no começo do caminho para frear todo o tráfego e dar mais tempo a quem causa dano.
                       </div>
                     </div>
                   </div>
@@ -1694,17 +1694,17 @@ export default function ScalableSentry() {
                     <p className={cn(
                       "text-sm mb-3",
                       isDark ? "text-slate-300" : "text-gray-700"
-                    )}>Observability tool that boosts nearby servers</p>
+                    )}>Ferramenta de observabilidade que fortalece os servidores próximos</p>
                     <div className={cn(
                       "text-xs space-y-1",
                       isDark ? "text-slate-400" : "text-gray-600"
                     )}>
-                      <div><strong>Range:</strong> 250px | <strong>Power:</strong> 0 | <strong>Effect:</strong> +50% damage boost to nearby servers</div>
-                      <div><strong>Heat Gen:</strong> 0.2 (Very Low)</div>
-                      <div className="text-green-500"><strong>✓ Good Against:</strong> Amplifying existing defenses</div>
-                      <div className="text-red-500"><strong>✗ Struggles With:</strong> No direct damage</div>
+                      <div><strong>Alcance:</strong> 250px | <strong>Poder:</strong> 0 | <strong>Efeito:</strong> +50% de dano para os servidores próximos</div>
+                      <div><strong>Geração de calor:</strong> 0.2 (muito baixa)</div>
+                      <div className="text-green-500"><strong>✓ Bom contra:</strong> amplificar as defesas existentes</div>
+                      <div className="text-red-500"><strong>✗ Sofre com:</strong> não causa dano direto</div>
                       <div className={cn("mt-2 pt-2 border-t", isDark ? "border-slate-700" : "border-gray-200")}>
-                        <strong className="text-blue-400">💡 Strategy:</strong> Place centrally to boost multiple servers. Essential for late game.
+                        <strong className="text-blue-400">💡 Estratégia:</strong> Coloque no centro para fortalecer vários servidores. Essencial no fim do jogo.
                       </div>
                     </div>
                   </div>
@@ -1718,7 +1718,7 @@ export default function ScalableSentry() {
                   isDark ? "text-purple-400" : "text-purple-600"
                 )}>
                   <AlertTriangle size={24} />
-                  Traffic Types
+                  Tipos de tráfego
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className={cn(
@@ -1726,11 +1726,11 @@ export default function ScalableSentry() {
                     isDark ? "bg-slate-800 border-slate-700" : "bg-gray-50 border-gray-200"
                   )}>
                     <div className={cn("font-bold mb-1", isDark ? "text-white" : "text-gray-900")}>
-                      HTTP Request <span className="text-gray-400">(White)</span>
+                      Requisição HTTP <span className="text-gray-400">(branco)</span>
                     </div>
                     <div className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      <strong>HP:</strong> 100 | <strong>Speed:</strong> 1.5 | <strong>Score:</strong> 10<br />
-                      Standard web traffic. Balanced and common.
+                      <strong>HP:</strong> 100 | <strong>Velocidade:</strong> 1.5 | <strong>Pontos:</strong> 10<br />
+                      Tráfego web padrão. Equilibrado e comum.
                     </div>
                   </div>
 
@@ -1739,11 +1739,11 @@ export default function ScalableSentry() {
                     isDark ? "bg-slate-800 border-slate-700" : "bg-gray-50 border-gray-200"
                   )}>
                     <div className={cn("font-bold mb-1", isDark ? "text-white" : "text-gray-900")}>
-                      DDoS Attack <span className="text-red-400">(Red)</span>
+                      Ataque DDoS <span className="text-red-400">(vermelho)</span>
                     </div>
                     <div className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      <strong>HP:</strong> 35 | <strong>Speed:</strong> 3.8 | <strong>Score:</strong> 6<br />
-                      Fast, low-health swarms. Dangerous in numbers.
+                      <strong>HP:</strong> 35 | <strong>Velocidade:</strong> 3.8 | <strong>Pontos:</strong> 6<br />
+                      Enxames rápidos e com pouca vida. Perigosos em grande número.
                     </div>
                   </div>
 
@@ -1752,11 +1752,11 @@ export default function ScalableSentry() {
                     isDark ? "bg-slate-800 border-slate-700" : "bg-gray-50 border-gray-200"
                   )}>
                     <div className={cn("font-bold mb-1", isDark ? "text-white" : "text-gray-900")}>
-                      Heavy SQL <span className="text-yellow-400">(Yellow)</span>
+                      Heavy SQL <span className="text-yellow-400">(amarelo)</span>
                     </div>
                     <div className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      <strong>HP:</strong> 700 | <strong>Speed:</strong> 0.6 | <strong>Score:</strong> 50<br />
-                      Slow but tanky. Requires heavy firepower.
+                      <strong>HP:</strong> 700 | <strong>Velocidade:</strong> 0.6 | <strong>Pontos:</strong> 50<br />
+                      Lento, mas resistente. Exige muito poder de fogo.
                     </div>
                   </div>
 
@@ -1765,11 +1765,11 @@ export default function ScalableSentry() {
                     isDark ? "bg-slate-800 border-slate-700" : "bg-gray-50 border-gray-200"
                   )}>
                     <div className={cn("font-bold mb-1", isDark ? "text-white" : "text-gray-900")}>
-                      TLS Handshake <span className="text-green-400">(Green)</span>
+                      TLS Handshake <span className="text-green-400">(verde)</span>
                     </div>
                     <div className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      <strong>HP:</strong> 250 | <strong>Speed:</strong> 1.2 | <strong>Score:</strong> 20<br />
-                      Encrypted traffic. 25% damage reduction vs servers.
+                      <strong>HP:</strong> 250 | <strong>Velocidade:</strong> 1.2 | <strong>Pontos:</strong> 20<br />
+                      Tráfego criptografado. Recebe 25% menos dano dos servidores.
                     </div>
                   </div>
 
@@ -1778,11 +1778,11 @@ export default function ScalableSentry() {
                     isDark ? "bg-purple-900/20" : "bg-purple-50"
                   )}>
                     <div className={cn("font-bold mb-1", isDark ? "text-white" : "text-gray-900")}>
-                      The Monolith <span className="text-purple-400">(Purple)</span>
+                      O Monólito <span className="text-purple-400">(roxo)</span>
                     </div>
                     <div className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      <strong>HP:</strong> 5000 | <strong>Speed:</strong> 0.3 | <strong>Score:</strong> 1000<br />
-                      <strong className="text-red-500">BOSS WAVE!</strong> Spawns every 5 waves. Massive HP and score.
+                      <strong>HP:</strong> 5000 | <strong>Velocidade:</strong> 0.3 | <strong>Pontos:</strong> 1000<br />
+                      <strong className="text-red-500">ONDA DE CHEFE!</strong> Aparece a cada 5 ondas. Muita vida e muitos pontos.
                     </div>
                   </div>
                 </div>
@@ -1795,7 +1795,7 @@ export default function ScalableSentry() {
                   isDark ? "text-orange-400" : "text-orange-600"
                 )}>
                   <Cpu size={24} />
-                  Game Mechanics
+                  Mecânicas do jogo
                 </h3>
                 <div className="space-y-3">
                   <div className={cn(
@@ -1804,11 +1804,11 @@ export default function ScalableSentry() {
                   )}>
                     <div className={cn("font-bold mb-1 flex items-center gap-2", isDark ? "text-white" : "text-gray-900")}>
                       <Flame size={16} className="text-red-500" />
-                      Heat Management
+                      Gestão de calor
                     </div>
                     <p className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      Each server generates heat when firing. At 100 heat, the server enters "rebooting" status and stops working temporarily. 
-                      Servers cool down over time. High-power servers like Postgres DB generate more heat.
+                      Cada servidor esquenta ao disparar. Com 100 de calor, ele entra em "rebooting" e para de funcionar por um tempo. 
+                      Os servidores esfriam com o tempo. Servidores potentes, como o Postgres DB, esquentam mais.
                     </p>
                   </div>
 
@@ -1818,13 +1818,13 @@ export default function ScalableSentry() {
                   )}>
                     <div className={cn("font-bold mb-1 flex items-center gap-2", isDark ? "text-white" : "text-gray-900")}>
                       <Crosshair size={16} className="text-blue-500" />
-                      Targeting Modes
+                      Modos de mira
                     </div>
                     <p className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      Click a server to select it, then toggle targeting priority:<br />
-                      <strong>• Nearest:</strong> Targets closest traffic (default)<br />
-                      <strong>• Strongest:</strong> Focuses on high-HP targets<br />
-                      <strong>• Weakest:</strong> Cleans up low-HP targets quickly
+                      Clique em um servidor para selecioná-lo e alterne a prioridade de mira:<br />
+                      <strong>• Mais próximo:</strong> mira o tráfego mais perto (padrão)<br />
+                      <strong>• Mais forte:</strong> foca nos alvos com mais vida<br />
+                      <strong>• Mais fraco:</strong> elimina rápido os alvos com pouca vida
                     </p>
                   </div>
 
@@ -1834,11 +1834,11 @@ export default function ScalableSentry() {
                   )}>
                     <div className={cn("font-bold mb-1 flex items-center gap-2", isDark ? "text-white" : "text-gray-900")}>
                       <ArrowUpCircle size={16} className="text-purple-500" />
-                      Upgrades
+                      Melhorias
                     </div>
                     <p className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      Upgrade servers to increase power, range, and reduce heat generation. Cost increases with each level. 
-                      Upgrading is usually more efficient than deploying new servers.
+                      Melhore os servidores para aumentar poder e alcance e reduzir o calor gerado. O custo sobe a cada nível. 
+                      Melhorar costuma compensar mais do que implantar servidores novos.
                     </p>
                   </div>
 
@@ -1848,10 +1848,10 @@ export default function ScalableSentry() {
                   )}>
                     <div className={cn("font-bold mb-1 flex items-center gap-2", isDark ? "text-white" : "text-gray-900")}>
                       <Snowflake size={16} className="text-sky-500" />
-                      Freeze Ability ($200)
+                      Habilidade Congelar ($200)
                     </div>
                     <p className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      Temporarily freezes all traffic on screen for 5 seconds. Use during overwhelming waves or boss spawns.
+                      Congela todo o tráfego da tela por 5 segundos. Use em ondas pesadas ou quando um chefe aparecer.
                     </p>
                   </div>
 
@@ -1864,7 +1864,7 @@ export default function ScalableSentry() {
                       Autoscaler ($350)
                     </div>
                     <p className={cn("text-xs", isDark ? "text-slate-400" : "text-gray-600")}>
-                      Deploys temporary boosted servers across the field. They last for 60 seconds. Has cooldown after use.
+                      Implanta servidores temporários reforçados pelo mapa. Eles duram 60 segundos. Tem tempo de recarga depois do uso.
                     </p>
                   </div>
                 </div>
@@ -1877,7 +1877,7 @@ export default function ScalableSentry() {
                   isDark ? "text-green-400" : "text-green-600"
                 )}>
                   <Sparkles size={24} />
-                  Strategy Tips
+                  Dicas de estratégia
                 </h3>
                 <div className={cn(
                   "space-y-2 text-sm",
@@ -1885,31 +1885,31 @@ export default function ScalableSentry() {
                 )}>
                   <div className="flex gap-2">
                     <span className="text-emerald-400">1.</span>
-                    <span><strong>Start Simple:</strong> Deploy 2-3 API Nodes early for steady income</span>
+                    <span><strong>Comece simples:</strong> implante 2 ou 3 API Nodes cedo para ter renda constante</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-emerald-400">2.</span>
-                    <span><strong>Plan Ahead:</strong> Save budget for boss waves (every 5 waves). Have Postgres DB ready.</span>
+                    <span><strong>Planeje:</strong> guarde orçamento para as ondas de chefe (a cada 5 ondas). Tenha um Postgres DB pronto.</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-emerald-400">3.</span>
-                    <span><strong>Layered Defense:</strong> Place Sec Groups early, damage dealers in middle, Prometheus centrally</span>
+                    <span><strong>Defesa em camadas:</strong> Sec Groups no começo, quem causa dano no meio e o Prometheus no centro</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-emerald-400">4.</span>
-                    <span><strong>Heat Management:</strong> Don't over-deploy high-heat servers. Space them out.</span>
+                    <span><strong>Gestão de calor:</strong> não exagere em servidores que esquentam muito. Espalhe-os.</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-emerald-400">5.</span>
-                    <span><strong>Upgrade Focus:</strong> Upgrade existing servers rather than building new ones when possible</span>
+                    <span><strong>Foque em melhorias:</strong> sempre que der, melhore os servidores existentes em vez de construir novos</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-emerald-400">6.</span>
-                    <span><strong>DDoS Response:</strong> Redis Cache excels against swarms. Deploy 2-3 near spawn points.</span>
+                    <span><strong>Resposta a DDoS:</strong> o Redis Cache brilha contra enxames. Implante 2 ou 3 perto dos pontos de entrada.</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-emerald-400">7.</span>
-                    <span><strong>Use Abilities:</strong> Save Freeze for emergencies. Autoscaler is great for boss waves.</span>
+                    <span><strong>Use as habilidades:</strong> guarde o Congelar para emergências. O Autoscaler é ótimo nas ondas de chefe.</span>
                   </div>
                 </div>
               </section>

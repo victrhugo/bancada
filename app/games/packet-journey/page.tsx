@@ -12,9 +12,9 @@ export default function PacketJourneyPage() {
     <SimulatorShell
       slug="packet-journey"
       seoLearningPoints={[
-        'Understand the TCP/IP network model',
-        'Trace packet routing through network hops',
-        'Learn about DNS resolution, NAT, and firewalls',
+        'Entender o modelo de rede TCP/IP',
+        'Seguir o roteamento de um pacote pelos saltos da rede',
+        'Aprender sobre resolução DNS, NAT e firewalls',
       ]}
     >
       <PacketJourney />

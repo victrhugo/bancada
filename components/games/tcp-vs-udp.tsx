@@ -116,28 +116,28 @@ export default function TcpVsUdpSimulator() {
   // Update educational text based on state
   useEffect(() => {
     if (!isPlaying && connState === CONNECTION_STATES.DISCONNECTED) {
-        setEducationalMessage("Click 'Start' to begin. " + (mode === MODES.TCP ? "TCP will perform a handshake first." : "UDP will start streaming immediately."));
+        setEducationalMessage("Clique em 'Iniciar tráfego' para começar. " + (mode === MODES.TCP ? "O TCP vai fazer um handshake primeiro." : "O UDP vai começar a transmitir imediatamente."));
         return;
     }
 
     if (mode === MODES.UDP) {
-        setEducationalMessage("UDP Mode: Packets are sent 'Fire and Forget'. No handshake, no delivery confirmation. Fast but unreliable.");
+        setEducationalMessage("Modo UDP: os pacotes são enviados no esquema 'envia e esquece'. Sem handshake e sem confirmação de entrega. Rápido, mas não confiável.");
         return;
     }
 
     // TCP Messages
     switch (connState) {
         case CONNECTION_STATES.HANDSHAKE_SYN:
-            setEducationalMessage("Step 1/3: Client sends SYN (Synchronize) to ask for a connection.");
+            setEducationalMessage("Passo 1/3: o cliente envia SYN (Synchronize) para pedir uma conexão.");
             break;
         case CONNECTION_STATES.HANDSHAKE_SYN_ACK:
-            setEducationalMessage("Step 2/3: Server replies with SYN-ACK (Synchronize + Acknowledge).");
+            setEducationalMessage("Passo 2/3: o servidor responde com SYN-ACK (Synchronize + Acknowledge).");
             break;
         case CONNECTION_STATES.HANDSHAKE_ACK:
-            setEducationalMessage("Step 3/3: Client sends final ACK. Connection is established!");
+            setEducationalMessage("Passo 3/3: o cliente envia o ACK final. Conexão estabelecida!");
             break;
         case CONNECTION_STATES.CONNECTED:
-            setEducationalMessage("Connection Established. Reliable Data Transfer in progress. Note the return receipts (ACKs).");
+            setEducationalMessage("Conexão estabelecida. Transferência confiável de dados em andamento. Repare nas confirmações de recebimento (ACKs).");
             break;
         default:
             break;
@@ -194,7 +194,7 @@ export default function TcpVsUdpSimulator() {
                   // TCP Start Handshake
                   setConnState(CONNECTION_STATES.HANDSHAKE_SYN);
                   spawnPacket('SYN');
-                  logMessage("Sending SYN...", 'syn');
+                  logMessage("Enviando SYN...", 'syn');
               }
           }
       }
@@ -248,17 +248,17 @@ export default function TcpVsUdpSimulator() {
         if (direction === 1 && p.status === 'inflight' && newProgress >= 90) {
             // Arrived at Server
             if (p.type === 'SYN') {
-                logMessage("Server received SYN", 'syn');
+                logMessage("Servidor recebeu o SYN", 'syn');
                 setConnState(CONNECTION_STATES.HANDSHAKE_SYN_ACK);
                 // Trigger Server Response next tick (handled in effect or here? Let's do next tick via state)
                 setTimeout(() => {
                     spawnPacket('SYN-ACK');
-                    logMessage("Server sent SYN-ACK", 'syn');
+                    logMessage("Servidor enviou o SYN-ACK", 'syn');
                 }, 500);
                 return null;
             }
             else if (p.type === 'ACK' && connState === CONNECTION_STATES.HANDSHAKE_ACK) {
-                logMessage("Server received ACK. Connection ESTABLISHED!", 'success');
+                logMessage("Servidor recebeu o ACK. Conexão ESTABELECIDA!", 'success');
                 setConnState(CONNECTION_STATES.CONNECTED);
                 return null;
             }
@@ -284,11 +284,11 @@ export default function TcpVsUdpSimulator() {
         if (direction === -1 && p.status === 'inflight' && newProgress <= 10) {
             // Arrived at Client
             if (p.type === 'SYN-ACK') {
-                logMessage("Client received SYN-ACK", 'syn');
+                logMessage("Cliente recebeu o SYN-ACK", 'syn');
                 setConnState(CONNECTION_STATES.HANDSHAKE_ACK);
                 setTimeout(() => {
                     spawnPacket('ACK'); // Final handshake ACK
-                    logMessage("Client sent ACK", 'syn');
+                    logMessage("Cliente enviou o ACK", 'syn');
                 }, 500);
                 return null;
             }
@@ -342,7 +342,7 @@ export default function TcpVsUdpSimulator() {
                  if (lostPackets.length > 0) {
                      const lostP = lostPackets[0];
                      if (Math.random() > 0.92) { // Slightly slower retransmit check
-                        logMessage(`Packet #${lostP.id} Lost. Retrying...`, 'error');
+                        logMessage(`Pacote #${lostP.id} perdido. Retransmitindo...`, 'error');
                         setStats(s => ({ ...s, retransmits: s.retransmits + 1 }));
                         
                         const remaining = prev.filter(p => p !== lostP);
@@ -386,7 +386,7 @@ export default function TcpVsUdpSimulator() {
   const handleModeChange = (newMode: string) => {
     setMode(newMode);
     handleReset();
-    logMessage(`Switched to ${newMode} Protocol`);
+    logMessage(`Protocolo alterado para ${newMode}`);
   };
 
   // Keyboard navigation
@@ -437,10 +437,10 @@ export default function TcpVsUdpSimulator() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-700 pb-4">
           <div>
             <h2 className="text-3xl font-bold text-primary">
-              Protocol Simulator
+              Simulador de Protocolos
             </h2>
             <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
-              Visualize the 3-Way Handshake and Reliability mechanisms.
+              Visualize o handshake de 3 vias e os mecanismos de confiabilidade.
             </p>
           </div>
           
@@ -478,7 +478,7 @@ export default function TcpVsUdpSimulator() {
             </div>
             <div>
                 <h3 className="font-bold text-sm uppercase tracking-wide mb-1">
-                    {mode} Concept: {connState === CONNECTION_STATES.DISCONNECTED ? 'Idle' : connState.replace('HANDSHAKE_', 'Handshake: ')}
+                    Conceito {mode}: {connState === CONNECTION_STATES.DISCONNECTED ? 'Parado' : connState.replace('HANDSHAKE_', 'Handshake: ')}
                 </h3>
                 <p className="text-sm text-slate-300">
                     {educationalMessage}
@@ -489,39 +489,39 @@ export default function TcpVsUdpSimulator() {
         {/* Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <StatCard 
-            label="Sent" 
+            label="Enviados" 
             value={stats.sent} 
             color={mode === MODES.TCP ? COLORS.tcp : COLORS.udp} 
             icon={Activity} 
           />
           <StatCard 
-            label="Received" 
+            label="Recebidos" 
             value={stats.received} 
             color="#fff" 
             icon={Wifi} 
           />
           <StatCard 
-            label="Loss Rate" 
+            label="Taxa de perda" 
             value={`${stats.sent > 0 ? ((stats.lost / stats.sent) * 100).toFixed(1) : 0}%`} 
             color={COLORS.loss} 
             icon={WifiOff} 
           />
           {mode === MODES.TCP && (
             <StatCard 
-              label="Retries" 
+              label="Retransmissões" 
               value={stats.retransmits} 
               color={COLORS.ack} 
               icon={RefreshCw} 
-              subtext="Reliability Cost"
+              subtext="Custo da confiabilidade"
             />
           )}
           {mode === MODES.UDP && (
             <StatCard 
-              label="Efficiency" 
+              label="Eficiência" 
               value="Max" 
               color={COLORS.udp} 
               icon={Zap} 
-              subtext="No Overhead"
+              subtext="Sem overhead"
             />
           )}
         </div>
@@ -558,7 +558,7 @@ export default function TcpVsUdpSimulator() {
             <div className={`w-16 h-16 rounded-lg flex items-center justify-center border-2 shadow-[0_0_20px_rgba(0,0,0,0.5)] transition-colors duration-300 ${
                 mode === MODES.TCP ? 'border-cyan-500 bg-cyan-900/20' : 'border-green-500 bg-green-900/20'
             }`}>
-              <div className="text-xs font-bold text-center">CLIENT<br/>(Sender)</div>
+              <div className="text-xs font-bold text-center">CLIENTE<br/>(emissor)</div>
             </div>
           </div>
 
@@ -567,7 +567,7 @@ export default function TcpVsUdpSimulator() {
             <div className={`w-16 h-16 rounded-lg border-2 flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.5)] transition-colors duration-300 ${
                 connState === CONNECTION_STATES.CONNECTED ? 'border-slate-900 dark:border-white bg-slate-100 dark:bg-slate-800' : 'border-slate-400 dark:border-slate-600 bg-slate-200 dark:bg-slate-900'
             }`}>
-               <div className="text-xs font-bold text-center text-slate-700 dark:text-slate-400">SERVER<br/>(Receiver)</div>
+               <div className="text-xs font-bold text-center text-slate-700 dark:text-slate-400">SERVIDOR<br/>(receptor)</div>
             </div>
           </div>
 
@@ -622,9 +622,9 @@ export default function TcpVsUdpSimulator() {
           {!isPlaying && packets.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] z-30">
               <div className="text-center">
-                <p className="text-slate-700 dark:text-slate-300 mb-2">Ready to simulate</p>
+                <p className="text-slate-700 dark:text-slate-300 mb-2">Pronto para simular</p>
                 <Button onClick={handleStartStop} className="gap-2">
-                  <Play size={18} fill="currentColor" /> Start Traffic
+                  <Play size={18} fill="currentColor" /> Iniciar tráfego
                 </Button>
               </div>
             </div>
@@ -637,7 +637,7 @@ export default function TcpVsUdpSimulator() {
             {/* Playback Controls */}
             <div className="bg-slate-200 dark:bg-slate-800 rounded-xl p-4 border border-slate-300 dark:border-slate-700">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Simulation Control</h3>
+                    <h3 className="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Controle da simulação</h3>
                     <div className="flex gap-2">
                         <button 
                             onClick={handleStartStop}
@@ -658,7 +658,7 @@ export default function TcpVsUdpSimulator() {
                      {/* Speed Slider */}
                     <div>
                         <div className="flex justify-between text-xs mb-1">
-                            <span>Traffic Speed</span>
+                            <span>Velocidade do tráfego</span>
                             <span className="text-cyan-400">{speed}%</span>
                         </div>
                         <input 
@@ -683,7 +683,7 @@ export default function TcpVsUdpSimulator() {
                     {/* Loss Slider */}
                     <div>
                          <div className="flex justify-between text-xs mb-1">
-                            <span className="flex items-center gap-1">Packet Loss <Tooltip text="Randomly destroys packets in transit."><Info size={12} className="text-slate-500"/></Tooltip></span>
+                            <span className="flex items-center gap-1">Perda de pacotes <Tooltip text="Destrói pacotes aleatoriamente durante o trajeto."><Info size={12} className="text-slate-500"/></Tooltip></span>
                             <span className="text-red-400">{packetLossChance / 10}%</span>
                         </div>
                         <input 
@@ -696,7 +696,7 @@ export default function TcpVsUdpSimulator() {
                     {/* Jitter Slider */}
                     <div>
                         <div className="flex justify-between text-xs mb-1">
-                            <span className="flex items-center gap-1">Jitter (Instability) <Tooltip text="Adds random variance to packet timing and path."><Info size={12} className="text-slate-500"/></Tooltip></span>
+                            <span className="flex items-center gap-1">Jitter (instabilidade) <Tooltip text="Adiciona variação aleatória ao tempo e ao caminho dos pacotes."><Info size={12} className="text-slate-500"/></Tooltip></span>
                             <span className="text-amber-400">{jitter}%</span>
                         </div>
                         <input 
@@ -712,11 +712,11 @@ export default function TcpVsUdpSimulator() {
         {/* Live Logs */}
         <div className="bg-black/50 rounded-lg p-4 font-mono text-xs h-32 overflow-hidden border border-slate-800">
              <div className="flex justify-between items-center mb-2 border-b border-slate-800 pb-1">
-                 <span className="text-slate-500">SYSTEM LOG</span>
-                 <span className="text-slate-600">LIVE</span>
+                 <span className="text-slate-500">LOG DO SISTEMA</span>
+                 <span className="text-slate-600">AO VIVO</span>
              </div>
              <div className="flex flex-col-reverse gap-1">
-                {logs.length === 0 && <span className="text-slate-700 italic">Waiting for traffic...</span>}
+                {logs.length === 0 && <span className="text-slate-700 italic">Aguardando tráfego...</span>}
                 {logs.map(log => (
                     <div key={log.id} className={`${log.type === 'error' ? 'text-red-400' : log.type === 'syn' ? 'text-fuchsia-400' : 'text-slate-300'} animate-in fade-in slide-in-from-left-4`}>
                         <span className="text-slate-600 mr-2">[{new Date(log.id).toLocaleTimeString().split(' ')[0]}]</span>
@@ -729,12 +729,12 @@ export default function TcpVsUdpSimulator() {
         {/* Educational Footer */}
         <div className="text-center mt-4">
              <p className="text-slate-600 dark:text-slate-500 text-sm">
-                 Experiment by increasing "Packet Loss" to see how TCP retries vs UDP just loses data.
+                 Aumente a "Perda de pacotes" para ver como o TCP retransmite enquanto o UDP simplesmente perde os dados.
              </p>
              {/* Keyboard shortcuts hint */}
              <p className="hidden sm:flex items-center justify-center gap-2 text-xs opacity-70 mt-2">
                <Keyboard className="h-3 w-3" />
-               <span>Space play/pause · M toggle mode · R reset</span>
+               <span>Espaço iniciar/pausar · M alternar modo · R reiniciar</span>
              </p>
         </div>
 

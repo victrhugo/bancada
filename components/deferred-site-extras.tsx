@@ -16,6 +16,14 @@ const BackToTop = dynamic(
   { ssr: false }
 );
 
+const TutorWidget = dynamic(
+  () => import('@/components/tutor/tutor-widget').then((module) => module.TutorWidget),
+  { ssr: false }
+);
+
+// Set by next.config only for server deployments, where /api/tutor exists.
+const tutorEnabled = process.env.NEXT_PUBLIC_TUTOR_ENABLED === '1';
+
 export function DeferredSiteExtras() {
   const [ready, setReady] = useState(false);
 
@@ -41,6 +49,7 @@ export function DeferredSiteExtras() {
       <KonamiCodeListener />
       <KeyboardShortcuts />
       <BackToTop />
+      {tutorEnabled && <TutorWidget />}
     </>
   );
 }

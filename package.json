@@ -36,6 +36,7 @@
     "svg2png": "tsx scripts/svg-to-png.ts",
     "images:all": "pnpm generate:images && pnpm convert:svg-to-png && pnpm prune:svgs",
     "prune:svgs": "tsx scripts/prune-deploy-svgs.ts --execute",
+    "rag:index": "node --import tsx scripts/build-rag-index.ts",
     "generate-search-index": "tsx scripts/generate-search-index.ts",
     "validate:games": "tsx scripts/validate-game-registry.ts",
     "check-links": "node --import tsx scripts/check-broken-links.ts",

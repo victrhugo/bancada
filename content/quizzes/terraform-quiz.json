@@ -1,6 +1,6 @@
 {
   "id": "terraform-quiz",
-  "title": "Terraform Fundamentals Quiz",
+  "title": "Quiz de Fundamentos de Terraform",
   "description": "Teste seu conhecimento de Infrastructure as Code com cenários práticos de Terraform e melhores práticas",
   "category": "Terraform",
   "icon": "Terminal",

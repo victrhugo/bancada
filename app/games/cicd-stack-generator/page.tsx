@@ -10,30 +10,28 @@ export async function generateMetadata(): Promise<Metadata> {
 function CicdStackEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">How it works</h3>
-      <p className="mb-4 text-sm text-muted-foreground">
-        The CI/CD Stack Generator randomly combines:
-      </p>
+      <h3 className="mb-4 text-xl font-semibold">Como funciona</h3>
+      <p className="mb-4 text-sm text-muted-foreground">O Gerador de Stack CI/CD combina ao acaso:</p>
       <ul className="mb-4 space-y-2 text-sm text-muted-foreground">
         <li>
-          <strong className="text-foreground">CI/CD Tools:</strong> GitHub Actions, Jenkins, GitLab
-          CI, and more.
+          <strong className="text-foreground">Ferramentas de CI/CD:</strong> GitHub Actions, Jenkins,
+          GitLab CI e outras.
         </li>
         <li>
-          <strong className="text-foreground">Infrastructure Tools:</strong> Terraform, Ansible,
-          Pulumi, and more.
+          <strong className="text-foreground">Ferramentas de infraestrutura:</strong> Terraform,
+          Ansible, Pulumi e outras.
         </li>
         <li>
-          <strong className="text-foreground">Cloud Platforms:</strong> AWS, GCP, or even a
+          <strong className="text-foreground">Plataformas de nuvem:</strong> AWS, GCP ou até um
           Raspberry Pi.
         </li>
       </ul>
       <p className="mb-4 text-sm text-muted-foreground">
-        Spin the wheels to get your perfect (or perfectly cursed) DevOps stack. Each combination
-        receives a humorous rating that you can share with your team.
+        Gire os rolos para tirar sua stack DevOps perfeita (ou perfeitamente amaldiçoada). Cada
+        combinação recebe uma avaliação bem-humorada que você pode compartilhar com o time.
       </p>
       <p className="text-sm text-muted-foreground">
-        This is just a fun game, but who knows, you might discover your next favorite tech stack.
+        É só um jogo, mas quem sabe você descobre a sua próxima stack favorita.
       </p>
     </>
   );
@@ -44,7 +42,7 @@ export default function CICDStackGeneratorPage() {
     <SimulatorShell
       slug="cicd-stack-generator"
       educational={<CicdStackEducational />}
-      shareText="Try the CI/CD Stack Generator! Get your perfect (or perfectly cursed) DevOps stack combination!"
+      shareText="Experimente o Gerador de Stack CI/CD! Tire a sua combinação DevOps perfeita (ou perfeitamente amaldiçoada)!"
     >
       <CICDStackGenerator />
     </SimulatorShell>

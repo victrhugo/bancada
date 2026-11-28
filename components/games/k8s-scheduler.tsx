@@ -71,9 +71,9 @@ type LevelSpec = {
 const INITIAL_LEVELS: LevelSpec[] = [
   {
     id: 'level-1',
-    title: 'Level 1: Requests & Limits',
+    title: 'Nível 1: requests e limits',
     description:
-      'Place all Pods without exceeding node capacity. Learn requests and basic bin-packing.',
+      'Posicione todos os Pods sem estourar a capacidade dos nodes. Aprenda requests e o básico de bin-packing.',
     nodes: [
       {
         id: 'node-a',
@@ -132,9 +132,9 @@ const INITIAL_LEVELS: LevelSpec[] = [
   },
   {
     id: 'level-2',
-    title: 'Level 2: Taints, Dedicated Nodes & Anti-Affinity',
+    title: 'Nível 2: taints, nodes dedicados e anti-affinity',
     description:
-      'Dedicated GPU and DB nodes require tolerations. Web replicas should not co-locate. Place trainer on GPU, DB on dedicated node.',
+      'Nodes dedicados de GPU e de banco exigem tolerations. Réplicas web não devem ficar juntas. Coloque o trainer na GPU e o db no node dedicado.',
     nodes: [
       {
         id: 'node-a',
@@ -215,8 +215,8 @@ const INITIAL_LEVELS: LevelSpec[] = [
   },
   {
     id: 'level-3',
-    title: 'Level 3: Node Selectors & Affinity',
-    description: 'Match pods to correct hardware with node selectors and required affinity labels.',
+    title: 'Nível 3: node selectors e affinity',
+    description: 'Leve cada pod ao hardware certo usando node selectors e labels de affinity obrigatórias.',
     nodes: [
       {
         id: 'node-a',
@@ -277,8 +277,8 @@ const INITIAL_LEVELS: LevelSpec[] = [
   },
   {
     id: 'level-4',
-    title: 'Level 4: Topology Spread Across Zones',
-    description: 'Distribute replicas evenly across zones (max skew 1).',
+    title: 'Nível 4: topology spread entre zonas',
+    description: 'Distribua as réplicas de forma equilibrada entre as zonas (max skew 1).',
     nodes: [
       {
         id: 'node-a',
@@ -392,34 +392,34 @@ function validatePlacement(
   // Capacity
   const allocated = getAllocatedForNode(node.id, currentPlacements, specs.pods);
   if (allocated.cpu + pod.request.cpu > node.capacity.cpu) {
-    errors.push('Exceeds CPU capacity');
+    errors.push('Excede a capacidade de CPU');
   }
   if (allocated.memory + pod.request.memory > node.capacity.memory) {
-    errors.push('Exceeds Memory capacity');
+    errors.push('Excede a capacidade de memória');
   }
 
   // Taints & Tolerations
   for (const taint of node.taints || []) {
     if (taint.effect === 'NoSchedule' && !hasTolerationForTaint(pod, taint)) {
-      errors.push(`Node taint ${taint.key}=${taint.value ?? ''} requires toleration`);
+      errors.push(`O taint ${taint.key}=${taint.value ?? ''} do node exige uma toleration`);
     }
   }
 
   // NodeSelector
   if (!labelsMatch(pod.nodeSelector, node.labels)) {
-    errors.push('NodeSelector labels not satisfied');
+    errors.push('As labels do nodeSelector não são atendidas');
   }
 
   // Affinity (basic requiredLabels)
   if (pod.affinity?.requiredLabels && !labelsMatch(pod.affinity.requiredLabels, node.labels)) {
-    errors.push('Affinity required labels not satisfied');
+    errors.push('As labels obrigatórias de affinity não são atendidas');
   }
 
   // Anti-Affinity (names)
   if (pod.antiAffinity?.notWithNames?.length) {
     const nodePods = currentPlacements.filter((p) => p.nodeId === node.id).map((p) => p.podId);
     if (nodePods.some((np) => pod.antiAffinity!.notWithNames!.includes(np))) {
-      errors.push('Anti-affinity: conflicting pod present on node');
+      errors.push('Anti-affinity: já existe um pod conflitante neste node');
     }
   }
 
@@ -433,7 +433,7 @@ function validatePlacement(
     for (const other of nodePodObjs) {
       const match = Object.entries(required).every(([k, v]) => other.labels?.[k] === v);
       if (match) {
-        errors.push('Anti-affinity (labels): avoid co-locating similar pods');
+        errors.push('Anti-affinity (labels): evite colocar pods semelhantes juntos');
         break;
       }
     }
@@ -457,7 +457,7 @@ function validatePlacement(
     const newMax = Math.max(nextCount, ...zoneCounts);
     const newMin = Math.min(min, nextCount);
     if (newMax - newMin > maxSkew) {
-      errors.push(`Topology spread skew > ${maxSkew}`);
+      errors.push(`O skew do topology spread passou de ${maxSkew}`);
     }
   }
 
@@ -537,7 +537,7 @@ export default function K8sScheduler() {
 
   function tryPlace(podId: string, nodeId: string) {
     if (placements.some((p) => p.podId === podId)) {
-      setErrors(['Pod already placed. Tap it on a node to remove, then place again.']);
+      setErrors(['Pod já posicionado. Toque nele dentro do node para remover e depois posicione de novo.']);
       return;
     }
     const pod = level.pods.find((p) => p.id === podId)!;
@@ -623,9 +623,9 @@ export default function K8sScheduler() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Time</span>
+            <span className="text-sm text-muted-foreground">Tempo</span>
             <Badge variant="outline">
-              {typeof secondsLeft === 'number' ? `${secondsLeft}s` : 'Free Play'}
+              {typeof secondsLeft === 'number' ? `${secondsLeft}s` : 'Livre'}
             </Badge>
           </div>
           {typeof secondsLeft === 'number' && (
@@ -637,7 +637,7 @@ export default function K8sScheduler() {
 
         <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Score</span>
+            <span className="text-sm text-muted-foreground">Pontuação</span>
             <div className="flex gap-1">
               {[1, 2, 3].map((s) => (
                 <Award
@@ -659,7 +659,7 @@ export default function K8sScheduler() {
         {/* Left column: pods & details */}
         <Card className="p-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Remaining Pods</span>
+            <span className="text-sm text-muted-foreground">Pods restantes</span>
             <Badge variant="secondary">{unplacedPods.length}</Badge>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -695,11 +695,11 @@ export default function K8sScheduler() {
                 return (
                   <div>
                     <div className="flex items-center justify-between">
-                      <div className="font-medium">Selected: {pod.name}</div>
+                      <div className="font-medium">Selecionado: {pod.name}</div>
                       <Badge className={cn('text-xs', qosBadgeColor(pod.qos))}>{pod.qos}</Badge>
                     </div>
                     <div className="mt-1 text-xs text-muted-foreground">
-                      Requests: {pod.request.cpu}m CPU, {pod.request.memory}Mi Mem
+                      Requests: {pod.request.cpu}m de CPU, {pod.request.memory}Mi de memória
                     </div>
                     {(pod.nodeSelector || pod.tolerations || pod.affinity || pod.antiAffinity) && (
                       <div className="mt-2 flex flex-wrap gap-2 text-xs">
@@ -715,7 +715,7 @@ export default function K8sScheduler() {
                           <Badge variant="outline">tolerations: {pod.tolerations.length}</Badge>
                         )}
                         {pod.affinity?.requiredLabels && (
-                          <Badge variant="outline">affinity: required labels</Badge>
+                          <Badge variant="outline">affinity: labels obrigatórias</Badge>
                         )}
                         {pod.antiAffinity?.notWithNames &&
                           pod.antiAffinity.notWithNames.length > 0 && (
@@ -730,7 +730,7 @@ export default function K8sScheduler() {
               })()
             ) : (
               <div className="text-xs text-muted-foreground">
-                Tap a pod to see constraints and node compatibility.
+                Toque em um pod para ver as restrições e a compatibilidade com os nodes.
               </div>
             )}
           </div>
@@ -751,7 +751,7 @@ export default function K8sScheduler() {
                     <div>
                       <div className="font-semibold">{node.name}</div>
                       <div className="text-xs text-muted-foreground">
-                        zone: {node.zone || 'unknown'}
+                        zona: {node.zone || 'desconhecida'}
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -824,13 +824,13 @@ export default function K8sScheduler() {
                       if (podId) tryPlace(podId, node.id);
                     }}
                   >
-                    <div className="text-xs text-muted-foreground mb-2">Placed Pods</div>
+                    <div className="text-xs text-muted-foreground mb-2">Pods posicionados</div>
                     <div className="flex flex-wrap gap-2 min-h-[48px]">
                       {nodePods.map((p) => (
                         <button
                           key={p.id}
                           onClick={() => removePlacement(p.id)}
-                          title="Remove from node"
+                          title="Remover do node"
                           className={cn(
                             'px-3 py-1 rounded-full border text-sm select-none hover:opacity-90 transition',
                             qosBadgeColor(p.qos)
@@ -852,8 +852,8 @@ export default function K8sScheduler() {
                       onClick={() => selectedPodId && tryPlace(selectedPodId, node.id)}
                     >
                       {selectedPodId
-                        ? `Place "${level.pods.find((p) => p.id === selectedPodId)?.name}" on ${node.name}`
-                        : 'Select a Pod to place'}
+                        ? `Colocar "${level.pods.find((p) => p.id === selectedPodId)?.name}" em ${node.name}`
+                        : 'Selecione um Pod para posicionar'}
                     </Button>
                   </div>
                 </Card>
@@ -874,7 +874,7 @@ export default function K8sScheduler() {
             <div className="mb-4 p-3 rounded-lg border border-red-500/30 bg-red-500/10 text-red-700">
               <div className="flex items-center gap-2 font-medium">
                 <XCircle className="w-4 h-4" />
-                Invalid placement
+                Posicionamento inválido
               </div>
               <ul className="mt-2 pl-5 list-disc text-sm">
                 {errors.map((e, i) => (
@@ -890,29 +890,29 @@ export default function K8sScheduler() {
       <div className="mt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         <div className="flex gap-2">
           <Button variant="secondary" onClick={resetLevel}>
-            <RotateCcw className="w-4 h-4 mr-2" /> Reset Level
+            <RotateCcw className="w-4 h-4 mr-2" /> Reiniciar nível
           </Button>
           <Button variant="ghost" onClick={() => setShowHowTo(true)}>
-            <HelpCircle className="w-4 h-4 mr-2" /> How to play
+            <HelpCircle className="w-4 h-4 mr-2" /> Como jogar
           </Button>
         </div>
         <div className="flex gap-2 flex-wrap w-full md:w-auto">
           <Button variant="outline" onClick={() => setLevelIndex(0)} disabled={levelIndex === 0}>
-            Level 1
+            Nível 1
           </Button>
           <Button variant="outline" onClick={() => setLevelIndex(1)} disabled={levelIndex === 1}>
-            Level 2
+            Nível 2
           </Button>
           <Button variant="outline" onClick={() => setLevelIndex(2)} disabled={levelIndex === 2}>
-            Level 3
+            Nível 3
           </Button>
           <Button onClick={nextLevel} disabled={!allPlaced} className="w-full sm:w-auto">
             {allPlaced ? (
               <>
-                <CheckCircle2 className="w-4 h-4 mr-2" /> Next Level
+                <CheckCircle2 className="w-4 h-4 mr-2" /> Próximo nível
               </>
             ) : (
-              'Place all Pods to continue'
+              'Posicione todos os Pods para continuar'
             )}
           </Button>
         </div>
@@ -929,18 +929,18 @@ export default function K8sScheduler() {
             >
               <div className="mx-auto max-w-xl p-4 rounded-xl border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 shadow-lg">
                 <div className="flex items-center gap-2 text-emerald-600 font-semibold">
-                  <CheckCircle2 className="w-5 h-5" /> Level complete!
+                  <CheckCircle2 className="w-5 h-5" /> Nível concluído!
                 </div>
                 <div className="mt-2 flex items-center justify-between">
                   <div className="text-sm text-muted-foreground">
-                    Nodes used: {nodesUsed} • Stars: {starCount}/3
+                    Nodes usados: {nodesUsed} • Estrelas: {starCount}/3
                   </div>
                   <div className="flex gap-2">
                     <Button size="sm" variant="outline" onClick={resetLevel}>
-                      Replay
+                      Jogar de novo
                     </Button>
                     <Button size="sm" onClick={nextLevel}>
-                      Next
+                      Próximo
                     </Button>
                   </div>
                 </div>
@@ -959,37 +959,37 @@ export default function K8sScheduler() {
       <Dialog open={showHowTo} onOpenChange={setShowHowTo}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>How to play</DialogTitle>
+            <DialogTitle>Como jogar</DialogTitle>
             <DialogDescription>
-              Place all Pods onto Nodes without breaking Kubernetes scheduling rules.
+              Posicione todos os Pods nos Nodes sem quebrar as regras de agendamento do Kubernetes.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm">
             <div>
-              <span className="font-medium">1. Select a Pod</span>
-              <div className="text-muted-foreground">Tap a pod, or drag it on desktop.</div>
+              <span className="font-medium">1. Selecione um Pod</span>
+              <div className="text-muted-foreground">Toque em um pod ou, no computador, arraste.</div>
             </div>
             <div>
-              <span className="font-medium">2. Pick a Node</span>
+              <span className="font-medium">2. Escolha um Node</span>
               <div className="text-muted-foreground">
-                Nodes highlight green/red to show whether placement is allowed. Capacity bars show a
-                light preview of resources after placement.
+                Os nodes ficam verdes ou vermelhos para mostrar se o posicionamento é permitido. As
+                barras de capacidade mostram uma prévia dos recursos depois do posicionamento.
               </div>
             </div>
             <div>
-              <span className="font-medium">3. Follow the rules</span>
+              <span className="font-medium">3. Siga as regras</span>
               <ul className="mt-1 list-disc list-inside text-muted-foreground">
-                <li>Do not exceed CPU/Memory capacity.</li>
-                <li>Match taints with tolerations when required.</li>
-                <li>Respect node selectors and affinity/anti-affinity.</li>
-                <li>Keep topology spread balanced across zones.</li>
+                <li>Não exceda a capacidade de CPU e memória.</li>
+                <li>Combine taints com tolerations quando necessário.</li>
+                <li>Respeite node selectors e affinity/anti-affinity.</li>
+                <li>Mantenha o topology spread equilibrado entre as zonas.</li>
               </ul>
             </div>
             <div>
-              <span className="font-medium">Pro tips</span>
+              <span className="font-medium">Dicas</span>
               <ul className="mt-1 list-disc list-inside text-muted-foreground">
-                <li>Tap a placed pod to remove it.</li>
-                <li>Use fewer nodes and finish faster for more stars.</li>
+                <li>Toque em um pod posicionado para removê-lo.</li>
+                <li>Use menos nodes e termine mais rápido para ganhar mais estrelas.</li>
               </ul>
             </div>
           </div>

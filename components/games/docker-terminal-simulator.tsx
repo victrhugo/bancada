@@ -100,7 +100,7 @@ const REGISTRY_IMAGES: Record<string, DockerImage> = {
     id: '9c7a54a9a43c',
     created: '3 weeks ago',
     size: '13.3kB',
-    description: 'Minimal image that proves Docker can pull and run containers.',
+    description: 'Imagem mínima que prova que o Docker consegue baixar e rodar containers.',
     layers: ['scratch base', 'hello binary'],
   },
   'nginx:alpine': {
@@ -109,7 +109,7 @@ const REGISTRY_IMAGES: Record<string, DockerImage> = {
     id: 'b8c1701fcf89',
     created: '2 weeks ago',
     size: '48.2MB',
-    description: 'Small NGINX web server image based on Alpine Linux.',
+    description: 'Imagem pequena do servidor web NGINX, baseada no Alpine Linux.',
     layers: ['alpine:3.20', 'nginx package', 'default config', 'html assets'],
   },
   'postgres:16-alpine': {
@@ -118,7 +118,7 @@ const REGISTRY_IMAGES: Record<string, DockerImage> = {
     id: 'f1299d8c7a4e',
     created: '9 days ago',
     size: '274MB',
-    description: 'PostgreSQL server image with Alpine base layers.',
+    description: 'Imagem do servidor PostgreSQL com camadas base do Alpine.',
     layers: ['alpine:3.20', 'postgres binaries', 'entrypoint scripts', 'database defaults'],
   },
   'redis:7-alpine': {
@@ -127,7 +127,7 @@ const REGISTRY_IMAGES: Record<string, DockerImage> = {
     id: '38f7f2b5f7c8',
     created: '11 days ago',
     size: '41.5MB',
-    description: 'Redis cache image for lightweight local development.',
+    description: 'Imagem de cache Redis para desenvolvimento local leve.',
     layers: ['alpine:3.20', 'redis package', 'redis.conf', 'entrypoint'],
   },
   'node:20-alpine': {
@@ -136,7 +136,7 @@ const REGISTRY_IMAGES: Record<string, DockerImage> = {
     id: 'cb7f6f92b18f',
     created: '6 days ago',
     size: '132MB',
-    description: 'Node.js runtime used as the base for the sample API image.',
+    description: 'Runtime Node.js usado como base da imagem da API de exemplo.',
     layers: ['alpine:3.20', 'node runtime', 'npm', 'corepack'],
   },
 };
@@ -178,7 +178,7 @@ const createInitialState = (): DockerDaemonState => ({
       id: '05455a08881e',
       created: '4 weeks ago',
       size: '7.4MB',
-      description: 'Tiny Linux base image often used for containers.',
+      description: 'Imagem base Linux minúscula, muito usada em containers.',
       layers: ['alpine rootfs'],
     },
   ],
@@ -212,216 +212,216 @@ const createInitialState = (): DockerDaemonState => ({
 const LESSONS: Lesson[] = [
   {
     id: 'daemon',
-    title: 'Docker Daemon Basics',
-    description: 'Inspect the local Docker engine and image store',
+    title: 'Básico do daemon do Docker',
+    description: 'Inspecione o engine local do Docker e o repositório de imagens',
     icon: <Server className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Start by checking the Docker client and server versions.',
-        hint: 'Use "docker version" to see both the client and daemon versions.',
+        instruction: 'Comece verificando as versões do cliente e do servidor Docker.',
+        hint: 'Use "docker version" para ver as versões do cliente e do daemon.',
         expectedCommand: 'docker version',
         explanation:
-          'Docker CLI commands talk to a daemon. Most troubleshooting starts by proving the client can reach that daemon.',
+          'Os comandos da CLI do Docker conversam com um daemon. A maior parte do troubleshooting começa provando que o cliente alcança esse daemon.',
       },
       {
-        instruction: 'Show a summary of the daemon state.',
-        hint: 'Use "docker info" to see containers, images, storage driver, and runtime details.',
+        instruction: 'Mostre um resumo do estado do daemon.',
+        hint: 'Use "docker info" para ver containers, imagens, storage driver e detalhes do runtime.',
         expectedCommand: 'docker info',
         explanation:
-          'docker info gives a quick health check for the engine: counts, runtime, cgroup driver, and storage driver.',
+          'O docker info dá um check-up rápido do engine: contagens, runtime, cgroup driver e storage driver.',
       },
       {
-        instruction: 'Pull a small NGINX image from a registry.',
-        hint: 'Use "docker pull nginx:alpine". Tags matter: nginx:latest and nginx:alpine are different images.',
+        instruction: 'Baixe uma imagem pequena do NGINX de um registry.',
+        hint: 'Use "docker pull nginx:alpine". Tags importam: nginx:latest e nginx:alpine são imagens diferentes.',
         expectedCommand: 'docker pull nginx:alpine',
         explanation:
-          'docker pull downloads image layers from a registry and stores them locally for future containers.',
+          'O docker pull baixa as camadas da imagem de um registry e guarda localmente para os próximos containers.',
       },
       {
-        instruction: 'List the images now available locally.',
-        hint: 'Use "docker images" or "docker image ls".',
+        instruction: 'Liste as imagens que agora estão disponíveis localmente.',
+        hint: 'Use "docker images" ou "docker image ls".',
         expectedCommand: ['docker images', 'docker image ls'],
         explanation:
-          'Images are immutable templates. Containers are runtime instances created from those images.',
+          'Imagens são templates imutáveis. Containers são instâncias em execução criadas a partir delas.',
       },
     ],
   },
   {
     id: 'lifecycle',
-    title: 'Container Lifecycle',
-    description: 'Run, inspect, stop, and list containers',
+    title: 'Ciclo de vida do container',
+    description: 'Rode, inspecione, pare e liste containers',
     icon: <Container className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Run NGINX in the background as a container named web, publishing host port 8080 to container port 80.',
+        instruction: 'Rode o NGINX em segundo plano num container chamado web, publicando a porta 8080 do host na porta 80 do container.',
         hint: 'Use "docker run -d --name web -p 8080:80 nginx:alpine".',
         expectedCommand: [
           'docker run -d --name web -p 8080:80 nginx:alpine',
           'docker container run -d --name web -p 8080:80 nginx:alpine',
         ],
         explanation:
-          '-d detaches, --name gives the container a stable name, and -p maps traffic from your laptop into the container.',
+          'O -d roda em segundo plano, o --name dá um nome fixo ao container e o -p leva o tráfego do seu computador para dentro do container.',
       },
       {
-        instruction: 'List only the running containers.',
-        hint: 'Use "docker ps". Add -a later when you also want stopped containers.',
+        instruction: 'Liste só os containers em execução.',
+        hint: 'Use "docker ps". Depois, adicione -a quando quiser ver também os containers parados.',
         expectedCommand: ['docker ps', 'docker container ls'],
         explanation:
-          'docker ps shows running containers. This is the fastest way to verify a service is currently alive.',
+          'O docker ps mostra os containers em execução. É o jeito mais rápido de confirmar que um serviço está de pé.',
       },
       {
-        instruction: 'Read the logs from the web container.',
-        hint: 'Use "docker logs web". Container names and IDs both work.',
+        instruction: 'Leia os logs do container web.',
+        hint: 'Use "docker logs web". Funciona tanto com o nome quanto com o ID do container.',
         expectedCommand: 'docker logs web',
         explanation:
-          'Docker captures stdout and stderr from the main process. Logs are usually your first debugging stop.',
+          'O Docker captura o stdout e o stderr do processo principal. Os logs costumam ser a primeira parada na depuração.',
       },
       {
-        instruction: 'Stop the web container gracefully.',
-        hint: 'Use "docker stop web". This sends SIGTERM, then SIGKILL after a timeout.',
+        instruction: 'Pare o container web de forma graciosa.',
+        hint: 'Use "docker stop web". Ele manda SIGTERM e, depois de um timeout, SIGKILL.',
         expectedCommand: 'docker stop web',
         explanation:
-          'Stopping a container keeps its writable layer around, so you can start it again or inspect it later.',
+          'Parar um container mantém a camada gravável dele, então dá para iniciar de novo ou inspecionar depois.',
       },
       {
-        instruction: 'List every container, including stopped ones.',
+        instruction: 'Liste todos os containers, inclusive os parados.',
         hint: 'Use "docker ps -a".',
         expectedCommand: ['docker ps -a', 'docker container ls -a'],
         explanation:
-          'The -a flag reveals exited containers. This is how you find old runs that may need cleanup.',
+          'A flag -a mostra os containers encerrados. É assim que você acha execuções antigas que talvez precisem de limpeza.',
       },
     ],
   },
   {
     id: 'debugging',
-    title: 'Debugging Containers',
-    description: 'Start a container, inspect it, and exec commands inside',
+    title: 'Depurando containers',
+    description: 'Inicie um container, inspecione e rode comandos dentro dele',
     icon: <Cpu className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Start the web container again.',
+        instruction: 'Inicie o container web de novo.',
         hint: 'Use "docker start web".',
         expectedCommand: 'docker start web',
         explanation:
-          'docker start reuses an existing stopped container. docker run creates a new container.',
+          'O docker start reaproveita um container parado. O docker run cria um container novo.',
       },
       {
-        instruction: 'Run a command inside the running web container to see its hostname.',
+        instruction: 'Rode um comando dentro do container web em execução para ver o hostname dele.',
         hint: 'Use "docker exec web hostname".',
         expectedCommand: ['docker exec web hostname', 'docker container exec web hostname'],
         explanation:
-          'docker exec starts an extra process inside an existing container. It is useful for quick diagnostics.',
+          'O docker exec inicia um processo extra dentro de um container existente. É útil para diagnósticos rápidos.',
       },
       {
-        instruction: 'Inspect the container metadata as JSON-like output.',
+        instruction: 'Inspecione os metadados do container em formato parecido com JSON.',
         hint: 'Use "docker inspect web".',
         expectedCommand: 'docker inspect web',
         explanation:
-          'docker inspect exposes low-level metadata: image ID, network, port bindings, mounts, env vars, and state.',
+          'O docker inspect mostra metadados de baixo nível: ID da imagem, rede, portas, mounts, variáveis de ambiente e estado.',
       },
     ],
   },
   {
     id: 'builds',
-    title: 'Build Images',
-    description: 'Read a Dockerfile and build a custom API image',
+    title: 'Gerar imagens',
+    description: 'Leia um Dockerfile e gere uma imagem própria da API',
     icon: <FileText className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Read the sample Dockerfile in this workspace.',
+        instruction: 'Leia o Dockerfile de exemplo deste workspace.',
         hint: 'Use "cat Dockerfile".',
         expectedCommand: 'cat Dockerfile',
         explanation:
-          'A Dockerfile is a recipe for an image. Each instruction can become a cached layer.',
+          'O Dockerfile é a receita de uma imagem. Cada instrução pode virar uma camada em cache.',
       },
       {
-        instruction: 'Build the sample API image and tag it as devops-api:1.0.',
+        instruction: 'Gere a imagem da API de exemplo com a tag devops-api:1.0.',
         hint: 'Use "docker build -t devops-api:1.0 .".',
         expectedCommand: ['docker build -t devops-api:1.0 .', 'docker image build -t devops-api:1.0 .'],
         explanation:
-          'A tag gives the image a human-friendly name. Without tags, you end up chasing image IDs.',
+          'A tag dá à imagem um nome fácil de lembrar. Sem tags, você acaba caçando IDs de imagem.',
       },
       {
-        instruction: 'Inspect the image layers for devops-api:1.0.',
+        instruction: 'Inspecione as camadas da imagem devops-api:1.0.',
         hint: 'Use "docker history devops-api:1.0".',
         expectedCommand: 'docker history devops-api:1.0',
         explanation:
-          'Layer history helps explain image size, cache hits, and why instruction order matters.',
+          'O histórico de camadas ajuda a entender o tamanho da imagem, os cache hits e por que a ordem das instruções importa.',
       },
     ],
   },
   {
     id: 'data-networking',
-    title: 'Data & Networking',
-    description: 'Create volumes and networks, then run a database container',
+    title: 'Dados e rede',
+    description: 'Crie volumes e redes e depois rode um container de banco de dados',
     icon: <Database className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Create a named volume for PostgreSQL data.',
+        instruction: 'Crie um volume nomeado para os dados do PostgreSQL.',
         hint: 'Use "docker volume create pgdata".',
         expectedCommand: 'docker volume create pgdata',
         explanation:
-          'Named volumes persist data outside a container writable layer. Removing the container will not delete the volume.',
+          'Volumes nomeados guardam os dados fora da camada gravável do container. Remover o container não apaga o volume.',
       },
       {
-        instruction: 'Create an application bridge network.',
+        instruction: 'Crie uma rede bridge para a aplicação.',
         hint: 'Use "docker network create appnet".',
         expectedCommand: 'docker network create appnet',
         explanation:
-          'User-defined bridge networks provide service-name DNS between containers.',
+          'Redes bridge criadas por você oferecem DNS pelo nome do serviço entre os containers.',
       },
       {
-        instruction: 'Run PostgreSQL on appnet using the pgdata volume and a password environment variable.',
+        instruction: 'Rode o PostgreSQL na appnet usando o volume pgdata e uma variável de ambiente com a senha.',
         hint: 'Use "docker run -d --name db --network appnet -v pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=secret postgres:16-alpine".',
         expectedCommand: [
           'docker run -d --name db --network appnet -v pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=secret postgres:16-alpine',
           'docker container run -d --name db --network appnet -v pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=secret postgres:16-alpine',
         ],
         explanation:
-          'This combines a persistent volume, a private network, and environment configuration: a realistic local database workflow.',
+          'Isso junta um volume persistente, uma rede privada e configuração por ambiente: um fluxo realista de banco de dados local.',
       },
       {
-        instruction: 'List Docker networks to confirm appnet exists.',
+        instruction: 'Liste as redes do Docker para confirmar que a appnet existe.',
         hint: 'Use "docker network ls".',
         expectedCommand: 'docker network ls',
         explanation:
-          'Networks are first-class Docker objects. Naming them makes multi-container setups easier to reason about.',
+          'Redes são objetos de primeira classe no Docker. Dar nome a elas facilita entender setups com vários containers.',
       },
     ],
   },
   {
     id: 'compose',
-    title: 'Compose Workflow',
-    description: 'Use Docker Compose to manage a small app stack',
+    title: 'Fluxo com Compose',
+    description: 'Use o Docker Compose para gerenciar uma stack pequena',
     icon: <Network className="h-5 w-5" />,
     commands: [
       {
-        instruction: 'Read the sample compose file.',
+        instruction: 'Leia o arquivo compose de exemplo.',
         hint: 'Use "cat compose.yaml".',
         expectedCommand: ['cat compose.yaml', 'cat docker-compose.yml'],
         explanation:
-          'Compose describes a multi-container app declaratively: services, networks, volumes, ports, and environment.',
+          'O Compose descreve de forma declarativa uma aplicação com vários containers: serviços, redes, volumes, portas e ambiente.',
       },
       {
-        instruction: 'Start the compose stack in the background.',
+        instruction: 'Suba a stack do compose em segundo plano.',
         hint: 'Use "docker compose up -d".',
         expectedCommand: ['docker compose up -d', 'docker-compose up -d'],
         explanation:
-          'Compose creates the missing network, volume, and containers, then starts the stack as one unit.',
+          'O Compose cria a rede, o volume e os containers que faltam e sobe a stack como uma unidade.',
       },
       {
-        instruction: 'Show the compose services and their state.',
+        instruction: 'Mostre os serviços do compose e o estado deles.',
         hint: 'Use "docker compose ps".',
         expectedCommand: ['docker compose ps', 'docker-compose ps'],
         explanation:
-          'docker compose ps is the stack-level view, while docker ps is the daemon-level view.',
+          'O docker compose ps é a visão da stack; o docker ps é a visão do daemon.',
       },
       {
-        instruction: 'Shut the compose stack down while keeping named volumes.',
+        instruction: 'Derrube a stack do compose mantendo os volumes nomeados.',
         hint: 'Use "docker compose down".',
         expectedCommand: ['docker compose down', 'docker-compose down'],
         explanation:
-          'Compose down removes the service containers and network. Named volumes stay unless you add --volumes.',
+          'O compose down remove os containers dos serviços e a rede. Os volumes nomeados ficam, a menos que você adicione --volumes.',
       },
     ],
   },
@@ -873,7 +873,7 @@ Server:
           const target = filtered[0];
           const command = filtered.slice(1).join(' ');
           const container = target ? findContainer(target) : null;
-          if (!target || !command) return 'docker exec requires a container and command.';
+          if (!target || !command) return 'docker exec precisa de um container e de um comando.';
           if (!container) return `Error response from daemon: No such container: ${target}`;
           if (container.status !== 'running') {
             return `Error response from daemon: Container ${container.name} is not running`;
@@ -942,7 +942,7 @@ Server:
             id: 'cafe42f00d11',
             created: 'Less than a second ago',
             size: '189MB',
-            description: 'Sample Node.js API image built from the tutorial Dockerfile.',
+            description: 'Imagem da API Node.js de exemplo, gerada a partir do Dockerfile do tutorial.',
             layers: [
               'FROM node:20-alpine',
               'WORKDIR /app',
@@ -1078,7 +1078,7 @@ See 'docker --help'.`;
               id: 'cafe42f00d11',
               created: 'Less than a second ago',
               size: '189MB',
-              description: 'Sample Node.js API image built from the tutorial Dockerfile.',
+              description: 'Imagem da API Node.js de exemplo, gerada a partir do Dockerfile do tutorial.',
               layers: ['FROM node:20-alpine', 'WORKDIR /app', 'COPY app', 'CMD node server.js'],
             });
           }
@@ -1230,7 +1230,7 @@ Network docker-sim_default  Removed`;
       if (command === 'help') {
         return {
           type: 'output',
-          output: `Available commands:
+          output: `Comandos disponíveis:
   docker version
   docker info
   docker pull IMAGE
@@ -1325,12 +1325,12 @@ Network docker-sim_default  Removed`;
       <div className="mb-5 text-center">
         <div className="mb-3 flex items-center justify-center gap-2.5">
           <Container className="h-8 w-8 text-primary" strokeWidth={1.5} />
-          <h2 className="text-2xl font-bold md:text-3xl">Docker Terminal Lab</h2>
+          <h2 className="text-2xl font-bold md:text-3xl">Laboratório de terminal Docker</h2>
         </div>
         <p className="mx-auto max-w-2xl text-base text-muted-foreground">
-          Practice real Docker CLI workflows in a safe browser simulator. Run containers, inspect
-          logs, build images, wire up networks, persist data with volumes, and manage a Compose
-          stack without needing a local Docker daemon.
+          Pratique fluxos reais da CLI do Docker num simulador seguro no navegador. Rode containers, leia
+          logs, gere imagens, conecte redes, guarde dados em volumes e gerencie uma stack do Compose
+          sem precisar de um daemon Docker local.
         </p>
       </div>
 
@@ -1339,16 +1339,16 @@ Network docker-sim_default  Removed`;
           <div className="mb-2 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <Trophy className="h-5 w-5 text-yellow-500" />
-              <span className="font-medium">Progress</span>
+              <span className="font-medium">Progresso</span>
             </div>
             <span className="text-sm text-muted-foreground">
-              {completedCount}/{totalCommands} commands completed
+              {completedCount}/{totalCommands} comandos concluídos
             </span>
           </div>
           <Progress value={progressPercentage} className="h-3" />
           {progressPercentage === 100 && (
             <p className="mt-2 text-center font-medium text-emerald-600">
-              Complete. You can now run through the lab again or experiment freely.
+              Concluído! Agora você pode refazer o laboratório ou experimentar à vontade.
             </p>
           )}
         </CardContent>
@@ -1359,7 +1359,7 @@ Network docker-sim_default  Removed`;
           <CardHeader className="p-4 pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
               <BookOpen className="h-5 w-5" />
-              Lessons
+              Lições
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 p-4 pt-0">
@@ -1401,7 +1401,7 @@ Network docker-sim_default  Removed`;
 
             <Button variant="outline" onClick={resetProgress} className="mt-3 w-full">
               <RotateCcw className="mr-2 h-4 w-4" />
-              Reset Lab
+              Reiniciar laboratório
             </Button>
           </CardContent>
         </Card>
@@ -1413,10 +1413,10 @@ Network docker-sim_default  Removed`;
                 <div className="flex items-center justify-between gap-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <ChevronRight className="h-5 w-5 text-primary" />
-                    Current Task
+                    Tarefa atual
                   </CardTitle>
                   <Badge>
-                    Step {currentCommandIndex + 1}/{currentLesson.commands.length}
+                    Passo {currentCommandIndex + 1}/{currentLesson.commands.length}
                   </Badge>
                 </div>
               </CardHeader>
@@ -1429,12 +1429,12 @@ Network docker-sim_default  Removed`;
                   className="text-muted-foreground"
                 >
                   <Lightbulb className="mr-1 h-4 w-4" />
-                  {showHint ? 'Hide Hint' : 'Show Hint'}
+                  {showHint ? 'Esconder dica' : 'Mostrar dica'}
                 </Button>
                 {showHint && (
                   <div className="mt-3 rounded-md border border-yellow-200 bg-yellow-50 p-2.5 dark:border-yellow-800 dark:bg-yellow-950/30">
                     <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                      Hint: {currentCommand.hint}
+                      Dica: {currentCommand.hint}
                     </p>
                   </div>
                 )}
@@ -1467,9 +1467,9 @@ Network docker-sim_default  Removed`;
               >
                 {terminalHistory.length === 0 && (
                   <div className="mb-4 text-green-400">
-                    <p>Welcome to Docker Terminal Lab.</p>
+                    <p>Boas-vindas ao laboratório de terminal Docker.</p>
                     <p className="mt-2 text-muted-foreground">
-                      Type "help" for available commands, or follow the current task.
+                      Digite "help" para ver os comandos disponíveis ou siga a tarefa atual.
                     </p>
                   </div>
                 )}
@@ -1511,15 +1511,15 @@ Network docker-sim_default  Removed`;
 
           <Card>
             <CardHeader className="p-4 pb-2">
-              <CardTitle className="text-base">Quick Reference</CardTitle>
+              <CardTitle className="text-base">Referência rápida</CardTitle>
             </CardHeader>
             <CardContent className="p-4 pt-0">
               <div className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
                 {[
-                  ['docker ps', 'Running containers'],
-                  ['docker logs web', 'Read stdout/stderr'],
-                  ['docker exec web sh', 'Run inside a container'],
-                  ['docker compose up -d', 'Start a stack'],
+                  ['docker ps', 'Containers em execução'],
+                  ['docker logs web', 'Lê stdout/stderr'],
+                  ['docker exec web sh', 'Roda dentro de um container'],
+                  ['docker compose up -d', 'Sobe uma stack'],
                 ].map(([command, label]) => (
                   <div key={command} className="rounded-md bg-muted p-2">
                     <code className="text-primary">{command}</code>
@@ -1536,14 +1536,14 @@ Network docker-sim_default  Removed`;
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Server className="h-5 w-5" />
-                Docker Daemon
+                Daemon do Docker
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0">
               <div className="grid grid-cols-2 gap-2">
-                <Metric label="Images" value={dockerState.images.length} icon={<HardDrive />} />
-                <Metric label="Running" value={runningContainers.length} icon={<Play />} />
-                <Metric label="Networks" value={dockerState.networks.length} icon={<Network />} />
+                <Metric label="Imagens" value={dockerState.images.length} icon={<HardDrive />} />
+                <Metric label="Rodando" value={runningContainers.length} icon={<Play />} />
+                <Metric label="Redes" value={dockerState.networks.length} icon={<Network />} />
                 <Metric label="Volumes" value={dockerState.volumes.length} icon={<Database />} />
               </div>
               <div className="rounded-md border bg-muted/40 p-2.5">
@@ -1552,8 +1552,8 @@ Network docker-sim_default  Removed`;
                   <Badge variant="secondary">overlay2</Badge>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Containers share the host kernel, isolate processes with namespaces, and persist
-                  mutable data through volumes.
+                  Containers compartilham o kernel do host, isolam processos com namespaces e guardam
+                  dados mutáveis em volumes.
                 </div>
               </div>
             </CardContent>
@@ -1568,7 +1568,7 @@ Network docker-sim_default  Removed`;
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
               {dockerState.containers.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No containers yet.</p>
+                <p className="text-sm text-muted-foreground">Nenhum container ainda.</p>
               ) : (
                 dockerState.containers.map((container) => (
                   <div key={container.id} className="rounded-md border p-2.5">
@@ -1591,7 +1591,7 @@ Network docker-sim_default  Removed`;
                         ) : (
                           <Square className={cn('h-3.5 w-3.5', statusColor(container.status))} />
                         )}
-                        {container.ports.length ? container.ports.join(', ') : 'no published ports'}
+                        {container.ports.length ? container.ports.join(', ') : 'nenhuma porta publicada'}
                       </div>
                       <div className="flex items-center gap-2">
                         <Network className="h-3.5 w-3.5" />
@@ -1614,7 +1614,7 @@ Network docker-sim_default  Removed`;
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <HardDrive className="h-5 w-5" />
-                Images
+                Imagens
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -1644,7 +1644,7 @@ Network docker-sim_default  Removed`;
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Network className="h-5 w-5" />
-                Networks & Volumes
+                Redes e volumes
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0">
@@ -1663,7 +1663,7 @@ Network docker-sim_default  Removed`;
               </div>
               <div className="space-y-2">
                 {dockerState.volumes.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No named volumes yet.</p>
+                  <p className="text-sm text-muted-foreground">Nenhum volume nomeado ainda.</p>
                 ) : (
                   dockerState.volumes.map((volume) => (
                     <div

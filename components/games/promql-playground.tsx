@@ -181,52 +181,52 @@ const generateMetrics = (): TimeSeries[] => {
 const TUTORIALS: Tutorial[] = [
   {
     id: 'basic-select',
-    title: '🎯 Your First Query: See All Requests',
-    description: 'Learn how to view a metric - think of it like looking at your app\'s request counter',
+    title: '🎯 Sua primeira query: veja todas as requisições',
+    description: 'Aprenda a ver uma métrica: pense nela como o contador de requisições da sua aplicação',
     query: 'http_requests_total',
-    explanation: 'This shows every HTTP request your app has handled. Each row is a different server or endpoint (like api-1, api-2).',
+    explanation: 'Isso mostra todas as requisições HTTP que a aplicação atendeu. Cada linha é um servidor ou endpoint diferente (como api-1, api-2).',
   },
   {
     id: 'label-filter',
-    title: '🔍 Filter What You See: Only GET Requests',
-    description: 'Too much data? Let\'s narrow it down to just GET requests',
+    title: '🔍 Filtre o que você vê: só requisições GET',
+    description: 'Dado demais? Vamos filtrar só as requisições GET',
     query: 'http_requests_total{method="GET"}',
-    explanation: 'The {method="GET"} part is like a filter - it says "only show me GET requests, ignore POST, DELETE, etc."',
+    explanation: 'A parte {method="GET"} funciona como um filtro: ela diz "mostre só requisições GET e ignore POST, DELETE etc."',
   },
   {
     id: 'multi-label',
-    title: '🎯 Get Specific: Successful GET Requests',
-    description: 'Combine filters to see exactly what you want - only successful (200) GET requests',
+    title: '🎯 Seja específico: requisições GET com sucesso',
+    description: 'Combine filtros para ver exatamente o que quer: só requisições GET com sucesso (200)',
     query: 'http_requests_total{method="GET",status="200"}',
-    explanation: 'You can stack filters with commas. This shows GET requests that returned a 200 (success) status code.',
+    explanation: 'Dá para empilhar filtros separados por vírgula. Isso mostra as requisições GET que devolveram status 200 (sucesso).',
   },
   {
     id: 'rate-function',
-    title: '📈 Speed Matters: Requests Per Second',
-    description: 'How fast are requests coming in? Use rate() to see per-second speed',
+    title: '📈 Velocidade importa: requisições por segundo',
+    description: 'Com que velocidade as requisições chegam? Use rate() para ver o ritmo por segundo',
     query: 'rate(http_requests_total[5m])',
-    explanation: 'rate() converts your growing counter into "requests per second over the last 5 minutes". Like checking your car\'s speedometer!',
+    explanation: 'O rate() transforma um contador que só cresce em "requisições por segundo nos últimos 5 minutos". É como olhar o velocímetro do carro!',
   },
   {
     id: 'sum-aggregation',
-    title: '🧮 Total It Up: All Requests Combined',
-    description: 'Add up all servers to get your total request rate',
+    title: '🧮 Some tudo: todas as requisições juntas',
+    description: 'Some todos os servidores para ter a taxa total de requisições',
     query: 'sum(rate(http_requests_total[5m]))',
-    explanation: 'sum() adds up all your servers\' request rates into one number. Perfect for dashboards!',
+    explanation: 'O sum() junta a taxa de requisições de todos os servidores num único número. Perfeito para dashboards!',
   },
   {
     id: 'sum-by',
-    title: '📊 Break It Down: Requests by HTTP Method',
-    description: 'See totals separated by GET, POST, etc.',
+    title: '📊 Separe por partes: requisições por método HTTP',
+    description: 'Veja os totais separados por GET, POST etc.',
     query: 'sum by(method) (rate(http_requests_total[5m]))',
-    explanation: '"sum by(method)" means "give me separate totals for each HTTP method". Like organizing by category!',
+    explanation: '"sum by(method)" significa "me dê um total separado para cada método HTTP". Como organizar por categoria!',
   },
   {
     id: 'error-rate',
-    title: '🚨 Real-World: Error Rate Percentage',
-    description: 'What % of requests are failing? This is how SREs monitor health',
+    title: '🚨 Mundo real: porcentagem de erros',
+    description: 'Quantos % das requisições estão falhando? É assim que SREs acompanham a saúde do sistema',
     query: 'sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) * 100',
-    explanation: 'This divides 5xx errors by total requests and converts to %. If you see 2.5, that means 2.5% of requests are failing.',
+    explanation: 'Isso divide os erros 5xx pelo total de requisições e converte para %. Se aparecer 2.5, significa que 2,5% das requisições estão falhando.',
   },
 ];
 
@@ -291,13 +291,13 @@ class PromQLExecutor {
       return {
         resultType: 'instant',
         result: [],
-        error: `Unsupported query syntax. Try: metric_name, metric_name{label="value"}, rate(metric[5m]), sum(query), sum by(label) (query)`,
+        error: `Sintaxe de query não suportada. Tente: metric_name, metric_name{label="value"}, rate(metric[5m]), sum(query), sum by(label) (query)`,
       };
     } catch (error) {
       return {
         resultType: 'instant',
         result: [],
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
       };
     }
   }
@@ -413,7 +413,7 @@ class PromQLExecutor {
       return { resultType: 'scalar', result: val2 !== 0 ? val1 / val2 : 0 };
     }
 
-    return { resultType: 'scalar', result: 0, error: 'Division only supports scalar results' };
+    return { resultType: 'scalar', result: 0, error: 'A divisão só aceita resultados escalares' };
   }
 
   private executeMultiplication(query: string, multiplier: number): QueryResult {
@@ -423,7 +423,7 @@ class PromQLExecutor {
       return { resultType: 'scalar', result: (result.result as number) * multiplier };
     }
 
-    return { resultType: 'scalar', result: 0, error: 'Multiplication only supports scalar results' };
+    return { resultType: 'scalar', result: 0, error: 'A multiplicação só aceita resultados escalares' };
   }
 
   private parseLabels(labelsStr: string): Array<{ key: string; op: string; value: string }> {
@@ -489,10 +489,10 @@ export default function PromqlPlayground() {
   const executor = useMemo(() => new PromQLExecutor(metrics), [metrics]);
 
   const quickExamples = [
-    { label: 'Show all requests', query: 'http_requests_total', icon: '📊' },
-    { label: 'Requests per second', query: 'rate(http_requests_total[5m])', icon: '⚡' },
-    { label: 'Error rate %', query: 'sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) * 100', icon: '🚨' },
-    { label: 'Total requests/sec', query: 'sum(rate(http_requests_total[5m]))', icon: '🧮' },
+    { label: 'Mostrar todas as requisições', query: 'http_requests_total', icon: '📊' },
+    { label: 'Requisições por segundo', query: 'rate(http_requests_total[5m])', icon: '⚡' },
+    { label: 'Taxa de erros %', query: 'sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) * 100', icon: '🚨' },
+    { label: 'Total de requisições/s', query: 'sum(rate(http_requests_total[5m]))', icon: '🧮' },
   ];
 
   const executeQuery = useCallback(() => {
@@ -544,15 +544,15 @@ export default function PromqlPlayground() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ActivitySquare className="w-8 h-8 text-orange-500" />
-              <CardTitle className="text-2xl">Prometheus Query Builder</CardTitle>
+              <CardTitle className="text-2xl">Construtor de queries do Prometheus</CardTitle>
             </div>
             <div className="text-sm text-muted-foreground flex items-center gap-2">
               <Keyboard className="w-4 h-4" />
-              <span><kbd className="px-2 py-1 bg-muted rounded text-xs">Cmd/Ctrl + Enter</kbd> Execute Query</span>
+              <span><kbd className="px-2 py-1 bg-muted rounded text-xs">Cmd/Ctrl + Enter</kbd> Executar query</span>
             </div>
           </div>
           <p className="text-sm text-muted-foreground">
-            Learn Prometheus queries interactively. No experience needed, start with tutorials below!
+            Aprenda queries do Prometheus na prática. Não precisa de experiência: comece pelos tutoriais abaixo!
           </p>
         </CardHeader>
 
@@ -562,18 +562,18 @@ export default function PromqlPlayground() {
             <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950/20">
               <Info className="w-4 h-4 text-blue-600" />
               <AlertDescription className="text-sm">
-                <strong>New to PromQL?</strong> Start with the{' '}
+                <strong>Novo em PromQL?</strong> Comece pela{' '}
                 <button
                   onClick={() => setActiveTab('tutorials')}
                   className="underline font-medium text-blue-600 hover:text-blue-800"
                 >
-                  Tutorials tab
+                  aba de tutoriais
                 </button>
-                {' '}to learn step-by-step, or try a quick example below!
+                {' '}para aprender passo a passo, ou teste um exemplo rápido abaixo!
                 <button
                   onClick={() => setShowWelcome(false)}
                   className="ml-4 text-blue-600 hover:text-blue-800 font-bold"
-                  aria-label="Dismiss"
+                  aria-label="Fechar"
                 >
                   ×
                 </button>
@@ -585,11 +585,11 @@ export default function PromqlPlayground() {
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="playground">
                 <BookOpen className="w-4 h-4 mr-2" />
-                Query Editor
+                Editor de queries
               </TabsTrigger>
               <TabsTrigger value="tutorials">
                 <Lightbulb className="w-4 h-4 mr-2" />
-                Tutorials (Start Here!)
+                Tutoriais (comece aqui!)
               </TabsTrigger>
             </TabsList>
 
@@ -599,7 +599,7 @@ export default function PromqlPlayground() {
                 <CardContent className="pt-4">
                   <p className="text-sm font-medium mb-3 flex items-center gap-2">
                     <Lightbulb className="w-4 h-4 text-orange-600" />
-                    Quick Examples - Click to try:
+                    Exemplos rápidos (clique para testar):
                   </p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                     {quickExamples.map((example, idx) => (
@@ -624,24 +624,24 @@ export default function PromqlPlayground() {
               {/* Query Input */}
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-2">
-                  PromQL Query:
+                  Query PromQL:
                   <span className="text-xs text-muted-foreground font-normal">
-                    (Type your query or use examples above)
+                    (digite sua query ou use os exemplos acima)
                   </span>
                 </label>
                 <Textarea
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder='Try: http_requests_total{method="GET"}'
+                  placeholder='Tente: http_requests_total{method="GET"}'
                   className="font-mono text-sm min-h-[100px] resize-y"
                   rows={3}
                 />
                 <p className="text-xs text-muted-foreground flex items-start gap-1">
                   <span>💡</span>
                   <span>
-                    <strong>Tip:</strong> Start simple! Just type a metric name like{' '}
+                    <strong>Dica:</strong> comece simples! Digite só o nome de uma métrica, como{' '}
                     <code className="bg-muted px-1 py-0.5 rounded text-xs">http_requests_total</code>{' '}
-                    and hit Execute to see all data for that metric.
+                    e clique em Executar para ver todos os dados dessa métrica.
                   </span>
                 </p>
               </div>
@@ -650,11 +650,11 @@ export default function PromqlPlayground() {
               <div className="flex gap-2">
                 <Button onClick={executeQuery} className="flex-1">
                   <Play className="w-4 h-4 mr-2" />
-                  Execute Query (Cmd+Enter)
+                  Executar query (Cmd+Enter)
                 </Button>
                 <Button onClick={handleReset} variant="outline">
                   <RotateCcw className="w-4 h-4 mr-2" />
-                  Reset
+                  Reiniciar
                 </Button>
               </div>
 
@@ -673,7 +673,7 @@ export default function PromqlPlayground() {
                           <div className="flex items-start gap-2">
                             <X className="w-5 h-5 text-red-500 mt-0.5" />
                             <div>
-                              <p className="font-medium text-red-700 dark:text-red-400">Query Error</p>
+                              <p className="font-medium text-red-700 dark:text-red-400">Erro na query</p>
                               <p className="text-sm text-red-600 dark:text-red-300">{result.error}</p>
                             </div>
                           </div>
@@ -684,7 +684,7 @@ export default function PromqlPlayground() {
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-5 h-5 text-green-500" />
                           <p className="text-sm font-medium">
-                            Result Type: <Badge variant="outline">{result.resultType}</Badge>
+                            Tipo de resultado: <Badge variant="outline">{result.resultType}</Badge>
                           </p>
                         </div>
 
@@ -695,7 +695,7 @@ export default function PromqlPlayground() {
                                 <p className="text-3xl font-bold text-orange-600">
                                   {(result.result as number).toFixed(4)}
                                 </p>
-                                <p className="text-sm text-muted-foreground mt-2">Scalar Value</p>
+                                <p className="text-sm text-muted-foreground mt-2">Valor escalar</p>
                               </div>
                             </CardContent>
                           </Card>
@@ -704,7 +704,7 @@ export default function PromqlPlayground() {
                             <CardHeader>
                               <CardTitle className="text-lg flex items-center gap-2">
                                 <TableIcon className="w-5 h-5" />
-                                Query Results ({(result.result as TimeSeries[]).length} series)
+                                Resultados da query ({(result.result as TimeSeries[]).length} séries)
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
@@ -713,7 +713,7 @@ export default function PromqlPlayground() {
                                   <thead>
                                     <tr className="border-b">
                                       <th className="text-left p-2">Labels</th>
-                                      <th className="text-right p-2">Value</th>
+                                      <th className="text-right p-2">Valor</th>
                                     </tr>
                                   </thead>
                                   <tbody>

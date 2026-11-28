@@ -83,8 +83,8 @@ const PRICING = {
 const SCENARIOS: Scenario[] = [
   {
     id: 'gradual',
-    name: 'Gradual Growth',
-    description: 'Linear traffic increase from 100 to 500 users/sec',
+    name: 'Crescimento gradual',
+    description: 'Tráfego cresce de forma linear de 100 para 500 usuários/s',
     difficulty: 'Easy',
     trafficPattern: (time) => Math.min(100 + time * 2, 500),
     budget: 200,
@@ -93,8 +93,8 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'spike',
-    name: 'Sudden Spike',
-    description: 'Traffic jumps from 100 to 1000 users/sec instantly',
+    name: 'Pico repentino',
+    description: 'O tráfego salta de 100 para 1000 usuários/s de uma vez',
     difficulty: 'Medium',
     trafficPattern: (time) => (time < 30 ? 100 : 1000),
     budget: 300,
@@ -103,8 +103,8 @@ const SCENARIOS: Scenario[] = [
   },
   {
     id: 'variable',
-    name: 'Variable Load',
-    description: 'Unpredictable traffic: 50 → 500 → 100 → 800',
+    name: 'Carga variável',
+    description: 'Tráfego imprevisível: 50 → 500 → 100 → 800',
     difficulty: 'Hard',
     trafficPattern: (time) => {
       const phase = Math.floor(time / 40) % 4;
@@ -118,7 +118,7 @@ const SCENARIOS: Scenario[] = [
   {
     id: 'blackfriday',
     name: 'Black Friday',
-    description: 'Massive spike: 100 → 5000 users/sec with budget constraints',
+    description: 'Pico enorme: 100 → 5000 usuários/s com orçamento limitado',
     difficulty: 'Expert',
     trafficPattern: (time) => {
       if (time < 20) return 100;
@@ -152,6 +152,13 @@ const calculateResponseTime = (load: number): number => {
   if (load < 0.8) return 100 + (load - 0.5) * 200;
   if (load < 1) return 160 + (load - 0.8) * 500;
   return 260 + (load - 1) * 1000;
+};
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  Easy: 'Fácil',
+  Medium: 'Médio',
+  Hard: 'Difícil',
+  Expert: 'Especialista',
 };
 
 export default function ScalingSimulator() {
@@ -477,10 +484,10 @@ export default function ScalingSimulator() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5" />
-                Horizontal vs Vertical Scaling Simulator
+                Simulador de Escala Horizontal vs Vertical
               </CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                Learn scaling strategies by managing traffic under real-world conditions
+                Aprenda estratégias de escala gerenciando tráfego em condições reais
               </p>
             </div>
             <Button
@@ -489,7 +496,7 @@ export default function ScalingSimulator() {
               onClick={() => setShowEducation(!showEducation)}
             >
               <Info className="h-4 w-4 mr-1" />
-              {showEducation ? 'Hide' : 'Show'} Guide
+              {showEducation ? 'Ocultar guia' : 'Mostrar guia'}
             </Button>
           </div>
         </CardHeader>
@@ -500,29 +507,29 @@ export default function ScalingSimulator() {
               <div className="space-y-2">
                 <h3 className="font-semibold flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-blue-500" />
-                  Vertical Scaling (Scale Up)
+                  Escala vertical (scale up)
                 </h3>
                 <ul className="text-sm space-y-1 text-muted-foreground">
-                  <li>✓ Increase resources on existing server</li>
-                  <li>✓ Simple, no architecture changes</li>
-                  <li>✓ No data sync issues</li>
-                  <li>✗ Hard limits (biggest machine)</li>
-                  <li>✗ Single point of failure</li>
-                  <li>✗ Downtime during upgrades</li>
+                  <li>✓ Aumenta os recursos do servidor existente</li>
+                  <li>✓ Simples, sem mudar a arquitetura</li>
+                  <li>✓ Sem problemas de sincronização de dados</li>
+                  <li>✗ Limite físico (a maior máquina disponível)</li>
+                  <li>✗ Ponto único de falha</li>
+                  <li>✗ Downtime durante upgrades</li>
                 </ul>
               </div>
               <div className="space-y-2">
                 <h3 className="font-semibold flex items-center gap-2">
                   <Server className="h-4 w-4 text-green-500" />
-                  Horizontal Scaling (Scale Out)
+                  Escala horizontal (scale out)
                 </h3>
                 <ul className="text-sm space-y-1 text-muted-foreground">
-                  <li>✓ Add more servers</li>
-                  <li>✓ Nearly unlimited scaling</li>
-                  <li>✓ No single point of failure</li>
-                  <li>✓ Zero-downtime scaling</li>
-                  <li>✗ Requires load balancer</li>
-                  <li>✗ More complex architecture</li>
+                  <li>✓ Adiciona mais servidores</li>
+                  <li>✓ Escala quase ilimitada</li>
+                  <li>✓ Sem ponto único de falha</li>
+                  <li>✓ Escala sem downtime</li>
+                  <li>✗ Exige load balancer</li>
+                  <li>✗ Arquitetura mais complexa</li>
                 </ul>
               </div>
             </div>
@@ -531,7 +538,7 @@ export default function ScalingSimulator() {
           {/* Scenario Selection */}
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Scenario:</span>
+              <span className="text-sm font-medium">Cenário:</span>
               <div className="flex gap-2 flex-wrap">
                 {SCENARIOS.map((s) => (
                   <Button
@@ -556,7 +563,7 @@ export default function ScalingSimulator() {
                               : 'bg-red-500/20 text-red-600'
                       }`}
                     >
-                      {s.difficulty}
+                      {DIFFICULTY_LABELS[s.difficulty]}
                     </Badge>
                     {s.name}
                   </Button>
@@ -578,13 +585,13 @@ export default function ScalingSimulator() {
               ) : (
                 <Play className="h-4 w-4 mr-1" />
               )}
-              {isRunning ? 'Pause' : 'Start'}
+              {isRunning ? 'Pausar' : 'Iniciar'}
             </Button>
             <Button onClick={reset} variant="outline" size="sm">
               <RotateCcw className="h-4 w-4 mr-1" /> Reset
             </Button>
             <div className="flex items-center gap-2">
-              <span className="text-sm">Speed:</span>
+              <span className="text-sm">Velocidade:</span>
               {[1, 2, 5, 10].map((s) => (
                 <Button
                   key={s}
@@ -598,7 +605,7 @@ export default function ScalingSimulator() {
             </div>
             <div className="ml-auto flex items-center gap-4">
               <div className="text-sm">
-                <span className="text-muted-foreground">Time: </span>
+                <span className="text-muted-foreground">Tempo: </span>
                 <span className="font-mono">
                   {time}s / {scenario.duration}s
                 </span>
@@ -622,13 +629,13 @@ export default function ScalingSimulator() {
                   <AlertTriangle className="h-5 w-5 text-red-500" />
                 )}
                 <span className="font-semibold">
-                  {gameResult === 'won' ? 'Success!' : 'Challenge Failed'}
+                  {gameResult === 'won' ? 'Sucesso!' : 'Desafio não concluído'}
                 </span>
               </div>
               <p className="text-sm mt-2 text-muted-foreground">
                 {gameResult === 'won'
-                  ? `You maintained ${metrics.uptime.toFixed(1)}% uptime within budget ($${currentCost}/$${scenario.budget})`
-                  : `Uptime: ${metrics.uptime.toFixed(1)}% (target: 95%) | Cost: $${currentCost}/$${scenario.budget}`}
+                  ? `Você manteve ${metrics.uptime.toFixed(1)}% de uptime dentro do orçamento ($${currentCost}/$${scenario.budget})`
+                  : `Uptime: ${metrics.uptime.toFixed(1)}% (meta: 95%) | Custo: $${currentCost}/$${scenario.budget}`}
               </p>
             </div>
           )}
@@ -638,14 +645,14 @@ export default function ScalingSimulator() {
             <div className="p-4 rounded-lg bg-muted/30">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Users className="h-4 w-4" />
-                Current Traffic
+                Tráfego atual
               </div>
               <div className="text-2xl font-bold">{metrics.currentRPS} req/s</div>
             </div>
             <div className="p-4 rounded-lg bg-muted/30">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Activity className="h-4 w-4" />
-                Avg Response Time
+                Tempo médio de resposta
               </div>
               <div
                 className={`text-2xl font-bold ${
@@ -677,7 +684,7 @@ export default function ScalingSimulator() {
             <div className="p-4 rounded-lg bg-muted/30">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <DollarSign className="h-4 w-4" />
-                Monthly Cost
+                Custo mensal
               </div>
               <div
                 className={`text-2xl font-bold ${
@@ -693,7 +700,7 @@ export default function ScalingSimulator() {
           {/* Budget Bar */}
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Budget Usage</span>
+              <span>Uso do orçamento</span>
               <span
                 className={budgetUsed > 100 ? 'text-red-500' : ''}
               >
@@ -717,26 +724,26 @@ export default function ScalingSimulator() {
           {/* Scaling Controls */}
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="vertical">Vertical Scaling</TabsTrigger>
-              <TabsTrigger value="horizontal">Horizontal Scaling</TabsTrigger>
+              <TabsTrigger value="vertical">Escala vertical</TabsTrigger>
+              <TabsTrigger value="horizontal">Escala horizontal</TabsTrigger>
               <TabsTrigger value="auto">Auto-Scaling</TabsTrigger>
             </TabsList>
 
             <TabsContent value="vertical" className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Upgrade individual server specs. Note: Upgrades require ~30s downtime.
+                Aumente as especificações de cada servidor. Atenção: upgrades exigem ~30s de downtime.
               </p>
 
               {/* Pricing Reference */}
               <div className="p-4 rounded-lg bg-muted/30 border">
                 <h4 className="font-medium flex items-center gap-2 mb-3">
                   <DollarSign className="h-4 w-4" />
-                  Pricing Reference (Monthly)
+                  Tabela de preços (mensal)
                 </h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
                     <div className="text-muted-foreground mb-1 flex items-center gap-1">
-                      <Cpu className="h-3 w-3" /> CPU Cores
+                      <Cpu className="h-3 w-3" /> Núcleos de CPU
                     </div>
                     <div className="space-y-0.5 font-mono text-xs">
                       <div className="flex justify-between"><span>2 cores</span><span>$15</span></div>
@@ -759,7 +766,7 @@ export default function ScalingSimulator() {
                   </div>
                   <div>
                     <div className="text-muted-foreground mb-1 flex items-center gap-1">
-                      <HardDrive className="h-3 w-3" /> Disk Type
+                      <HardDrive className="h-3 w-3" /> Disco Type
                     </div>
                     <div className="space-y-0.5 font-mono text-xs">
                       <div className="flex justify-between"><span>HDD</span><span>$5</span></div>
@@ -769,7 +776,7 @@ export default function ScalingSimulator() {
                   </div>
                   <div>
                     <div className="text-muted-foreground mb-1 flex items-center gap-1">
-                      <Activity className="h-3 w-3" /> Network
+                      <Activity className="h-3 w-3" /> Rede
                     </div>
                     <div className="space-y-0.5 font-mono text-xs">
                       <div className="flex justify-between"><span>1 Gbps</span><span>$0</span></div>
@@ -787,7 +794,7 @@ export default function ScalingSimulator() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Server className="h-4 w-4" />
-                      <span className="font-medium">Server {index + 1}</span>
+                      <span className="font-medium">Servidor {index + 1}</span>
                       <Badge
                         variant="secondary"
                         className={`${
@@ -809,7 +816,7 @@ export default function ScalingSimulator() {
                   {/* Load Bar */}
                   <div className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span>Load</span>
+                      <span>Carga</span>
                       <span>{Math.round(server.currentLoad * 100)}%</span>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
@@ -830,7 +837,7 @@ export default function ScalingSimulator() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
                       <label className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Cpu className="h-3 w-3" /> CPU Cores
+                        <Cpu className="h-3 w-3" /> Núcleos de CPU
                       </label>
                       <div className="flex items-center gap-1 mt-1">
                         <Button
@@ -890,7 +897,7 @@ export default function ScalingSimulator() {
                     </div>
                     <div>
                       <label className="text-xs text-muted-foreground flex items-center gap-1">
-                        <HardDrive className="h-3 w-3" /> Disk
+                        <HardDrive className="h-3 w-3" /> Disco
                       </label>
                       <div className="flex gap-1 mt-1">
                         {(['HDD', 'SSD', 'NVMe'] as const).map((disk) => (
@@ -907,7 +914,7 @@ export default function ScalingSimulator() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-xs text-muted-foreground">Capacity</label>
+                      <label className="text-xs text-muted-foreground">Capacidade</label>
                       <div className="font-mono text-lg">
                         {calculateServerCapacity(server)} req/s
                       </div>
@@ -920,7 +927,7 @@ export default function ScalingSimulator() {
             <TabsContent value="horizontal" className="space-y-4">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-muted-foreground">
-                  Add or remove servers. Requires a load balancer for traffic distribution.
+                  Adicione ou remova servidores. É preciso um load balancer para distribuir o tráfego.
                 </p>
                 <div className="flex items-center gap-2">
                   <Button
@@ -928,7 +935,7 @@ export default function ScalingSimulator() {
                     size="sm"
                     onClick={() => setHasLoadBalancer(!hasLoadBalancer)}
                   >
-                    {hasLoadBalancer ? 'LB Active' : 'Add Load Balancer'}
+                    {hasLoadBalancer ? 'LB ativo' : 'Adicionar load balancer'}
                     <Badge variant="secondary" className="ml-2">
                       +${PRICING.loadBalancer}/mo
                     </Badge>
@@ -939,7 +946,7 @@ export default function ScalingSimulator() {
               {!hasLoadBalancer && servers.length > 1 && (
                 <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-sm">
                   <AlertTriangle className="h-4 w-4 inline mr-2 text-yellow-500" />
-                  Without a load balancer, all traffic goes to the first server!
+                  Sem load balancer, todo o tráfego vai para o primeiro servidor!
                 </div>
               )}
 
@@ -958,7 +965,7 @@ export default function ScalingSimulator() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <Server className="h-4 w-4" />
-                        <span className="font-medium">Server {index + 1}</span>
+                        <span className="font-medium">Servidor {index + 1}</span>
                       </div>
                       {servers.length > 1 && (
                         <Button
@@ -987,15 +994,15 @@ export default function ScalingSimulator() {
                         </Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Load</span>
+                        <span className="text-muted-foreground">Carga</span>
                         <span>{Math.round(server.currentLoad * 100)}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Requests</span>
+                        <span className="text-muted-foreground">Requisições</span>
                         <span>{server.requestsHandled.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Capacity</span>
+                        <span className="text-muted-foreground">Capacidade</span>
                         <span>{calculateServerCapacity(server)} req/s</span>
                       </div>
                     </div>
@@ -1008,7 +1015,7 @@ export default function ScalingSimulator() {
                  disabled={servers.length >= scalingConfig.maxInstances}
               >
                 <Plus className="h-6 w-6 mr-2" />
-                Add Server
+                Adicionar servidor
                 <Badge variant="secondary" className="ml-2">
                    {servers.length >= scalingConfig.maxInstances
                      ? `Max ${scalingConfig.maxInstances}`
@@ -1022,7 +1029,7 @@ export default function ScalingSimulator() {
                     onClick={() => removeServer(servers[servers.length - 1].id)}
                   >
                     <Minus className="h-6 w-6 mr-2" />
-                    Remove Server
+                    Remover servidor
                     <Badge variant="secondary" className="ml-2 bg-red-500/20 text-red-600">
                       -$20/mo
                     </Badge>
@@ -1034,7 +1041,7 @@ export default function ScalingSimulator() {
             <TabsContent value="auto" className="space-y-4">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-muted-foreground">
-                  Configure automatic scaling based on CPU threshold.
+                  Configure a escala automática com base em um limite de CPU.
                 </p>
                 <Button
                   variant={scalingConfig.autoScalingEnabled ? 'default' : 'outline'}
@@ -1047,7 +1054,7 @@ export default function ScalingSimulator() {
                   }
                   disabled={!hasLoadBalancer}
                 >
-                  {scalingConfig.autoScalingEnabled ? 'Enabled' : 'Enable Auto-Scaling'}
+                  {scalingConfig.autoScalingEnabled ? 'Ativado' : 'Ativar auto-scaling'}
                   <Badge variant="secondary" className="ml-2">
                     +${PRICING.autoScaling}/mo
                   </Badge>
@@ -1057,7 +1064,7 @@ export default function ScalingSimulator() {
               {!hasLoadBalancer && (
                 <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-sm">
                   <AlertTriangle className="h-4 w-4 inline mr-2 text-yellow-500" />
-                  Auto-scaling requires a load balancer to be enabled first.
+                  O auto-scaling exige que um load balancer esteja ativo antes.
                 </div>
               )}
 
@@ -1065,9 +1072,9 @@ export default function ScalingSimulator() {
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium">CPU Threshold (%)</label>
+                      <label className="text-sm font-medium">Limite de CPU (%)</label>
                       <p className="text-xs text-muted-foreground mb-2">
-                        Scale up when CPU exceeds this threshold
+                        Escala para cima quando a CPU passar desse limite
                       </p>
                       <div className="flex items-center gap-4">
                         <Slider
@@ -1086,7 +1093,7 @@ export default function ScalingSimulator() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Min Instances</label>
+                      <label className="text-sm font-medium">Mínimo de instâncias</label>
                       <div className="flex items-center gap-4">
                         <Slider
                           value={[scalingConfig.minInstances]}
@@ -1104,7 +1111,7 @@ export default function ScalingSimulator() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Max Instances</label>
+                      <label className="text-sm font-medium">Máximo de instâncias</label>
                       <div className="flex items-center gap-4">
                         <Slider
                           value={[scalingConfig.maxInstances]}
@@ -1125,7 +1132,7 @@ export default function ScalingSimulator() {
                   <div className="p-4 rounded-lg bg-muted/30 space-y-2">
                     <h4 className="font-medium flex items-center gap-2">
                       <Settings className="h-4 w-4" />
-                      Current Configuration
+                      Configuração atual
                     </h4>
                     <div className="text-sm space-y-1">
                       <div className="flex justify-between">
@@ -1138,25 +1145,25 @@ export default function ScalingSimulator() {
                               : 'bg-gray-500/20 text-gray-600'
                           }
                         >
-                          {scalingConfig.autoScalingEnabled ? 'Active' : 'Disabled'}
+                          {scalingConfig.autoScalingEnabled ? 'Ativo' : 'Desativado'}
                         </Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Scale Up Trigger</span>
+                        <span className="text-muted-foreground">Gatilho para escalar para cima</span>
                         <span>CPU {'>'} {scalingConfig.cpuThreshold}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Scale Down Trigger</span>
+                        <span className="text-muted-foreground">Gatilho para escalar para baixo</span>
                         <span>CPU {'<'} {scalingConfig.cpuThreshold / 2}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Instance Range</span>
+                        <span className="text-muted-foreground">Faixa de instâncias</span>
                         <span>
                           {scalingConfig.minInstances} - {scalingConfig.maxInstances}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Current Instances</span>
+                        <span className="text-muted-foreground">Instâncias atuais</span>
                         <span>{servers.length}</span>
                       </div>
                     </div>
@@ -1168,7 +1175,7 @@ export default function ScalingSimulator() {
 
           {/* Traffic Visualization */}
           <div className="space-y-2">
-            <h3 className="text-sm font-medium">Traffic Pattern (Last 60s)</h3>
+            <h3 className="text-sm font-medium">Padrão de tráfego (últimos 60s)</h3>
             <div className="h-24 bg-muted/30 rounded-lg p-2 flex items-end gap-[2px]">
               {trafficHistory.map((traffic, i) => (
                 <div
@@ -1182,7 +1189,7 @@ export default function ScalingSimulator() {
               ))}
               {trafficHistory.length === 0 && (
                 <div className="w-full h-full flex items-center justify-center text-sm text-muted-foreground">
-                  Start simulation to see traffic
+                  Inicie a simulação para ver o tráfego
                 </div>
               )}
             </div>
@@ -1191,25 +1198,25 @@ export default function ScalingSimulator() {
           {/* Stats Summary */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="p-3 rounded-lg bg-muted/30">
-              <div className="text-muted-foreground">Total Requests</div>
+              <div className="text-muted-foreground">Total de requisições</div>
               <div className="text-xl font-bold">
                 {metrics.totalRequests.toLocaleString()}
               </div>
             </div>
             <div className="p-3 rounded-lg bg-muted/30">
-              <div className="text-muted-foreground">Successful</div>
+              <div className="text-muted-foreground">Com sucesso</div>
               <div className="text-xl font-bold text-green-500">
                 {metrics.successfulRequests.toLocaleString()}
               </div>
             </div>
             <div className="p-3 rounded-lg bg-muted/30">
-              <div className="text-muted-foreground">Failed</div>
+              <div className="text-muted-foreground">Com falha</div>
               <div className="text-xl font-bold text-red-500">
                 {metrics.failedRequests.toLocaleString()}
               </div>
             </div>
             <div className="p-3 rounded-lg bg-muted/30">
-              <div className="text-muted-foreground">Active Servers</div>
+              <div className="text-muted-foreground">Servidores ativos</div>
               <div className="text-xl font-bold">
                 {servers.filter((s) => s.status === 'healthy').length} / {servers.length}
               </div>

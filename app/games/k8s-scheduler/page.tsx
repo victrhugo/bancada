@@ -11,12 +11,12 @@ export default function K8sSchedulerPage() {
   return (
     <SimulatorShell
       slug="k8s-scheduler"
-      shareText="Try the Kubernetes Scheduler Challenge: place pods onto nodes while honoring K8s rules."
+      shareText="Encare o Desafio do Scheduler do Kubernetes: posicione pods nos nodes respeitando as regras do K8s."
       seoLearningPoints={[
-        'Understand Kubernetes pod scheduling algorithm',
-        'Configure resource requests and limits',
-        'Use node affinity, taints, and tolerations',
-        'Debug scheduling failures',
+        'Entender o algoritmo de agendamento de pods do Kubernetes',
+        'Configurar requests e limits de recursos',
+        'Usar node affinity, taints e tolerations',
+        'Investigar falhas de agendamento',
       ]}
     >
       <K8sScheduler />

@@ -76,7 +76,7 @@ const SAMPLE_DATA: TableRow[] = [
 const QUERIES = [
   {
     id: 'email-exact',
-    label: 'Find by Email',
+    label: 'Buscar por e-mail',
     shortLabel: 'Email',
     sql: "SELECT * FROM users WHERE email = 'emma@example.com'",
     column: 'email',
@@ -86,7 +86,7 @@ const QUERIES = [
   },
   {
     id: 'age-exact',
-    label: 'Find by Age',
+    label: 'Buscar por idade',
     shortLabel: 'Age',
     sql: 'SELECT * FROM users WHERE age = 28',
     column: 'age',
@@ -96,7 +96,7 @@ const QUERIES = [
   },
   {
     id: 'city-exact',
-    label: 'Find by City',
+    label: 'Buscar por cidade',
     shortLabel: 'City',
     sql: "SELECT * FROM users WHERE city = 'Chicago'",
     column: 'city',
@@ -106,7 +106,7 @@ const QUERIES = [
   },
   {
     id: 'age-range',
-    label: 'Age Range',
+    label: 'Faixa de idade',
     shortLabel: 'Range',
     sql: 'SELECT * FROM users WHERE age BETWEEN 30 AND 40',
     column: 'age',
@@ -117,7 +117,7 @@ const QUERIES = [
   },
   {
     id: 'age-city-composite',
-    label: 'Age + City',
+    label: 'Idade + cidade',
     shortLabel: 'Composite',
     sql: "SELECT * FROM users WHERE age = 28 AND city = 'New York'",
     column: 'age',
@@ -128,7 +128,7 @@ const QUERIES = [
   },
   {
     id: 'city-age-composite',
-    label: 'City + Age',
+    label: 'Cidade + idade',
     shortLabel: 'City+Age',
     sql: "SELECT * FROM users WHERE city = 'New York' AND age = 28",
     column: 'city',
@@ -361,11 +361,11 @@ export default function DbIndexingSimulator() {
       indexName,
      explanation: usesIndex
         ? indexResult.type === 'composite-exact'
-          ? `Composite index seek on ${indexName} - efficiently matched both columns`
+          ? `Index seek composto em ${indexName}: casou as duas colunas de forma eficiente`
           : indexResult.type === 'composite-partial'
-            ? `Partial composite index on ${indexName} - used leading column(s)`
-            : `Index seek on ${indexName} - jumped directly to matching rows`
-       : `Full table scan - checked every row in the table`,
+            ? `Índice composto parcial em ${indexName}: usou só a(s) coluna(s) inicial(is)`
+            : `Index seek em ${indexName}: foi direto às linhas que correspondem`
+       : `Full table scan: verificou cada linha da tabela`,
       explainPlan,
    };
 
@@ -397,15 +397,15 @@ export default function DbIndexingSimulator() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 sm:text-2xl">
-            Database Indexing
+            Índices de banco de dados
           </h2>
           <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
-            See how indexes speed up queries by avoiding full table scans
+            Veja como os índices aceleram as consultas evitando full table scans
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={reset} className="w-fit">
           <RotateCcw className="mr-2 h-4 w-4" />
-          <span>Reset</span>
+          <span>Reiniciar</span>
         </Button>
       </div>
 
@@ -414,7 +414,7 @@ export default function DbIndexingSimulator() {
         <CardHeader className="pb-2 sm:pb-4">
           <CardTitle className="flex items-center gap-2 text-base text-slate-900 dark:text-slate-100 sm:text-lg">
             <Table className="h-4 w-4 text-purple-400 sm:h-5 sm:w-5" />
-            <span>users table</span>
+            <span>tabela users</span>
             <span className="ml-auto text-xs font-normal text-slate-500 dark:text-slate-400">
               {SAMPLE_DATA.length} rows
             </span>
@@ -553,13 +553,13 @@ export default function DbIndexingSimulator() {
           <CardHeader className="pb-2 sm:pb-4">
             <CardTitle className="flex items-center gap-2 text-base text-slate-900 dark:text-slate-100 sm:text-lg">
               <Zap className="h-4 w-4 text-yellow-400 sm:h-5 sm:w-5" />
-              <span className="hidden sm:inline">Index Manager</span>
-              <span className="sm:hidden">Indexes</span>
+              <span className="hidden sm:inline">Gerenciador de índices</span>
+              <span className="sm:hidden">Índices</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Add indexes to columns to speed up queries on those columns.
+              Adicione índices às colunas para acelerar as consultas nessas colunas.
             </p>
             <div className="space-y-2">
               {INDEXABLE_COLUMNS.map((column) => {
@@ -581,7 +581,7 @@ export default function DbIndexingSimulator() {
                       </span>
                       {indexed && (
                         <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] text-emerald-400">
-                          INDEXED
+                          INDEXADA
                         </span>
                       )}
                     </div>
@@ -594,13 +594,13 @@ export default function DbIndexingSimulator() {
                       {indexed ? (
                         <>
                           <Trash2 className="mr-1 h-3 w-3" />
-                          <span className="hidden sm:inline">Remove</span>
+                          <span className="hidden sm:inline">Remover</span>
                         </>
                       ) : (
                         <>
                           <Plus className="mr-1 h-3 w-3" />
-                          <span className="hidden sm:inline">Add Index</span>
-                          <span className="sm:hidden">Add</span>
+                          <span className="hidden sm:inline">Adicionar índice</span>
+                          <span className="sm:hidden">Adicionar</span>
                         </>
                       )}
                     </Button>
@@ -613,18 +613,18 @@ export default function DbIndexingSimulator() {
            <div className="mt-4 border-t border-slate-300 pt-4 dark:border-slate-600">
               <div className="mb-2">
                 <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
-               Composite Indexes
-               <span className="ml-1 text-[10px] text-slate-400">(order matters)</span>
+               Índices compostos
+               <span className="ml-1 text-[10px] text-slate-400">(a ordem importa)</span>
              </p>
                 <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
-                  A composite index is a <strong>single index</strong> on multiple columns. The leftmost column is used first for filtering.
+                  Um índice composto é um <strong>único índice</strong> sobre várias colunas. A coluna mais à esquerda é usada primeiro no filtro.
                 </p>
               </div>
              <div className="space-y-2">
                {COMPOSITE_INDEX_OPTIONS.map((columns) => {
                  const indexed = hasCompositeIndex(columns);
                  const label = columns.join(' + ');
-                  const tooltipText = `Creates one B-tree index ordered by ${columns[0]}, then ${columns[1]}. Best for queries that filter on ${columns[0]} first.`;
+                  const tooltipText = `Cria um índice B-tree ordenado por ${columns[0]} e depois por ${columns[1]}. Ideal para consultas que filtram primeiro por ${columns[0]}.`;
                  return (
                    <div
                      key={label}
@@ -643,7 +643,7 @@ export default function DbIndexingSimulator() {
                         </span>
                         {indexed && (
                           <span className="rounded bg-purple-500/20 px-1.5 py-0.5 text-[10px] text-purple-400">
-                            INDEXED
+                            INDEXADO
                           </span>
                         )}
                       </div>
@@ -656,13 +656,13 @@ export default function DbIndexingSimulator() {
                         {indexed ? (
                           <>
                             <Trash2 className="mr-1 h-3 w-3" />
-                            <span className="hidden sm:inline">Remove</span>
+                            <span className="hidden sm:inline">Remover</span>
                           </>
                         ) : (
                           <>
                             <Plus className="mr-1 h-3 w-3" />
-                            <span className="hidden sm:inline">Add Index</span>
-                            <span className="sm:hidden">Add</span>
+                            <span className="hidden sm:inline">Adicionar índice</span>
+                            <span className="sm:hidden">Adicionar</span>
                           </>
                         )}
                       </Button>
@@ -679,8 +679,8 @@ export default function DbIndexingSimulator() {
           <CardHeader className="pb-2 sm:pb-4">
             <CardTitle className="flex items-center gap-2 text-base text-slate-900 dark:text-slate-100 sm:text-lg">
               <Search className="h-4 w-4 text-blue-400 sm:h-5 sm:w-5" />
-              <span className="hidden sm:inline">Select Query</span>
-              <span className="sm:hidden">Query</span>
+              <span className="hidden sm:inline">Escolha a consulta</span>
+              <span className="sm:hidden">Consulta</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -705,7 +705,7 @@ export default function DbIndexingSimulator() {
                     {willUseIndex && (
                       <span className="mt-1 text-[10px] text-emerald-400">
                         <Zap className="mr-0.5 inline h-3 w-3" />
-                        Fast
+                        Rápida
                       </span>
                     )}
                   </Button>
@@ -728,21 +728,21 @@ export default function DbIndexingSimulator() {
               {isRunning ? (
                 <>
                   <Clock className="mr-2 h-4 w-4 animate-spin" />
-                  Running...
+                  Executando...
                 </>
               ) : (
                 <>
                   <Search className="mr-2 h-4 w-4" />
-                  Run Query
+                  Executar consulta
                 </>
               )}
             </Button>
             <p className="mt-2 hidden items-center justify-center gap-1 text-[10px] text-muted-foreground sm:flex">
               <Keyboard className="h-3 w-3" />
               <span>
-                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">1-4</kbd> select,{' '}
-                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">Enter</kbd> run,{' '}
-                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">R</kbd> reset
+                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">1-4</kbd> escolher,{' '}
+                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">Enter</kbd> executar,{' '}
+                <kbd className="rounded border bg-muted px-1 py-0.5 text-[10px] font-mono">R</kbd> reiniciar
               </span>
             </p>
           </CardContent>
@@ -779,7 +779,7 @@ export default function DbIndexingSimulator() {
                         lastResult.usedIndex ? 'text-emerald-400' : 'text-yellow-400'
                       )}
                     >
-                      {lastResult.usedIndex ? 'Index Used!' : 'Full Table Scan'}
+                      {lastResult.usedIndex ? 'Índice usado!' : 'Full table scan'}
                     </span>
                   </div>
                   <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
@@ -789,13 +789,13 @@ export default function DbIndexingSimulator() {
 
                 <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Rows Scanned</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">Linhas verificadas</span>
                     <div className="font-medium text-slate-700 dark:text-slate-200">
                       {lastResult.rowsScanned}
                     </div>
                   </div>
                   <div>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Rows Returned</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">Linhas retornadas</span>
                     <div className="font-medium text-slate-700 dark:text-slate-200">
                       {lastResult.rowsReturned}
                     </div>
@@ -812,7 +812,7 @@ export default function DbIndexingSimulator() {
                 {lastResult.explainPlan && lastResult.explainPlan.length > 0 && (
                   <div className="mt-3 rounded-lg border border-slate-300 bg-slate-200/50 p-3 dark:border-slate-600 dark:bg-slate-800/30">
                     <p className="mb-2 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                      Query Execution Plan (EXPLAIN)
+                      Plano de execução (EXPLAIN)
                     </p>
                     <div className="space-y-2">
                       {lastResult.explainPlan.map((step, idx) => (
@@ -859,10 +859,10 @@ export default function DbIndexingSimulator() {
                  <div className="mt-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-2">
                    <p className="text-xs text-blue-600 dark:text-blue-300">
                      <TrendingUp className="mr-1 inline h-3 w-3" />
-                      Tip: {selectedQuery.type === 'composite' ? (
-                        <>Add a composite index on <strong>({selectedQuery.columns.join(' + ')})</strong> for best performance, or at least on <strong>{selectedQuery.columns[0]}</strong>.</>
+                      Dica: {selectedQuery.type === 'composite' ? (
+                        <>Adicione um índice composto em <strong>({selectedQuery.columns.join(' + ')})</strong> para o melhor desempenho, ou pelo menos em <strong>{selectedQuery.columns[0]}</strong>.</>
                       ) : (
-                        <>Add an index on <strong>{selectedQuery.columns[0]}</strong> to speed up this query!</>
+                        <>Adicione um índice em <strong>{selectedQuery.columns[0]}</strong> para acelerar esta consulta!</>
                       )}
                    </p>
                  </div>
@@ -881,7 +881,7 @@ export default function DbIndexingSimulator() {
               {stats.queries}
             </div>
             <div className="text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs">
-              Queries Run
+              Consultas executadas
             </div>
           </CardContent>
         </Card>
@@ -891,7 +891,7 @@ export default function DbIndexingSimulator() {
               {stats.totalTime}ms
             </div>
             <div className="text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs">
-              Total Time
+              Tempo total
             </div>
           </CardContent>
         </Card>
@@ -899,7 +899,7 @@ export default function DbIndexingSimulator() {
           <CardContent className="p-3 text-center sm:p-4">
             <div className="text-lg font-bold text-emerald-400 sm:text-2xl">{stats.indexHits}</div>
             <div className="text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs">
-              Index Hits
+              Uso de índice
             </div>
           </CardContent>
         </Card>
@@ -910,58 +910,58 @@ export default function DbIndexingSimulator() {
         <CardContent className="p-4">
           <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-slate-100">
             <Database className="h-4 w-4 text-emerald-400" />
-            How Database Indexes Work
+            Como os índices de banco de dados funcionam
           </h3>
           <div className="grid gap-4 text-sm sm:grid-cols-2">
             <div>
-              <h4 className="mb-1 font-medium text-yellow-400">Without Index (Full Table Scan)</h4>
+              <h4 className="mb-1 font-medium text-yellow-400">Sem índice (full table scan)</h4>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                The database must check <strong>every row</strong> in the table to find matches.
-                Slow for large tables!
+                O banco precisa verificar <strong>cada linha</strong> da tabela para achar os resultados.
+                Lento em tabelas grandes!
               </p>
             </div>
             <div>
-              <h4 className="mb-1 font-medium text-emerald-400">With Index (Index Seek)</h4>
+              <h4 className="mb-1 font-medium text-emerald-400">Com índice (index seek)</h4>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                The index acts like a book&apos;s index - the database jumps{' '}
-                <strong>directly</strong> to matching rows. Much faster!
+                O índice funciona como o índice remissivo de um livro: o banco vai{' '}
+                <strong>direto</strong> às linhas certas. Muito mais rápido!
               </p>
             </div>
           </div>
           <div className="mt-4 rounded-lg bg-slate-200/50 p-3 dark:bg-slate-700/50">
             <h4 className="mb-2 text-xs font-medium text-slate-600 dark:text-slate-300">
-              When to Create an Index:
+              Quando criar um índice:
             </h4>
             <ul className="grid gap-1 text-xs text-slate-500 dark:text-slate-400 sm:grid-cols-2">
-             <li>• Columns used frequently in WHERE clauses</li>
-             <li>• Columns used in JOIN conditions</li>
-             <li>• Columns used for sorting (ORDER BY)</li>
-             <li>• High-cardinality columns (many unique values)</li>
+             <li>• Colunas usadas com frequência em cláusulas WHERE</li>
+             <li>• Colunas usadas em condições de JOIN</li>
+             <li>• Colunas usadas para ordenar (ORDER BY)</li>
+             <li>• Colunas de alta cardinalidade (muitos valores distintos)</li>
            </ul>
          </div>
 
           {/* Composite Index Explanation */}
           <div className="mt-4 rounded-lg border border-purple-500/30 bg-purple-500/10 p-3">
             <h4 className="mb-2 text-xs font-medium text-purple-600 dark:text-purple-300">
-              🔑 Why Does Composite Index Order Matter?
+              🔑 Por que a ordem do índice composto importa?
             </h4>
             <p className="mb-2 text-xs text-slate-600 dark:text-slate-400">
-              A composite index like <code className="rounded bg-slate-200 px-1 dark:bg-slate-700">(age, city)</code> is
-              a <strong>single B-tree</strong> sorted first by age, then by city within each age.
+              Um índice composto como <code className="rounded bg-slate-200 px-1 dark:bg-slate-700">(age, city)</code> é
+              uma <strong>única B-tree</strong> ordenada primeiro por idade e, dentro de cada idade, por cidade.
             </p>
             <div className="grid gap-2 text-xs sm:grid-cols-2">
               <div className="rounded bg-emerald-500/10 p-2">
-                <p className="font-medium text-emerald-600 dark:text-emerald-400">✓ Can use (age, city) index:</p>
+                <p className="font-medium text-emerald-600 dark:text-emerald-400">✓ Podem usar o índice (age, city):</p>
                 <ul className="mt-1 text-slate-500 dark:text-slate-400">
                   <li>• WHERE age = 28</li>
                   <li>• WHERE age = 28 AND city = &apos;NYC&apos;</li>
                 </ul>
               </div>
               <div className="rounded bg-yellow-500/10 p-2">
-                <p className="font-medium text-yellow-600 dark:text-yellow-400">✗ Cannot use (age, city) index:</p>
+                <p className="font-medium text-yellow-600 dark:text-yellow-400">✗ Não podem usar o índice (age, city):</p>
                 <ul className="mt-1 text-slate-500 dark:text-slate-400">
-                  <li>• WHERE city = &apos;NYC&apos; (needs city first)</li>
-                  <li>• Need (city, age) index instead</li>
+                  <li>• WHERE city = &apos;NYC&apos; (precisa da cidade primeiro)</li>
+                  <li>• Nesse caso, use um índice (city, age)</li>
                 </ul>
               </div>
             </div>

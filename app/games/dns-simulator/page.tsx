@@ -10,69 +10,71 @@ export async function generateMetadata(): Promise<Metadata> {
 function DnsEducational() {
   return (
     <>
-      <h3 className="mb-4 text-xl font-semibold">Understanding DNS Resolution</h3>
+      <h3 className="mb-4 text-xl font-semibold">Entendendo a resolução DNS</h3>
       <div className="grid gap-6 md:grid-cols-2">
         <div>
-          <h4 className="mb-3 font-semibold text-sm">DNS Hierarchy</h4>
+          <h4 className="mb-3 font-semibold text-sm">Hierarquia do DNS</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">Root Servers (.):</strong> The top of the DNS
-              hierarchy. 13 root server clusters worldwide direct queries to TLD servers.
+              <strong className="text-foreground">Servidores raiz (.):</strong> o topo da hierarquia do
+              DNS. Treze grupos de servidores raiz pelo mundo direcionam as consultas para os
+              servidores de TLD.
             </li>
             <li>
-              <strong className="text-foreground">TLD Servers (.com, .org):</strong> Manage
-              top-level domains and point to authoritative nameservers.
+              <strong className="text-foreground">Servidores de TLD (.com, .org):</strong> gerenciam
+              os domínios de topo e apontam para os nameservers autoritativos.
             </li>
             <li>
-              <strong className="text-foreground">Authoritative Servers:</strong> Hold the actual
-              DNS records for specific domains.
+              <strong className="text-foreground">Servidores autoritativos:</strong> guardam os
+              registros DNS de fato de cada domínio.
             </li>
             <li>
-              <strong className="text-foreground">Recursive Resolvers:</strong> Your ISP or DNS
-              provider (like 1.1.1.1 or 8.8.8.8) that does the lookup work.
+              <strong className="text-foreground">Resolvers recursivos:</strong> o seu provedor de
+              internet ou de DNS (como 1.1.1.1 ou 8.8.8.8), que faz o trabalho da consulta.
             </li>
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-sm">DNS Record Types</h4>
+          <h4 className="mb-3 font-semibold text-sm">Tipos de registro DNS</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              <strong className="text-foreground">A Record:</strong> Maps domain to IPv4 address
-              (e.g., 192.168.1.1).
+              <strong className="text-foreground">Registro A:</strong> liga o domínio a um endereço
+              IPv4 (por exemplo, 192.168.1.1).
             </li>
             <li>
-              <strong className="text-foreground">AAAA Record:</strong> Maps domain to IPv6 address
-              (e.g., 2001:db8::1).
+              <strong className="text-foreground">Registro AAAA:</strong> liga o domínio a um endereço
+              IPv6 (por exemplo, 2001:db8::1).
             </li>
             <li>
-              <strong className="text-foreground">CNAME Record:</strong> Alias pointing to another
-              domain name.
+              <strong className="text-foreground">Registro CNAME:</strong> um apelido que aponta para
+              outro nome de domínio.
             </li>
             <li>
-              <strong className="text-foreground">MX Record:</strong> Mail server for the domain.
+              <strong className="text-foreground">Registro MX:</strong> o servidor de e-mail do
+              domínio.
             </li>
           </ul>
         </div>
       </div>
 
       <div className="mt-6 rounded-md border border-primary/20 bg-primary/5 p-4">
-        <h4 className="mb-2 font-semibold text-sm">Key concepts</h4>
+        <h4 className="mb-2 font-semibold text-sm">Conceitos-chave</h4>
         <ul className="space-y-1 text-sm text-muted-foreground">
           <li>
-            <strong className="text-foreground">TTL (Time To Live):</strong> How long a DNS record
-            can be cached before needing refresh.
+            <strong className="text-foreground">TTL (Time To Live):</strong> por quanto tempo um
+            registro DNS pode ficar em cache antes de ser atualizado.
           </li>
           <li>
-            <strong className="text-foreground">Recursive query:</strong> The resolver does all the
-            work and returns the final answer.
+            <strong className="text-foreground">Consulta recursiva:</strong> o resolver faz todo o
+            trabalho e devolve a resposta final.
           </li>
           <li>
-            <strong className="text-foreground">Iterative query:</strong> Each server returns a
-            referral; the client follows the chain.
+            <strong className="text-foreground">Consulta iterativa:</strong> cada servidor devolve uma
+            indicação, e o cliente segue a cadeia.
           </li>
           <li>
-            <strong className="text-foreground">DNS caching:</strong> Happens at browser, OS, and
-            resolver levels to speed up lookups.
+            <strong className="text-foreground">Cache de DNS:</strong> acontece no navegador, no
+            sistema operacional e no resolver, para acelerar as consultas.
           </li>
         </ul>
       </div>

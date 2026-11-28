@@ -71,18 +71,18 @@ interface FailureState {
 
 const ACTORS: Record<ActorId, { label: string; caption: string; icon: ReactNode }> = {
   browser: {
-    label: 'Browser',
+    label: 'Navegador',
     caption: 'User agent',
     icon: <Globe className="h-5 w-5" />,
   },
   app: {
-    label: 'Client App',
+    label: 'App cliente',
     caption: 'Relying party',
     icon: <Code2 className="h-5 w-5" />,
   },
   'authorization-server': {
-    label: 'Authorization Server',
-    caption: 'Login + consent',
+    label: 'Servidor de autorização',
+    caption: 'Login + consentimento',
     icon: <Shield className="h-5 w-5" />,
   },
   'token-endpoint': {
@@ -101,13 +101,13 @@ const LESSONS: Lesson[] = [
   {
     id: 'auth-code-pkce',
     title: 'Auth Code + PKCE',
-    description: 'Follow the safest browser app flow',
+    description: 'Siga o fluxo mais seguro para apps no navegador',
     icon: <LockKeyhole className="h-5 w-5" />,
     actions: [
       {
         id: 'build-request',
-        label: 'Build authorize URL',
-        description: 'The app creates state, nonce, code_verifier, and code_challenge.',
+        label: 'Montar a URL de autorização',
+        description: 'O app cria state, nonce, code_verifier e code_challenge.',
         from: 'app',
         to: 'browser',
         log: `GET /authorize?
@@ -120,44 +120,44 @@ const LESSONS: Lesson[] = [
   code_challenge=SHA256(code_verifier)
   code_challenge_method=S256`,
         insight:
-          'PKCE binds the later token exchange to the browser session that started the login.',
+          'O PKCE amarra a troca de token que vem depois à sessão do navegador que iniciou o login.',
       },
       {
         id: 'redirect-login',
-        label: 'Redirect to login',
-        description: 'The browser leaves the app and visits the authorization server.',
+        label: 'Redirecionar para o login',
+        description: 'O navegador sai do app e vai até o servidor de autorização.',
         from: 'browser',
         to: 'authorization-server',
         log: '302 Location: https://auth.example/authorize?...',
         insight:
-          'This is the front channel. The browser can see the redirect, so secrets do not belong here.',
+          'Este é o front channel. O navegador enxerga o redirect, então segredos não devem passar por aqui.',
       },
       {
         id: 'login-consent',
-        label: 'Login and consent',
-        description: 'The user authenticates and approves the requested scopes.',
+        label: 'Login e consentimento',
+        description: 'O usuário se autentica e aprova os scopes pedidos.',
         from: 'authorization-server',
         to: 'browser',
-        log: 'User authenticates with MFA and consents to openid profile email.',
+        log: 'O usuário se autentica com MFA e consente com openid profile email.',
         insight:
-          'OAuth delegates access. OIDC adds identity by asking for the openid scope.',
+          'O OAuth delega acesso. O OIDC adiciona identidade ao pedir o scope openid.',
       },
       {
         id: 'callback-code',
-        label: 'Return auth code',
-        description: 'The browser returns with a short-lived authorization code.',
+        label: 'Devolver o authorization code',
+        description: 'O navegador volta com um authorization code de vida curta.',
         from: 'authorization-server',
         to: 'app',
         log: `GET /callback?
   code=SplxlOBeZQQYbYS6WxSbIA
   state=s4f3_csrf`,
         insight:
-          'The app must verify state before exchanging the code. This blocks login CSRF.',
+          'O app precisa verificar o state antes de trocar o code. Isso bloqueia CSRF no login.',
       },
       {
         id: 'exchange-code',
-        label: 'Exchange code',
-        description: 'The app calls the token endpoint with the code and verifier.',
+        label: 'Trocar o code',
+        description: 'O app chama o token endpoint com o code e o verifier.',
         from: 'app',
         to: 'token-endpoint',
         log: `POST /oauth/token
@@ -166,21 +166,21 @@ const LESSONS: Lesson[] = [
   redirect_uri=https://app.example/callback
   code_verifier=plain_random_secret`,
         insight:
-          'The code exchange is back channel. PKCE proves the app has the original verifier.',
+          'A troca do code acontece no back channel. O PKCE prova que o app tem o verifier original.',
         creates: ['id', 'access', 'refresh'],
       },
     ],
   },
   {
     id: 'tokens',
-    title: 'Tokens & Claims',
-    description: 'Separate identity from API authorization',
+    title: 'Tokens e claims',
+    description: 'Separe identidade de autorização na API',
     icon: <KeyRound className="h-5 w-5" />,
     actions: [
       {
         id: 'validate-id-token',
-        label: 'Validate ID token',
-        description: 'The app verifies issuer, audience, expiry, nonce, and signature.',
+        label: 'Validar o ID token',
+        description: 'O app verifica issuer, audience, expiração, nonce e assinatura.',
         from: 'token-endpoint',
         to: 'app',
         log: `ID token claims
@@ -190,67 +190,67 @@ const LESSONS: Lesson[] = [
   nonce: n0nc3_login
   exp: now + 5m`,
         insight:
-          'ID tokens are for the client app. They prove who authenticated, not what an API should accept.',
+          'ID tokens são para o app cliente. Eles provam quem se autenticou, não o que uma API deve aceitar.',
         requires: ['id'],
       },
       {
         id: 'store-session',
-        label: 'Create app session',
-        description: 'The app creates its own secure session cookie after validating identity.',
+        label: 'Criar a sessão do app',
+        description: 'Depois de validar a identidade, o app cria o próprio cookie de sessão seguro.',
         from: 'app',
         to: 'browser',
         log: 'Set-Cookie: app_session=opaque; HttpOnly; Secure; SameSite=Lax',
         insight:
-          'A web app often stores tokens server-side and gives the browser an opaque session cookie.',
+          'Um app web costuma guardar os tokens no servidor e dar ao navegador um cookie de sessão opaco.',
         requires: ['id'],
       },
       {
         id: 'call-userinfo',
-        label: 'Call UserInfo',
-        description: 'The app uses the access token to fetch profile claims.',
+        label: 'Chamar o UserInfo',
+        description: 'O app usa o access token para buscar as claims de perfil.',
         from: 'app',
         to: 'api',
         log: `GET /userinfo
 Authorization: Bearer eyJ_access_token`,
         insight:
-          'Access tokens are for resource servers. The API validates audience, issuer, expiry, and scope.',
+          'Access tokens são para resource servers. A API valida audience, issuer, expiração e scope.',
         requires: ['access'],
       },
     ],
   },
   {
     id: 'scopes-refresh',
-    title: 'Scopes & Refresh',
-    description: 'Handle least privilege and token renewal',
+    title: 'Scopes e refresh',
+    description: 'Aplique menor privilégio e renove tokens',
     icon: <RefreshCw className="h-5 w-5" />,
     actions: [
       {
         id: 'request-api-scope',
-        label: 'Request API scope',
-        description: 'The app asks for a focused scope instead of broad account access.',
+        label: 'Pedir o scope da API',
+        description: 'O app pede um scope específico em vez de acesso amplo à conta.',
         from: 'app',
         to: 'authorization-server',
         log: 'scope=openid profile email api:read:deployments',
         insight:
-          'Scopes are permissions. Smaller scopes reduce blast radius and make consent clearer.',
+          'Scopes são permissões. Scopes menores reduzem o raio de impacto e deixam o consentimento mais claro.',
       },
       {
         id: 'expire-token',
-        label: 'Access token expires',
-        description: 'The API rejects an expired access token.',
+        label: 'O access token expira',
+        description: 'A API rejeita um access token expirado.',
         from: 'api',
         to: 'app',
         log: `HTTP/1.1 401 Unauthorized
 WWW-Authenticate: Bearer error="invalid_token", error_description="expired"`,
         insight:
-          'Short-lived access tokens limit exposure. The app should refresh, not ask the user to log in again.',
+          'Access tokens de vida curta limitam a exposição. O app deve fazer refresh, não pedir login de novo.',
         requires: ['access'],
-        warning: 'The access token is now marked expired in the simulator.',
+        warning: 'Agora o access token aparece como expirado no simulador.',
       },
       {
         id: 'refresh-token',
-        label: 'Refresh tokens',
-        description: 'The app uses the refresh token to get a new access token.',
+        label: 'Renovar os tokens',
+        description: 'O app usa o refresh token para obter um novo access token.',
         from: 'app',
         to: 'token-endpoint',
         log: `POST /oauth/token
@@ -259,7 +259,7 @@ WWW-Authenticate: Bearer error="invalid_token", error_description="expired"`,
 
 Response: new access_token, rotated refresh_token`,
         insight:
-          'Refresh token rotation lets the server detect replay if an old refresh token is reused.',
+          'A rotação de refresh token permite ao servidor detectar replay se um refresh token antigo for reutilizado.',
         requires: ['refresh'],
         creates: ['access', 'refresh'],
       },
@@ -267,14 +267,14 @@ Response: new access_token, rotated refresh_token`,
   },
   {
     id: 'failure-modes',
-    title: 'Failure Modes',
-    description: 'Debug the mistakes people actually ship',
+    title: 'Modos de falha',
+    description: 'Depure os erros que vão de verdade para produção',
     icon: <AlertTriangle className="h-5 w-5" />,
     actions: [
       {
         id: 'bad-redirect',
-        label: 'Break redirect URI',
-        description: 'Change the callback URL and see why the server rejects it.',
+        label: 'Quebrar a redirect URI',
+        description: 'Mude a URL de callback e veja por que o servidor rejeita.',
         from: 'browser',
         to: 'authorization-server',
         log: `GET /authorize?...redirect_uri=https://evil.example/callback
@@ -282,39 +282,39 @@ Response: new access_token, rotated refresh_token`,
 error=invalid_request
 error_description=redirect_uri_mismatch`,
         insight:
-          'Redirect URIs must be exact allow-list matches. Never accept arbitrary callback URLs.',
-        warning: 'Redirect mismatch activated.',
+          'Redirect URIs precisam bater exatamente com a allow-list. Nunca aceite URLs de callback arbitrárias.',
+        warning: 'Redirect incompatível ativado.',
       },
       {
         id: 'fix-redirect',
-        label: 'Fix redirect URI',
-        description: 'Restore the registered callback URL.',
+        label: 'Corrigir a redirect URI',
+        description: 'Restaure a URL de callback registrada.',
         from: 'app',
         to: 'authorization-server',
-        log: 'redirect_uri=https://app.example/callback matches registered client metadata.',
+        log: 'redirect_uri=https://app.example/callback bate com os metadados registrados do cliente.',
         insight:
-          'Exact redirect matching is one of the most important OAuth security controls.',
+          'Comparar o redirect de forma exata é um dos controles de segurança mais importantes do OAuth.',
       },
       {
         id: 'too-broad-scope',
-        label: 'Request broad scope',
-        description: 'Ask for admin scope and watch consent risk rise.',
+        label: 'Pedir um scope amplo',
+        description: 'Peça o scope de admin e veja o risco do consentimento subir.',
         from: 'app',
         to: 'authorization-server',
         log: 'scope=openid profile email admin:*',
         insight:
-          'Broad scopes are product and security debt. Prefer granular permissions like api:read:deployments.',
-        warning: 'Broad scope warning activated.',
+          'Scopes amplos são dívida de produto e de segurança. Prefira permissões granulares como api:read:deployments.',
+        warning: 'Alerta de scope amplo ativado.',
       },
       {
         id: 'fix-scope',
-        label: 'Apply least privilege',
-        description: 'Replace admin scope with a minimal API scope.',
+        label: 'Aplicar menor privilégio',
+        description: 'Troque o scope de admin por um scope mínimo da API.',
         from: 'app',
         to: 'authorization-server',
         log: 'scope=openid profile email api:read:deployments',
         insight:
-          'Least privilege makes token leaks less damaging and consent screens more understandable.',
+          'Menor privilégio deixa vazamentos de token menos danosos e telas de consentimento mais compreensíveis.',
       },
     ],
   },
@@ -323,17 +323,17 @@ error_description=redirect_uri_mismatch`,
 const TOKEN_COPY: Record<TokenKind, { title: string; description: string; claims: string[] }> = {
   id: {
     title: 'ID Token',
-    description: 'For the client app. Proves authentication.',
+    description: 'Para o app cliente. Prova a autenticação.',
     claims: ['iss=https://auth.example', 'aud=bancada_lab', 'sub=user_123', 'nonce=n0nc3_login'],
   },
   access: {
     title: 'Access Token',
-    description: 'For APIs. Carries authorization context.',
+    description: 'Para APIs. Carrega o contexto de autorização.',
     claims: ['aud=https://api.example', 'scope=api:read:deployments', 'exp=5m', 'cnf=pkce-bound'],
   },
   refresh: {
     title: 'Refresh Token',
-    description: 'For the token endpoint. Rotated on use.',
+    description: 'Para o token endpoint. Rotacionado a cada uso.',
     claims: ['opaque=rt_7b9...', 'rotation=enabled', 'storage=server-side', 'reuse=detection'],
   },
 };
@@ -343,7 +343,7 @@ function createInitialLogs(): FlowLog[] {
     {
       type: 'success',
       content:
-        'Lab initialized. The client is registered with redirect_uri=https://app.example/callback and PKCE required.',
+        'Laboratório iniciado. O cliente está registrado com redirect_uri=https://app.example/callback e PKCE obrigatório.',
     },
   ];
 }
@@ -394,7 +394,7 @@ export default function OAuthOidcFlowSimulator() {
     if (!canRunAction(action)) {
       appendLog({
         type: 'error',
-        content: `Cannot run "${action.label}" yet. Missing ${action.requires?.map((token) => TOKEN_COPY[token].title).join(', ')}.`,
+        content: `Ainda não dá para executar "${action.label}". Falta: ${action.requires?.map((token) => TOKEN_COPY[token].title).join(', ')}.`,
       });
       return;
     }
@@ -459,13 +459,13 @@ export default function OAuthOidcFlowSimulator() {
               <Shield className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-mono text-xs text-muted-foreground">// oauth oidc lab</p>
-              <h2 className="text-2xl font-bold md:text-3xl">OAuth/OIDC Flow Simulator</h2>
+              <p className="font-mono text-xs text-muted-foreground">// laboratório de OAuth/OIDC</p>
+              <h2 className="text-2xl font-bold md:text-3xl">Simulador de fluxos OAuth/OIDC</h2>
             </div>
           </div>
           <p className="max-w-3xl text-sm text-muted-foreground">
-            Visualize authorization code + PKCE, OIDC ID tokens, access tokens, refresh tokens,
-            scopes, callbacks, and the mistakes that break real login flows.
+            Visualize authorization code + PKCE, ID tokens do OIDC, access tokens, refresh tokens,
+            scopes, callbacks e os erros que quebram fluxos de login de verdade.
           </p>
         </div>
 
@@ -480,8 +480,8 @@ export default function OAuthOidcFlowSimulator() {
             <Progress value={progress} />
             <div className="grid grid-cols-3 gap-2 text-center">
               <Metric label="Tokens" value={String(selectedTokenCount)} />
-              <Metric label="Risk" value={`${riskScore}%`} />
-              <Metric label="Scopes" value={failures.broadScope ? 'Broad' : 'Least'} />
+              <Metric label="Risco" value={`${riskScore}%`} />
+              <Metric label="Scopes" value={failures.broadScope ? 'Amplo' : 'Mínimo'} />
             </div>
           </CardContent>
         </Card>
@@ -493,7 +493,7 @@ export default function OAuthOidcFlowSimulator() {
             <CardHeader className="p-4 pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Code2 className="h-5 w-5" />
-                Lessons
+                Lições
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 p-4 pt-0">
@@ -536,7 +536,7 @@ export default function OAuthOidcFlowSimulator() {
 
           <Button size="sm" variant="outline" onClick={resetLab} className="w-full">
             <RotateCcw className="mr-1 h-4 w-4" />
-            Reset lab
+            Reiniciar laboratório
           </Button>
         </div>
 
@@ -547,10 +547,10 @@ export default function OAuthOidcFlowSimulator() {
                 <div>
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Badge variant="secondary">
-                      Lesson {currentLessonIndex + 1} / {LESSONS.length}
+                      Lição {currentLessonIndex + 1} / {LESSONS.length}
                     </Badge>
                     <Badge>
-                      Step {currentActionIndex + 1} / {currentLesson.actions.length}
+                      Passo {currentActionIndex + 1} / {currentLesson.actions.length}
                     </Badge>
                   </div>
                   <p className="text-sm font-medium sm:text-base">{currentAction.description}</p>
@@ -563,7 +563,7 @@ export default function OAuthOidcFlowSimulator() {
                 <div className="flex shrink-0 gap-2">
                   <Button size="sm" variant="outline" onClick={() => setShowHint((value) => !value)}>
                     <Sparkles className="mr-1 h-4 w-4" />
-                    Explain
+                    Explicar
                   </Button>
                   <Button size="sm" onClick={() => runAction()}>
                     <Play className="mr-1 h-4 w-4" />
@@ -591,15 +591,15 @@ export default function OAuthOidcFlowSimulator() {
             <div className="flex items-center gap-3">
               <Trophy className="h-8 w-8 text-emerald-500" />
               <div>
-                <p className="font-semibold">Lab complete</p>
+                <p className="font-semibold">Laboratório concluído</p>
                 <p className="text-sm text-muted-foreground">
-                  You traced login, token validation, API access, refresh, and common OAuth/OIDC
-                  failure modes.
+                  Você acompanhou o login, a validação de tokens, o acesso à API, o refresh e os modos de
+                  falha mais comuns de OAuth/OIDC.
                 </p>
               </div>
             </div>
             <Button variant="outline" onClick={resetLab}>
-              Start over
+              Começar de novo
             </Button>
           </CardContent>
         </Card>
@@ -633,7 +633,7 @@ function FlowCanvas({
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <ArrowRight className="h-5 w-5" />
-          Protocol Flow
+          Fluxo do protocolo
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4 pt-0">
@@ -655,22 +655,22 @@ function FlowCanvas({
                 <p className="text-xs text-muted-foreground">{actor.caption}</p>
                 {id === 'authorization-server' && failures.badRedirect && (
                   <Badge variant="destructive" className="mt-3 text-[10px]">
-                    redirect mismatch
+                    redirect incompatível
                   </Badge>
                 )}
                 {id === 'authorization-server' && failures.broadScope && (
                   <Badge variant="secondary" className="mt-3 border-amber-500/40 bg-amber-500/10 text-[10px] text-amber-700 dark:text-amber-300">
-                    broad scope
+                    scope amplo
                   </Badge>
                 )}
                 {id === 'api' && failures.expiredAccessToken && (
                   <Badge variant="destructive" className="mt-3 text-[10px]">
-                    token expired
+                    token expirado
                   </Badge>
                 )}
                 {id === 'token-endpoint' && tokens.refresh && (
                   <Badge variant="secondary" className="mt-3 text-[10px]">
-                    rotation ready
+                    rotação pronta
                   </Badge>
                 )}
               </div>
@@ -688,12 +688,12 @@ function FlowCanvas({
                 <p className="text-xs text-muted-foreground">{activeMessage.description}</p>
               </div>
               <Badge variant={activeMessage.warning ? 'destructive' : 'default'}>
-                {activeMessage.warning ? 'risk surfaced' : 'message in flight'}
+                {activeMessage.warning ? 'risco exposto' : 'mensagem em trânsito'}
               </Badge>
             </div>
           ) : (
             <p className="text-sm text-muted-foreground">
-              Run the next action to animate the current OAuth/OIDC message.
+              Execute a próxima ação para animar a mensagem atual de OAuth/OIDC.
             </p>
           )}
         </div>
@@ -722,7 +722,7 @@ function MessageInspector({ action }: { action: FlowAction | null }) {
         <pre className="min-h-72 overflow-auto p-4 font-mono text-sm leading-relaxed text-slate-300">
           {action
             ? `${actorLabel(action.from)} -> ${actorLabel(action.to)}\n\n${action.log}\n\n# ${action.insight}`
-            : 'No message selected yet.\nRun the current flow action to inspect request and response details.'}
+            : 'Nenhuma mensagem selecionada ainda.\nExecute a ação atual do fluxo para inspecionar a requisição e a resposta.'}
         </pre>
       </CardContent>
     </Card>
@@ -735,7 +735,7 @@ function TokenPanel({ tokens, failures }: { tokens: TokenState; failures: Failur
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <KeyRound className="h-5 w-5" />
-          Token Set
+          Conjunto de tokens
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 p-4 pt-0">
@@ -753,7 +753,7 @@ function TokenPanel({ tokens, failures }: { tokens: TokenState; failures: Failur
             >
               <div className="mb-1 flex items-center justify-between gap-2">
                 <p className="text-sm font-medium">{token.title}</p>
-                <Badge variant={active ? 'default' : 'secondary'}>{expired ? 'expired' : active ? 'issued' : 'missing'}</Badge>
+                <Badge variant={active ? 'default' : 'secondary'}>{expired ? 'expirado' : active ? 'emitido' : 'ausente'}</Badge>
               </div>
               <p className="text-xs text-muted-foreground">{token.description}</p>
               {active && (
@@ -779,22 +779,22 @@ function RiskPanel({ failures, riskScore }: { failures: FailureState; riskScore:
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <ShieldCheck className="h-5 w-5" />
-          Security Checks
+          Checagens de segurança
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 p-4 pt-0">
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-sm font-medium">Risk score</span>
+            <span className="text-sm font-medium">Nível de risco</span>
             <span className="text-sm text-muted-foreground">{riskScore}%</span>
           </div>
           <Progress value={riskScore} />
         </div>
-        <CheckRow ok={!failures.badRedirect} label="Exact redirect URI" />
-        <CheckRow ok={!failures.broadScope} label="Least-privilege scopes" />
-        <CheckRow ok={!failures.expiredAccessToken} label="Fresh access token" />
-        <CheckRow ok label="PKCE S256 required" />
-        <CheckRow ok label="State + nonce verified" />
+        <CheckRow ok={!failures.badRedirect} label="Redirect URI exata" />
+        <CheckRow ok={!failures.broadScope} label="Scopes de menor privilégio" />
+        <CheckRow ok={!failures.expiredAccessToken} label="Access token válido" />
+        <CheckRow ok label="PKCE S256 obrigatório" />
+        <CheckRow ok label="State + nonce verificados" />
       </CardContent>
     </Card>
   );
@@ -815,7 +815,7 @@ function EventLog({ logs }: { logs: FlowLog[] }) {
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <CircleDot className="h-5 w-5" />
-          Event Log
+          Log de eventos
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 p-4 pt-0">

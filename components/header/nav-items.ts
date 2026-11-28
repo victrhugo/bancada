@@ -1,4 +1,4 @@
-import { Home, Target, Trophy, Layers, ListChecks, Briefcase, Gamepad2, Map } from 'lucide-react';
+import { Home, Target, Trophy, Layers, ListChecks, Briefcase, Gamepad2, Map, Bot } from 'lucide-react';
 
 export interface MainNavItem {
   label: string;
@@ -16,4 +16,5 @@ export const mainNavigation: MainNavItem[] = [
   { label: 'Entrevistas', href: '/interview-questions', icon: Briefcase },
   { label: 'Jogos', href: '/games', icon: Gamepad2 },
   { label: 'Roadmap', href: '/roadmap', icon: Map },
+  { label: 'Tutor IA', href: '/tutor', icon: Bot },
 ];

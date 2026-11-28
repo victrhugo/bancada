@@ -25,7 +25,7 @@ const INFRASTRUCTURE_TOOLS = [
   'Kustomize',
   'Pulumi',
   'CloudFormation',
-  'Bash scripts',
+  'Scripts Bash',
   'Puppet',
   'Chef',
   'Helm',
@@ -47,119 +47,119 @@ const CLOUD_PLATFORMS = [
 
 const FUNNY_RATINGS = [
   {
-    text: 'Dream pipeline! Your deployments probably finish before you start them.',
+    text: 'Pipeline dos sonhos! Seus deploys provavelmente terminam antes de começar.',
     color: 'bg-green-500',
     emoji: '🚀',
     weight: 1,
     keywords: ['GitHub Actions', 'Terraform', 'AWS'],
   },
   {
-    text: 'Enterprise-grade overkill. Are you deploying a blog or a banking system?',
+    text: 'Exagero corporativo. Você está publicando um blog ou um sistema bancário?',
     color: 'bg-blue-500',
     emoji: '🏦',
     weight: 1,
     keywords: ['Jenkins', 'IBM Cloud', 'TeamCity'],
   },
   {
-    text: 'Your infrastructure is held together by vibes and prayers.',
+    text: 'Sua infraestrutura se sustenta na fé e no pensamento positivo.',
     color: 'bg-red-500',
     emoji: '🙏',
     weight: 3,
-    keywords: ['Bash scripts', 'Raspberry Pi', 'Bare Metal'],
+    keywords: ['Scripts Bash', 'Raspberry Pi', 'Bare Metal'],
   },
   {
-    text: 'Hipster stack. You definitely argue about coffee brewing methods too.',
+    text: 'Stack hipster. Com certeza você também discute métodos de passar café.',
     color: 'bg-purple-500',
     emoji: '☕',
     weight: 2,
     keywords: ['Pulumi', 'Crossplane', 'Drone CI'],
   },
   {
-    text: 'Classic enterprise setup: slow, reliable, and will survive a nuclear apocalypse.',
+    text: 'Clássico corporativo: lento, confiável e capaz de sobreviver a um apocalipse nuclear.',
     color: 'bg-gray-500',
     emoji: '🦖',
     weight: 2,
     keywords: ['Jenkins', 'Puppet', 'IBM Cloud'],
   },
   {
-    text: 'Modern cloud-native dream team. Your clusters probably self-heal.',
+    text: 'Dream team cloud native. Seus clusters provavelmente se curam sozinhos.',
     color: 'bg-teal-500',
     emoji: '☁️',
     weight: 2,
     keywords: ['Kubernetes', 'Helm', 'AWS', 'GCP', 'Azure'],
   },
   {
-    text: 'Your DevOps budget is clearly bigger than your feature budget.',
+    text: 'Seu orçamento de DevOps é claramente maior que o de funcionalidades.',
     color: 'bg-yellow-500',
     emoji: '💰',
     weight: 1,
     keywords: ['Spinnaker', 'TeamCity', 'Oracle Cloud'],
   },
   {
-    text: "The 'it works on my machine' special. Good luck in production!",
+    text: "O especial 'na minha máquina funciona'. Boa sorte em produção!",
     color: 'bg-orange-500',
     emoji: '🤷',
     weight: 3,
-    keywords: ['Bash scripts', 'Bare Metal'],
+    keywords: ['Scripts Bash', 'Bare Metal'],
   },
   {
-    text: 'Startup stack supreme. Move fast and break... fewer things.',
+    text: 'Stack de startup raiz. Mova-se rápido e quebre... menos coisas.',
     color: 'bg-emerald-500',
     emoji: '⚡',
     weight: 2,
     keywords: ['GitHub Actions', 'DigitalOcean', 'Terraform'],
   },
   {
-    text: 'The time traveler special. Welcome to 2015!',
+    text: 'O especial viajante do tempo. Bem-vindo a 2015!',
     color: 'bg-amber-500',
     emoji: '⏰',
     weight: 2,
     keywords: ['Travis CI', 'Chef', 'Heroku'],
   },
   {
-    text: 'Maximum enterprise buzzword compliance achieved!',
+    text: 'Nível máximo de buzzwords corporativas atingido!',
     color: 'bg-blue-600',
     emoji: '👔',
     weight: 1,
     keywords: ['Jenkins', 'IBM Cloud', 'Ansible'],
   },
   {
-    text: "The 'we wish we could afford cloud' setup.",
+    text: "O setup 'queríamos poder pagar a nuvem'.",
     color: 'bg-rose-500',
     emoji: '💸',
     weight: 2,
     keywords: ['Raspberry Pi', 'Bare Metal'],
   },
   {
-    text: 'DevOps conference speaker starter pack!',
+    text: 'Kit inicial de palestrante de conferência de DevOps!',
     color: 'bg-purple-600',
     emoji: '🎤',
     weight: 1,
     keywords: ['GitLab CI', 'Kubernetes', 'Terraform'],
   },
   {
-    text: 'Container orchestration overload. You probably have a Kubernetes tattoo.',
+    text: 'Overdose de orquestração. Você provavelmente tem uma tatuagem do Kubernetes.',
     color: 'bg-cyan-500',
     emoji: '🐳',
     weight: 2,
     keywords: ['Kubernetes', 'Helm', 'Argo CD'],
   },
   {
-    text: 'The reliable workhorse. Boring but bulletproof.',
+    text: 'O burro de carga confiável. Sem graça, mas à prova de balas.',
     color: 'bg-slate-600',
     emoji: '🐎',
     weight: 3,
     keywords: ['Jenkins', 'AWS', 'Ansible'],
   },
   {
-    text: 'GitOps guru detected. Everything is code, including your breakfast.',
+    text: 'Guru de GitOps detectado. Tudo é código, até o seu café da manhã.',
     color: 'bg-indigo-600',
     emoji: '📝',
     weight: 2,
     keywords: ['Argo CD', 'GitLab CI', 'Terraform'],
   },
   {
-    text: 'The minimalist approach. Less is more... until it breaks.',
+    text: 'A abordagem minimalista. Menos é mais... até quebrar.',
     color: 'bg-stone-500',
     emoji: '🎯',
     weight: 2,
@@ -173,7 +173,7 @@ const FUNNY_RATINGS = [
     keywords: ['Terraform', 'Pulumi', 'CloudFormation'],
   },
   {
-    text: 'The Swiss Army knife approach. One tool for everything!',
+    text: 'A abordagem canivete suíço. Uma ferramenta para tudo!',
     color: 'bg-red-600',
     emoji: '🔧',
     weight: 2,
@@ -181,28 +181,28 @@ const FUNNY_RATINGS = [
   },
   // Catch-all ratings with higher probability
   {
-    text: 'Solid choice! Your future self will thank you... probably.',
+    text: 'Escolha sólida! Seu eu do futuro vai agradecer... provavelmente.',
     color: 'bg-blue-500',
     emoji: '👍',
     weight: 4,
     keywords: [],
   },
   {
-    text: 'Interesting combo! This could either be genius or chaos.',
+    text: 'Combinação interessante! Pode ser genial ou um caos.',
     color: 'bg-indigo-500',
     emoji: '🤔',
     weight: 4,
     keywords: [],
   },
   {
-    text: "Not bad! You clearly know what you're doing.",
+    text: "Nada mal! Você claramente sabe o que está fazendo.",
     color: 'bg-green-500',
     emoji: '😎',
     weight: 4,
     keywords: [],
   },
   {
-    text: "Creative stack! You're definitely thinking outside the box.",
+    text: "Stack criativa! Você está mesmo pensando fora da caixa.",
     color: 'bg-purple-500',
     emoji: '🎨',
     weight: 4,
@@ -335,7 +335,7 @@ export default function CICDStackGenerator() {
 
     const combo = reels.map((r) => r.value).join(' | ');
     const text = encodeURIComponent(
-      `I spun the CI/CD Stack Generator and got: ${combo}. The verdict: ${rating.emoji} ${rating.text} Try your luck at Bancada!`
+      `Girei o Gerador de Stack CI/CD e tirei: ${combo}. O veredito: ${rating.emoji} ${rating.text} Tente a sorte no Bancada!`
     );
     const url = encodeURIComponent(window.location.href);
 
@@ -344,7 +344,7 @@ export default function CICDStackGenerator() {
     sharePopup.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4';
     sharePopup.innerHTML = `
       <div class="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-sm w-full shadow-xl">
-        <h3 class="text-lg font-semibold mb-4 text-center">Share Your Stack</h3>
+        <h3 class="text-lg font-semibold mb-4 text-center">Compartilhe sua stack</h3>
         <div class="flex justify-center gap-4 mb-4">
           <a href="https://twitter.com/intent/tweet?text=${text}&url=${url}" 
              target="_blank" rel="noopener noreferrer"
@@ -369,7 +369,7 @@ export default function CICDStackGenerator() {
         </div>
         <button onclick="this.parentElement.parentElement.remove()" 
                 class="w-full py-2 px-4 bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors">
-          Close
+          Fechar
         </button>
       </div>
     `;
@@ -387,11 +387,11 @@ export default function CICDStackGenerator() {
   return (
     <div className="flex flex-col items-center w-full max-w-4xl mx-auto my-8">
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center text-primary">
-        CI/CD Stack Generator
+        Gerador de Stack CI/CD
       </h2>
 
       <p className="text-center text-muted-foreground mb-8 max-w-2xl">
-        Spin the wheels to get your perfect (or perfectly cursed) DevOps stack!
+        Gire os rolos e tire sua stack DevOps perfeita (ou perfeitamente amaldiçoada)!
       </p>
 
       {/* Slot Machine (terminal-styled) */}
@@ -498,7 +498,7 @@ export default function CICDStackGenerator() {
                 Spinning...
               </span>
             ) : (
-              `${spinCount === 0 ? 'GENERATE STACK!' : 'SPIN AGAIN!'}`
+              `${spinCount === 0 ? 'GERAR STACK!' : 'GIRAR DE NOVO!'}`
             )}
           </Button>
 
@@ -510,7 +510,7 @@ export default function CICDStackGenerator() {
             className={cn(!rating && 'opacity-50 cursor-not-allowed')}
           >
             <Share2 className="h-4 w-4 mr-2" />
-            Share
+            Compartilhar
           </Button>
         </div>
       </div>
@@ -534,7 +534,7 @@ export default function CICDStackGenerator() {
                 <span className="ml-3 text-xs text-muted-foreground">stack.yml</span>
               </div>
               <div className="p-5 space-y-1 leading-relaxed">
-                <div className="text-muted-foreground"># Generated DevOps Stack</div>
+                <div className="text-muted-foreground"># Stack DevOps gerada</div>
                 <div>
                   <span className="text-primary">ci_cd</span>
                   <span className="text-muted-foreground">:</span>{' '}
@@ -551,7 +551,7 @@ export default function CICDStackGenerator() {
                   <span className="text-foreground">{reels[2].value}</span>
                 </div>
                 <div className="pt-3 border-t mt-3">
-                  <div className="text-muted-foreground"># verdict</div>
+                  <div className="text-muted-foreground"># veredito</div>
                   <div className="flex items-start gap-2 mt-1">
                     <span className="text-xl leading-none mt-0.5">{rating.emoji}</span>
                     <span className="text-foreground font-sans">{rating.text}</span>
@@ -571,7 +571,7 @@ export default function CICDStackGenerator() {
           className="w-full max-w-2xl mt-8"
         >
           <h3 className="text-lg font-semibold mb-4 text-center text-muted-foreground">
-            Recent Spins
+            Giros recentes
           </h3>
           <div className="space-y-3">
             {spinHistory.map((item, index) => (

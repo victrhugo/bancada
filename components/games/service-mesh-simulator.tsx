@@ -35,70 +35,76 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
   {
     id: 'intro',
-    title: '🎯 The Problem: Insecure Communication',
-    description: 'Your services talk directly without encryption',
+    title: '🎯 O problema: comunicação insegura',
+    description: 'Seus serviços conversam diretamente, sem criptografia',
     problem:
-      "Two services are sending data over the network. But there's a problem: anyone can read the messages! No encryption, no authentication, no control.",
+      "Dois serviços trocam dados pela rede. Mas há um problema: qualquer um pode ler as mensagens! Sem criptografia, sem autenticação, sem controle.",
     solution:
-      "This is risky in production. One compromised service could impersonate another. Let's see how a service mesh solves this.",
+      "Isso é arriscado em produção. Um serviço comprometido pode se passar por outro. Vamos ver como um service mesh resolve isso.",
     visual: 'before',
     difficulty: 'beginner',
   },
   {
     id: 'sidecar',
-    title: '✨ The Solution: Sidecar Proxies',
-    description: 'Add a security guard next to each service',
+    title: '✨ A solução: sidecar proxies',
+    description: 'Coloque um segurança ao lado de cada serviço',
     problem:
-      "We can't modify every service's code to add security. That would take months and break things!",
+      "Não dá para mudar o código de cada serviço para adicionar segurança. Levaria meses e quebraria coisas!",
     solution:
-      "Service mesh deploys a 'sidecar proxy' next to each service. It intercepts all traffic and handles security automatically. Your code stays unchanged!",
+      "O service mesh coloca um 'sidecar proxy' ao lado de cada serviço. Ele intercepta todo o tráfego e cuida da segurança automaticamente. Seu código fica intacto!",
     visual: 'after-sidecar',
     difficulty: 'beginner',
   },
   {
     id: 'mtls',
-    title: '🔐 Feature 1: Automatic Encryption',
-    description: 'Every request is encrypted with mTLS',
-    problem: 'Hackers can read your network traffic and steal sensitive data.',
+    title: '🔐 Recurso 1: criptografia automática',
+    description: 'Toda requisição é criptografada com mTLS',
+    problem: 'Atacantes podem ler o tráfego da sua rede e roubar dados sensíveis.',
     solution:
-      'The sidecars automatically encrypt ALL traffic using mTLS (mutual TLS). Both services verify each other\'s identity. No code changes required!',
+      'Os sidecars criptografam TODO o tráfego automaticamente com mTLS (TLS mútuo). Os dois serviços verificam a identidade um do outro. Sem mudar uma linha de código!',
     visual: 'mtls',
     difficulty: 'intermediate',
   },
   {
     id: 'traffic-split',
-    title: '🎛️ Feature 2: Safe Deployments',
-    description: 'Test new versions without risking everything',
+    title: '🎛️ Recurso 2: deploys seguros',
+    description: 'Teste novas versões sem arriscar tudo',
     problem:
-      'You deployed v2.0 and it crashed. Now all users are affected. How do you test safely in production?',
+      'Você publicou a v2.0 e ela quebrou. Agora todos os usuários foram afetados. Como testar com segurança em produção?',
     solution:
-      'The mesh can route 90% of traffic to the stable version and 10% to the new one. If v2.0 has bugs, only 10% of users see them. Instant rollback!',
+      'O mesh pode mandar 90% do tráfego para a versão estável e 10% para a nova. Se a v2.0 tiver bugs, só 10% dos usuários percebem. Rollback instantâneo!',
     visual: 'traffic-split',
     difficulty: 'intermediate',
   },
   {
     id: 'retry',
-    title: '🔄 Feature 3: Smart Retries',
-    description: 'Automatically retry failed requests',
+    title: '🔄 Recurso 3: retries inteligentes',
+    description: 'Repete automaticamente as requisições que falharam',
     problem:
-      'Networks are unreliable. Random failures happen. Your users see errors even though the service is working.',
+      'Redes não são confiáveis. Falhas aleatórias acontecem. Seus usuários veem erros mesmo com o serviço funcionando.',
     solution:
-      'The sidecar automatically retries failed requests with smart backoff. Your users never see temporary network blips!',
+      'O sidecar repete automaticamente as requisições que falharam, com backoff inteligente. Seus usuários nem percebem as instabilidades passageiras da rede!',
     visual: 'retry',
     difficulty: 'advanced',
   },
   {
     id: 'circuit-breaker',
-    title: '🛡️ Feature 4: Circuit Breaker',
-    description: 'Stop hitting a failing service',
+    title: '🛡️ Recurso 4: circuit breaker',
+    description: 'Pare de insistir em um serviço que está falhando',
     problem:
-      'One slow service is taking down your entire system. Every request waits 30 seconds before timing out. Disaster!',
+      'Um único serviço lento está derrubando o sistema inteiro. Cada requisição espera 30 segundos antes do timeout. Desastre!',
     solution:
-      'When failures exceed a threshold, the circuit breaker "trips" and stops sending requests. Gives the service time to recover. Prevents cascading failures.',
+      'Quando as falhas passam de um limite, o circuit breaker "desarma" e para de enviar requisições. Isso dá tempo para o serviço se recuperar e evita falhas em cascata.',
     visual: 'circuit-breaker',
     difficulty: 'advanced',
   },
 ];
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner: 'iniciante',
+  intermediate: 'intermediário',
+  advanced: 'avançado',
+};
 
 export default function ServiceMeshSimulator() {
   const [currentScenario, setCurrentScenario] = useState(0);
@@ -199,7 +205,7 @@ useEffect(() => {
               <div className="w-32 h-32 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600" />
                 <div className="relative text-white text-center">
-                  <div className="font-bold text-lg">Service A</div>
+                  <div className="font-bold text-lg">Serviço A</div>
                   <div className="text-xs opacity-80">Frontend</div>
                 </div>
               </div>
@@ -223,7 +229,7 @@ useEffect(() => {
              </div>
              <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-semibold">
                <AlertTriangle className="w-4 h-4" />
-                <span>Unencrypted Data</span>
+                <span>Dados sem criptografia</span>
               </div>
             </div>
 
@@ -232,7 +238,7 @@ useEffect(() => {
               <div className="w-32 h-32 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600" />
                 <div className="relative text-white text-center">
-                  <div className="font-bold text-lg">Service B</div>
+                  <div className="font-bold text-lg">Serviço B</div>
                   <div className="text-xs opacity-80">API</div>
                 </div>
               </div>
@@ -244,7 +250,7 @@ useEffect(() => {
             {/* Hacker Warning */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-4 py-2 rounded-full border border-red-300 dark:border-red-700">
               <AlertTriangle className="w-5 h-5" />
-              <span className="text-sm font-semibold">Anyone can read this data!</span>
+              <span className="text-sm font-semibold">Qualquer um pode ler esses dados!</span>
             </div>
           </div>
         );
@@ -258,7 +264,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service A</div>
+                    <div className="font-bold text-lg">Serviço A</div>
                     <div className="text-xs opacity-80">Frontend</div>
                   </div>
                 </div>
@@ -288,7 +294,7 @@ useEffect(() => {
              </div>
              <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-semibold">
                <Shield className="w-4 h-4" />
-                <span>Proxied by Sidecars</span>
+                <span>Passando pelos sidecars</span>
               </div>
             </div>
 
@@ -298,7 +304,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service B</div>
+                    <div className="font-bold text-lg">Serviço B</div>
                     <div className="text-xs opacity-80">API</div>
                   </div>
                 </div>
@@ -316,7 +322,7 @@ useEffect(() => {
             {/* Success Message */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-full border border-green-300 dark:border-green-700">
               <CheckCircle2 className="w-5 h-5" />
-              <span className="text-sm font-semibold">All traffic goes through sidecars!</span>
+              <span className="text-sm font-semibold">Todo o tráfego passa pelos sidecars!</span>
             </div>
           </div>
         );
@@ -330,7 +336,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service A</div>
+                    <div className="font-bold text-lg">Serviço A</div>
                     <div className="text-xs opacity-80">Frontend</div>
                   </div>
                 </div>
@@ -357,7 +363,7 @@ useEffect(() => {
              </div>
              <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400 text-sm font-semibold bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 rounded-full">
                <Lock className="w-4 h-4" />
-                <span>mTLS Encrypted</span>
+                <span>Criptografado com mTLS</span>
               </div>
             </div>
 
@@ -367,7 +373,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service B</div>
+                    <div className="font-bold text-lg">Serviço B</div>
                     <div className="text-xs opacity-80">API</div>
                   </div>
                 </div>
@@ -380,7 +386,7 @@ useEffect(() => {
 
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-4 py-2 rounded-full border border-yellow-300 dark:border-yellow-700">
               <Lock className="w-5 h-5" />
-              <span className="text-sm font-semibold">Encrypted + Authenticated</span>
+              <span className="text-sm font-semibold">Criptografado + autenticado</span>
             </div>
           </div>
         );
@@ -394,7 +400,7 @@ useEffect(() => {
                 <div className="w-28 h-28 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold">Service A</div>
+                    <div className="font-bold">Serviço A</div>
                   </div>
                 </div>
                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-purple-500 text-white px-2 py-0.5 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1 border-2 border-white dark:border-gray-900">
@@ -446,7 +452,7 @@ useEffect(() => {
                   <div className="w-24 h-24 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600" />
                     <div className="relative text-white text-center">
-                      <div className="font-bold text-sm">Service B</div>
+                      <div className="font-bold text-sm">Serviço B</div>
                       <div className="text-xs">v1.0</div>
                     </div>
                   </div>
@@ -455,7 +461,7 @@ useEffect(() => {
                   </div>
                 </div>
                 <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-xs">
-                  Stable
+                  Estável
                 </Badge>
               </div>
 
@@ -465,7 +471,7 @@ useEffect(() => {
                   <div className="w-24 h-24 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600" />
                     <div className="relative text-white text-center">
-                      <div className="font-bold text-sm">Service B</div>
+                      <div className="font-bold text-sm">Serviço B</div>
                       <div className="text-xs">v2.0</div>
                     </div>
                   </div>
@@ -474,14 +480,14 @@ useEffect(() => {
                   </div>
                 </div>
                 <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300 text-xs">
-                  Testing
+                  Em teste
                 </Badge>
               </div>
             </div>
 
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full border border-blue-300 dark:border-blue-700">
               <TrendingUp className="w-5 h-5" />
-              <span className="text-sm font-semibold">Canary Deployment: Low-risk testing</span>
+              <span className="text-sm font-semibold">Deploy canary: teste com baixo risco</span>
             </div>
           </div>
         );
@@ -495,7 +501,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service A</div>
+                    <div className="font-bold text-lg">Serviço A</div>
                   </div>
                 </div>
                 <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1 border-2 border-white dark:border-gray-900">
@@ -521,7 +527,7 @@ useEffect(() => {
              </div>
              <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 text-sm font-semibold bg-purple-100 dark:bg-purple-900/30 px-3 py-1 rounded-full">
                <RefreshCw className="w-4 h-4" />
-                <span>Auto-Retry on Failure</span>
+                <span>Retry automático em caso de falha</span>
               </div>
             </div>
 
@@ -531,7 +537,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service B</div>
+                    <div className="font-bold text-lg">Serviço B</div>
                   </div>
                 </div>
                 <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1 border-2 border-white dark:border-gray-900">
@@ -546,7 +552,7 @@ useEffect(() => {
 
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-4 py-2 rounded-full border border-purple-300 dark:border-purple-700">
               <RefreshCw className="w-5 h-5" />
-              <span className="text-sm font-semibold">Failed? The sidecar retries automatically!</span>
+              <span className="text-sm font-semibold">Falhou? O sidecar tenta de novo sozinho!</span>
             </div>
           </div>
         );
@@ -560,7 +566,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service A</div>
+                    <div className="font-bold text-lg">Serviço A</div>
                   </div>
                 </div>
                 <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1 border-2 border-white dark:border-gray-900">
@@ -600,12 +606,12 @@ useEffect(() => {
                 {circuitState === 'open' ? (
                   <>
                     <Zap className="w-4 h-4" />
-                    <span>Circuit OPEN</span>
+                    <span>Circuito ABERTO</span>
                   </>
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>Circuit Closed</span>
+                    <span>Circuito fechado</span>
                   </>
                 )}
               </div>
@@ -617,7 +623,7 @@ useEffect(() => {
                 <div className="w-32 h-32 bg-red-500 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-red-400 to-red-600" />
                   <div className="relative text-white text-center">
-                    <div className="font-bold text-lg">Service B</div>
+                    <div className="font-bold text-lg">Serviço B</div>
                   </div>
                 </div>
                 <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1 border-2 border-white dark:border-gray-900">
@@ -633,7 +639,7 @@ useEffect(() => {
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-4 py-2 rounded-full border border-red-300 dark:border-red-700">
               <Zap className="w-5 h-5" />
               <span className="text-sm font-semibold">
-                {circuitState === 'open' ? 'Circuit tripped! Requests blocked.' : 'Too many failures...'}
+                {circuitState === 'open' ? 'Circuito desarmado! Requisições bloqueadas.' : 'Falhas demais...'}
               </span>
             </div>
           </div>
@@ -665,14 +671,14 @@ useEffect(() => {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <Network className="w-8 h-8 text-primary" />
-                <CardTitle className="text-2xl">Service Mesh Traffic Simulator</CardTitle>
+                <CardTitle className="text-2xl">Simulador de Tráfego em Service Mesh</CardTitle>
               </div>
               <CardDescription className="text-base">
-                Learn how service meshes solve real production problems through interactive scenarios
+                Aprenda como um service mesh resolve problemas reais de produção com cenários interativos
               </CardDescription>
             </div>
             <Badge variant="outline" className={getDifficultyColor(scenario.difficulty)}>
-              {scenario.difficulty}
+              {DIFFICULTY_LABELS[scenario.difficulty] ?? scenario.difficulty}
             </Badge>
           </div>
         </CardHeader>
@@ -682,7 +688,7 @@ useEffect(() => {
           <div className="flex items-center justify-between gap-4">
             <Button onClick={handlePrevious} disabled={currentScenario === 0} variant="outline" size="lg">
               <ChevronLeft className="mr-2 h-5 w-5" />
-              Previous
+              Anterior
             </Button>
             <div className="flex-1 text-center">
               <div className="text-sm text-muted-foreground mb-1">
@@ -709,7 +715,7 @@ useEffect(() => {
               variant="outline"
               size="lg"
             >
-              Next
+              Próximo
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -729,18 +735,18 @@ useEffect(() => {
               {isPlaying ? (
                 <>
                   <Pause className="mr-2 h-5 w-5" />
-                  Pause
+                  Pausar
                 </>
               ) : (
                 <>
                   <Play className="mr-2 h-5 w-5" />
-                  Play
+                  Reproduzir
                 </>
               )}
             </Button>
             <Button onClick={handleReset} variant="outline" size="lg">
               <RotateCcw className="mr-2 h-5 w-5" />
-              Reset
+              Reiniciar
             </Button>
           </div>
 
@@ -749,14 +755,14 @@ useEffect(() => {
               <Alert className="border-red-200 bg-red-50 dark:bg-red-950/20">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
                 <AlertDescription>
-                  <div className="font-semibold text-red-900 dark:text-red-100 mb-1">The Problem</div>
+                  <div className="font-semibold text-red-900 dark:text-red-100 mb-1">O problema</div>
                   <div className="text-red-700 dark:text-red-300 text-sm">{scenario.problem}</div>
                 </AlertDescription>
               </Alert>
               <Alert className="border-green-200 bg-green-50 dark:bg-green-950/20">
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                 <AlertDescription>
-                  <div className="font-semibold text-green-900 dark:text-green-100 mb-1">The Solution</div>
+                  <div className="font-semibold text-green-900 dark:text-green-100 mb-1">A solução</div>
                   <div className="text-green-700 dark:text-green-300 text-sm">{scenario.solution}</div>
                 </AlertDescription>
               </Alert>
@@ -764,16 +770,16 @@ useEffect(() => {
 
           {/* Keyboard Shortcuts */}
           <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
-            <p className="font-medium mb-2">Keyboard Shortcuts:</p>
+            <p className="font-medium mb-2">Atalhos de teclado:</p>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1">
               <span>
-                <kbd className="px-2 py-1 bg-background rounded border text-xs">Space/Enter</kbd> Play/Pause
+                <kbd className="px-2 py-1 bg-background rounded border text-xs">Espaço/Enter</kbd> Reproduzir/Pausar
               </span>
               <span>
-                <kbd className="px-2 py-1 bg-background rounded border text-xs">←/→</kbd> Navigate
+                <kbd className="px-2 py-1 bg-background rounded border text-xs">←/→</kbd> Navegar
               </span>
               <span>
-                <kbd className="px-2 py-1 bg-background rounded border text-xs">R</kbd> Reset
+                <kbd className="px-2 py-1 bg-background rounded border text-xs">R</kbd> Reiniciar
               </span>
             </div>
           </div>

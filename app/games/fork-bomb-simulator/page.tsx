@@ -12,9 +12,9 @@ export default function ForkBombSimulatorPage() {
     <SimulatorShell
       slug="fork-bomb-simulator"
       seoLearningPoints={[
-        'Understand how fork bombs create exponential process growth',
-        'See how resource exhaustion leads to system crashes',
-        'Learn to prevent fork bombs with ulimit, cgroups, and systemd',
+        'Entender como uma fork bomb faz os processos crescerem exponencialmente',
+        'Ver como o esgotamento de recursos derruba o sistema',
+        'Aprender a evitar fork bombs com ulimit, cgroups e systemd',
       ]}
     >
       <ForkBombSimulator />
